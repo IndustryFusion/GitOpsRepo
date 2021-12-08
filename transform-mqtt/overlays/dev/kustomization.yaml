@@ -1,0 +1,6 @@
+resources:
+- deployment.yaml
+- mqtt-airtracker-2-global-devices-config.yaml
+- mqtt-airtracker-2-global-devices-secret.yaml
+- mqtt-airtracker-2-pvc-device-data.yml
+- mqtt-airtracker-2-app-config.yaml
