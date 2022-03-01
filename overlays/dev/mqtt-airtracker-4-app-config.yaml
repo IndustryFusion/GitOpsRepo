@@ -1,0 +1,145 @@
+apiVersion: v1
+data:
+  application.yaml: |
+    # Licensed under the Apache License, Version 2.0 (the "License");
+    # you may not use this file except in compliance with the License.
+    # You may obtain a copy of the License at
+    #
+    #   http://www.apache.org/licenses/LICENSE-2.0
+    #
+    # Unless required by applicable law or agreed to in writing,
+    # software distributed under the License is distributed on an
+    # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    # KIND, either express or implied.  See the License for the
+    # specific language governing permissions and limitations
+    # under the License.
+
+    server:
+      error:
+        include-stacktrace: never
+      port: 8086
+    spring:
+      task:
+        scheduling:
+          pool:
+            size: 25
+
+    fusiondataservice:
+      name: Airtracker
+      connectionString: localhost:41234
+      dataServiceType: PUSH
+      jobSpecs:
+        betriebsdaten:
+          fields:
+            - source: "status"
+              target: "status"
+            - source: "maintenance_days"
+              target: "maintenance_days"
+            - source: "dust"
+              target: "dust"
+            - source: "temperature"
+              target: "temperature"
+            - source: "noise"
+              target: "noise"
+            - source: "humidity"
+              target: "humidity"
+
+    fusiongateway:
+      componentMap:
+        status: "integer.v1.0"
+        maintenance_days: "integer.v1.0"
+        dust: "float.v1.0"
+        temperature: "float.v1.0"
+        noise: "float.v1.0"
+        humidity: "float.v1.0"
+  fusionmqttdataservice_application.yaml: |
+    # Licensed under the Apache License, Version 2.0 (the "License");
+    # you may not use this file except in compliance with the License.
+    # You may obtain a copy of the License at
+    #
+    #   http://www.apache.org/licenses/LICENSE-2.0
+    #
+    # Unless required by applicable law or agreed to in writing,
+    # software distributed under the License is distributed on an
+    # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    # KIND, either express or implied.  See the License for the
+    # specific language governing permissions and limitations
+    # under the License.
+    #
+
+    server:
+      error:
+        include-stacktrace: never
+
+    fusiondataservice:
+      name: Airtracker
+      connectionString: tcp://192.168.49.69:1883
+      downstreamServiceBaseUrl: http://localhost:8085/
+      dataServiceType: PUSH
+      autorun: true
+      jobSpecs:
+        betriebsdaten:
+          fields:
+            - source: "airtracker-39B58/dust:$"
+              target: "dust_raw"
+            - source: "airtracker-39B58/temperature:$"
+              target: "temperature_raw"
+            - source: "airtracker-39B58/noise:$"
+              target: "noise_raw"
+            - source: "airtracker-39B58/humidity:$"
+              target: "humidity_raw"
+  transform.ts: |
+    import { isObject, TransformResult, JSONRoot, JSONObject, isNumber } from "./util.ts"
+
+
+
+
+    export function transform(data: JSONRoot): TransformResult {
+        if (!isObject(data)) {
+            return { status: 400, statusText: "Only JSON objects supported" };
+        }
+        const objectData = data as JSONObject;
+
+        if ('temperature_raw' in objectData) {
+            if (!isNumber(objectData['temperature_raw'])) {
+                return { status: 400, statusText: "temperature_raw not a number " + objectData['temperature_raw'] };
+            }
+            const temperature_raw = objectData['temperature_raw'] as number;
+            objectData['temperature'] = temperature_raw.toFixed(0);
+        }
+
+        if ('dust_raw' in objectData) {
+            if (!isNumber(objectData['dust_raw'])) {
+                return { status: 400, statusText: "dust_raw not a number " + objectData['dust_raw'] };
+            }
+            const dust_raw = objectData['dust_raw'] as number;
+            objectData['dust'] = dust_raw.toFixed(2);
+        }
+
+        if ('noise_raw' in objectData) {
+            if (!isNumber(objectData['noise_raw'])) {
+                return { status: 400, statusText: "noise_raw not a number " + objectData['noise_raw'] };
+            }
+            const noise_raw = objectData['noise_raw'] as number;
+            objectData['noise'] = noise_raw.toFixed(3);
+        }
+
+        if ('humidity_raw' in objectData) {
+            if (!isNumber(objectData['humidity_raw'])) {
+                return { status: 400, statusText: "humidity_raw not a number " + objectData['humidity_raw'] };
+            }
+            const humidity_raw = objectData['humidity_raw'] as number;
+            objectData['humidity'] = humidity_raw.toFixed(4);
+        }
+
+        objectData['status'] = 2;
+        objectData['maintenance_days'] = 2;
+
+
+        return { status: 201, data: objectData };
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: mqtt-airtracker-4-app-config
+  namespace: oisp-devices-dev2
