@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  airtracker-mqtt-2
+  namespace: oisp-devices-dev2
+  labels:
+    app: airtracker-mqtt-2-oisp-testsensor-sensor
+spec:
+  selector:
+    matchLabels:
+      app: airtracker-mqtt-2-oisp-testsensor-sensor
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: airtracker-mqtt-2-oisp-testsensor-sensor
+    spec:
+      containers:
+      - name: busybox
+        image: docker.io/busybox:latest
+        imagePullPolicy: Always
+        command: ["sleep"]
+        args: ["100000000"]
+      - name: oisp-iot-agent
+        env:
+          - name: OISP_DEVICE_ID
+            value: "airtracker-mqtt-2"
+          - name: OISP_DEVICE_ACTIVATION_CODE
+            valueFrom:
+              secretKeyRef:
+                key: activation-code
+                name: airtracker-mqtt-2-global-devices-secret
+        volumeMounts:
+          - name: oisp-devices-config-volume
+            mountPath: /volume/config
+          - name: oisp-devices-data-volume
+            mountPath: /volume/data
+        image: docker.io/ibn40/oisp-iot-agent:v2.1.3
+        imagePullPolicy: Always
+      - name: fusiongatewayapp
+        image: docker.io/ibn40/fusiongatewayapp-new:latest
+        resources:
+          limits:
+        volumeMounts:
+          - name: gateway-config
+            mountPath: /app/resources/application.yaml
+            subPath: application.yaml
+        imagePullPolicy: Always
+      - name: fusionscriptservice
+        image: docker.io/ibn40/fusionscriptservice-new:latest
+        env:
+          - name: FUSION_PORT
+            value: "8085"
+          - name: FUSION_DOWNSTREAM_URL
+            value: "http://localhost:8086/"
+          - name: FUSION_DOWNSTREAM_HOST
+            value: "localhost"
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: scriptservice-script
+            mountPath: /deno-dir/transform.ts
+            subPath: transform.ts
+        resources:
+          requests:
+            memory: "32Mi"
+          limits:
+            memory: "128Mi"
+      - name: fusionmqttdataservice
+        image: docker.io/ibn40/fusionmqttdataservice-new:latest
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: mqttservice-config
+            mountPath: /app/resources/application.yaml
+            subPath: application.yaml
+      volumes:
+        - name: oisp-devices-config-volume
+          configMap:
+            name: airtracker-mqtt-2-global-devices-config
+            items:
+            - key: config.json
+              path: config.json
+        - name: gateway-config
+          configMap:
+            name: airtracker-mqtt-2-app-config
+            items:
+            - key: application.yaml
+              path: application.yaml
+        - name: mqttservice-config
+          configMap:
+            name: airtracker-mqtt-2-app-config
+            items:
+            - key: fusionmqttdataservice_application.yaml
+              path: application.yaml
+        - name: scriptservice-script
+          configMap:
+            name: airtracker-mqtt-2-app-config
+            items:
+            - key: transform.ts
+              path: transform.ts
+        - name: oisp-devices-data-volume
+          persistentVolumeClaim:
+            claimName: airtracker-mqtt-2-pvc-device-data
+      imagePullSecrets:
+      - name: regcred
+      nodeSelector:
+        kubernetes.io/hostname: tkgw00

@@ -1,0 +1,95 @@
+apiVersion: v1
+data:
+  application.yaml: |
+    # Licensed under the Apache License, Version 2.0 (the "License");
+    # you may not use this file except in compliance with the License.
+    # You may obtain a copy of the License at
+    #
+    #   http://www.apache.org/licenses/LICENSE-2.0
+    #
+    # Unless required by applicable law or agreed to in writing,
+    # software distributed under the License is distributed on an
+    # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    # KIND, either express or implied.  See the License for the
+    # specific language governing permissions and limitations
+    # under the License.
+
+    server:
+      error:
+        include-stacktrace: never
+      port: 8086
+    spring:
+      task:
+        scheduling:
+          pool:
+            size: 25
+
+    fusiondataservice:
+      name: Airtracker
+      connectionString: localhost:41234
+      dataServiceType: PUSH
+      jobSpecs:
+        betriebsdaten:
+          fields:
+            - source: "status"
+              target: "status"
+            - source: "maintenance_days"
+              target: "maintenance_days"
+            - source: "dust"
+              target: "dust"
+            - source: "temperature"
+              target: "temperature"
+            - source: "noise"
+              target: "noise"
+            - source: "humidity"
+              target: "humidity"
+
+    fusiongateway:
+      componentMap:
+        status: "integer.v1.0"
+        maintenance_days: "integer.v1.0"
+        dust: "float.v1.0"
+        temperature: "float.v1.0"
+        noise: "float.v1.0"
+        humidity: "float.v1.0"
+  fusionmqttdataservice_application.yaml: |
+    # Licensed under the Apache License, Version 2.0 (the "License");
+    # you may not use this file except in compliance with the License.
+    # You may obtain a copy of the License at
+    #
+    #   http://www.apache.org/licenses/LICENSE-2.0
+    #
+    # Unless required by applicable law or agreed to in writing,
+    # software distributed under the License is distributed on an
+    # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    # KIND, either express or implied.  See the License for the
+    # specific language governing permissions and limitations
+    # under the License.
+    #
+
+    server:
+      error:
+        include-stacktrace: never
+
+    fusiondataservice:
+      name: Airtracker
+      connectionString: tcp://192.168.49.69:1883
+      downstreamServiceBaseUrl: http://localhost:8085/
+      dataServiceType: PUSH
+      autorun: true
+      jobSpecs:
+        betriebsdaten:
+          fields:
+            - source: "airtracker-39B58/dust:$"
+              target: "dust_raw"
+            - source: "airtracker-39B58/temperature:$"
+              target: "temperature_raw"
+            - source: "airtracker-39B58/noise:$"
+              target: "noise_raw"
+            - source: "airtracker-39B58/humidity:$"
+              target: "humidity_raw"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: airtracker-mqtt-2-app-config
+  namespace: oisp-devices-dev2
