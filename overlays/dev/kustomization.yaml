@@ -1,7 +1,0 @@
-resources:
-- deployment.yaml
-- testsensor-2-global-devices-config.yaml
-- testsensor-2-global-devices-secret.yaml
-- testsensor-2-pvc-device-data.yml
-- testsensor-2-testsensor-config.yaml
-
