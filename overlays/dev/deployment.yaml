@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  testsensor-2
+  namespace: oisp-devices-dev2
+  labels:
+    app: testsensor-2-oisp-testsensor-sensor
+spec:
+  selector:
+    matchLabels:
+      app: testsensor-2-oisp-testsensor-sensor
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: testsensor-2-oisp-testsensor-sensor
+    spec:
+      containers:
+      - name: oisp-iot-agent
+        env:
+          - name: OISP_DEVICE_ID
+            value: "testsensor-2"
+          - name: OISP_DEVICE_ACTIVATION_CODE
+            valueFrom:
+              secretKeyRef:
+                name: testsensor-2-global-devices-secret
+                key: activation-code
+        volumeMounts:
+          - name: oisp-devices-config-volume
+            mountPath: /volume/config
+          - name: oisp-devices-data-volume
+            mountPath: /volume/data
+        image: docker.io/oisp/oisp-iot-agent:v2.3.0
+        imagePullPolicy: Always
+      - name: oisp-testsensor
+        image: docker.io/oisp/oisp-testsensor:latest
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: LOG_LEVEL
+            value: "verbose"
+        volumeMounts:
+          - name: testsensor-config
+            mountPath: /etc/oisp
+        resources:
+           requests:
+              memory: "32Mi"
+           limits:
+              memory: "128Mi"
+      volumes:
+        - name: oisp-devices-config-volume
+          configMap:
+            name: testsensor-2-global-devices-config
+            items:
+            - key: config.json
+              path: config.json
+        - name: testsensor-config
+          configMap:
+            name: testsensor-2-testsensor-config
+            items:
+            - key: sensorSpecs.json
+              path: sensorSpecs.json
+        - name: oisp-devices-data-volume
+          persistentVolumeClaim:
+            claimName: testsensor-2-pvc-device-data
+      nodeSelector:
+        kubernetes.io/hostname: tkgw00
+      imagePullSecrets:
+      - name: regcred
