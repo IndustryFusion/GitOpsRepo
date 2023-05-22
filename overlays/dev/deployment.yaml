@@ -34,8 +34,8 @@ spec:
         volumeMounts:
           - name: oisp-devices-config-volume
             mountPath: /volume/config
-          - name: oisp-devices-data-volume
-            mountPath: /volume/data
+          # - name: oisp-devices-data-volume
+          #   mountPath: /volume/data
         securityContext:
          privileged: true
          capabilities:
@@ -101,9 +101,9 @@ spec:
         #     items:
         #     - key: transform.ts
         #       path: transform.ts
-        - name: oisp-devices-data-volume
-          persistentVolumeClaim:
-            claimName: opc-mcc-plasma-1-pvc-device-data
+        # - name: oisp-devices-data-volume
+        #   persistentVolumeClaim:
+        #     claimName: opc-mcc-plasma-1-pvc-device-data
       imagePullSecrets:
       - name: regcred
       nodeSelector:
