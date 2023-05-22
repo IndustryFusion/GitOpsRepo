@@ -32,7 +32,7 @@ data:
                     },
                     "mqtt": {
                             "host": "development.industry-fusion.com",
-                            "port": 8883,
+                            "port": 1883,
                             "qos": 1,
                             "retain": false,
                             "secure": true,
