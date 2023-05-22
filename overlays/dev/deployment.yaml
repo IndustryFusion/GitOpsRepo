@@ -25,7 +25,7 @@ spec:
       - name: oisp-iot-agent
         env:
           - name: OISP_DEVICE_ID
-            value: "opc-mcc-plasma-1"
+            value: "opcmcc"
           - name: OISP_DEVICE_ACTIVATION_CODE
             valueFrom:
               secretKeyRef:
@@ -36,7 +36,7 @@ spec:
             mountPath: /volume/config
           - name: oisp-devices-data-volume
             mountPath: /volume/data
-        image: docker.io/ibn40/oisp-iot-agent:v2.3.0
+        image: docker.io/ibn40/oisp-iot-agent:v2.4.0
         imagePullPolicy: Always
       - name: fusiongatewayapp
         image: docker.io/ibn40/fusiongatewayapp-new:latest
