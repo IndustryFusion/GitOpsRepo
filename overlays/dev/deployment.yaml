@@ -33,9 +33,9 @@ spec:
                 name: opc-mcc-plasma-1-global-devices-secret
         volumeMounts:
           - name: oisp-devices-config-volume
-            mountPath: /app/config
+            mountPath: /volume/config
           - name: oisp-devices-data-volume
-            mountPath: /app/data
+            mountPath: /volume/data
         image: docker.io/ibn40/oisp-iot-agent:v2.4.0
         imagePullPolicy: Always
       # - name: fusiongatewayapp
