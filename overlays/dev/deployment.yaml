@@ -67,7 +67,7 @@ spec:
           limits:
             memory: "128Mi"
       - name: fusionplcdataservice
-        image: docker.io/ibn40/fusionplcdataservice:latest
+        image: docker.io/ibn40/fusionplcdataservice:modbusv9.0
         volumeMounts:
           - name: dataservice-config
             mountPath: /app/resources
