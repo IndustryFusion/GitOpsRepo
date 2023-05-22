@@ -36,6 +36,8 @@ spec:
             mountPath: /volume/config
           - name: oisp-devices-data-volume
             mountPath: /volume/data
+        securityContext:
+          privileged: true
         image: docker.io/ibn40/oisp-iot-agent:v2.4.0
         imagePullPolicy: Always
       # - name: fusiongatewayapp
