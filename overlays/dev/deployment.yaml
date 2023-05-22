@@ -38,39 +38,39 @@ spec:
             mountPath: /app/data
         image: docker.io/ibn40/oisp-iot-agent:v2.4.0
         imagePullPolicy: Always
-      - name: fusiongatewayapp
-        image: docker.io/ibn40/fusiongatewayapp-new:latest
-        resources:
-          limits:
-        volumeMounts:
-          - name: gateway-config
-            mountPath: /app/resources/application.yaml
-            subPath: application.yaml
-        imagePullPolicy: Always
-      - name: fusionscriptservice
-        image: docker.io/ibn40/fusionscriptservice-new:latest
-        env:
-          - name: FUSION_PORT
-            value: "8085"
-          - name: FUSION_DOWNSTREAM_URL
-            value: "http://localhost:8086/"
-          - name: FUSION_DOWNSTREAM_HOST
-            value: "localhost"
-        imagePullPolicy: Always
-        volumeMounts:
-          - name: scriptservice-script
-            mountPath: /deno-dir/transform.ts
-            subPath: transform.ts
-        resources:
-          requests:
-            memory: "32Mi"
-          limits:
-            memory: "128Mi"
-      - name: fusionplcdataservice
-        image: docker.io/ibn40/fusionplcdataservice:modbusv9.0
-        volumeMounts:
-          - name: dataservice-config
-            mountPath: /app/resources
+      # - name: fusiongatewayapp
+      #   image: docker.io/ibn40/fusiongatewayapp-new:latest
+      #   resources:
+      #     limits:
+      #   volumeMounts:
+      #     - name: gateway-config
+      #       mountPath: /app/resources/application.yaml
+      #       subPath: application.yaml
+      #   imagePullPolicy: Always
+      # - name: fusionscriptservice
+      #   image: docker.io/ibn40/fusionscriptservice-new:latest
+      #   env:
+      #     - name: FUSION_PORT
+      #       value: "8085"
+      #     - name: FUSION_DOWNSTREAM_URL
+      #       value: "http://localhost:8086/"
+      #     - name: FUSION_DOWNSTREAM_HOST
+      #       value: "localhost"
+      #   imagePullPolicy: Always
+      #   volumeMounts:
+      #     - name: scriptservice-script
+      #       mountPath: /deno-dir/transform.ts
+      #       subPath: transform.ts
+      #   resources:
+      #     requests:
+      #       memory: "32Mi"
+      #     limits:
+      #       memory: "128Mi"
+      # - name: fusionplcdataservice
+      #   image: docker.io/ibn40/fusionplcdataservice:modbusv9.0
+      #   volumeMounts:
+      #     - name: dataservice-config
+      #       mountPath: /app/resources
       volumes:
         - name: oisp-devices-config-volume
           configMap:
@@ -78,24 +78,24 @@ spec:
             items:
             - key: config.json
               path: config.json
-        - name: gateway-config
-          configMap:
-            name: opc-mcc-plasma-1-app-config
-            items:
-            - key: application.yaml
-              path: application.yaml
-        - name: dataservice-config
-          configMap:
-            name: opc-mcc-plasma-1-app-config
-            items:
-            - key: fusionplcdataservice_application.yaml
-              path: application.yaml
-        - name: scriptservice-script
-          configMap:
-            name: opc-mcc-plasma-1-app-config
-            items:
-            - key: transform.ts
-              path: transform.ts
+        # - name: gateway-config
+        #   configMap:
+        #     name: opc-mcc-plasma-1-app-config
+        #     items:
+        #     - key: application.yaml
+        #       path: application.yaml
+        # - name: dataservice-config
+        #   configMap:
+        #     name: opc-mcc-plasma-1-app-config
+        #     items:
+        #     - key: fusionplcdataservice_application.yaml
+        #       path: application.yaml
+        # - name: scriptservice-script
+        #   configMap:
+        #     name: opc-mcc-plasma-1-app-config
+        #     items:
+        #     - key: transform.ts
+        #       path: transform.ts
         - name: oisp-devices-data-volume
           persistentVolumeClaim:
             claimName: opc-mcc-plasma-1-pvc-device-data
