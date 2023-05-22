@@ -67,7 +67,7 @@ spec:
           limits:
             memory: "128Mi"
       - name: fusionplcdataservice
-        image: docker.io/ibn40/fusionplcdataservice-new:plc4xtest
+        image: docker.io/ibn40/fusionplcdataservice:latest
         volumeMounts:
           - name: dataservice-config
             mountPath: /app/resources
