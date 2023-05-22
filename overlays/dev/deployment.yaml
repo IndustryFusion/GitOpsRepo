@@ -23,25 +23,25 @@ spec:
         args: ["100000000"]
       - name: oisp-iot-agent
         env:
-          # - name: OISP_DEVICE_ID
-          #   value: "opcmcc"
-          # - name: OISP_DEVICE_NAME
-          #   value: "opc-mcc-plasma-1"
+          - name: OISP_DEVICE_ID
+            value: "opcmcc"
+          - name: OISP_DEVICE_NAME
+            value: "opc-mcc-plasma-1"
           # - name: OISP_FORCE_REACTIVATION
           #   value: "true"
-          - name: USERNAME
-            value: "factory_admin@industry-fusion.com"
-          - name: PASSWORD
-            value: "@zN8k51@ORJg"
-          - name: ACCOUNTID
-            value: "c4712c14-eeee-4881-856e-c5fb51532c94"
-          - name: DEVICEID
-            value: "opcmcc"
-          # - name: OISP_DEVICE_ACTIVATION_CODE
-          #   valueFrom:
-          #     secretKeyRef:
-          #       key: activation-code
-          #       name: opc-mcc-plasma-1-global-devices-secret
+          # - name: USERNAME
+          #   value: "factory_admin@industry-fusion.com"
+          # - name: PASSWORD
+          #   value: "@zN8k51@ORJg"
+          # - name: ACCOUNTID
+          #   value: "c4712c14-eeee-4881-856e-c5fb51532c94"
+          # - name: DEVICEID
+          #   value: "opcmcc"
+          - name: OISP_DEVICE_ACTIVATION_CODE
+            valueFrom:
+              secretKeyRef:
+                key: activation-code
+                name: opc-mcc-plasma-1-global-devices-secret
         volumeMounts:
           - name: oisp-devices-config-volume
             mountPath: /volume/config
