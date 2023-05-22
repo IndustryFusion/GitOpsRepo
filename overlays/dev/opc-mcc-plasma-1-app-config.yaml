@@ -15,9 +15,9 @@ data:
     # under the License.
 
     server:
-      error:
-        include-stacktrace: never
-      port: 8086
+    error:
+      include-stacktrace: never
+    port: 8086
     spring:
       task:
         scheduling:
@@ -25,33 +25,22 @@ data:
             size: 25
 
     fusiondataservice:
-      name: Airtracker
+      name: app
       connectionString: localhost:41234
       dataServiceType: PUSH
       jobSpecs:
         betriebsdaten:
           fields:
+            - source: "Actual_Speed"
+              target: "Actual_Speed"
             - source: "status"
               target: "status"
-            - source: "maintenance_days"
-              target: "maintenance_days"
-            - source: "dust"
-              target: "dust"
-            - source: "temperature"
-              target: "temperature"
-            - source: "noise"
-              target: "noise"
-            - source: "humidity"
-              target: "humidity"
+
 
     fusiongateway:
       componentMap:
+        Actual_Speed: "float.v1.0"
         status: "integer.v1.0"
-        maintenance_days: "integer.v1.0"
-        dust: "float.v1.0"
-        temperature: "float.v1.0"
-        noise: "float.v1.0"
-        humidity: "float.v1.0"
   fusionplcdataservice_application.yaml: |
     # Licensed under the Apache License, Version 2.0 (the "License");
     # you may not use this file except in compliance with the License.

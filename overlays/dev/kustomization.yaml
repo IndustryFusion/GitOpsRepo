@@ -1,6 +1,6 @@
 resources:
 - deployment.yaml
-- mqtt-airtracker-5-global-devices-config.yaml
-- mqtt-airtracker-5-global-devices-secret.yaml
-- mqtt-airtracker-5-pvc-device-data.yml
-- mqtt-airtracker-5-app-config.yaml
+- opc-mcc-plasma-1-global-devices-config.yaml
+- opc-mcc-plasma-1-global-devices-secret.yaml
+- opc-mcc-plasma-1-pvc-device-data.yml
+- opc-mcc-plasma-1-app-config.yaml
