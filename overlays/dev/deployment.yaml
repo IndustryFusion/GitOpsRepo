@@ -30,6 +30,10 @@ spec:
             value: "opc-mcc-plasma-1"
           - name: OISP_FORCE_REACTIVATION
             value: "true"
+          - name: USERNAME
+            value: "factory_admin@industry-fusion.com"
+          - name: PASSWORD
+            value: "@zN8k51@ORJg"  
           - name: OISP_DEVICE_ACTIVATION_CODE
             valueFrom:
               secretKeyRef:
