@@ -33,7 +33,11 @@ spec:
           - name: USERNAME
             value: "factory_admin@industry-fusion.com"
           - name: PASSWORD
-            value: "@zN8k51@ORJg"  
+            value: "@zN8k51@ORJg"
+          - name: ACCOUNTID
+            value: "c4712c14-eeee-4881-856e-c5fb51532c94"
+          - name: DEVICEID
+            value: "opcmcc"
           - name: OISP_DEVICE_ACTIVATION_CODE
             valueFrom:
               secretKeyRef:
