@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  mqtt-airtracker-5
-  namespace: oisp-devices-dev2
+  name:  opc-mcc-plasma-1
+  namespace: oisp-devices
   labels:
-    app: mqtt-airtracker-5-oisp-testsensor-sensor
+    app: opc-mcc-plasma-1-oisp-sensor
 spec:
   selector:
     matchLabels:
-      app: mqtt-airtracker-5-oisp-testsensor-sensor
+      app: opc-mcc-plasma-1-oisp-sensor
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: mqtt-airtracker-5-oisp-testsensor-sensor
+        app: opc-mcc-plasma-1-oisp-sensor
     spec:
       containers:
       - name: busybox
@@ -25,12 +25,12 @@ spec:
       - name: oisp-iot-agent
         env:
           - name: OISP_DEVICE_ID
-            value: "mqtt-airtracker-5"
+            value: "opc-mcc-plasma-1"
           - name: OISP_DEVICE_ACTIVATION_CODE
             valueFrom:
               secretKeyRef:
                 key: activation-code
-                name: mqtt-airtracker-5-global-devices-secret
+                name: opc-mcc-plasma-1-global-devices-secret
         volumeMounts:
           - name: oisp-devices-config-volume
             mountPath: /volume/config
@@ -66,42 +66,40 @@ spec:
             memory: "32Mi"
           limits:
             memory: "128Mi"
-      - name: fusionmqttdataservice
-        image: docker.io/ibn40/fusionmqttdataservice-new:latest
-        imagePullPolicy: Always
+      - name: fusionplcdataservice
+        image: docker.io/ibn40/fusionplcdataservice:v2.0
         volumeMounts:
-          - name: mqttservice-config
-            mountPath: /app/resources/application.yaml
-            subPath: application.yaml
+          - name: dataservice-config
+            mountPath: /app/resources
       volumes:
         - name: oisp-devices-config-volume
           configMap:
-            name: mqtt-airtracker-5-global-devices-config
+            name: opc-mcc-plasma-1-global-devices-config
             items:
             - key: config.json
               path: config.json
         - name: gateway-config
           configMap:
-            name: mqtt-airtracker-5-app-config
+            name: opc-mcc-plasma-1-app-config
             items:
             - key: application.yaml
               path: application.yaml
-        - name: mqttservice-config
+        - name: dataservice-config
           configMap:
-            name: mqtt-airtracker-5-app-config
+            name: opc-mcc-plasma-1-app-config
             items:
-            - key: fusionmqttdataservice_application.yaml
+            - key: fusionplcdataservice_application.yaml
               path: application.yaml
         - name: scriptservice-script
           configMap:
-            name: mqtt-airtracker-5-app-config
+            name: opc-mcc-plasma-1-app-config
             items:
             - key: transform.ts
               path: transform.ts
         - name: oisp-devices-data-volume
           persistentVolumeClaim:
-            claimName: mqtt-airtracker-5-pvc-device-data
+            claimName: opc-mcc-plasma-1-pvc-device-data
       imagePullSecrets:
       - name: regcred
       nodeSelector:
-        kubernetes.io/hostname: tkgw00
+        kubernetes.io/hostname: m-b600c79a-8e24-4748-a0c2-252015b83004

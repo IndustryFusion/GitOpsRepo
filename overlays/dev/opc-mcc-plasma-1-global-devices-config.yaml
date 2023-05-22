@@ -58,5 +58,5 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: mqtt-airtracker-5-global-devices-config
-  namespace: oisp-devices-dev2
+  name: opc-mcc-plasma-1-global-devices-config
+  namespace: oisp-devices
