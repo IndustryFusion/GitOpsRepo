@@ -17,7 +17,7 @@ data:
                     "path": "/tmp/",
                     "max_size": 134217728
             },
-            "default_connector": "rest+ws",
+            "default_connector": "rest",
             "connector": {
                     "rest": {
                             "host": "development.industry-fusion.com",
