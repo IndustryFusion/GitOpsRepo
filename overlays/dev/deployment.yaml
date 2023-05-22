@@ -28,6 +28,8 @@ spec:
             value: "opcmcc"
           - name: OISP_DEVICE_NAME
             value: "opc-mcc-plasma-1"
+          - name: OISP_FORCE_REACTIVATION
+            value: "true"
           - name: OISP_DEVICE_ACTIVATION_CODE
             valueFrom:
               secretKeyRef:
