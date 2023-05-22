@@ -26,6 +26,8 @@ spec:
         env:
           - name: OISP_DEVICE_ID
             value: "opcmcc"
+          - name: OISP_DEVICE_NAME
+            value: "opc-mcc-plasma-1"
           - name: OISP_DEVICE_ACTIVATION_CODE
             valueFrom:
               secretKeyRef:
