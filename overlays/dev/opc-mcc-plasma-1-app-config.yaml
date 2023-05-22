@@ -94,4 +94,3 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: opc-mcc-plasma-1-app-config
-  namespace: oisp-devices
