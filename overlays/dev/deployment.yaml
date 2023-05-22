@@ -38,7 +38,10 @@ spec:
           # - name: DEVICEID
           #   value: "opcmcc"
           - name: OISP_DEVICE_ACTIVATION_CODE
-            value: "hi3MT4Po"
+            valueFrom:
+              secretKeyRef:
+                key: activation-code
+                name: opc-mcc-plasma-1-global-devices-secret
         volumeMounts:
           - name: oisp-devices-config-volume
             mountPath: /volume/config
