@@ -37,9 +37,6 @@ spec:
           - name: oisp-devices-data-volume
             mountPath: /volume/data
         securityContext:
-         allowPrivilegeEscalation: true
-         readOnlyRootFilesystem: false
-         runAsNonRoot: true
          privileged: true
          capabilities:
           drop:
