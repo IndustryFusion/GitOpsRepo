@@ -38,8 +38,6 @@ data:
                             "secure": true,
                             "strictSSL": true,
                             "retries": 5,
-                            "sparkplugB": true,
-                            "version": "spBv1.0"
                     }
             }
     }
