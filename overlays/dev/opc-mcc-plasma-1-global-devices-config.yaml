@@ -36,7 +36,7 @@ data:
                             "qos": 1,
                             "retain": false,
                             "secure": true,
-                            "strictSSL": true,
+                            "strictSSL": false,
                             "retries": 5,
                             "sparkplugB": true,
                             "version": "spBv1.0"
