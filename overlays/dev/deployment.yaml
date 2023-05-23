@@ -50,7 +50,7 @@ spec:
          capabilities:
           drop:
            - all
-        image: docker.io/ibn40/oisp-iot-agent:v2.4.0
+        image: docker.io/ibn40/oisp-iot-agent:v2.4.1
         imagePullPolicy: Always
         ports:
          - containerPort: 41234
