@@ -30,7 +30,7 @@ data:
                                 }
                         },
                         "mqtt": {
-                                "host": "development.industry-fusion.com"",
+                                "host": "development.industry-fusion.com",
                                 "port": 8883,
                                 "websockets": false,
                                 "qos": 1,
