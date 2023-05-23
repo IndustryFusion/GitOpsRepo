@@ -20,7 +20,7 @@ data:
                 "connector": {
                         "rest": {
                                 "host": "development.industry-fusion.com",
-                                "port": 4001,
+                                "port": 443,
                                 "protocol": "https",
                                 "strictSSL": false,
                                 "timeout": 30000,
