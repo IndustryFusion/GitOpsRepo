@@ -37,7 +37,7 @@ data:
                             "retain": false,
                             "secure": true,
                             "strictSSL": true,
-                            "retries": 5,
+                            "retries": 5
                     }
             }
     }
