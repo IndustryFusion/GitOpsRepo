@@ -22,9 +22,9 @@ spec:
       - name: oisp-iot-agent
         env:
           - name: OISP_DEVICE_ID
-            value: "opcmcc"
+            value: "opcmccplasma"
           - name: OISP_DEVICE_NAME
-            value: "plasma-cutter"
+            value: "MCC Plasma Cutter"
           # - name: OISP_FORCE_REACTIVATION
           #   value: "true"
           # - name: USERNAME
