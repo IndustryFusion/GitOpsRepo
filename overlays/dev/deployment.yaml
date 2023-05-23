@@ -16,11 +16,9 @@ spec:
         app: opc-mcc-plasma-1-oisp-sensor
     spec:
       containers:
-      - name: busybox
-        image: docker.io/busybox:latest
+      - name: fusionopcuadataservice
+        image: docker.io/ibn40/fusionopcuadataservice:latest
         imagePullPolicy: Always
-        command: ["sleep"]
-        args: ["100000000"]
       - name: oisp-iot-agent
         env:
           - name: OISP_DEVICE_ID
