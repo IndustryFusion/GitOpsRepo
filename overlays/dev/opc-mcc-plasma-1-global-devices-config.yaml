@@ -21,8 +21,8 @@ data:
                         "rest": {
                                 "host": "development.industry-fusion.com",
                                 "port": 4001,
-                                "protocol": "http",
-                                "strictSSL": false,
+                                "protocol": "https",
+                                "strictSSL": true,
                                 "timeout": 30000,
                                 "proxy": {
                                         "host": false,
@@ -37,7 +37,7 @@ data:
                                 "retain": false,
                                 "secure": true,
                                 "retries": 5,
-                                "strictSSL": false,
+                                "strictSSL": true,
                                 "sparkplugB": false,
                                 "version": "spBv1.0"        
                         }
