@@ -24,7 +24,7 @@ spec:
           - name: OISP_DEVICE_ID
             value: "opcmccplasma"
           - name: OISP_DEVICE_NAME
-            value: "MCC Plasma Cutter"
+            value: "MCC_Plasma_Cutter"
           # - name: OISP_FORCE_REACTIVATION
           #   value: "true"
           # - name: USERNAME
