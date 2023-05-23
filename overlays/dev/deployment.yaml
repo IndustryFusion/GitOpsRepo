@@ -54,6 +54,11 @@ spec:
            - all
         image: docker.io/ibn40/oisp-iot-agent:v2.4.0
         imagePullPolicy: Always
+        ports:
+         - containerPort: 41234
+           hostPort: 41234
+         - containerPort: 7070
+           hostPort: 7070
       # - name: fusiongatewayapp
       #   image: docker.io/ibn40/fusiongatewayapp-new:latest
       #   resources:
