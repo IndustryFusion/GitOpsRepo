@@ -132,4 +132,4 @@ spec:
       imagePullSecrets:
       - name: regcred
       nodeSelector:
-        kubernetes.io/hostname: m-b600c79a-8e24-4748-a0c2-252015b83004
+        kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
