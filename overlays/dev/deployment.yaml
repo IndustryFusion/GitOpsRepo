@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  opc-mcc-plasma-1
+  name:  opc-mc-plasma-1
   labels:
     app: opc-mcc-plasma-1-oisp-sensor
 spec:
@@ -33,9 +33,9 @@ spec:
       - name: oisp-iot-agent
         env:
           - name: OISP_DEVICE_ID
-            value: "opcmccplasma"
+            value: "opcmcplasma"
           - name: OISP_DEVICE_NAME
-            value: "MCC_Plasma_Cutter"
+            value: "Mastercut_Plasma_Cutter"
           # - name: OISP_FORCE_REACTIVATION
           #   value: "true"
           # - name: USERNAME
