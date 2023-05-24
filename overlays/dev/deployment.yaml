@@ -17,6 +17,17 @@ spec:
     spec:
       containers:
       - name: fusionopcuadataservice
+        env:
+          - name: OPC_URL
+            value: "opc.tcp://192.168.49.198"
+          - name: OPC_PORT
+            value: "62548"
+          - name: OISP_URL
+            value: "127.0.0.1"
+          - name: OISP_PORT
+            value: "7070"
+          - name: TARGET_CONFIGS
+            value: "ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd|Property/https://industry-fusion.com/types/v0.9/speed|property.v1.0"
         image: docker.io/ibn40/fusionopcuadataservice:latest
         imagePullPolicy: Always
       - name: oisp-iot-agent
