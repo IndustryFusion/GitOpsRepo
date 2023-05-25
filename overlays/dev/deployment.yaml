@@ -27,7 +27,7 @@ spec:
           - name: OISP_PORT
             value: "7070"
           - name: TARGET_CONFIGS
-            value: "ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd|speed|speed.v1.0"
+            value: "ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd|speed|speed.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/AutoShutDown?msnc.IdleTime|idle|idle.v1.0"
         image: docker.io/ibn40/fusionopcuadataservice:latest
         imagePullPolicy: Always
       - name: oisp-iot-agent
