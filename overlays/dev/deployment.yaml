@@ -36,6 +36,8 @@ spec:
             value: "opcmccplasma"
           - name: OISP_DEVICE_NAME
             value: "Mastercut_Compact_Plasma_Cutter"
+          - name: OISP_GATEWAY_ID
+            value: "opcmccplasma"
           # - name: OISP_FORCE_REACTIVATION
           #   value: "true"
           # - name: USERNAME
