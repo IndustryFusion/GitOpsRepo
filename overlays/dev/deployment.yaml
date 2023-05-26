@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  opc-mc-plasma-1
+  name: opc-mc-plasma-1
   labels:
     app: opc-mcc-plasma-1-oisp-sensor
 spec:
@@ -16,60 +16,60 @@ spec:
         app: opc-mcc-plasma-1-oisp-sensor
     spec:
       containers:
-      - name: fusionopcuadataservice
-        env:
-          - name: OPC_URL
-            value: "opc.tcp://192.168.49.198"
-          - name: OPC_PORT
-            value: "62548"
-          - name: OISP_URL
-            value: "127.0.0.1"
-          - name: OISP_PORT
-            value: "7070"
-          - name: TARGET_CONFIGS
-            value: "ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd|Property/https://industry-fusion.com/types/v0.9/speed|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/AutoShutDown?msnc.IdleTime|Property/https://industry-fusion.com/types/v0.9/idle|idle.v1.0"
-        image: docker.io/ibn40/fusionopcuadataservice:latest
-        imagePullPolicy: Always
-      - name: oisp-iot-agent
-        env:
-          - name: OISP_DEVICE_ID
-            value: "opcmccplasma"
-          - name: OISP_DEVICE_NAME
-            value: "Mastercut_Compact_Plasma_Cutter"
-          - name: OISP_GATEWAY_ID
-            value: "opcmccplasma"
-          # - name: OISP_FORCE_REACTIVATION
-          #   value: "true"
-          # - name: USERNAME
-          #   value: "factory_admin@industry-fusion.com"
-          # - name: PASSWORD
-          #   value: "@zN8k51@ORJg"
-          # - name: ACCOUNTID
-          #   value: "c4712c14-eeee-4881-856e-c5fb51532c94"
-          # - name: DEVICEID
-          #   value: "opcmcc"
-          - name: OISP_DEVICE_ACTIVATION_CODE
-            valueFrom:
-              secretKeyRef:
-                key: activation-code
-                name: opc-mcc-plasma-1-global-devices-secret
-        volumeMounts:
-          - name: oisp-devices-config-volume
-            mountPath: /volume/config
-          # - name: oisp-devices-data-volume
-          #   mountPath: /volume/data
-        securityContext:
-         privileged: true
-         capabilities:
-          drop:
-           - all
-        image: docker.io/ibn40/oisp-iot-agent:v2.4.2
-        imagePullPolicy: Always
-        ports:
-         - containerPort: 41234
-           hostPort: 41234
-         - containerPort: 7070
-           hostPort: 7070
+        - name: fusionopcuadataservice
+          env:
+            - name: OPC_URL
+              value: "opc.tcp://192.168.49.198"
+            - name: OPC_PORT
+              value: "62548"
+            - name: OISP_URL
+              value: "127.0.0.1"
+            - name: OISP_PORT
+              value: "7070"
+            - name: TARGET_CONFIGS
+              value: "ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd|Property/https://industry-fusion.com/types/v0.9/speed|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/AutoShutDown?msnc.IdleTime|Property/https://industry-fusion.com/types/v0.9/idle|idle.v1.0"
+          image: docker.io/ibn40/fusionopcuadataservice:latest
+          imagePullPolicy: Always
+        - name: oisp-iot-agent
+          env:
+            - name: OISP_DEVICE_ID
+              value: "https://industry-fusion.com/types/v0.9/mccplasma"
+            - name: OISP_DEVICE_NAME
+              value: "Mastercut_Compact_Plasma_Cutter"
+            - name: OISP_GATEWAY_ID
+              value: "https://industry-fusion.com/types/v0.9/mccplasma"
+            # - name: OISP_FORCE_REACTIVATION
+            #   value: "true"
+            # - name: USERNAME
+            #   value: "factory_admin@industry-fusion.com"
+            # - name: PASSWORD
+            #   value: "@zN8k51@ORJg"
+            # - name: ACCOUNTID
+            #   value: "c4712c14-eeee-4881-856e-c5fb51532c94"
+            # - name: DEVICEID
+            #   value: "opcmcc"
+            - name: OISP_DEVICE_ACTIVATION_CODE
+              valueFrom:
+                secretKeyRef:
+                  key: activation-code
+                  name: opc-mcc-plasma-1-global-devices-secret
+          volumeMounts:
+            - name: oisp-devices-config-volume
+              mountPath: /volume/config
+            # - name: oisp-devices-data-volume
+            #   mountPath: /volume/data
+          securityContext:
+            privileged: true
+            capabilities:
+              drop:
+                - all
+          image: docker.io/ibn40/oisp-iot-agent:v2.4.2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 41234
+              hostPort: 41234
+            - containerPort: 7070
+              hostPort: 7070
       # - name: fusiongatewayapp
       #   image: docker.io/ibn40/fusiongatewayapp-new:latest
       #   resources:
@@ -108,8 +108,8 @@ spec:
           configMap:
             name: opc-mcc-plasma-1-global-devices-config
             items:
-            - key: config.json
-              path: config.json
+              - key: config.json
+                path: config.json
         # - name: gateway-config
         #   configMap:
         #     name: opc-mcc-plasma-1-app-config
@@ -132,6 +132,6 @@ spec:
         #   persistentVolumeClaim:
         #     claimName: opc-mcc-plasma-1-pvc-device-data
       imagePullSecrets:
-      - name: regcred
+        - name: regcred
       nodeSelector:
         kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
