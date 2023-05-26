@@ -33,11 +33,11 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "https://industry-fusion.com/types/v0.9/mccplasma"
+              value: "opcmccplasma"
             - name: OISP_DEVICE_NAME
               value: "Mastercut_Compact_Plasma_Cutter"
             - name: OISP_GATEWAY_ID
-              value: "https://industry-fusion.com/types/v0.9/mccplasma"
+              value: "opcmccplasma"
             # - name: OISP_FORCE_REACTIVATION
             #   value: "true"
             # - name: USERNAME
