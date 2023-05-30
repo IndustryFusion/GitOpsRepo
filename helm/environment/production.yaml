@@ -1,0 +1,8 @@
+ingressType: nginx
+
+icsdbExternalHostname: development.industry-fusion.com
+icsdbExternalPath: /ics/ # must end with /
+
+certmanager:
+  secret: prod-cert-tls
+  issuer: letsencrypt-prod

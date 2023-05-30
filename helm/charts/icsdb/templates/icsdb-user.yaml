@@ -1,0 +1,13 @@
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace "icsdb-user") -}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: icsdb-user
+type: Opaque
+stringData:
+  username: {{ .Values.icsdb.username }}
+  {{- if $secret }}
+  password: {{ $secret.data.password | toString | b64dec }}
+  {{- else }}
+  password: {{ .Values.icsdb.password | toString }}
+  {{- end }}

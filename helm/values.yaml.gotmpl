@@ -1,0 +1,21 @@
+mainVersion: {{ .StateValues.mainVersion }}
+mainRepo: {{ .StateValues.mainRepo }}
+namespace: {{ .StateValues.namespace }}
+pullSecretCredentials: {{ .StateValues.pullSecretCredentials }}
+
+ingressType: {{ .StateValues.ingressType }}
+
+mongodb:
+  username: mongodb-user
+  password: {{ .StateValues.mongodbPassword }}
+
+certmanager:
+  secret: {{ .StateValues.certmanager.secret }}
+  issuer: {{ .StateValues.certmanager.issuer }}
+
+icsdb:
+  externalHostname: {{ .StateValues.icsdbExternalHostname }}
+  externalPath: {{ .StateValues.icsdbExternalPath }}
+  port: 8080
+  username: icsdb-user
+  password: {{ .StateValues.icsdbPassword }}

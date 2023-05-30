@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: icsdb-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.certmanager.issuer }}
+    {{- if (eq .Values.ingressType "traefik") }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-remove-path-icsdb@kubernetescrd
+    {{- else }}
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    {{- end }}
+spec:
+  rules:
+  - host: {{ .Values.icsdb.externalHostname }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: icsdb-service
+            port:
+              number: {{ .Values.icsdb.port }}
+        {{- if (eq .Values.ingressType "nginx") }}
+        path: {{ .Values.icsdb.externalPath }}(.*)
+        {{- else }}
+        path: {{ .Values.icsdb.externalPath }}
+        {{- end }}
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - {{ .Values.icsdb.externalHostname }}
+    secretName: {{ .Values.certmanager.secret }}-icsdb
+---
+{{- if (eq .Values.ingressType "traefik") }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: remove-path-icsdb
+spec:
+  replacePathRegex:
+    regex: ^{{ .Values.icsdb.externalPath }}(.*)
+    replacement: /$1
+{{- end }}
