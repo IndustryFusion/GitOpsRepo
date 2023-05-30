@@ -1,0 +1,4 @@
+mainVersion: v0.1.0-alpha.1
+mainRepo: ibn40
+namespace: iff50
+pullSecretCredentials: regcred
