@@ -69,13 +69,14 @@ jobs:
     runs-on: private
     container:
       image: ibn40/deployer:latest
+      options: --root
       volumes:
         - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
     steps:
       - name: Deploy
         run: |
           export NAMESPACE="${{ github.event.inputs.NAMESPACE }}"
-          cd GitOpsRepo/helm
+          cd /home/deployer/GitOpsRepo/helm
           bash install_operators.sh
           LABEL_ARG=""
           if [[ ! -z "${{ github.events.inputs.APPS }}"]]
