@@ -74,5 +74,16 @@ jobs:
     steps:
       - name: Deploy
         run: |
-          cd GitOpsRepo
-          echo "Workflow triggered with: ${{ github.event.inputs.APPS }} -- ${{ github.event.inputs.NAMESPACE }} -- ${{ github.event.inputs.DOCKER_REGISTRY }} -- ${{ github.event.inputs.DOCKER_TAG }} -- ${{ github.events.inputs.PULL_SECRET_CREDENTIALS }}"
+          export NAMESPACE="${{ github.event.inputs.NAMESPACE }}"
+          cd GitOpsRepo/helm
+          bash install_operators.sh
+          LABEL_ARG=""
+          if [[ ! -z "${{ github.events.inputs.APPS }}"]]
+          then
+            LABEL_ARG="-l 'app in (${{ github.events.inputs.APPS }})'"
+          fi
+          helmfile -e production ${LABEL_ARG} \
+            --set mainRepo=${{ github.event.inputs.DOCKER_REGISTRY }} \
+            --set mainVersion=${{ github.event.inputs.DOCKER_TAG }} \
+            --set namespace=$${{ github.event.inputs.NAMESPACE }} \
+            --set pullSecretCredentials=$${{ github.event.inputs.PULL_SECRET_CREDENTIALS }}
