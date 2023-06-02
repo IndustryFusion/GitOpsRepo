@@ -83,7 +83,7 @@ jobs:
           then
             LABEL_ARG="-l 'app in (${{ github.events.inputs.APPS }})'"
           fi
-          helmfile -e production ${LABEL_ARG} \
+          helmfile -e production ${LABEL_ARG} apply \
             --set mainRepo=${{ github.event.inputs.DOCKER_REGISTRY }} \
             --set mainVersion=${{ github.event.inputs.DOCKER_TAG }} \
             --set namespace=$${{ github.event.inputs.NAMESPACE }} \
