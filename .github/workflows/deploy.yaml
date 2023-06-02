@@ -28,6 +28,7 @@ on:
         required: false
         default: 'regcred'
         type: string
+      
   workflow_call:
     inputs:
       APPS:
@@ -65,7 +66,7 @@ jobs:
           repository: IndustryFusion/GitOpsRepo.git
           ref: main
           path: GitOpsRepo
-          token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+          token: ${{ github.token }}
   deploy-action:
     needs: clone-repo
     runs-on: private
