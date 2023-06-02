@@ -57,15 +57,20 @@ on:
         type: string
 
 jobs:
-  deploy-action:
+  clone-repo:
     runs-on: private
-    container:
-      image: ibn40/deployer:latest
     steps:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
           path: GitOpsRepo
+  deploy-action:
+    runs-on: private
+    container:
+      image: ibn40/deployer:latest
+      volumes:
+        - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
+    steps:
       - name: Deploy
         run: |
           cd GitOpsRepo
