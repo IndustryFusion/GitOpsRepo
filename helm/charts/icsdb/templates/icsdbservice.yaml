@@ -37,7 +37,7 @@ spec:
         image: {{ .Values.mainRepo }}/icsdbservice:{{ .Values.mainVersion }}
         imagePullPolicy: IfNotPresent
         ports:
-         - containerPort: {{ .Values.icsdb.port }}
+         - containerPort: 8080
            hostPort: {{ .Values.icsdb.port }}
         env:
         {{- if $mongodbsecret }}
