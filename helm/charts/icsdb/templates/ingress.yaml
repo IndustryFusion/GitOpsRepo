@@ -20,7 +20,7 @@ spec:
           service:
             name: icsdb-service
             port:
-              number: {{ .Values.icsdb.port }}
+              number: 8080
         {{- if (eq .Values.ingressType "nginx") }}
         path: {{ .Values.icsdb.externalPath }}(.*)
         {{- else }}
