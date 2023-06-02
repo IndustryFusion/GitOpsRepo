@@ -28,7 +28,6 @@ on:
         required: false
         default: 'regcred'
         type: string
-      
   workflow_call:
     inputs:
       APPS:
@@ -56,6 +55,10 @@ on:
         required: false
         default: 'regcred'
         type: string
+      PRIVATE_GITHUB_TOKEN:
+        description: 'Token to use to clone the repository'
+        required: true
+        type: string
 
 jobs:
   clone-repo:
@@ -66,7 +69,13 @@ jobs:
           repository: IndustryFusion/GitOpsRepo.git
           ref: main
           path: GitOpsRepo
-          token: ${{ github.token }}
+          token: ${{ github.event.inputs.PRIVATE_GITHUB_TOKEN }}
+          if: ${{ github.event.inputs.PRIVATE_GITHUB_TOKEN != '' }}
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          path: GitOpsRepo
+          if: ${{ github.event.inputs.PRIVATE_GITHUB_TOKEN == '' }}
   deploy-action:
     needs: clone-repo
     runs-on: private
