@@ -75,6 +75,7 @@ jobs:
     steps:
       - name: Deploy
         run: |
+          helm plugin install https://github.com/databus23/helm-diff
           export NAMESPACE="${{ github.event.inputs.NAMESPACE }}"
           cd /home/deployer/GitOpsRepo/helm
           bash install_operators.sh
