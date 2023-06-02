@@ -1,0 +1,75 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      APPS:
+        description: 'Comma-separated list of apps to deploy/upgrade, leave empty to deploy everything'
+        required: false
+        default: ''
+        type: string
+      NAMESPACE:
+        description: 'Namespace to deploy'
+        required: false
+        default: 'iff50'
+        type: string
+      DOCKER_REGISTRY:
+        description: 'Name of the docker registry'
+        required: false
+        default: ibn40
+        type: string
+      DOCKER_TAG:
+        description: 'Docker tag to use in the deployment'
+        required: false
+        default: 'latest'
+        type: string
+      PULL_SECRET_CREDENTIALS:
+        description: 'Name of the secret in cluster that contains docker registry credentials'
+        required: false
+        default: 'regcred'
+        type: string
+  workflow_call:
+    inputs:
+      APPS:
+        description: 'Comma-separated list of apps to deploy/upgrade, leave empty to deploy everything'
+        required: false
+        default: ''
+        type: string
+      NAMESPACE:
+        description: 'Namespace to deploy'
+        required: false
+        default: 'iff50'
+        type: string
+      DOCKER_REGISTRY: 
+        description: 'Name of the docker registry'
+        required: false
+        default: ibn40
+        type: string
+      DOCKER_TAG:
+        description: 'Docker tag to use in the deployment'
+        required: false
+        default: 'latest'
+        type: string
+      PULL_SECRET_CREDENTIALS:
+        description: 'Name of the secret in cluster that contains docker registry credentials'
+        required: false
+        default: 'regcred'
+        type: string
+
+jobs:
+  deploy-action:
+    runs-on: private
+    container:
+      image: ibn40/deployer:latest
+      credentials:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          path: GitOpsRepo
+      - name: Deploy
+        run: |
+          cd GitOpsRepo
+          echo "Workflow triggered with: ${{ github.event.inputs.APPS }} -- ${{ github.event.inputs.NAMESPACE }} -- ${{ github.event.inputs.DOCKER_REGISTRY }} -- ${{ github.event.inputs.DOCKER_TAG }} -- ${{ github.events.inputs.PULL_SECRET_CREDENTIALS }}"
