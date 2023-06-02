@@ -78,7 +78,7 @@ jobs:
           export NAMESPACE="${{ github.event.inputs.NAMESPACE }}"
           cd /home/deployer/GitOpsRepo/helm
           bash install_operators.sh
-          APPS=${{ github.event.inputs.APPS }}
+          APPS="${{ github.event.inputs.APPS }}"
           LABEL_ARG=""
           for app in ${APPS}; do
             echo "Adding app: ${app} to deployment"
