@@ -55,6 +55,10 @@ on:
         required: false
         default: 'regcred'
         type: string
+    secrets:
+      PRIVATE_GITHUB_TOKEN:
+        description: 'Token to use to clone the repositories'
+        required: true
 
 jobs:
   clone-repo:
