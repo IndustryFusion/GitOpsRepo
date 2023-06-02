@@ -9,7 +9,8 @@ metadata:
 spec:
   ports:
   - port: {{ .Values.icsdb.port }}
-    name: icsdb-service
+    targetPort: 8080
+    protocol: TCP
   selector:
     app: icsdb-service
 ---
