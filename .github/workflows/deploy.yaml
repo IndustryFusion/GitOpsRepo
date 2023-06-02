@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       APPS:
-        description: 'Comma-separated list of apps to deploy/upgrade, leave empty to deploy everything'
+        description: 'Space-separated list of apps to deploy/upgrade, leave empty to deploy everything'
         required: false
         default: ''
         type: string
@@ -31,7 +31,7 @@ on:
   workflow_call:
     inputs:
       APPS:
-        description: 'Comma-separated list of apps to deploy/upgrade, leave empty to deploy everything'
+        description: 'Space-separated list of apps to deploy/upgrade, leave empty to deploy everything'
         required: false
         default: ''
         type: string
@@ -79,10 +79,10 @@ jobs:
           cd /home/deployer/GitOpsRepo/helm
           bash install_operators.sh
           LABEL_ARG=""
-          if [[ ! -z "${{ github.events.inputs.APPS }}"]]
-          then
-            LABEL_ARG="-l 'app in (${{ github.events.inputs.APPS }})'"
-          fi
+          for app in ${{ github.events.inputs.APPS }}; do
+            LABEL_ARG="${LABEL_ARG} -l app=${app}"
+          done
+          echo "Deploying with selector: ${LABEL_ARG}"
           helmfile -e production ${LABEL_ARG} apply \
             --set mainRepo=${{ github.event.inputs.DOCKER_REGISTRY }} \
             --set mainVersion=${{ github.event.inputs.DOCKER_TAG }} \
