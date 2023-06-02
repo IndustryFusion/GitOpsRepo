@@ -81,10 +81,10 @@ jobs:
     steps:
       - name: Deploy
         run: |
-          export NAMESPACE="${{ github.event.inputs.NAMESPACE }}"
+          export NAMESPACE="${{ inputs.NAMESPACE }}"
           cd /home/deployer/GitOpsRepo/helm
           bash install_operators.sh
-          APPS="${{ github.event.inputs.APPS }}"
+          APPS="${{ inputs.APPS }}"
           LABEL_ARG=""
           for app in ${APPS}; do
             echo "Adding app: ${app} to deployment"
@@ -92,7 +92,7 @@ jobs:
           done
           echo "Deploying with selector: ${LABEL_ARG}"
           helmfile -e production ${LABEL_ARG} apply \
-            --set mainRepo=${{ github.event.inputs.DOCKER_REGISTRY }} \
-            --set mainVersion=${{ github.event.inputs.DOCKER_TAG }} \
-            --set namespace=${{ github.event.inputs.NAMESPACE }} \
-            --set pullSecretCredentials=${{ github.event.inputs.PULL_SECRET_CREDENTIALS }}
+            --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
+            --set mainVersion=${{ inputs.DOCKER_TAG }} \
+            --set namespace=${{ inputs.NAMESPACE }} \
+            --set pullSecretCredentials=${{ inputs.PULL_SECRET_CREDENTIALS }}
