@@ -33,11 +33,11 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:7"
+              value: "urn:ngsi-ld:asset:2:8"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:asset:2:7"
+              value: "urn:ngsi-ld:asset:2:8"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:7"
+              value: "urn:ngsi-ld:asset:2:8"
             # - name: OISP_FORCE_REACTIVATION
             #   value: "true"
             # - name: USERNAME
