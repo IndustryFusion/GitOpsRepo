@@ -7,4 +7,4 @@ resources:
 - opc-mcc-plasma-1-pv-device-data.yml
 - oisp-token-operator.yaml
 - oisp-token-operator-config.yaml
-- oisp-password-secret.yaml
+- oisp-token-operator-secret.yaml
