@@ -42,5 +42,7 @@ spec:
               - key: k3s.yaml
                 path: k3s.yaml
         name: k3s
+      imagePullSecrets:
+        - name: regcred
       nodeSelector:
           kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
