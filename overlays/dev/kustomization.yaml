@@ -8,3 +8,4 @@ resources:
 - oisp-token-operator.yaml
 - oisp-token-operator-config.yaml
 - oisp-token-operator-secret.yaml
+- oisp-token-operator-role-binding.yaml
