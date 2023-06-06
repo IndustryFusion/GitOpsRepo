@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: oisp-token-operator
+  name: oisp-token-operator
+spec:
+  selector:
+   matchLabels:
+    app: oisp-token-operator
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: oisp-token-operator
+    spec:
+      containers:
+      - name: micronode-operator
+        image: ibn40/oisp-token-operator:latest
+        imagePullPolicy: Always
+        env:
+          - name: KUBECONFIG
+            value: "/root/k3s.yaml"
+          - name: OISP_API_ROOT
+            value: https://development.industry-fusion.com/oisp/v1/api
+          - name: USERNAME
+            value: factory_admin@industry-fusion.com
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: oisp-password-secret
+        volumeMounts:
+          - name: k3s
+            mountPath: "/root"
+        securityContext:
+          privileged: true
+      volumes:
+      - configMap:
+            name: oisp-token-operator-config
+            items:
+              - key: k3s.yaml
+                path: k3s.yaml
+        name: k3s
+      nodeSelector:
+          kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
