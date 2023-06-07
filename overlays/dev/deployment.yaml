@@ -26,6 +26,17 @@ spec:
               value: "127.0.0.1"
             - name: OISP_PORT
               value: "7070"
+            - name: OISP_API_ROOT
+              value: https://development.industry-fusion.com/oisp/v1/api
+            - name: USERNAME
+              value: factory_admin@industry-fusion.com
+            - name: OISP_DEVICE_ID
+              value: "urn:ngsi-ld:asset:2:8"
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: oisp-password-secret
             - name: TARGET_CONFIGS
               value: "ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd|Property/http://www.industry-fusion.org/fields#speed|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov|Property/http://www.industry-fusion.org/fields#status|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX|Property/http://www.industry-fusion.org/fields#machinePositionX|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY|Property/http://www.industry-fusion.org/fields#machinePositionY|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ|Property/http://www.industry-fusion.org/fields#machinePositionZ|property.v1.0"
           image: docker.io/ibn40/fusionopcuadataservice:latest
