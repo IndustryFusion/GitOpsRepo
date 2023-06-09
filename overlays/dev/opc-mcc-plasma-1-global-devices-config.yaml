@@ -28,6 +28,18 @@ data:
                                         "host": false,
                                         "port": false
                                 }
+                        },
+                        "mqtt": {
+                                "host": "development.industry-fusion.com",
+                                "port": 8883,
+                                "websockets": false,
+                                "qos": 1,
+                                "retain": false,
+                                "secure": true,
+                                "retries": 5,
+                                "strictSSL": false,
+                                "sparkplugB": true,
+                                "version": "spBv1.0"        
                         }
                 }
         }
