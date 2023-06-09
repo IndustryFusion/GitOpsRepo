@@ -38,7 +38,7 @@ spec:
         image: {{ .Values.mainRepo }}/icsdbservice:{{ .Values.mainVersion }}
         imagePullPolicy: IfNotPresent
         ports:
-         - containerPort: 8080
+         - containerPort: {{ .Values.icsdb.port }}
            hostPort: {{ .Values.icsdb.port }}
         env:
         {{- if $mongodbsecret }}
@@ -56,6 +56,8 @@ spec:
         - name: PASSWORD
           value: {{ .Values.icsdb.password | toString }}
         {{- end }}
+        - name: ICSDB_PORT
+          value: {{ .Values.icsdb.port }}
         - name: RESSOURCE_FOLDER
           value: ../resources/templates
         resources:
