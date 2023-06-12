@@ -19,7 +19,7 @@ spec:
         - name: fusionmqttdataservice
           env:
             - name: BROKER_URL
-              value: "mqtt://192.168.49.26"
+              value: "192.168.49.26"
             - name: BROKER_PORT
               value: "1883"
             - name: OISP_URL
