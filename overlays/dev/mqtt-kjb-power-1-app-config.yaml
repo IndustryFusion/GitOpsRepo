@@ -93,4 +93,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-mcc-plasma-1-app-config
+  name: mqtt-kjb-power-1-app-config

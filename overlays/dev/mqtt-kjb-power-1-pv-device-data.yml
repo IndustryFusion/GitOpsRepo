@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: opc-mcc-plasma-1-pv-device-data
+  name: mqtt-kjb-power-1-pv-device-data
   labels:
     type: local
 spec:
   storageClassName: local-path
   capacity:
-    storage: 10Gi
+    storage: 5Gi
   accessModes:
     - ReadWriteOnce
   hostPath:

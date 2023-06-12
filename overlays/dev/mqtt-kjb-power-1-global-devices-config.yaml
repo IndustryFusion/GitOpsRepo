@@ -46,4 +46,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-mcc-plasma-1-global-devices-config
+  name: mqtt-kjb-power-1-global-devices-config

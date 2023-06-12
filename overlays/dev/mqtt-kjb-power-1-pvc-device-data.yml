@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: opc-mcc-plasma-1-pvc-device-data
+  name: mqtt-kjb-power-1-pvc-device-data
 spec:
   accessModes:
     - ReadWriteOnce
