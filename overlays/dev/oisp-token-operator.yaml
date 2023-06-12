@@ -15,7 +15,7 @@ spec:
         app: oisp-token-operator
     spec:
       containers:
-      - name: micronode-operator
+      - name: oisp-token-operator
         image: ibn40/oisp-token-operator:latest
         imagePullPolicy: Always
         env:
