@@ -37,10 +37,12 @@ spec:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-            - name: TARGET_CONFIGS
-              value: "kjellberg/plasma/Q-Series/Q-3000/system/status/qunit/json|DEVICE_STATUS|Property/http://www.industry-fusion.org/fields#status|property.v1.0,kjellberg/plasma/Q-Series/Q-3000/system/status/qunit/coolant/json|TEMPERATURE|Property/http://www.industry-fusion.org/fields#temperature|property.v1.0,kjellberg/plasma/Q-Series/Q-3000/consumption/power/json|POWER_SUPPLY|Property/http://www.industry-fusion.org/fields#power|property.v1.0,kjellberg/plasma/Q-Series/Q-3000/parameter/actual/json|CUTTING_CURRENT|Property/http://www.industry-fusion.org/fields#cuttingCurrent|property.v1.0,kjellberg/plasma/Q-Series/Q-3000/parameter/actual/json|CUTTING_VOLTAGE|Property/http://www.industry-fusion.org/fields#cuttingVoltage|property.v1.0,kjellberg/plasma/Q-Series/Q-3000/parameter/actual/json|VOLTAGE_SUPPLY|Property/http://www.industry-fusion.org/fields#voltageSupply|property.v1.0"
           image: docker.io/ibn40/fusionmqttdataservice:iff5.0
           imagePullPolicy: Always
+          volumeMounts:
+            - name: dataservice-machine-config
+              mountPath: /resources/config.json
+              subPath: config.json
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
@@ -121,12 +123,12 @@ spec:
             items:
               - key: config.json
                 path: config.json
-        # - name: gateway-config
-        #   configMap:
-        #     name: opc-mcc-plasma-1-app-config
-        #     items:
-        #     - key: application.yaml
-        #       path: application.yaml
+        - name: dataservice-machine-config
+          configMap:
+            name: mqtt-kjb-power-1-app-config
+            items:
+            - key: config.json
+              path: config.json
         # - name: dataservice-config
         #   configMap:
         #     name: opc-mcc-plasma-1-app-config
