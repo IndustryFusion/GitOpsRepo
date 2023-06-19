@@ -37,10 +37,12 @@ spec:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-            - name: TARGET_CONFIGS
-              value: "ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd|Property/http://www.industry-fusion.org/fields#speed|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov|Property/http://www.industry-fusion.org/fields#status|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX|Property/http://www.industry-fusion.org/fields#machinePositionX|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY|Property/http://www.industry-fusion.org/fields#machinePositionY|property.v1.0,ns=2|s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ|Property/http://www.industry-fusion.org/fields#machinePositionZ|property.v1.0"
           image: docker.io/ibn40/fusionopcuadataservice:latest
           imagePullPolicy: Always
+          volumeMounts:
+            - name: dataservice-machine-config
+              mountPath: /resources/config.json
+              subPath: config.json
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
@@ -121,12 +123,12 @@ spec:
             items:
               - key: config.json
                 path: config.json
-        # - name: gateway-config
-        #   configMap:
-        #     name: opc-mcc-plasma-1-app-config
-        #     items:
-        #     - key: application.yaml
-        #       path: application.yaml
+        - name: dataservice-machine-config
+          configMap:
+            name: opc-mcc-plasma-1-app-config
+            items:
+            - key: config.json
+              path: config.json
         # - name: dataservice-config
         #   configMap:
         #     name: opc-mcc-plasma-1-app-config

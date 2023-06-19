@@ -3,7 +3,7 @@ resources:
 - opc-mcc-plasma-1-global-devices-config.yaml
 - opc-mcc-plasma-1-global-devices-secret.yaml
 - opc-mcc-plasma-1-pvc-device-data.yml
-# - opc-mcc-plasma-1-app-config.yaml
+- opc-mcc-plasma-1-app-config.yaml
 - opc-mcc-plasma-1-pv-device-data.yml
 - oisp-token-operator.yaml
 - oisp-token-operator-config.yaml

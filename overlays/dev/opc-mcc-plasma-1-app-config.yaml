@@ -1,94 +1,36 @@
 apiVersion: v1
 data:
-  application.yaml: |
-    # Licensed under the Apache License, Version 2.0 (the "License");
-    # you may not use this file except in compliance with the License.
-    # You may obtain a copy of the License at
-    #
-    #   http://www.apache.org/licenses/LICENSE-2.0
-    #
-    # Unless required by applicable law or agreed to in writing,
-    # software distributed under the License is distributed on an
-    # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    # KIND, either express or implied.  See the License for the
-    # specific language governing permissions and limitations
-    # under the License.
-
-    server:
-    error:
-      include-stacktrace: never
-    port: 8086
-    spring:
-      task:
-        scheduling:
-          pool:
-            size: 25
-
-    fusiondataservice:
-      name: app
-      connectionString: localhost:41234
-      dataServiceType: PUSH
-      jobSpecs:
-        betriebsdaten:
-          fields:
-            - source: "Actual_Speed"
-              target: "Actual_Speed"
-            - source: "status"
-              target: "status"
-
-
-    fusiongateway:
-      componentMap:
-        Actual_Speed: "float.v1.0"
-        status: "integer.v1.0"
-  fusionplcdataservice_application.yaml: |
-    # Licensed under the Apache License, Version 2.0 (the "License");
-    # you may not use this file except in compliance with the License.
-    # You may obtain a copy of the License at
-    #
-    #   http://www.apache.org/licenses/LICENSE-2.0
-    #
-    # Unless required by applicable law or agreed to in writing,
-    # software distributed under the License is distributed on an
-    # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    # KIND, either express or implied.  See the License for the
-    # specific language governing permissions and limitations
-    # under the License.
-    #
-
-    server:
-    error:
-      include-stacktrace: never
-
-    fusiondataservice:
-      name: app
-      connectionString: opcua:tcp://192.168.49.198:62548
-      downstreamServiceBaseUrl: http://localhost:8085/
-      dataServiceType: PULL
-      autorun: true
-      jobSpecs:
-        betriebsdaten:
-          period: 2000
-          fields:
-            - source: "ns=2;s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd"
-              alias: Actual_Speed
-              target: Actual_Speed
-
-  transform.ts: |
-    import { isObject, TransformResult, JSONRoot, JSONObject, isNumber } from "./util.ts"
-
-    export function transform(data: JSONRoot): TransformResult {
-        if (!isObject(data)) {
-            return { status: 400, statusText: "Only JSON objects supported" };
-        }
-        const objectData = data as JSONObject;
-
-        //objectData['maintenance_operating_hours'] = 90;
-        //objectData['Cuttingprogram_finished'] = 0;
-        //objectData['no_parts'] = 0;
-        //objectData['no_starts'] = 0;
-
-        return { status: 201, data: objectData };
+  config.json: |
+   {
+      "fusionopcuadataservice": {
+          "specification": [
+              {
+                  "node_id": "ns=2",
+                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                  "parameter": "speed"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
+                "parameter": "status"
+              },
+              {
+                  "node_id": "ns=2",
+                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
+                  "parameter": "machinePositionX"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
+                "parameter": "machinePositionY"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
+                "parameter": "machinePositionZ"
+              }
+          ]
+      }
     }
 kind: ConfigMap
 metadata:
