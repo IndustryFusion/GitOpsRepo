@@ -5,7 +5,7 @@ resources:
 - mqtt-kjb-power-1-pvc-device-data.yml
 - mqtt-kjb-power-1-pv-device-data.yml
 - mqtt-kjb-power-1-app-config.yaml
-#- oisp-token-operator.yaml
-#- oisp-token-operator-config.yaml
-#- oisp-token-operator-secret.yaml
-#- oisp-token-operator-role-binding.yaml
+- oisp-token-operator.yaml
+- oisp-token-operator-config.yaml
+- oisp-token-operator-secret.yaml
+- oisp-token-operator-role-binding.yaml
