@@ -3,7 +3,7 @@ resources:
 - mqtt-kjb-power-1-global-devices-config.yaml
 - mqtt-kjb-power-1-global-devices-secret.yaml
 #- mqtt-kjb-power-1-pvc-device-data.yml
-- mqtt-kjb-power-1-pv-device-data.yml
+#- mqtt-kjb-power-1-pv-device-data.yml
 - mqtt-kjb-power-1-app-config.yaml
 - oisp-token-operator.yaml
 - oisp-token-operator-config.yaml
