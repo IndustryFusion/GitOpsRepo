@@ -51,16 +51,6 @@ spec:
               value: "urn:ngsi-ld:asset:2:11"
             - name: OISP_GATEWAY_ID
               value: "urn:ngsi-ld:asset:2:11"
-            # - name: OISP_FORCE_REACTIVATION
-            #   value: "true"
-            # - name: USERNAME
-            #   value: "factory_admin@industry-fusion.com"
-            # - name: PASSWORD
-            #   value: "@zN8k51@ORJg"
-            # - name: ACCOUNTID
-            #   value: "c4712c14-eeee-4881-856e-c5fb51532c94"
-            # - name: DEVICEID
-            #   value: "opcmcc"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:
@@ -69,8 +59,6 @@ spec:
           volumeMounts:
             - name: oisp-devices-config-volume
               mountPath: /volume/config
-            # - name: oisp-devices-data-volume
-            #   mountPath: /volume/data
           securityContext:
             privileged: true
             capabilities:
@@ -83,39 +71,21 @@ spec:
               hostPort: 41234
             - containerPort: 7070
               hostPort: 7070
-      # - name: fusiongatewayapp
-      #   image: docker.io/ibn40/fusiongatewayapp-new:latest
-      #   resources:
-      #     limits:
-      #   volumeMounts:
-      #     - name: gateway-config
-      #       mountPath: /app/resources/application.yaml
-      #       subPath: application.yaml
-      #   imagePullPolicy: Always
-      # - name: fusionscriptservice
-      #   image: docker.io/ibn40/fusionscriptservice-new:latest
-      #   env:
-      #     - name: FUSION_PORT
-      #       value: "8085"
-      #     - name: FUSION_DOWNSTREAM_URL
-      #       value: "http://localhost:8086/"
-      #     - name: FUSION_DOWNSTREAM_HOST
-      #       value: "localhost"
-      #   imagePullPolicy: Always
-      #   volumeMounts:
-      #     - name: scriptservice-script
-      #       mountPath: /deno-dir/transform.ts
-      #       subPath: transform.ts
-      #   resources:
-      #     requests:
-      #       memory: "32Mi"
-      #     limits:
-      #       memory: "128Mi"
-      # - name: fusionplcdataservice
-      #   image: docker.io/ibn40/fusionplcdataservice:modbusv9.0
-      #   volumeMounts:
-      #     - name: dataservice-config
-      #       mountPath: /app/resources
+        - name: oisp-token-operator
+          image: ibn40/oisp-token-operator:latest
+          imagePullPolicy: Always
+          env:
+            - name: OISP_API_ROOT
+              value: https://development.industry-fusion.com/oisp/v1/api
+            - name: USERNAME
+              value: factory_admin@industry-fusion.com
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: oisp-password-secret
+          securityContext:
+            privileged: true
       volumes:
         - name: oisp-devices-config-volume
           configMap:
@@ -129,21 +99,6 @@ spec:
             items:
             - key: config.json
               path: config.json
-        # - name: dataservice-config
-        #   configMap:
-        #     name: opc-mcc-plasma-1-app-config
-        #     items:
-        #     - key: fusionplcdataservice_application.yaml
-        #       path: application.yaml
-        # - name: scriptservice-script
-        #   configMap:
-        #     name: opc-mcc-plasma-1-app-config
-        #     items:
-        #     - key: transform.ts
-        #       path: transform.ts
-        # - name: oisp-devices-data-volume
-        #   persistentVolumeClaim:
-        #     claimName: opc-mcc-plasma-1-pvc-device-data
       imagePullSecrets:
         - name: regcred
       # nodeSelector:
