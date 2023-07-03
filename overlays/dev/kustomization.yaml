@@ -1,7 +1,7 @@
 resources:
 - deployment.yaml
-- opc-mcc-plasma-1-global-devices-config.yaml
-- opc-mcc-plasma-1-global-devices-secret.yaml
-- opc-mcc-plasma-1-app-config.yaml
+- opc-mg-1-global-devices-config.yaml
+- opc-mg-1-global-devices-secret.yaml
+- opc-mg-1-app-config.yaml
 - oisp-token-operator-secret.yaml
 - oisp-token-operator-role-binding.yaml
