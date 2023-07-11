@@ -58,7 +58,7 @@ spec:
         {{- end }}
         - name: ICSDB_PORT
           value: "{{ .Values.icsdb.port | toString }}"
-        - name: RESSOURCE_FOLDER
+        - name: RESOURCE_FOLDER
           value: ../resources/templates
         resources:
           limits:
