@@ -1,87 +1,37 @@
 apiVersion: v1
 data:
   config.json: |
-   {
-      "fusionopcuadataservice": {
-          "specification": [
-              {
-                  "node_id": "ns=4",
-                  "identifier": "i=11",
-                  "parameter": "cleaningType"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=14",
-                "parameter": "cleaningAlarm"
-              },
-              {
-                  "node_id": "ns=4",
-                  "identifier": "i=2",
-                  "parameter": "status"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=13",
-                "parameter": "cleaningEnd"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=12",
-                "parameter": "cleaningStart"
-              },
-              {
-                  "node_id": "ns=4",
-                  "identifier": "i=8",
-                  "parameter": "visualChecks"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=24",
-                "parameter": "operatingHours"
-              },
-              {
-                  "node_id": "ns=4",
-                  "identifier": "i=25",
-                  "parameter": "cleaningCycle"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=4",
-                "parameter": "warnings"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=15",
-                "parameter": "valveNumber"
-              },
-              {
-                  "node_id": "ns=4",
-                  "identifier": "i=16",
-                  "parameter": "motorPower"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=17",
-                "parameter": "motorCurrent"
-              },
-              {
-                  "node_id": "ns=4",
-                  "identifier": "i=18",
-                  "parameter": "motorFrequency"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=5",
-                "parameter": "disruption"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=7",
-                "parameter": "serviceVisualChecks"
-              }
-          ]
-      }
-    }
+    {
+       "fusionopcuadataservice": {
+           "specification": [
+               {
+                   "node_id": "ns=2",
+                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                   "parameter": "speed"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
+                 "parameter": "status"
+               },
+               {
+                   "node_id": "ns=2",
+                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
+                   "parameter": "machinePositionX"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
+                 "parameter": "machinePositionY"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
+                 "parameter": "machinePositionZ"
+               }
+           ]
+       }
+     }
 kind: ConfigMap
 metadata:
   creationTimestamp: null
