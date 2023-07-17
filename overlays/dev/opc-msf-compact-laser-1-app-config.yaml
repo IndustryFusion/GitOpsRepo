@@ -85,4 +85,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-teka-aircube-filter-1-app-config
+  name: opc-msf-compact-laser-1-app-config
