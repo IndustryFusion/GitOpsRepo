@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: opc-msf-compact-laser-1-1
+  name: opc-ms-watercut-1-1
   labels:
-    app: opc-msf-compact-laser-1-oisp-sensor
+    app: opc-ms-watercut-1-oisp-sensor
 spec:
   selector:
     matchLabels:
-      app: opc-msf-compact-laser-1-oisp-sensor
+      app: opc-ms-watercut-1-oisp-sensor
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: opc-msf-compact-laser-1-oisp-sensor
+        app: opc-ms-watercut-1-oisp-sensor
     spec:
       containers:
         - name: fusionopcuadataservice
           env:
             - name: OPC_URL
-              value: "opc.tcp://192.168.49.196"
+              value: "opc.tcp://192.168.49.195"
             - name: OPC_PORT
               value: "62548"
             - name: OISP_URL
@@ -31,7 +31,7 @@ spec:
             - name: USERNAME
               value: factory_admin@industry-fusion.com
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:asset:2:18"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -46,16 +46,16 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:asset:2:18"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:asset:2:18"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:asset:2:18"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:
                   key: activation-code
-                  name: opc-msf-compact-laser-1-global-devices-secret
+                  name: opc-ms-watercut-1-global-devices-secret
           volumeMounts:
             - name: oisp-devices-config-volume
               mountPath: /volume/config
@@ -89,13 +89,13 @@ spec:
       volumes:
         - name: oisp-devices-config-volume
           configMap:
-            name: opc-msf-compact-laser-1-global-devices-config
+            name: opc-ms-watercut-1-global-devices-config
             items:
               - key: config.json
                 path: config.json
         - name: dataservice-machine-config
           configMap:
-            name: opc-msf-compact-laser-1-app-config
+            name: opc-ms-watercut-1-app-config
             items:
             - key: config.json
               path: config.json

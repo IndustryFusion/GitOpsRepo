@@ -46,4 +46,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-msf-compact-laser-1-global-devices-config
+  name: opc-ms-watercut-1-global-devices-config
