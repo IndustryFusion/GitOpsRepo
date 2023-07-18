@@ -6,27 +6,27 @@ data:
           "specification": [
               {
                   "node_id": "ns=2",
-                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                  "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
                   "parameter": "speed"
               },
               {
                 "node_id": "ns=2",
-                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
+                "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
                 "parameter": "status"
               },
               {
                   "node_id": "ns=2",
-                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
+                  "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
                   "parameter": "machinePositionX"
               },
               {
                 "node_id": "ns=2",
-                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
+                "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
                 "parameter": "machinePositionY"
               },
               {
                 "node_id": "ns=2",
-                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
+                "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
                 "parameter": "machinePositionZ"
               }
           ]
