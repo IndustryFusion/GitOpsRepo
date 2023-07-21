@@ -31,7 +31,7 @@ spec:
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
-  name: mongodb
+  name: mongodb-fleet-manager
   namespace: {{ .Release.Namespace }}
   labels:
     app: mongodb
