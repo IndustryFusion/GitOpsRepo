@@ -29,3 +29,13 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
+- name: fleetmanager
+  labels:
+    order: second
+    app: fleetmanager
+  needs:
+  - mongodb
+  chart: ./charts/fleetmanager
+  namespace: {{ .Values.namespace }}
+  values:
+  - values.yaml.gotmpl

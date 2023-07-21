@@ -19,3 +19,12 @@ icsdb:
   port: 8090
   username: icsdb-user
   password: {{ .StateValues.icsdbPassword }}
+
+fleetmanager:
+  externalHostname: {{ .StateValues.fleetmanagerExternalHostname }}
+  backendExternalPath: {{ .StateValues.fleetmanagerBackendExternalPath }}
+  frontendExternalPath: {{ .StateValues.fleetmanagerFrontendExternalPath }}
+  backendPort: 3090
+  frontendPort: 3080
+  username: fleetmanager-user
+  password: {{ .StateValues.fleetmanagerPassword }} 

@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fleet-manager-service
+  name: fleet-manager-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - port: {{ .Values.fleetmanager.backendPort }}
+    targetPort: {{ .Values.fleetmanager.backendPort }}
+    name: backend
+    protocol: TCP
+  - port: {{ .Values.fleetmanager.frontendPort }}
+    targetPort: {{ .Values.fleetmanager.frontendPort }}
+    name: frontend
+    protocol: TCP
+  selector:
+    app: fleet-manager-service
+---
+{{- $mongodbsecret := (lookup "v1" "Secret" .Release.Namespace "mongodb-fleet-manager-connection") -}}
+{{- $fleetmanagersecret := (lookup "v1" "Secret" .Release.Namespace "fleet-manager-user") -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fleet-manager-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: fleet-manager-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fleet-manager-service
+  template:
+    metadata:
+      labels:
+        app: fleet-manager-service
+    spec:
+      containers:
+      - name: backend
+        image: {{ .Values.mainRepo }}/fleet-manager-backend:{{ .Values.mainVersion}}
+        ports:
+        - containerPort: {{ .Values.fleetmanager.backendPort }}
+        env:
+        - name: NODE_ENV
+          value: production
+        {{- if $mongodbsecret }}
+        - name: MONGO_URL
+          value: {{ index $mongodbsecret "data" "connectionString.standard" | toString | b64dec }}
+        {{- end }}
+        {{- if $fleetmanagersecret }}
+        - name: HTTP_BASIC_USER
+          value: {{ $fleetmanagersecret.data.username | toString | b64dec }}
+        - name: HTTP_BASIC_PASS
+          value: {{ $fleetmanagersecret.data.password | toString | b64dec }}
+        {{- else }}
+        - name: HTTP_BASIC_USER
+          value: {{ .Values.fleetmanager.username | toString }}
+        - name: HTTP_BASIC_PASS
+          value: {{ .Values.fleetmanager.password | toString }}
+        {{- end }}
+        - name: PORT
+          value: value: "{{ .Values.fleetmanager.backendPort | toString }}"
+        resources:
+          limits:
+            cpu: 250m
+            memory: 128Mi
+      - name: frontend
+        image: {{ .Values.mainRepo }}/fleet-manager-frontend:{{ .Values.mainVersion}}
+        ports:
+        - containerPort: {{ .Values.fleetmanager.frontendPort }}
+        env:
+        - name: URL
+          value: {{ .Values.fleetmanager.externalHostname }}
+        {{- if $fleetmanagersecret }}
+        - name: HTTP_BASIC_USER
+          value: {{ $fleetmanagersecret.data.username | toString | b64dec }}
+        - name: HTTP_BASIC_PASSWORD
+          value: {{ $fleetmanagersecret.data.password | toString | b64dec }}
+        {{- else }}
+        - name: HTTP_BASIC_USER
+          value: {{ .Values.fleetmanager.username | toString }}
+        - name: HTTP_BASIC_PASSWORD
+          value: {{ .Values.fleetmanager.password | toString }}
+        {{- end }}
+        resources:
+          limits:
+            cpu: 250m
+            memory: 128Mi
+      imagePullSecrets:
+      - name: dockercred

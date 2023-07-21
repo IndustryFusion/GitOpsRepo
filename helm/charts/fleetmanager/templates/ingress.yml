@@ -1,0 +1,89 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fleet-manager-backend-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.certmanager.issuer }}
+    {{- if (eq .Values.ingressType "traefik") }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-remove-path-fleetmanager-backend@kubernetescrd
+    {{- else }}
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    {{- end }}
+spec:
+  rules:
+  - host: {{ .Values.fleetmanager.externalHostname }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: fleet-manager-service
+            port:
+              number: {{ .Values.fleetmanager.backendPort }}
+        {{- if (eq .Values.ingressType "nginx") }}
+        path: {{ .Values.fleetmanager.backendExternalPath }}(.*)
+        {{- else }}
+        path: {{ .Values.fleetmanager.backendExternalPath }}
+        {{- end }}
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - {{ .Values.fleetmanager.externalHostname }}
+    secretName: {{ .Values.certmanager.secret }}-fleet-manager-backend
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fleet-manager-frontend-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.certmanager.issuer }}
+    {{- if (eq .Values.ingressType "traefik") }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-remove-path-fleetmanager-frontend@kubernetescrd
+    {{- else }}
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    {{- end }}
+spec:
+  rules:
+  - host: {{ .Values.fleetmanager.externalHostname }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: fleet-manager-service
+            port:
+              number: {{ .Values.fleetmanager.frontendPort }}
+        {{- if (eq .Values.ingressType "nginx") }}
+        path: {{ .Values.fleetmanager.frontendExternalPath }}(.*)
+        {{- else }}
+        path: {{ .Values.fleetmanager.frontendExternalPath }}
+        {{- end }}
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - {{ .Values.fleetmanager.externalHostname }}
+    secretName: prod-cert-tls
+---
+{{- if (eq .Values.ingressType "traefik") }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: remove-path-fleetmanager-backend
+spec:
+  replacePathRegex:
+    regex: ^{{ .Values.fleetmanager.backendExternalPath }}(.*)
+    replacement: /$1
+{{- end }}
+---
+{{- if (eq .Values.ingressType "traefik") }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: remove-path-fleetmanager-frontend
+spec:
+  replacePathRegex:
+    regex: ^{{ .Values.fleetmanager.frontendExternalPath }}(.*)
+    replacement: /$1
+{{- end }}

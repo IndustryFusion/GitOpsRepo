@@ -2,6 +2,9 @@ ingressType: traefik
 
 icsdbExternalHostname: icsdb.local
 icsdbExternalPath: /ics/ # must end with /
+fleetmanagerExternalHostName: fleetmanager.local
+fleetmanagerBackendExternalPath: /fleetmanagerbackend/ # must end with /
+fleetmanagerFrontendExternalPath: /fleetmanager/ # must end with /
 
 certmanager:
   secret: selfsigned-cert-tls
