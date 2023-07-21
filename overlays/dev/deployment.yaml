@@ -15,6 +15,7 @@ spec:
       labels:
         app: opc-mg-1-oisp-sensor
     spec:
+      serviceAccountName: default
       containers:
         - name: fusionopcuadataservice
           env:
