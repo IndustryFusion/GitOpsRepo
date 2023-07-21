@@ -2,7 +2,7 @@ ingressType: traefik
 
 icsdbExternalHostname: icsdb.local
 icsdbExternalPath: /ics/ # must end with /
-fleetmanagerExternalHostName: fleetmanager.local
+fleetmanagerExternalHostname: fleetmanager.local
 fleetmanagerBackendExternalPath: /fleetmanagerbackend/ # must end with /
 fleetmanagerFrontendExternalPath: /fleetmanager/ # must end with /
 
