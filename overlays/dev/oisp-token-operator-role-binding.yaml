@@ -6,24 +6,24 @@ metadata:
   name: kopfexample-account
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
-  name: kopfexample-role-cluster
+  name: kopfexample-role
 rules:
 
   # Framework: knowing which other operators are running (i.e. peering).
   - apiGroups: [""]
-    resources: ["pods"]
+    resources: ["pods","services","namespaces","deployments","jobs"]
     verbs: ["list", "watch", "patch", "get", "create", "delete", "update"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: kopfexample-rolebinding-cluster
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: kopfexample-role-cluster
+  kind: Role
+  name: kopfexample-role
 subjects:
   - kind: ServiceAccount
     name: kopfexample-account
