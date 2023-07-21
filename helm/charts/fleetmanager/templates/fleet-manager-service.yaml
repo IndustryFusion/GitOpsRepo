@@ -24,10 +24,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fleet-manager-service
-  namespace: {{ .Release.Namespace }}
   labels:
     app: fleet-manager-service
+  name: fleet-manager-service
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -62,7 +62,7 @@ spec:
           value: {{ .Values.fleetmanager.password | toString }}
         {{- end }}
         - name: PORT
-          value: value: "{{ .Values.fleetmanager.backendPort | toString }}"
+          value: "{{ .Values.fleetmanager.backendPort | toString }}"
         resources:
           limits:
             cpu: 250m
@@ -73,7 +73,7 @@ spec:
         - containerPort: {{ .Values.fleetmanager.frontendPort }}
         env:
         - name: URL
-          value: {{ .Values.fleetmanager.externalHostname }}
+          value: {{ .Values.fleetmanager.externalHostname }}{{ .Values.fleetmanager.backendExternalPath }}
         {{- if $fleetmanagersecret }}
         - name: HTTP_BASIC_USER
           value: {{ $fleetmanagersecret.data.username | toString | b64dec }}
@@ -90,4 +90,4 @@ spec:
             cpu: 250m
             memory: 128Mi
       imagePullSecrets:
-      - name: dockercred
+      - name: {{ .Values.pullSecretCredentials }}
