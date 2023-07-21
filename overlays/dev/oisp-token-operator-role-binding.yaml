@@ -12,9 +12,9 @@ metadata:
 rules:
 
   # Framework: knowing which other operators are running (i.e. peering).
-  - apiGroups: [""]
-    resources: ["pods","services","namespaces","deployments","jobs"]
-    verbs: ["list", "watch", "patch", "get", "create", "delete", "update"]
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
