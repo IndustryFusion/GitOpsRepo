@@ -3,8 +3,8 @@ ingressType: nginx
 icsdbExternalHostname: development.industry-fusion.com
 icsdbExternalPath: /ics/ # must end with /
 fleetmanagerExternalHostname: development.industry-fusion.com
-fleetmanagerBackendExternalPath: /fleetmanagerbackend/ # must end with /
-fleetmanagerFrontendExternalPath: /fleetmanager/ # must end with /
+fleetmanagerBackendExternalPath: /fleetmanager/backend/ # must end with /
+fleetmanagerFrontendExternalPath: /fleetmanager # must end without /
 
 certmanager:
   secret: prod-cert-tls

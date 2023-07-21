@@ -22,6 +22,8 @@ spec:
           db: admin
         - name: userAdminAnyDatabase
           db: admin
+        - name: readWriteAnyDatabase
+          db: admin
       scramCredentialsSecretName: mongodb
       connectionStringSecretName: mongodb-connection
   additionalMongodConfig:
@@ -51,6 +53,8 @@ spec:
         - name: clusterAdmin
           db: admin
         - name: userAdminAnyDatabase
+          db: admin
+        - name: readWriteAnyDatabase
           db: admin
       scramCredentialsSecretName: mongodb-fleet-manager
       connectionStringSecretName: mongodb-fleet-manager-connection

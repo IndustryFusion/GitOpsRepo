@@ -73,7 +73,7 @@ spec:
         - containerPort: {{ .Values.fleetmanager.frontendPort }}
         env:
         - name: URL
-          value: {{ .Values.fleetmanager.externalHostname }}{{ .Values.fleetmanager.backendExternalPath }}
+          value: backend
         {{- if $fleetmanagersecret }}
         - name: HTTP_BASIC_USER
           value: {{ $fleetmanagersecret.data.username | toString | b64dec }}
