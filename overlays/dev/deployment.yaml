@@ -15,6 +15,7 @@ spec:
       labels:
         app: mqtt-kjb-power-1-oisp-sensor
     spec:
+      serviceAccountName: kopfexample-account
       containers:
         - name: fusionmqttdataservice
           env:
