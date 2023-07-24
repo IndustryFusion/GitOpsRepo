@@ -15,6 +15,7 @@ spec:
       labels:
         app: opc-msf-compact-laser-1-oisp-sensor
     spec:
+      serviceAccountName: kopfexample-account
       containers:
         - name: fusionopcuadataservice
           env:
