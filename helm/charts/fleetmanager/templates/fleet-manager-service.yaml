@@ -41,11 +41,20 @@ spec:
       containers:
       - name: backend
         image: {{ .Values.mainRepo }}/fleet-manager-backend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.fleetmanager.backendPort }}
         env:
         - name: NODE_ENV
-          value: production
+          value: local
+        - name: PDT_USERNAME
+          value: factory_admin
+        - name: PDT_PASSWORD
+          value: "@zN8k51@ORJg"
+        - name: ICS_SERVICE_URL
+          value: https://development.industry-fusion.com/ics
+        - name: ICS_SERVICE_TOKEN
+          value: aWNzZGItdXNlcjpnbGtxTklsRDlXb0hYT05Xa1IzS1JGZXBpQ1VVNEFuUg==
         {{- if $mongodbsecret }}
         - name: MONGO_URL
           value: {{ index $mongodbsecret "data" "connectionString.standard" | toString | b64dec }}
@@ -69,6 +78,7 @@ spec:
             memory: 128Mi
       - name: frontend
         image: {{ .Values.mainRepo }}/fleet-manager-frontend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.fleetmanager.frontendPort }}
         env:
