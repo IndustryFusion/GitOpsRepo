@@ -46,4 +46,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: mqtt-teka-airtracker-1-global-devices-config
+  name: mqtt-teka-airtracker-2-global-devices-config

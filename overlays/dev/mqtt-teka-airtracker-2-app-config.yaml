@@ -5,27 +5,27 @@ data:
       "fusionmqttdataservice": {
           "specification": [
               {
-                  "topic": "airtracker-39B58/relay1",
+                  "topic": "airtracker-74145/relay1",
                   "key": [],
                   "parameter": ["status"]
               },
               {
-                  "topic": "airtracker-39B58/dust",
+                  "topic": "airtracker-74145/dust",
                   "key": [],
                   "parameter": ["dust"]
               },
               {
-                  "topic": "airtracker-39B58/temperature",
+                  "topic": "airtracker-74145/temperature",
                   "key": [],
                   "parameter": ["temperature"]
               },
               {
-                  "topic": "airtracker-39B58/noise",
+                  "topic": "airtracker-74145/noise",
                   "key": [],
                   "parameter": ["noise"]
               },
               {
-                  "topic": "airtracker-39B58/humidity",
+                  "topic": "airtracker-74145/humidity",
                   "key": [],
                   "parameter": ["humidity"]
               }
@@ -35,4 +35,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: mqtt-teka-airtracker-1-app-config
+  name: mqtt-teka-airtracker-2-app-config
