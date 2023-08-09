@@ -1,0 +1,38 @@
+apiVersion: v1
+data:
+  config.json: |
+    {
+      "fusionmqttdataservice": {
+          "specification": [
+              {
+                  "topic": "airtracker-39B58/relay1",
+                  "key": [],
+                  "parameter": ["status"]
+              },
+              {
+                  "topic": "airtracker-39B58/dust",
+                  "key": [],
+                  "parameter": ["dust"]
+              },
+              {
+                  "topic": "airtracker-39B58/temperature",
+                  "key": [],
+                  "parameter": ["temperature"]
+              },
+              {
+                  "topic": "airtracker-39B58/noise",
+                  "key": [],
+                  "parameter": ["noise"]
+              },
+              {
+                  "topic": "airtracker-39B58/humidity",
+                  "key": [],
+                  "parameter": ["humidity"]
+              }
+          ]
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: mqtt-teka-airtracker-1-app-config

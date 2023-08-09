@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mqtt-kjb-power-1
+  name: mqtt-teka-airtracker-1
   labels:
-    app: mqtt-kjb-power-1-oisp-sensor
+    app: mqtt-teka-airtracker-1-oisp-sensor
 spec:
   selector:
     matchLabels:
-      app: mqtt-kjb-power-1-oisp-sensor
+      app: mqtt-teka-airtracker-1-oisp-sensor
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: mqtt-kjb-power-1-oisp-sensor
+        app: mqtt-teka-airtracker-1-oisp-sensor
     spec:
       serviceAccountName: kopfexample-account
       containers:
@@ -32,7 +32,7 @@ spec:
             - name: USERNAME
               value: factory_admin@industry-fusion.com
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:12"
+              value: "urn:ngsi-ld:asset:2:19"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -47,16 +47,16 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:12"
+              value: "urn:ngsi-ld:asset:2:19"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:asset:2:12"
+              value: "urn:ngsi-ld:asset:2:19"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:12"
+              value: "urn:ngsi-ld:asset:2:19"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:
                   key: activation-code
-                  name: mqtt-kjb-power-1-global-devices-secret
+                  name: mqtt-teka-airtracker-1-global-devices-secret
           volumeMounts:
             - name: oisp-devices-config-volume
               mountPath: /volume/config
@@ -90,13 +90,13 @@ spec:
       volumes:
         - name: oisp-devices-config-volume
           configMap:
-            name: mqtt-kjb-power-1-global-devices-config
+            name: mqtt-teka-airtracker-1-global-devices-config
             items:
               - key: config.json
                 path: config.json
         - name: dataservice-machine-config
           configMap:
-            name: mqtt-kjb-power-1-app-config
+            name: mqtt-teka-airtracker-1-app-config
             items:
             - key: config.json
               path: config.json

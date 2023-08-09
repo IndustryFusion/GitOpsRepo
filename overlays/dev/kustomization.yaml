@@ -1,7 +1,7 @@
 resources:
 - deployment.yaml
-- mqtt-kjb-power-1-global-devices-config.yaml
-- mqtt-kjb-power-1-global-devices-secret.yaml
-- mqtt-kjb-power-1-app-config.yaml
+- mqtt-teka-airtracker-1-global-devices-config.yaml
+- mqtt-teka-airtracker-1-global-devices-secret.yaml
+- mqtt-teka-airtracker-1-app-config.yaml
 - oisp-token-operator-secret.yaml
 - oisp-token-operator-role-binding.yaml
