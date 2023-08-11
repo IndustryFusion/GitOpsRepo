@@ -35,9 +35,9 @@ data:
                   "parameter": ["static_input_pressure"]
               },
               {
-                  "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/gas ",
+                  "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/gas",
                   "key": ["O2"],
-                  "parameter": ["static_input_pressure"]
+                  "parameter": ["volume_flow_rate"]
               }
           ]
       }
