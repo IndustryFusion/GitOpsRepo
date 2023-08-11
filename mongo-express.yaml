@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-dev-ui
+  labels:
+    app: mongo-dev-ui
+  namespace: iff50
+spec:
+  selector:
+    matchLabels:
+      app: mongo-dev-ui
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: mongo-dev-ui
+    spec:
+      containers:
+        - name: mongo-dev-ui
+          env:
+            - name: ME_CONFIG_MONGODB_URL
+              value: "mongodb://mongodb-user:tmZDctb4ZogEP1wGep0jYDpZcvyoSI2A@mongodb-fleet-manager-0.mongodb-fleet-manager-svc.iff50.svc.cluster.local:27017/admin?replicaSet=mongodb-fleet-manager&ssl=false"
+          image: mongo-express
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+              hostPort: 8081
