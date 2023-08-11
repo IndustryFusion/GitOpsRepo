@@ -20,11 +20,6 @@ data:
                   "parameter": ["temperature"]
               },
               {
-                  "topic": "airtracker-74145/noise",
-                  "key": [],
-                  "parameter": ["noise"]
-              },
-              {
                   "topic": "airtracker-74145/humidity",
                   "key": [],
                   "parameter": ["humidity"]
