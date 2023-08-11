@@ -21,8 +21,14 @@ spec:
           env:
             - name: ME_CONFIG_MONGODB_URL
               value: "mongodb://mongodb-user:tmZDctb4ZogEP1wGep0jYDpZcvyoSI2A@mongodb-fleet-manager-0.mongodb-fleet-manager-svc.iff50.svc.cluster.local:27017/admin?replicaSet=mongodb-fleet-manager&ssl=false"
+            - name: ME_CONFIG_BASICAUTH
+              value: "true"
+            - name: ME_CONFIG_BASICAUTH_USERNAME
+              value: "mongodb-express-user"
+            - name: ME_CONFIG_BASICAUTH_PASSWORD
+              value: "NM8RbXRPpbPAhvOBJFHumhRsAGqNkyvP"
           image: mongo-express
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
-              hostPort: 8081
+              hostPort: 8060
