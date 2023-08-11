@@ -32,13 +32,13 @@ spec:
             - name: USERNAME
               value: factory_admin@industry-fusion.com
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:12"
+              value: "urn:ngsi-ld:assetv5:2:42"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-          image: docker.io/ibn40/fusionmqttdataservice:iff5.0
+          image: docker.io/ibn40/fusionmqttdataservice:essen-fair
           imagePullPolicy: Always
           volumeMounts:
             - name: dataservice-machine-config
@@ -47,11 +47,11 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:12"
+              value: "urn:ngsi-ld:assetv5:2:42"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:asset:2:12"
+              value: "urn:ngsi-ld:assetv5:2:42"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:12"
+              value: "urn:ngsi-ld:assetv5:2:42"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:
