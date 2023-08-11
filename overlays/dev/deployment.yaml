@@ -38,7 +38,7 @@ spec:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-          image: docker.io/ibn40/fusionmqttdataservice:iff5.0
+          image: docker.io/ibn40/fusionmqttdataservice:essen-fair
           imagePullPolicy: Always
           volumeMounts:
             - name: dataservice-machine-config
