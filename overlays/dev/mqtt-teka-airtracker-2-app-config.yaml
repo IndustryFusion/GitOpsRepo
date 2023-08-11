@@ -7,22 +7,22 @@ data:
               {
                   "topic": "airtracker-74145/relay1",
                   "key": [],
-                  "parameter": ["status"]
+                  "parameter": ["machine_state"]
               },
               {
                   "topic": "airtracker-74145/dust",
                   "key": [],
-                  "parameter": ["dust"]
+                  "parameter": ["dustiness"]
               },
               {
                   "topic": "airtracker-74145/temperature",
                   "key": [],
-                  "parameter": ["temperature"]
+                  "parameter": ["ambient_operating_temperature"]
               },
               {
                   "topic": "airtracker-74145/humidity",
                   "key": [],
-                  "parameter": ["humidity"]
+                  "parameter": ["relative_humidity"]
               }
           ]
       }
