@@ -7,37 +7,37 @@ data:
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/system/status/qunit/json",
                   "key": ["DEVICE_STATUS"],
-                  "parameter": ["machine_state"]
+                  "parameter": ["base-objects-v0.1-operation-conditions-runtime-machine-state"]
               },
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/power/json",
                   "key": ["POWER_SUPPLY"],
-                  "parameter": ["electric_power"]
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
               },
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/actual/json",
                   "key": ["CUTTING_CURRENT", "CUTTING_VOLTAGE"],
-                  "parameter": ["current_strength_l1", "supply_voltage_l1"]
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1", "base-objects-v0.1-power-supply-runtime-supply-voltage-l1"]
               },
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/gas",
                   "key": ["O2"],
-                  "parameter": ["medium_name"]
+                  "parameter": ["base-objects-v0.1-medium-runtime-medium-name"]
               },
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/actual",
                   "key": ["PG1"],
-                  "parameter": ["input_pressure"]
+                  "parameter": ["base-objects-v0.1-medium-runtime-input-pressure"]
               },
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/reference",
                   "key": ["PG1"],
-                  "parameter": ["static_input_pressure"]
+                  "parameter": ["base-objects-v0.1-medium-runtime-static-input-pressure"]
               },
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/gas",
                   "key": ["O2"],
-                  "parameter": ["volume_flow_rate"]
+                  "parameter": ["base-objects-v0.1-medium-runtime-volume-flow-rate"]
               }
           ]
       }
