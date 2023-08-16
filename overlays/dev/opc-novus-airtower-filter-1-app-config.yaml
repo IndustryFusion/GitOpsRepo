@@ -1,0 +1,18 @@
+apiVersion: v1
+data:
+  config.json: |
+   {
+      "fusionopcuadataservice": {
+          "specification": [
+              {
+                  "node_id": "ns=4",
+                  "identifier": "i=2",
+                  "parameter": "status"
+              }
+          ]
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: opc-novus-airtower-filter-1-app-config
