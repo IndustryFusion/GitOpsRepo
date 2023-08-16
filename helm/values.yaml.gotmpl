@@ -27,4 +27,11 @@ fleetmanager:
   backendPort: 3090
   frontendPort: 80
   username: fleetmanager-user
-  password: {{ .StateValues.fleetmanagerPassword }} 
+  password: {{ .StateValues.fleetmanagerPassword }}
+
+s3:
+  url: {{ .StateValues.s3.url }}
+  accessKey: {{ .StateValues.s3.accessKey }}
+  secretKey: {{ .StateValues.s3.secretKey }}
+  fleetmanagerBucket: {{ .StateValues.s3.fleetmanagerBucket }}
+

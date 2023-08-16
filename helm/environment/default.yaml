@@ -9,3 +9,9 @@ fleetmanagerFrontendExternalPath: /fleetmanager  # must end with /
 certmanager:
   secret: selfsigned-cert-tls
   issuer: letsencrypt-self
+
+s3:
+  url: https://s3-eu-central-1.ionoscloud.com
+  accessKey: access-key
+  secretKey: secret-key
+  fleetmanagerBucket: iff-dev

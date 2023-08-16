@@ -59,6 +59,18 @@ on:
       PRIVATE_GITHUB_TOKEN:
         description: 'Token to use to clone the repositories'
         required: true
+      S3_URL:
+        description: 'S3 url to use in the cluster'
+        required: false
+        default: https://s3-eu-central-1.ionoscloud.com
+      S3_ACCESS_KEY:
+        description: 'S3 access key to use in the cluster'
+        required: false
+        default: 'none'
+      S3_SECRET_KEY:
+        description: 'S3 secret key to use in the cluster'
+        required: false
+        default: 'none'
 
 jobs:
   clone-repo:
@@ -95,4 +107,7 @@ jobs:
             --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
             --set mainVersion=${{ inputs.DOCKER_TAG }} \
             --set namespace=${{ inputs.NAMESPACE }} \
-            --set pullSecretCredentials=${{ inputs.PULL_SECRET_CREDENTIALS }}
+            --set pullSecretCredentials=${{ inputs.PULL_SECRET_CREDENTIALS }} \
+            --set s3.url=${{ secrets.S3_URL }} \
+            --set s3.accessKey=${{ secrets.S3_ACCESS_KEY }} \
+            --set s3.secretKey=${{ secrets.S3_SECRET_KEY }}
