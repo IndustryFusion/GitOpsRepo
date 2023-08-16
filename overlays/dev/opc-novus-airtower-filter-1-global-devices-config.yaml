@@ -46,4 +46,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-teka-aircube-filter-1-global-devices-config
+  name: opc-novus-airtower-filter-1-global-devices-config
