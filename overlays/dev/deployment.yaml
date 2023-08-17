@@ -32,7 +32,7 @@ spec:
             - name: USERNAME
               value: factory_admin@industry-fusion.com
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:16"
+              value: "urn:ngsi-ld:assetv5:2:46"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -47,11 +47,11 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:16"
+              value: "urn:ngsi-ld:assetv5:2:46"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:asset:2:16"
+              value: "urn:ngsi-ld:assetv5:2:46"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:16"
+              value: "urn:ngsi-ld:assetv5:2:46"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:

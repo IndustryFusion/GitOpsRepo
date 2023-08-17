@@ -6,78 +6,18 @@ data:
           "specification": [
               {
                   "node_id": "ns=4",
-                  "identifier": "i=11",
-                  "parameter": "cleaningType"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=14",
-                "parameter": "cleaningAlarm"
-              },
-              {
-                  "node_id": "ns=4",
                   "identifier": "i=2",
-                  "parameter": "status"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=13",
-                "parameter": "cleaningEnd"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=12",
-                "parameter": "cleaningStart"
-              },
-              {
-                  "node_id": "ns=4",
-                  "identifier": "i=8",
-                  "parameter": "visualChecks"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=24",
-                "parameter": "operatingHours"
-              },
-              {
-                  "node_id": "ns=4",
-                  "identifier": "i=25",
-                  "parameter": "cleaningCycle"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=4",
-                "parameter": "warnings"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=15",
-                "parameter": "valveNumber"
+                  "parameter": "base-objects-v0.1-operation-conditions-runtime-machine-state"
               },
               {
                   "node_id": "ns=4",
                   "identifier": "i=16",
-                  "parameter": "motorPower"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=17",
-                "parameter": "motorCurrent"
+                  "parameter": "base-objects-v0.1-power-supply-runtime-electric-power"
               },
               {
                   "node_id": "ns=4",
-                  "identifier": "i=18",
-                  "parameter": "motorFrequency"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=5",
-                "parameter": "disruption"
-              },
-              {
-                "node_id": "ns=4",
-                "identifier": "i=7",
-                "parameter": "serviceVisualChecks"
+                  "identifier": "i=17",
+                  "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l1"
               }
           ]
       }
