@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: opc-msf-compact-laser-1-1
+  name: opc-mse-smartfl-laser-1
   labels:
-    app: opc-msf-compact-laser-1-oisp-sensor
+    app: opc-mse-smartfl-laser-1
 spec:
   selector:
     matchLabels:
-      app: opc-msf-compact-laser-1-oisp-sensor
+      app: opc-mse-smartfl-laser-1
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: opc-msf-compact-laser-1-oisp-sensor
+        app: opc-mse-smartfl-laser-1
     spec:
       serviceAccountName: kopfexample-account
       containers:
         - name: fusionopcuadataservice
           env:
             - name: OPC_URL
-              value: "opc.tcp://192.168.49.196"
+              value: "opc.tcp://192.168.49.178"
             - name: OPC_PORT
-              value: "62548"
+              value: "48030"
             - name: OISP_URL
               value: "127.0.0.1"
             - name: OISP_PORT
@@ -32,7 +32,7 @@ spec:
             - name: USERNAME
               value: factory_admin@industry-fusion.com
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:assetv5:2:47"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -47,16 +47,16 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:assetv5:2:47"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:assetv5:2:47"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:assetv5:2:47"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:
                   key: activation-code
-                  name: opc-msf-compact-laser-1-global-devices-secret
+                  name: opc-mse-smartfl-laser-1-global-devices-secret
           volumeMounts:
             - name: oisp-devices-config-volume
               mountPath: /volume/config
@@ -90,13 +90,13 @@ spec:
       volumes:
         - name: oisp-devices-config-volume
           configMap:
-            name: opc-msf-compact-laser-1-global-devices-config
+            name: opc-mse-smartfl-laser-1-global-devices-config
             items:
               - key: config.json
                 path: config.json
         - name: dataservice-machine-config
           configMap:
-            name: opc-msf-compact-laser-1-app-config
+            name: opc-mse-smartfl-laser-1-app-config
             items:
             - key: config.json
               path: config.json
