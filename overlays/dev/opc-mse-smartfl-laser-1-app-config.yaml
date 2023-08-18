@@ -6,28 +6,38 @@ data:
            "specification": [
                {
                    "node_id": "ns=2",
-                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
-                   "parameter": "speed"
+                   "identifier": "s=Model.MachineInfo.State",
+                   "parameter": "base-objects-v0.1-operation-conditions-runtime-machine-state"
                },
                {
                  "node_id": "ns=2",
-                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
-                 "parameter": "status"
+                 "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL1",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-supply-voltage-l1"
                },
                {
                    "node_id": "ns=2",
-                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
-                   "parameter": "machinePositionX"
+                   "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL2",
+                   "parameter": "base-objects-v0.1-power-supply-runtime-supply-voltage-l2"
                },
                {
                  "node_id": "ns=2",
-                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
-                 "parameter": "machinePositionY"
+                 "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL3",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-supply-voltage-l3"
                },
                {
                  "node_id": "ns=2",
-                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
-                 "parameter": "machinePositionZ"
+                 "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL1",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l1"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL2",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l2"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL3",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l3"
                }
            ]
        }
