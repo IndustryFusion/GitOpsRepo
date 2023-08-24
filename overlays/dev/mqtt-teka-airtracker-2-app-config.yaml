@@ -7,27 +7,27 @@ data:
               {
                   "topic": "airtracker-74145/relay1",
                   "key": [],
-                  "parameter": ["base-objects-v0.1-operating-conditions-runtime-machine-state"]
+                  "parameter": ["base-objects-v0.1-operation-conditions-runtime-machine-state"]
               },
               {
                   "topic": "airtracker-74145/dust",
                   "key": [],
-                  "parameter": ["base-objects-v0.1-operating-conditions-runtime-dustiness"]
+                  "parameter": ["base-objects-v0.1-operation-conditions-runtime-dustiness"]
               },
               {
                   "topic": "airtracker-74145/temperature",
                   "key": [],
-                  "parameter": ["base-objects-v0.1-operating-conditions-runtime-ambient-operating-temperature"]
+                  "parameter": ["base-objects-v0.1-operation-conditions-runtime-ambient-operating-temperature"]
               },
               {
                   "topic": "airtracker-74145/humidity",
                   "key": [],
-                  "parameter": ["base-objects-v0.1-operating-conditions-runtime-relative-humidity"]
+                  "parameter": ["base-objects-v0.1-operation-conditions-runtime-relative-humidity"]
               },
               {
                   "topic": "airtracker-74145/noise",
                   "key": [],
-                  "parameter": ["base-objects-v0.1-operating-conditions-runtime-ambient-noise"]
+                  "parameter": ["base-objects-v0.1-operation-conditions-runtime-ambient-noise"]
               }
           ]
       }
