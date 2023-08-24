@@ -23,6 +23,11 @@ data:
                   "topic": "airtracker-74145/humidity",
                   "key": [],
                   "parameter": ["base-objects-v0.1-operation-conditions-runtime-relative-humidity"]
+              },
+              {
+                  "topic": "airtracker-74145/noise",
+                  "key": [],
+                  "parameter": ["base-objects-v0.1-operation-conditions-runtime-ambient-noise"]
               }
           ]
       }

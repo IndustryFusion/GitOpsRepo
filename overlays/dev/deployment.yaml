@@ -17,6 +17,11 @@ spec:
     spec:
       serviceAccountName: kopfexample-account
       containers:
+        - name: busybox
+          image: docker.io/busybox:latest
+          imagePullPolicy: Always
+          command: ["sleep"]
+          args: ["100000000"]
         - name: fusionmqttdataservice
           env:
             - name: BROKER_URL
