@@ -17,6 +17,11 @@ spec:
     spec:
       serviceAccountName: kopfexample-account
       containers:
+        - name: busybox
+          image: docker.io/busybox:latest
+          imagePullPolicy: Always
+          command: ["sleep"]
+          args: ["100000000"]
         - name: fusionopcuadataservice
           env:
             - name: OPC_URL
@@ -32,13 +37,13 @@ spec:
             - name: USERNAME
               value: factory_admin@industry-fusion.com
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:assetv5:2:49"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-          image: docker.io/ibn40/fusionopcuadataservice:latest
+          image: docker.io/ibn40/fusionopcuadataservice:essen-fair-2
           imagePullPolicy: Always
           volumeMounts:
             - name: dataservice-machine-config
@@ -47,11 +52,11 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:assetv5:2:49"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:assetv5:2:49"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:17"
+              value: "urn:ngsi-ld:assetv5:2:49"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:
