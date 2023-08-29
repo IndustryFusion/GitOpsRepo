@@ -16,6 +16,7 @@ spec:
         app: mqtt-teka-airtracker-2-oisp-sensor
     spec:
       serviceAccountName: kopfexample-account
+      restartPolicy: Always
       containers:
         - name: busybox
           image: docker.io/busybox:latest
