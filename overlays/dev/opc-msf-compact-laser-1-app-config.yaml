@@ -28,6 +28,21 @@ data:
                  "node_id": "ns=2",
                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
                  "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-z"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/RequiredTechParams?msnc.TP_NahrT[2]",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-supply-voltage-l1"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/CuttingHeadStateObject?msnc.TC_Acur[0]",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l1"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/Gas?msnc.Press[0]",
+                 "parameter": "base-objects-v0.1-medium-runtime-input-pressure"
                }
            ]
        }
