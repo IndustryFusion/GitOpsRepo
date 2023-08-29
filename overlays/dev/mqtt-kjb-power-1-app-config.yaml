@@ -7,7 +7,7 @@ data:
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/system/status/qunit/json",
                   "key": ["DEVICE_STATUS"],
-                  "parameter": ["base-objects-v0.1-operation-conditions-runtime-machine-state"]
+                  "parameter": ["power-source-v0.1-power-source-runtime-machine-state"]
               },
               {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/power/json",
@@ -20,11 +20,6 @@ data:
                   "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1", "base-objects-v0.1-power-supply-runtime-supply-voltage-l1"]
               },
               {
-                  "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/gas",
-                  "key": ["O2"],
-                  "parameter": ["base-objects-v0.1-medium-runtime-medium-name"]
-              },
-              {
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/actual",
                   "key": ["PG1"],
                   "parameter": ["base-objects-v0.1-medium-runtime-input-pressure"]
@@ -33,11 +28,6 @@ data:
                   "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/reference",
                   "key": ["PG1"],
                   "parameter": ["base-objects-v0.1-medium-runtime-static-input-pressure"]
-              },
-              {
-                  "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/gas",
-                  "key": ["O2"],
-                  "parameter": ["base-objects-v0.1-medium-runtime-volume-flow-rate"]
               }
           ]
       }

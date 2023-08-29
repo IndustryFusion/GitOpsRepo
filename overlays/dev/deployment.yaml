@@ -16,7 +16,13 @@ spec:
         app: mqtt-kjb-power-1-oisp-sensor
     spec:
       serviceAccountName: kopfexample-account
+      restartPolicy: Always
       containers:
+        - name: busybox
+          image: docker.io/busybox:latest
+          imagePullPolicy: Always
+          command: ["sleep"]
+          args: ["100000000"]
         - name: fusionmqttdataservice
           env:
             - name: BROKER_URL
@@ -38,7 +44,7 @@ spec:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-          image: docker.io/ibn40/fusionmqttdataservice:essen-fair
+          image: docker.io/ibn40/fusionmqttdataservice:essen-fair-2
           imagePullPolicy: Always
           volumeMounts:
             - name: dataservice-machine-config
