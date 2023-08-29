@@ -16,6 +16,7 @@ spec:
         app: opc-teka-aircube-filter-1-oisp-sensor
     spec:
       serviceAccountName: kopfexample-account
+      restartPolicy: Always
       containers:
         - name: busybox
           image: docker.io/busybox:latest
@@ -28,6 +29,10 @@ spec:
               value: "opc.tcp://192.168.49.151"
             - name: OPC_PORT
               value: "4840"
+            - name: OPC_USERNAME
+              value: ""
+            - name: OPC_PASSWORD
+              value: ""
             - name: OISP_URL
               value: "127.0.0.1"
             - name: OISP_PORT
@@ -43,7 +48,7 @@ spec:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-          image: docker.io/ibn40/fusionopcuadataservice:essen-fair
+          image: docker.io/ibn40/fusionopcuadataservice:essen-fair-2
           imagePullPolicy: Always
           volumeMounts:
             - name: dataservice-machine-config
