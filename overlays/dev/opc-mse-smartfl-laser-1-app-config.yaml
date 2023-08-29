@@ -7,7 +7,7 @@ data:
                {
                    "node_id": "ns=2",
                    "identifier": "s=Model.MachineInfo.State",
-                   "parameter": "base-objects-v0.1-operation-conditions-runtime-machine-state"
+                   "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-state"
                },
                {
                  "node_id": "ns=2",
