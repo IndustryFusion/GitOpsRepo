@@ -7,7 +7,7 @@ data:
               {
                   "node_id": "ns=4",
                   "identifier": "i=39",
-                  "parameter": "base-objects-v0.1-operation-conditions-runtime-machine-state"
+                  "parameter": "filter-v0.1-filter-runtime-machine-state"
               },
               {
                   "node_id": "ns=4",
@@ -16,8 +16,8 @@ data:
               },
               {
                   "node_id": "ns=4",
-                  "identifier": "i=31",
-                  "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l1"
+                  "identifier": "i=24",
+                  "parameter": "filter-v0.1-filter-runtime-operating-hours"
               }
           ]
       }
