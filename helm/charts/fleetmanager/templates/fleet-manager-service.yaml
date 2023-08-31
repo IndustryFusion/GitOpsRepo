@@ -21,6 +21,7 @@ spec:
 ---
 {{- $mongodbsecret := (lookup "v1" "Secret" .Release.Namespace "mongodb-fleet-manager-connection") -}}
 {{- $fleetmanagersecret := (lookup "v1" "Secret" .Release.Namespace "fleet-manager-user") -}}
+{{- $alertasecret :=  (lookup "v1" "Secret" .Release.Namespace "alerta") -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -66,6 +67,17 @@ spec:
         {{- if $mongodbsecret }}
         - name: MONGO_URL
           value: {{ index $mongodbsecret "data" "connectionString.standard" | toString | b64dec }}
+        {{- end }}
+        {{- if $alertasecret }}
+        - name: ALERTA_SERVICE_URL
+          value: {{ $alertasecret.data.url | toString | b64dec }}
+        - name: ALERTA_SERVICE_TOKEN
+          value: {{ $alertasecret.data.accesskey | toString | b64dec }}
+        {{- else }}
+        - name: ALERTA_SERVICE_URL
+          value: {{ .Values.alerta.url | toString }}
+        - name: ALERTA_SERVICE_TOKEN
+          value: {{ .Values.alerta.accesskey | toString }}
         {{- end }}
         {{- if $fleetmanagersecret }}
         - name: HTTP_BASIC_USER
