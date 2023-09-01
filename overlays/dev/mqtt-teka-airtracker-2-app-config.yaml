@@ -28,6 +28,16 @@ data:
                   "topic": "airtracker-74145/noise",
                   "key": [],
                   "parameter": ["sensor-v0.1-sensor-runtime-ambient-noise"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C4C8/",
+                  "key": ["phase1:current"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C4C8/",
+                  "key": ["phase1:power"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
               }
           ]
       }
