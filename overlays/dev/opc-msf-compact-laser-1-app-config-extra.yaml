@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  config.json: |
+    {
+      "fusionmqttdataservice": {
+          "specification": [
+              {
+                  "topic": "smartfit/state/807D3AE5C4C8/",
+                  "key": ["phase1:current"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C4C8/",
+                  "key": ["phase1:power"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
+              }
+          ]
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: opc-msf-compact-laser-1-app-config-extra
