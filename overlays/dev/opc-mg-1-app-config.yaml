@@ -5,9 +5,9 @@ data:
       "fusionopcuadataservice": {
           "specification": [
               {
-                   "node_id": "ns=2",
-                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
-                   "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-cutter-head-speed"
+                "node_id": "ns=2",
+                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-cutter-head-speed"
               },
               {
                 "node_id": "ns=2",
@@ -15,9 +15,9 @@ data:
                 "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-machine-state"
               },
               {
-                  "node_id": "ns=2",
-                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
-                  "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-machine-position-x"
+                "node_id": "ns=2",
+                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
+                "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-machine-position-x"
               },
               {
                 "node_id": "ns=2",
