@@ -16,6 +16,7 @@ spec:
         app: opc-mcc-plasma-1-oisp-sensor
     spec:
       serviceAccountName: kopfexample-account
+      restartPolicy: Always
       containers:
         - name: busybox
           image: docker.io/busybox:latest
@@ -37,13 +38,13 @@ spec:
             - name: USERNAME
               value: factory_admin@industry-fusion.com
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:13"
+              value: "urn:ngsi-ld:assetv5:2:55"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-          image: docker.io/ibn40/fusionopcuadataservice:latest
+          image: docker.io/ibn40/fusionopcuadataservice:essen-fair-2
           imagePullPolicy: Always
           volumeMounts:
             - name: dataservice-machine-config
@@ -52,11 +53,11 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:13"
+              value: "urn:ngsi-ld:assetv5:2:55"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:asset:2:13"
+              value: "urn:ngsi-ld:assetv5:2:55"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:13"
+              value: "urn:ngsi-ld:assetv5:2:55"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:

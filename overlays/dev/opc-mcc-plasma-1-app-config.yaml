@@ -5,29 +5,44 @@ data:
       "fusionopcuadataservice": {
           "specification": [
               {
-                  "node_id": "ns=2",
-                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
-                  "parameter": "speed"
+                   "node_id": "ns=2",
+                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                   "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-cutter-head-speed"
               },
               {
                 "node_id": "ns=2",
                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
-                "parameter": "status"
+                "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-machine-state"
               },
               {
                   "node_id": "ns=2",
                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
-                  "parameter": "machinePositionX"
+                  "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-machine-position-x"
               },
               {
                 "node_id": "ns=2",
                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
-                "parameter": "machinePositionY"
+                "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-machine-position-y"
               },
               {
                 "node_id": "ns=2",
                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
-                "parameter": "machinePositionZ"
+                "parameter": "plasma-cutter-v0.1-plasma-cutter-runtime-machine-position-z"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/RequiredTechParams?msnc.TP_NahrT[2]",
+                "parameter": "base-objects-v0.1-power-supply-runtime-supply-voltage-l1"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/CuttingHeadStateObject?msnc.TC_Acur[0]",
+                "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l1"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/Gas?msnc.Press[0]",
+                "parameter": "base-objects-v0.1-medium-runtime-input-pressure"
               }
           ]
       }
