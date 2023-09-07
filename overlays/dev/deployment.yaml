@@ -23,29 +23,29 @@ spec:
           imagePullPolicy: Always
           command: ["sleep"]
           args: ["100000000"]
-        - name: fusionmqttdataservice
-          env:
-            - name: BROKER_URL
-              value: "192.168.49.26"
-            - name: BROKER_PORT
-              value: "1883"
-            - name: OISP_URL
-              value: "127.0.0.1"
-            - name: OISP_PORT
-              value: "7070"
-            - name: SLEEP
-              value: "1"
-            - name: OISP_API_ROOT
-              value: https://development.industry-fusion.com/oisp/v1/api
-            - name: USERNAME
-              value: factory_admin@industry-fusion.com
-            - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:assetv5:2:49"
-            - name: PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: oisp-password-secret
+        # - name: fusionmqttdataservice
+        #   env:
+        #     - name: BROKER_URL
+        #       value: "192.168.49.26"
+        #     - name: BROKER_PORT
+        #       value: "1883"
+        #     - name: OISP_URL
+        #       value: "127.0.0.1"
+        #     - name: OISP_PORT
+        #       value: "7070"
+        #     - name: SLEEP
+        #       value: "1"
+        #     - name: OISP_API_ROOT
+        #       value: https://development.industry-fusion.com/oisp/v1/api
+        #     - name: USERNAME
+        #       value: factory_admin@industry-fusion.com
+        #     - name: OISP_DEVICE_ID
+        #       value: "urn:ngsi-ld:assetv5:2:49"
+        #     - name: PASSWORD
+        #       valueFrom:
+        #         secretKeyRef:
+        #           key: password
+        #           name: oisp-password-secret
           image: docker.io/ibn40/fusionmqttdataservice:essen-fair-2
           imagePullPolicy: Always
           volumeMounts:
@@ -71,7 +71,7 @@ spec:
             - name: USERNAME
               value: factory_admin@industry-fusion.com
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:assetv5:2:49"
+              value: "urn:ngsi-ld:assetv5:2:54"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -86,11 +86,11 @@ spec:
         - name: oisp-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:assetv5:2:49"
+              value: "urn:ngsi-ld:assetv5:2:54"
             - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:assetv5:2:49"
+              value: "urn:ngsi-ld:assetv5:2:54"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:assetv5:2:49"
+              value: "urn:ngsi-ld:assetv5:2:54"
             - name: OISP_DEVICE_ACTIVATION_CODE
               valueFrom:
                 secretKeyRef:
