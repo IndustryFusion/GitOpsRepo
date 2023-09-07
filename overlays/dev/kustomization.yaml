@@ -3,6 +3,5 @@ resources:
 - opc-msf-compact-laser-1-global-devices-config.yaml
 - opc-msf-compact-laser-1-global-devices-secret.yaml
 - opc-msf-compact-laser-1-app-config.yaml
-# - opc-msf-compact-laser-1-app-config-extra.yaml
 - oisp-token-operator-secret.yaml
 - oisp-token-operator-role-binding.yaml
