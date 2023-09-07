@@ -46,12 +46,12 @@ spec:
         #         secretKeyRef:
         #           key: password
         #           name: oisp-password-secret
-          image: docker.io/ibn40/fusionmqttdataservice:essen-fair-2
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: dataservice-machine-config-extra
-              mountPath: /resources/config.json
-              subPath: config.json
+          # image: docker.io/ibn40/fusionmqttdataservice:essen-fair-2
+          # imagePullPolicy: Always
+          # volumeMounts:
+          #   - name: dataservice-machine-config-extra
+          #     mountPath: /resources/config.json
+          #     subPath: config.json
         - name: fusionopcuadataservice
           env:
             - name: OPC_URL
