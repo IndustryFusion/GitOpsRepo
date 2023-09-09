@@ -1,7 +1,7 @@
 resources:
 - deployment.yaml
-- opc-mse-smartfl-laser-1-global-devices-config.yaml
-- opc-mse-smartfl-laser-1-global-devices-secret.yaml
-- opc-mse-smartfl-laser-1-app-config.yaml
+- opc-mse-smartfl-laser-essen-global-devices-config.yaml
+- opc-mse-smartfl-laser-essen-global-devices-secret.yaml
+- opc-mse-smartfl-laser-essen-app-config.yaml
 - oisp-token-operator-secret.yaml
 - oisp-token-operator-role-binding.yaml

@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: opc-mse-smartfl-laser-1
+  name: opc-mse-smartfl-laser-essen
   labels:
-    app: opc-mse-smartfl-laser-1
+    app: opc-mse-smartfl-laser-essen
 spec:
   selector:
     matchLabels:
-      app: opc-mse-smartfl-laser-1
+      app: opc-mse-smartfl-laser-essen
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: opc-mse-smartfl-laser-1
+        app: opc-mse-smartfl-laser-essen
     spec:
       serviceAccountName: kopfexample-account
       restartPolicy: Always
@@ -26,7 +26,7 @@ spec:
         - name: fusionopcuadataservice
           env:
             - name: OPC_URL
-              value: "opc.tcp://192.168.49.178"
+              value: "opc.tcp://192.168.189.163"
             - name: OPC_PORT
               value: "48030"
             - name: OPC_USERNAME
@@ -66,7 +66,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: activation-code
-                  name: opc-mse-smartfl-laser-1-global-devices-secret
+                  name: opc-mse-smartfl-laser-essen-global-devices-secret
           volumeMounts:
             - name: oisp-devices-config-volume
               mountPath: /volume/config
@@ -100,13 +100,13 @@ spec:
       volumes:
         - name: oisp-devices-config-volume
           configMap:
-            name: opc-mse-smartfl-laser-1-global-devices-config
+            name: opc-mse-smartfl-laser-essen-global-devices-config
             items:
               - key: config.json
                 path: config.json
         - name: dataservice-machine-config
           configMap:
-            name: opc-mse-smartfl-laser-1-app-config
+            name: opc-mse-smartfl-laser-essen-app-config
             items:
             - key: config.json
               path: config.json

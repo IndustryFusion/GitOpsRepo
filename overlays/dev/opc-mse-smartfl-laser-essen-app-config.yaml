@@ -45,4 +45,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-mse-smartfl-laser-1-app-config
+  name: opc-mse-smartfl-laser-essen-app-config
