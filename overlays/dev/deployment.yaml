@@ -33,6 +33,8 @@ spec:
               value: "127.0.0.1"
             - name: OISP_PORT
               value: "7070"
+            - name: SLEEP
+              value: "1"  
             - name: OISP_API_ROOT
               value: https://development.industry-fusion.com/oisp/v1/api
             - name: USERNAME
