@@ -5,39 +5,29 @@ data:
       "fusionmqttdataservice": {
           "specification": [
               {
-                  "topic": "airtracker-74145/relay1",
+                  "topic": "airtracker-F2D9F/relay1",
                   "key": [],
                   "parameter": ["sensor-v0.1-sensor-runtime-machine-state"]
               },
               {
-                  "topic": "airtracker-74145/dust",
+                  "topic": "airtracker-F2D9F/dust",
                   "key": [],
                   "parameter": ["sensor-v0.1-sensor-runtime-dustiness"]
               },
               {
-                  "topic": "airtracker-74145/temperature",
+                  "topic": "airtracker-F2D9F/temperature",
                   "key": [],
                   "parameter": ["sensor-v0.1-sensor-runtime-ambient-operating-temperature"]
               },
               {
-                  "topic": "airtracker-74145/humidity",
+                  "topic": "airtracker-F2D9F/humidity",
                   "key": [],
                   "parameter": ["sensor-v0.1-sensor-runtime-relative-humidity"]
               },
               {
-                  "topic": "airtracker-74145/noise",
+                  "topic": "airtracker-F2D9F/noise",
                   "key": [],
                   "parameter": ["sensor-v0.1-sensor-runtime-ambient-noise"]
-              },
-              {
-                  "topic": "smartfit/state/807D3AE5C4C8/",
-                  "key": ["phase1:current"],
-                  "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1"]
-              },
-              {
-                  "topic": "smartfit/state/807D3AE5C4C8/",
-                  "key": ["phase1:power"],
-                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
               }
           ]
       }
