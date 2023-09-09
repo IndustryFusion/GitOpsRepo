@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mqtt-teka-airtracker-2
+  name: mqtt-teka-airtracker-essen
   labels:
-    app: mqtt-teka-airtracker-2-oisp-sensor
+    app: mqtt-teka-airtracker-essen-oisp-sensor
 spec:
   selector:
     matchLabels:
-      app: mqtt-teka-airtracker-2-oisp-sensor
+      app: mqtt-teka-airtracker-essen-oisp-sensor
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: mqtt-teka-airtracker-2-oisp-sensor
+        app: mqtt-teka-airtracker-essen-oisp-sensor
     spec:
       serviceAccountName: kopfexample-account
       restartPolicy: Always
@@ -26,7 +26,7 @@ spec:
         - name: fusionmqttdataservice
           env:
             - name: BROKER_URL
-              value: "192.168.49.26"
+              value: "192.168.189.186"
             - name: BROKER_PORT
               value: "1883"
             - name: OISP_URL
@@ -62,7 +62,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: activation-code
-                  name: mqtt-teka-airtracker-2-global-devices-secret
+                  name: mqtt-teka-airtracker-essen-global-devices-secret
           volumeMounts:
             - name: oisp-devices-config-volume
               mountPath: /volume/config
@@ -96,13 +96,13 @@ spec:
       volumes:
         - name: oisp-devices-config-volume
           configMap:
-            name: mqtt-teka-airtracker-2-global-devices-config
+            name: mqtt-teka-airtracker-essen-global-devices-config
             items:
               - key: config.json
                 path: config.json
         - name: dataservice-machine-config
           configMap:
-            name: mqtt-teka-airtracker-2-app-config
+            name: mqtt-teka-airtracker-essen-app-config
             items:
             - key: config.json
               path: config.json

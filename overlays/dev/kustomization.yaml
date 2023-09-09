@@ -1,7 +1,7 @@
 resources:
 - deployment.yaml
-- mqtt-teka-airtracker-2-global-devices-config.yaml
-- mqtt-teka-airtracker-2-global-devices-secret.yaml
-- mqtt-teka-airtracker-2-app-config.yaml
+- mqtt-teka-airtracker-essen-global-devices-config.yaml
+- mqtt-teka-airtracker-essen-global-devices-secret.yaml
+- mqtt-teka-airtracker-essen-app-config.yaml
 - oisp-token-operator-secret.yaml
 - oisp-token-operator-role-binding.yaml
