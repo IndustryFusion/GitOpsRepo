@@ -5,27 +5,27 @@ data:
       "fusionmqttdataservice": {
           "specification": [
               {
-                  "topic": "kjellberg/plasma/Q-Series/Q-3000/system/status/qunit/json",
+                  "topic": "kjellberg/plasma/Q-Series/Q-4500/system/status/qunit/json",
                   "key": ["DEVICE_STATUS"],
                   "parameter": ["power-source-v0.1-power-source-runtime-machine-state"]
               },
               {
-                  "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/power/json",
+                  "topic": "kjellberg/plasma/Q-Series/Q-4500/consumption/power/json",
                   "key": ["POWER_SUPPLY"],
                   "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
               },
               {
-                  "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/actual/json",
+                  "topic": "kjellberg/plasma/Q-Series/Q-4500/parameter/actual/json",
                   "key": ["CUTTING_CURRENT", "CUTTING_VOLTAGE"],
                   "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1", "base-objects-v0.1-power-supply-runtime-supply-voltage-l1"]
               },
               {
-                  "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/actual",
+                  "topic": "kjellberg/plasma/Q-Series/Q-4500/parameter/actual",
                   "key": ["PG1"],
                   "parameter": ["base-objects-v0.1-medium-runtime-input-pressure"]
               },
               {
-                  "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/reference",
+                  "topic": "kjellberg/plasma/Q-Series/Q-4500/parameter/reference",
                   "key": ["PG1"],
                   "parameter": ["base-objects-v0.1-medium-runtime-static-input-pressure"]
               }
@@ -35,4 +35,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: mqtt-kjb-power-1-app-config
+  name: mqtt-kjb-power-essen-app-config

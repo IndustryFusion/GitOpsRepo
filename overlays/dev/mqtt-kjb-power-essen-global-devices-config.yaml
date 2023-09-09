@@ -46,4 +46,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: mqtt-kjb-power-1-global-devices-config
+  name: mqtt-kjb-power-essen-global-devices-config
