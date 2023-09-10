@@ -50,4 +50,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-mg-1-app-config
+  name: opc-mg-essen-app-config

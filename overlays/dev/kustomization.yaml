@@ -1,7 +1,7 @@
 resources:
 - deployment.yaml
-- opc-mg-1-global-devices-config.yaml
-- opc-mg-1-global-devices-secret.yaml
-- opc-mg-1-app-config.yaml
+- opc-mg-essen-global-devices-config.yaml
+- opc-mg-essen-global-devices-secret.yaml
+- opc-mg-essen-app-config.yaml
 - oisp-token-operator-secret.yaml
 - oisp-token-operator-role-binding.yaml
