@@ -23,21 +23,6 @@ data:
                  "node_id": "ns=2",
                  "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL3",
                  "parameter": "base-objects-v0.1-power-supply-runtime-supply-voltage-l3"
-               },
-               {
-                 "node_id": "ns=2",
-                 "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL1",
-                 "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l1"
-               },
-               {
-                 "node_id": "ns=2",
-                 "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL2",
-                 "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l2"
-               },
-               {
-                 "node_id": "ns=2",
-                 "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL3",
-                 "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l3"
                }
            ]
        }

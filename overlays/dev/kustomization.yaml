@@ -3,5 +3,6 @@ resources:
 - opc-mse-smartfl-laser-essen-global-devices-config.yaml
 - opc-mse-smartfl-laser-essen-global-devices-secret.yaml
 - opc-mse-smartfl-laser-essen-app-config.yaml
+- opc-mse-smartfl-laser-essen-app-config-extra.yaml
 - oisp-token-operator-secret.yaml
 - oisp-token-operator-role-binding.yaml

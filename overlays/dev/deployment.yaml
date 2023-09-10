@@ -23,6 +23,35 @@ spec:
           imagePullPolicy: Always
           command: ["sleep"]
           args: ["100000000"]
+        - name: fusionmqttdataservice
+          env:
+            - name: BROKER_URL
+              value: "192.168.189.186"
+            - name: BROKER_PORT
+              value: "1883"
+            - name: SLEEP
+              value: "1"  
+            - name: OISP_URL
+              value: "127.0.0.1"
+            - name: OISP_PORT
+              value: "7070"
+            - name: OISP_API_ROOT
+              value: https://development.industry-fusion.com/oisp/v1/api
+            - name: USERNAME
+              value: factory_admin@industry-fusion.com
+            - name: OISP_DEVICE_ID
+              value: "urn:ngsi-ld:assetv5:2:47"
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: oisp-password-secret
+          image: docker.io/ibn40/fusionmqttdataservice:essen-fair-2
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: dataservice-machine-config-extra
+              mountPath: /resources/config.json
+              subPath: config.json  
         - name: fusionopcuadataservice
           env:
             - name: OPC_URL
@@ -110,6 +139,12 @@ spec:
             items:
             - key: config.json
               path: config.json
+        - name: dataservice-machine-config-extra
+          configMap:
+            name: opc-mse-smartfl-laser-essen-app-config
+            items:
+            - key: config.json
+              path: config.json            
       imagePullSecrets:
         - name: regcred
       # nodeSelector:
