@@ -5,14 +5,29 @@ data:
       "fusionmqttdataservice": {
           "specification": [
               {
-                  "topic": "smartfit/state/807D3AE5C4C8/",
+                  "topic": "smartfit/state/807D3AE5C550/",
+                  "key": ["state"],
+                  "parameter": ["laser-cutter-v0.1-laser-cutter-runtime-machine-state"]
+               },
+               {
+                  "topic": "smartfit/state/807D3AE5C550/",
                   "key": ["phase1:current"],
                   "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1"]
               },
               {
-                  "topic": "smartfit/state/807D3AE5C4C8/",
+                  "topic": "smartfit/state/807D3AE5C550/",
                   "key": ["phase1:power"],
                   "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C550/",
+                  "key": ["phase2:current"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l2"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C550/",
+                  "key": ["phase3:current"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l3"]
               }
           ]
       }

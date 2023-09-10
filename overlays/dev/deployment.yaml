@@ -23,16 +23,14 @@ spec:
           imagePullPolicy: Always
           command: ["sleep"]
           args: ["100000000"]
-        - name: fusionopcuadataservice
+        - name: fusionmqttdataservice
           env:
-            - name: OPC_URL
-              value: "opc.tcp://192.168.189.196"
-            - name: OPC_PORT
-              value: "62548"
-            - name: OPC_USERNAME
-              value: ""
-            - name: OPC_PASSWORD
-              value: ""
+            - name: BROKER_URL
+              value: "192.168.189.186"
+            - name: BROKER_PORT
+              value: "1883"
+            - name: SLEEP
+              value: "1"  
             - name: OISP_URL
               value: "127.0.0.1"
             - name: OISP_PORT
@@ -48,10 +46,10 @@ spec:
                 secretKeyRef:
                   key: password
                   name: oisp-password-secret
-          image: docker.io/ibn40/fusionopcuadataservice:essen-fair-2
+          image: docker.io/ibn40/fusionmqttdataservice:essen-fair-2
           imagePullPolicy: Always
           volumeMounts:
-            - name: dataservice-machine-config
+            - name: dataservice-machine-config-extra
               mountPath: /resources/config.json
               subPath: config.json
         - name: oisp-iot-agent

@@ -2,6 +2,6 @@ resources:
 - deployment.yaml
 - opc-msf-compact-laser-essen-global-devices-config.yaml
 - opc-msf-compact-laser-essen-global-devices-secret.yaml
-- opc-msf-compact-laser-essen-app-config.yaml
+- opc-msf-compact-laser-essen-app-config-extra.yaml
 - oisp-token-operator-secret.yaml
 - oisp-token-operator-role-binding.yaml
