@@ -20,4 +20,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-msf-compact-laser-1-app-config-extra
+  name: opc-msf-compact-laser-essen-app-config-extra
