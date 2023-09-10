@@ -51,7 +51,7 @@ spec:
           volumeMounts:
             - name: dataservice-machine-config-extra
               mountPath: /resources/config.json
-              subPath: config.json  
+              subPath: config.json
         - name: fusionopcuadataservice
           env:
             - name: OPC_URL
@@ -141,7 +141,7 @@ spec:
               path: config.json
         - name: dataservice-machine-config-extra
           configMap:
-            name: opc-mse-smartfl-laser-essen-app-config
+            name: opc-mse-smartfl-laser-essen-app-config-extra
             items:
             - key: config.json
               path: config.json            
