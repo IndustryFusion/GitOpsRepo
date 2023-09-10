@@ -4,6 +4,11 @@ data:
     {
        "fusionmqttdataservice": {
            "specification": [
+                {
+                  "topic": "smartfit/state/807D3AE5C550/",
+                  "key": ["state"],
+                  "parameter": ["laser-cutter-v0.1-laser-cutter-runtime-machine-state"]
+               },
                {
                   "topic": "smartfit/state/807D3AE5C550/",
                   "key": ["phase1:current"],
