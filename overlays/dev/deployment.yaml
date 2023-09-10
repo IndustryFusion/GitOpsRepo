@@ -26,7 +26,7 @@ spec:
         - name: fusionopcuadataservice
           env:
             - name: OPC_URL
-              value: "opc.tcp://192.168.49.151"
+              value: "opc.tcp://192.168.0.10"
             - name: OPC_PORT
               value: "4840"
             - name: OPC_USERNAME
