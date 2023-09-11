@@ -17,7 +17,7 @@ data:
               {
                   "topic": "smartfit/state/807D3AE5C550/",
                   "key": ["phase1:power"],
-                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power-l1"]
               },
               {
                   "topic": "smartfit/state/807D3AE5C550/",
@@ -28,6 +28,16 @@ data:
                   "topic": "smartfit/state/807D3AE5C550/",
                   "key": ["phase3:current"],
                   "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l3"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C550/",
+                  "key": ["phase2:power"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power-l2"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C550/",
+                  "key": ["phase3:power"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power-l3"]
               }
            ]
        }
