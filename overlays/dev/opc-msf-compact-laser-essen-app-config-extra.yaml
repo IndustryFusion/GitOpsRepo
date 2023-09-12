@@ -5,29 +5,39 @@ data:
       "fusionmqttdataservice": {
           "specification": [
               {
-                  "topic": "smartfit/state/807D3AE5C550/",
+                  "topic": "smartfit/state/807D3AE5C55C/",
                   "key": ["state"],
                   "parameter": ["laser-cutter-v0.1-laser-cutter-runtime-machine-state"]
                },
                {
-                  "topic": "smartfit/state/807D3AE5C550/",
+                  "topic": "smartfit/state/807D3AE5C55C/",
                   "key": ["phase1:current"],
                   "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1"]
               },
               {
-                  "topic": "smartfit/state/807D3AE5C550/",
+                  "topic": "smartfit/state/807D3AE5C55C/",
                   "key": ["phase1:power"],
-                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power-l1"]
               },
               {
-                  "topic": "smartfit/state/807D3AE5C550/",
+                  "topic": "smartfit/state/807D3AE5C55C/",
                   "key": ["phase2:current"],
                   "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l2"]
               },
               {
-                  "topic": "smartfit/state/807D3AE5C550/",
+                  "topic": "smartfit/state/807D3AE5C55C/",
                   "key": ["phase3:current"],
                   "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l3"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C55C/",
+                  "key": ["phase2:power"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power-l2"]
+              },
+              {
+                  "topic": "smartfit/state/807D3AE5C55C/",
+                  "key": ["phase3:power"],
+                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power-l3"]
               }
           ]
       }
