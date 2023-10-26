@@ -11,27 +11,6 @@ opcua:
     name: akri-opcua
     # brokerProperties is a map of properties that will be passed to any instances
     # created as a result of applying this OPC UA configuration
-    brokerProperties: {}
-    capacity: 1
-    brokerPod:
-      image:
-        # repository is the OPC UA broker container reference
-        repository:
-        # tag is the OPC UA broker image tag
-        tag: latest
-        # pullPolicy is the OPC UA broker pull policy
-        pullPolicy: ""
-      resources:
-        # memoryRequest defines the minimum amount of RAM that must be available to this Pod
-        # for it to be scheduled by the Kubernetes Scheduler
-        memoryRequest: 76Mi
-        # cpuRequest defines the minimum amount of CPU that must be available to this Pod
-        # for it to be scheduled by the Kubernetes Scheduler
-        cpuRequest: 9m
-        # memoryLimit defines the maximum amount of RAM this Pod can consume.
-        memoryLimit: 200Mi
-        # cpuLimit defines the maximum amount of CPU this Pod can consume.
-        cpuLimit: 30m
     discoveryDetails:
       # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
       discoveryUrls:
@@ -41,10 +20,3 @@ opcua:
       applicationNames:
         action: Exclude
         items: []
-    # mountCertificates determines whether to mount into the broker pods k8s Secrets 
-    # containing OPC UA client credentials for connecting to OPC UA severs with the 
-    # same signing certificate authority.
-    # If set to false, the brokers will attempt to make an insecure connection with the servers.
-    mountCertificates: false
-    # capacity is the capacity for any instances created as a result of
-    # applying this OPC UA configuration

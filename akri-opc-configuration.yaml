@@ -19,94 +19,276 @@ spec:
         {{- else }}
         items: []
         {{- end }}
-  
-  {{- if or .Values.opcua.configuration.brokerPod.image.repository .Values.opcua.configuration.brokerJob.image.repository }}
-  {{- /* Only add brokerSpec if a broker image is provided */}}
+
   brokerSpec:
-    {{- if .Values.opcua.configuration.brokerPod.image.repository }}
     brokerPodSpec:
       containers:
-      - name: {{ .Values.opcua.configuration.name }}-broker
-        image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod.image.repository .Values.opcua.configuration.brokerPod.image.tag | quote }}
-        {{- with .Values.opcua.configuration.brokerPod.image.pullPolicy }}
-        imagePullPolicy: {{ . }}
-        {{- end }}
-        {{- if .Values.opcua.configuration.brokerPod.env }}
+      - name: busybox
+        image: docker.io/busybox:latest
+        imagePullPolicy: Always
+        command: ["sleep"]
+        args: ["100000000"]
+      - name: fusionmqttdataservice
         env:
-          {{- range $key, $val := .Values.opcua.configuration.brokerPod.env }}
-          - name: {{ $key }}
-            value: {{ $val | quote }}
-          {{- end }}
-        {{- end }}
-        {{- if .Values.opcua.configuration.brokerPod.envFrom }}
-        envFrom:
-        {{- range $val := .Values.opcua.configuration.brokerPod.envFrom.secretRef }}
-        - secretRef:
-            name: {{ $val | quote }}
-        {{- end }}
-        {{- range $val := .Values.opcua.configuration.brokerPod.envFrom.configMapRef }}
-        - configMapRef:
-            name: {{ $val | quote }}
-        {{- end }}
-        {{- end }}
-        {{- if .Values.opcua.configuration.brokerPod.env }}
-        env:
-          {{- range $key, $val := .Values.opcua.configuration.brokerPod.env }}
-          - name: {{ $key }}
-            value: {{ $val | quote }}
-          {{- end }}
-        {{- end }}
-        resources:
-          requests:
-            {{`"{{PLACEHOLDER}}"`}} : "1"
-            memory: {{ .Values.opcua.configuration.brokerPod.resources.memoryRequest }}
-            cpu: {{ .Values.opcua.configuration.brokerPod.resources.cpuRequest }}
-          limits:
-            {{`"{{PLACEHOLDER}}"`}} : "1"
-            memory: {{ .Values.opcua.configuration.brokerPod.resources.memoryLimit }}
-            cpu: {{ .Values.opcua.configuration.brokerPod.resources.cpuLimit }}
-        {{- if or .Values.opcua.configuration.brokerPod.volumeMounts .Values.opcua.configuration.mountCertificates }}
+          - name: BROKER_URL
+            value: "192.168.189.186"
+          - name: BROKER_PORT
+            value: "1883"
+          - name: SLEEP
+            value: "1"  
+          - name: OISP_URL
+            value: "127.0.0.1"
+          - name: OISP_PORT
+            value: "7070"
+          - name: OISP_API_ROOT
+            value: https://development.industry-fusion.com/oisp/v1/api
+          - name: USERNAME
+            value: factory_admin@industry-fusion.com
+          - name: OISP_DEVICE_ID
+            value: "urn:ngsi-ld:assetv5:2:49"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: oisp-password-secret
+        image: docker.io/ibn40/fusionmqttdataservice:essen-fair-2
+        imagePullPolicy: Always
         volumeMounts:
-        {{- with .Values.opcua.configuration.brokerPod.volumeMounts}}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- if .Values.opcua.configuration.mountCertificates}}
-        - name: credentials
-          mountPath: "/etc/opcua-certs/client-pki"
-          readOnly: false
-        {{- end }}
-        {{- end }}
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 6 }}
-      {{- end }}
-      {{- if or .Values.opcua.configuration.brokerPod.volumeMounts .Values.opcua.configuration.mountCertificates }}
-      volumes:
-      {{- with .Values.opcua.configuration.brokerPod.volumes}}
-        {{- toYaml . | nindent 6 }}
-      {{- end }}
-      {{- if .Values.opcua.configuration.mountCertificates }}
-      - name: credentials
-        secret:
-          secretName: opcua-broker-credentials
+          - name: dataservice-machine-config-extra
+            mountPath: /resources/config.json
+            subPath: config.json
+      - name: oisp-iot-agent
+        env:
+          - name: OISP_DEVICE_ID
+            value: "urn:ngsi-ld:assetv5:2:49"
+          - name: OISP_DEVICE_NAME
+            value: "urn:ngsi-ld:assetv5:2:49"
+          - name: OISP_GATEWAY_ID
+            value: "urn:ngsi-ld:assetv5:2:49"
+          - name: OISP_DEVICE_ACTIVATION_CODE
+            valueFrom:
+              secretKeyRef:
+                key: activation-code
+                name: opc-msf-compact-laser-essen-global-devices-secret
+        volumeMounts:
+          - name: oisp-devices-config-volume
+            mountPath: /volume/config
+        securityContext:
+          privileged: true
+          capabilities:
+            drop:
+              - all
+        image: docker.io/ibn40/oisp-iot-agent:v2.4.2
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 41234
+            hostPort: 41234
+          - containerPort: 7070
+            hostPort: 7070
+      - name: oisp-token-operator
+        image: ibn40/oisp-token-operator:latest
+        imagePullPolicy: Always
+        env:
+          - name: OISP_API_ROOT
+            value: https://development.industry-fusion.com/oisp/v1/api
+          - name: USERNAME
+            value: factory_admin@industry-fusion.com
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: oisp-password-secret
+        securityContext:
+          privileged: true
+    volumes:
+      - name: oisp-devices-config-volume
+        configMap:
+          name: opc-msf-compact-laser-essen-global-devices-config
           items:
-          - key: client_certificate
-            path: own/certs/AkriBroker.der
-          - key: client_key
-            path: own/private/AkriBroker.pfx
-          - key: ca_certificate
-            path: trusted/certs/SomeCA.der
-          - key: ca_crl
-            path: trusted/crl/SomeCA.crl
-      {{- end }}
-      {{- end }}
-    {{- else }}
-  brokerProperties:
-  {{- range $key, $val := .Values.opcua.configuration.brokerProperties }}
-  {{- $key | nindent 4 }}: {{ $val | quote }}
-  {{- end }}
-  {{- else }}
+            - key: config.json
+              path: config.json
+      - name: dataservice-machine-config
+        configMap:
+          name: opc-msf-compact-laser-essen-app-config
+          items:
+          - key: config.json
+            path: config.json
+      - name: dataservice-machine-config-extra
+        configMap:
+          name: opc-msf-compact-laser-essen-app-config-extra
+          items:
+          - key: config.json
+            path: config.json
+    imagePullSecrets:
+      - name: regcred
+    # nodeSelector:
+    #   kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
   brokerProperties: {}
-  {{- end }}
-  capacity: {{ .Values.opcua.configuration.capacity }}
-{{- end }}
+  capacity: 1
+
+---
+
+apiVersion: v1
+data:
+  config.json: |
+    {
+       "fusionopcuadataservice": {
+           "specification": [
+               {
+                   "node_id": "ns=2",
+                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                   "parameter": "laser-cutter-v0.1-laser-cutter-runtime-cutter-head-speed"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
+                 "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-state"
+               },
+               {
+                   "node_id": "ns=2",
+                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
+                   "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-x"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
+                 "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-y"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
+                 "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-z"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/RequiredTechParams?msnc.TP_NahrT[2]",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-supply-voltage-l1"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/CuttingHeadStateObject?msnc.TC_Acur[0]",
+                 "parameter": "base-objects-v0.1-power-supply-runtime-current-strength-l1"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/Gas?msnc.Press[0]",
+                 "parameter": "base-objects-v0.1-medium-runtime-input-pressure"
+               }
+           ]
+       }
+     }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: opc-msf-compact-laser-essen-app-config
+
+---
+
+apiVersion: v1
+data:
+  config.json: |
+    {
+                "data_directory": "./data",
+                "listeners": {
+                        "rest_port": 8000,
+                        "udp_port": 41234,
+                        "tcp_port": 7070
+                },
+                "receivers": {
+                        "udp_port": 41235,
+                        "udp_address": "127.0.0.1"
+                },
+                "logger": {
+                        "level": "info",
+                        "path": "/tmp/",
+                        "max_size": 134217728
+                },
+                "connector": {
+                        "rest": {
+                                "host": "development.industry-fusion.com",
+                                "port": 443,
+                                "protocol": "https",
+                                "strictSSL": false,
+                                "timeout": 30000,
+                                "proxy": {
+                                        "host": false,
+                                        "port": false
+                                }
+                        },
+                        "mqtt": {
+                                "host": "development.industry-fusion.com",
+                                "port": 8883,
+                                "websockets": false,
+                                "qos": 1,
+                                "retain": false,
+                                "secure": true,
+                                "retries": 5,
+                                "strictSSL": false,
+                                "sparkplugB": true,
+                                "version": "spBv1.0"        
+                        }
+                }
+        }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: opc-msf-compact-laser-essen-global-devices-config
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kopfexample-account
+  namespace: oisp-devices
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kopfexample-role
+rules:
+
+  # Framework: knowing which other operators are running (i.e. peering).
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kopfexample-rolebinding-cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kopfexample-role
+subjects:
+  - kind: ServiceAccount
+    name: kopfexample-account
+    namespace: oisp-devices
+
+---
+
+apiVersion: v1
+stringData:
+  activation-code: Bagq8zgU
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: opc-msf-compact-laser-essen-global-devices-secret
+  namespace: oisp-devices
+
+---
+
+apiVersion: v1
+stringData:
+  password: "@zN8k51@ORJg"
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: oisp-password-secret
+  namespace: oisp-devices
+
