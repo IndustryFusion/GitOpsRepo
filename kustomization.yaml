@@ -1,2 +1,2 @@
-bases:
-- overlays/dev
+# bases:
+# - overlays/dev

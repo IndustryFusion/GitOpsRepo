@@ -4,5 +4,15 @@
 # of what can be included here.  All Helm and Kustomize options apply
 
 defaultNamespace: oisp-devices
-kustomize:
-  dir: overlays/dev
+# kustomize:
+#   dir: overlays/dev
+helm:
+  chart: akri-dev
+  repo: https://project-akri.github.io/akri/
+  releaseName: akri
+  values:
+    kubernetesDistro: k8s
+    opcua:
+      configuration:
+        enabled: true
+        name: akri-opcua
