@@ -4,3 +4,8 @@
 # of what can be included here.  All Helm and Kustomize options apply
 
 defaultNamespace: oisp-devices
+
+helm:
+  chart: akri-dev
+  repo: https://project-akri.github.io/akri/
+  releaseName: akri
