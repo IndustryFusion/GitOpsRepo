@@ -4,7 +4,7 @@ useLatestContainers: false
 # tags should be used.  This will be overridden if *.image.tag
 # is specified.
 useDevelopmentContainers: true
-
+kubernetesDistro: k8s
 # imagePullSecrets is the array of secrets needed to pull images.
 # This can be set from the helm command line using `--set imagePullSecrets[0].name="mysecret"`
 imagePullSecrets: []

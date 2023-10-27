@@ -10,9 +10,9 @@ helm:
   chart: akri-dev
   repo: https://project-akri.github.io/akri/
   releaseName: akri
-  values:
-    kubernetesDistro: k8s
-    opcua:
-      configuration:
-        enabled: true
-        name: akri-opcua
+  # values:
+  #   kubernetesDistro: k8s
+  #   opcua:
+  #     configuration:
+  #       enabled: true
+  #       name: akri-opcua

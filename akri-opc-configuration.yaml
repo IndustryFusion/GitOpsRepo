@@ -28,6 +28,13 @@ spec:
         imagePullPolicy: Always
         command: ["sleep"]
         args: ["100000000"]
+        securityContext:
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
       - name: fusionopcuadataservice
         env:
           - name: OPC_URL
@@ -55,6 +62,13 @@ spec:
           - name: dataservice-machine-config
             mountPath: /resources/config.json
             subPath: config.json
+        securityContext:
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
       - name: oisp-iot-agent
         env:
           - name: OISP_DEVICE_ID
@@ -72,10 +86,12 @@ spec:
           - name: oisp-devices-config-volume
             mountPath: /volume/config
         securityContext:
-          privileged: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
           capabilities:
-            drop:
-              - all
+            drop: ["ALL"]
         image: docker.io/ibn40/oisp-iot-agent:v2.4.2
         imagePullPolicy: Always
         ports:
@@ -97,7 +113,12 @@ spec:
                 key: password
                 name: oisp-password-secret
         securityContext:
-          privileged: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
     volumes:
       - name: oisp-devices-config-volume
         configMap:
