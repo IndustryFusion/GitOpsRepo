@@ -156,6 +156,13 @@ webhookConfiguration:
     tag: v1.1.1
     # pullPolicy is the webhook-certgen pull policy
     pullPolicy: IfNotPresent
+  securityContext:
+    runAsUser: 1000
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop: ["ALL"]
   # onlyOnControlPlane dictates whether the Akri Webhook will only run on nodes with 
   # the label with (key, value) of ("node-role.kubernetes.io/master", "")
   onlyOnControlPlane: false
