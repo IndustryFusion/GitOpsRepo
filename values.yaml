@@ -5,7 +5,7 @@
 # useLatestContainers is specified if the latest or latest-dev
 # tags should be used.  This will be overridden if *.image.tag
 # is specified.
-useLatestContainers: true
+useLatestContainers: false
 
 # useDevelopmentContainers is specified if the non-release (*-dev)
 # tags should be used.  This will be overridden if *.image.tag
