@@ -10,9 +10,114 @@ helm:
   chart: akri-dev
   repo: https://project-akri.github.io/akri/
   releaseName: akri
-  # values:
-  #   kubernetesDistro: k8s
-  #   opcua:
-  #     configuration:
-  #       enabled: true
-  #       name: akri-opcua
+  values:
+    kubernetesDistro: k8s
+    opcua:
+      configuration:
+        # enabled defines whether to load an OPC UA configuration
+        enabled: true
+        # name is the Kubernetes resource name that will be created for this
+        # OPC UA configuration
+        name: akri-opcua
+        # brokerProperties is a map of properties that will be passed to any instances
+        # created as a result of applying this OPC UA configuration
+        discoveryDetails:
+          # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
+          discoveryUrls:
+          - "opc.tcp://192.168.49.195:62548/"
+          # applicationNames is a filter applied to the discovered OPC UA servers to either exclusively
+          # include or exclude servers with application names in the applicationNames list.
+          applicationNames:
+            action: Exclude
+            items: []
+            
+    controller:
+      # enabled defines whether to apply the Akri Controller
+      enabled: true
+      image:
+        # repository is the Akri Controller container reference
+        repository: ghcr.io/project-akri/akri/controller
+        # tag is the Akri Controller container tag
+        # controller.yaml will default to v(AppVersion)[-dev]
+        # with `-dev` added if `useDevelopmentContainers` is specified
+        tag:
+        # pullPolicy is the Akri Controller pull policy
+        pullPolicy: "Always"
+      # ensures container doesn't run with unnecessary priviledges
+      securityContext:
+        runAsUser: 1000
+        allowPrivilegeEscalation: false
+        runAsNonRoot: true
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      # onlyOnControlPlane dictates whether the Akri Controller will only run on nodes with 
+      # the label with (key, value) of ("node-role.kubernetes.io/master", "")
+      onlyOnControlPlane: false
+      # allowOnControlPlane dictates whether a toleration will be added to allow to Akri Controller 
+      # to run on the control plane node
+      allowOnControlPlane: true
+      # nodeSelectors is the array of nodeSelectors used to target nodes for the Akri Controller to run on
+      # This can be set from the helm command line using `--set controller.nodeSelectors.label="value"`
+      nodeSelectors: {}
+      resources:
+        # memoryRequest defines the minimum amount of RAM that must be available to this Pod
+        # for it to be scheduled by the Kubernetes Scheduler
+        memoryRequest: 11Mi
+        # cpuRequest defines the minimum amount of CPU that must be available to this Pod
+        # for it to be scheduled by the Kubernetes Scheduler
+        cpuRequest: 10m
+        # memoryLimit defines the maximum amount of RAM this Pod can consume.
+        memoryLimit: 100Mi
+        # cpuLimit defines the maximum amount of CPU this Pod can consume.
+        cpuLimit: 26m
+
+    agent:
+      # enabled defines whether to apply the Akri Agent
+      enabled: true
+      # full specifies that the `agent-full` image should be used which has embedded Discovery Handlers
+      full: false
+      image:
+        # repository is the Akri Agent container reference
+        repository: ghcr.io/project-akri/akri/agent
+        # fullRepository is the container reference for the Akri Agent with embedded Discovery Handlers
+        fullRepository: ghcr.io/project-akri/akri/agent-full
+        # tag is the Akri Agent container tag
+        # agent.yaml will default to v(AppVersion)[-dev]
+        # with `-dev` added if `useDevelopmentContainers` is specified
+        tag:
+        # pullPolicy is the Akri Agent pull policy
+        pullPolicy: ""
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+      host:
+        # discoveryHandlers is the location of Akri Discovery Handler sockets and
+        # the agent registration service
+        discoveryHandlers: /var/lib/akri
+        # kubeletDevicePlugins is the location of the kubelet device-plugin sockets
+        kubeletDevicePlugins: /var/lib/kubelet/device-plugins
+        # containerRuntimeSocket is the default node path of the container runtime socket. 
+        # For MicroK8s, set to "/var/snap/microk8s/common/run/containerd.sock"
+        # For K3s, set to "/run/k3s/containerd/containerd.sock"
+        # For standard K8s, set to "/run/containerd/containerd.sock"
+        containerRuntimeSocket: ""
+        # udev is the node path of udev, usually at `/run/udev`
+        udev:
+      # allowDebugEcho dictates whether the Akri Agent will allow DebugEcho Configurations
+      allowDebugEcho: false
+      # nodeSelectors is the array of nodeSelectors used to target nodes for the Akri Agent to run on
+      # This can be set from the helm command line using `--set agent.nodeSelectors.label="value"`
+      nodeSelectors: {}
+      resources:
+        # memoryRequest defines the minimum amount of RAM that must be available to this Pod
+        # for it to be scheduled by the Kubernetes Scheduler
+        memoryRequest: 11Mi
+        # cpuRequest defines the minimum amount of CPU that must be available to this Pod
+        # for it to be scheduled by the Kubernetes Scheduler
+        cpuRequest: 10m
+        # memoryLimit defines the maximum amount of RAM this Pod can consume.
+        memoryLimit: 79Mi
+        # cpuLimit defines the maximum amount of CPU this Pod can consume.
+        cpuLimit: 26m
