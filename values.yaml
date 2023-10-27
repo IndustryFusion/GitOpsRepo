@@ -104,7 +104,7 @@ agent:
   host:
     # discoveryHandlers is the location of Akri Discovery Handler sockets and
     # the agent registration service
-    discoveryHandlers: /var/lib/akri
+    discoveryHandler: /var/lib/akri
     # kubeletDevicePlugins is the location of the kubelet device-plugin sockets
     kubeletDevicePlugins: /var/lib/kubelet/device-plugins
     # containerRuntimeSocket is the default node path of the container runtime socket. 
