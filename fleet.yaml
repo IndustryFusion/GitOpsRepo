@@ -6,6 +6,6 @@
 defaultNamespace: oisp-devices
 
 helm:
-  chart: akri-dev
-  repo: https://project-akri.github.io/akri/
+  chart: ""
+  repo: ""
   releaseName: akri
