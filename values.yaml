@@ -5,12 +5,12 @@
 # useLatestContainers is specified if the latest or latest-dev
 # tags should be used.  This will be overridden if *.image.tag
 # is specified.
-useLatestContainers: false
+useLatestContainers: true
 
 # useDevelopmentContainers is specified if the non-release (*-dev)
 # tags should be used.  This will be overridden if *.image.tag
 # is specified.
-useDevelopmentContainers: true
+useDevelopmentContainers: false
 
 # imagePullSecrets is the array of secrets needed to pull images.
 # This can be set from the helm command line using `--set imagePullSecrets[0].name="mysecret"`
