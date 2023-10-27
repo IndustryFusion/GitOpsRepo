@@ -187,7 +187,7 @@ webhookConfiguration:
 opcua:
   configuration:
     # enabled defines whether to load an OPC UA configuration
-    enabled: false
+    enabled: true
     # name is the Kubernetes resource name that will be created for this
     # OPC UA configuration
     name: akri-opcua
