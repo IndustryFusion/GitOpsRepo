@@ -1,8 +1,7 @@
-{{- if .Values.opcua.configuration.enabled }}
-apiVersion: {{ printf "%s/%s" .Values.crds.group .Values.crds.version }}
+apiVersion: akri.sh/v0
 kind: Configuration
 metadata:
-  name: {{ .Values.opcua.configuration.name }}
+  name: akri-opcua
 spec:
   discoveryHandler:
     name: opcua
