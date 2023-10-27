@@ -6,19 +6,11 @@ metadata:
 spec:
   discoveryHandler:
     name: opcua
-    discoveryDetails: |+
+    discoveryDetails:
       opcuaDiscoveryMethod: 
         standard:
           discoveryUrls: 
-          {{- toYaml .Values.opcua.configuration.discoveryDetails.discoveryUrls | nindent 10 }}
-      applicationNames:
-        action: {{ .Values.opcua.configuration.discoveryDetails.applicationNames.action }}
-        {{- if .Values.opcua.configuration.discoveryDetails.applicationNames.items}}
-        items:
-        {{- toYaml .Values.opcua.configuration.discoveryDetails.applicationNames.items | nindent 8 }}
-        {{- else }}
-        items: []
-        {{- end }}
+          - "opc.tcp://192.168.49.195:62548/"
 
   brokerSpec:
     brokerPodSpec:
