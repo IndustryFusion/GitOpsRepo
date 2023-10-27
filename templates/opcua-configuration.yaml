@@ -289,12 +289,3 @@ metadata:
   creationTimestamp: null
   name: oisp-password-secret
   namespace: oisp-devices
-
----
-
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: oisp-devices
-  labels:
-    pod-security.kubernetes.io/enforce: privileged
