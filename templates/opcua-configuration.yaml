@@ -111,22 +111,175 @@ spec:
           readOnlyRootFilesystem: true
           capabilities:
             drop: ["ALL"]
-    volumes:
-      - name: oisp-devices-config-volume
-        configMap:
-          name: opc-ms-watercut-1-global-devices-config
-          items:
+      volumes:
+        - name: oisp-devices-config-volume
+          configMap:
+            name: opc-ms-watercut-1-global-devices-config
+            items:
+              - key: config.json
+                path: config.json
+        - name: dataservice-machine-config
+          configMap:
+            name: opc-ms-watercut-1-app-config
+            items:
             - key: config.json
               path: config.json
-      - name: dataservice-machine-config
-        configMap:
-          name: opc-ms-watercut-1-app-config
-          items:
-          - key: config.json
-            path: config.json
-    imagePullSecrets:
-      - name: regcred
-    # nodeSelector:
-    #   kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
+      imagePullSecrets:
+        - name: regcred
+      # nodeSelector:
+      #   kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
   brokerProperties: {}
   capacity: 1
+
+---
+
+apiVersion: v1
+data:
+  config.json: |
+    {
+       "fusionopcuadataservice": {
+           "specification": [
+               {
+                   "node_id": "ns=2",
+                   "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                   "parameter": "laser-cutter-v0.1-laser-cutter-runtime-cutter-head-speed"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
+                 "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-state"
+               },
+               {
+                   "node_id": "ns=2",
+                   "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
+                   "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-x"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
+                 "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-y"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
+                 "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-z"
+               }
+           ]
+       }
+     }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: opc-ms-watercut-1-app-config
+
+---
+
+apiVersion: v1
+data:
+  config.json: |
+    {
+                "data_directory": "./data",
+                "listeners": {
+                        "rest_port": 8000,
+                        "udp_port": 41234,
+                        "tcp_port": 7070
+                },
+                "receivers": {
+                        "udp_port": 41235,
+                        "udp_address": "127.0.0.1"
+                },
+                "logger": {
+                        "level": "info",
+                        "path": "/tmp/",
+                        "max_size": 134217728
+                },
+                "connector": {
+                        "rest": {
+                                "host": "development.industry-fusion.com",
+                                "port": 443,
+                                "protocol": "https",
+                                "strictSSL": false,
+                                "timeout": 30000,
+                                "proxy": {
+                                        "host": false,
+                                        "port": false
+                                }
+                        },
+                        "mqtt": {
+                                "host": "development.industry-fusion.com",
+                                "port": 8883,
+                                "websockets": false,
+                                "qos": 1,
+                                "retain": false,
+                                "secure": true,
+                                "retries": 5,
+                                "strictSSL": false,
+                                "sparkplugB": true,
+                                "version": "spBv1.0"        
+                        }
+                }
+        }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: opc-ms-watercut-1-global-devices-config
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kopfexample-account
+  namespace: oisp-devices
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kopfexample-role
+rules:
+
+  # Framework: knowing which other operators are running (i.e. peering).
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kopfexample-rolebinding-cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kopfexample-role
+subjects:
+  - kind: ServiceAccount
+    name: kopfexample-account
+    namespace: oisp-devices
+
+---
+
+apiVersion: v1
+stringData:
+  activation-code: Bagq8zgU
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: opc-ms-watercut-1-global-devices-secret
+  namespace: oisp-devices
+
+---
+
+apiVersion: v1
+stringData:
+  password: "@zN8k51@ORJg"
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: oisp-password-secret
+  namespace: oisp-devices
+
+---
