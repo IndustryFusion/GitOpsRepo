@@ -4,7 +4,7 @@ metadata:
   name: akri-opcua
 spec:
   discoveryHandler:
-    name: akri-opcua
+    name: opcua
     discoveryDetails:
       opcuaDiscoveryMethod: 
         standard:

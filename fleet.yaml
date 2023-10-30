@@ -17,7 +17,10 @@ helm:
     # is specified.
     useDevelopmentContainers: true
     kubernetesDistro: k8s
-    # opcua:
+    opcua:
+      discovery: 
+      # enabled defines whether discovery handler pods will be deployed in a slim Agent scenario
+      enabled: false
     #   configuration:
     #     # enabled defines whether to load an OPC UA configuration
     #     enabled: true
