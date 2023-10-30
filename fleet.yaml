@@ -17,13 +17,13 @@ helm:
     # is specified.
     useDevelopmentContainers: true
     kubernetesDistro: k8s
-    opcua:
-      configuration:
-        # enabled defines whether to load an OPC UA configuration
-        enabled: true
-        # name is the Kubernetes resource name that will be created for this
-        # OPC UA configuration
-        name: akri-opcua
+    # opcua:
+    #   configuration:
+    #     # enabled defines whether to load an OPC UA configuration
+    #     enabled: true
+    #     # name is the Kubernetes resource name that will be created for this
+    #     # OPC UA configuration
+    #     name: akri-opcua
     #     # brokerProperties is a map of properties that will be passed to any instances
     #     # created as a result of applying this OPC UA configuration
     #     brokerProperties: {}
