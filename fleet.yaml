@@ -10,7 +10,13 @@ helm:
   repo: https://project-akri.github.io/akri/
   releaseName: akri
   values:
-    kubernetesDistro: k3s
+    useLatestContainers: true
+
+    # useDevelopmentContainers is specified if the non-release (*-dev)
+    # tags should be used.  This will be overridden if *.image.tag
+    # is specified.
+    useDevelopmentContainers: true
+    kubernetesDistro: k8s
     opcua:
       configuration:
         # enabled defines whether to load an OPC UA configuration
