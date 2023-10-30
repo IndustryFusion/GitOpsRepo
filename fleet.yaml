@@ -17,33 +17,3 @@ helm:
     # is specified.
     useDevelopmentContainers: true
     kubernetesDistro: k8s
-    opcua:
-      discovery: 
-        # enabled defines whether discovery handler pods will be deployed in a slim Agent scenario
-        enabled: true
-    #   configuration:
-    #     # enabled defines whether to load an OPC UA configuration
-    #     enabled: true
-    #     # name is the Kubernetes resource name that will be created for this
-    #     # OPC UA configuration
-    #     name: akri-opcua
-    #     # brokerProperties is a map of properties that will be passed to any instances
-    #     # created as a result of applying this OPC UA configuration
-    #     brokerProperties: {}
-    #     discoveryDetails:
-    #       # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
-    #       discoveryUrls:
-    #       - "opc.tcp://192.168.49.195:62548/"
-    #       # applicationNames is a filter applied to the discovered OPC UA servers to either exclusively
-    #       # include or exclude servers with application names in the applicationNames list.
-    #       applicationNames:
-    #         action: Exclude
-    #         items: []
-    #     # mountCertificates determines whether to mount into the broker pods k8s Secrets 
-    #     # containing OPC UA client credentials for connecting to OPC UA severs with the 
-    #     # same signing certificate authority.
-    #     # If set to false, the brokers will attempt to make an insecure connection with the servers.
-    #     mountCertificates: false
-    #     # capacity is the capacity for any instances created as a result of
-    #     # applying this OPC UA configuration
-    #     capacity: 1
