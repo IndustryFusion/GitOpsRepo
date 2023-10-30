@@ -13,6 +13,8 @@ spec:
 
   brokerSpec:
     brokerPodSpec:
+      serviceAccountName: kopfexample-account
+      restartPolicy: Always
       containers:
       - name: busybox
         image: docker.io/busybox:latest
