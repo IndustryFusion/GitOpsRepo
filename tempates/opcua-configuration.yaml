@@ -5,8 +5,11 @@ metadata:
 spec:
   discoveryHandler:
     name: opcua
-    discoveryDetails:
-      discoveryUrl: "opc.tcp://192.168.49.151:4840/"
+    discoveryDetails: |
+      opcuaDiscoveryMethod: 
+        standard:
+          discoveryUrls: 
+          - "opc.tcp://192.168.49.151:4840/"
 
   brokerSpec:
     brokerPodSpec:
