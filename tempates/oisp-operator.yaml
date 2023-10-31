@@ -33,6 +33,8 @@ spec:
                 name: oisp-password-secret
         securityContext:
           privileged: true
+      imagePullSecrets:
+        - name: regcred
 
 ---
 
