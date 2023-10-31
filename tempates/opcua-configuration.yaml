@@ -15,6 +15,22 @@ spec:
     brokerPodSpec:
       serviceAccountName: kopfexample-account
       restartPolicy: Always
+      initContainers:
+      - name: oisp-token-operator
+        image: ibn40/oisp-token-operator:latest
+        imagePullPolicy: Always
+        env:
+          - name: OISP_API_ROOT
+            value: https://development.industry-fusion.com/oisp/v1/api
+          - name: USERNAME
+            value: factory_admin@industry-fusion.com
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: oisp-password-secret
+        securityContext:
+          privileged: true
       containers:
       - name: busybox
         image: docker.io/busybox:latest
@@ -75,21 +91,6 @@ spec:
             hostPort: 41234
           - containerPort: 7070
             hostPort: 7070
-      - name: oisp-token-operator
-        image: ibn40/oisp-token-operator:latest
-        imagePullPolicy: Always
-        env:
-          - name: OISP_API_ROOT
-            value: https://development.industry-fusion.com/oisp/v1/api
-          - name: USERNAME
-            value: factory_admin@industry-fusion.com
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: password
-                name: oisp-password-secret
-        securityContext:
-          privileged: true
       volumes:
         - name: oisp-devices-config-volume
           configMap:
@@ -260,5 +261,17 @@ metadata:
   creationTimestamp: null
   name: oisp-password-secret
   namespace: oisp-devices
+
+---
+
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJpbmRleC5kb2NrZXIuaW8vdjEvIjp7InVzZXJuYW1lIjoiZnVzaW9ub3duZXIiLCJwYXNzd29yZCI6IjVmMjk1YTVmM2JlODQ0NDY2ZWUwZTBhMDU2NWFjZjc1IiwiZW1haWwiOiJmdXNpb25vd25lckBpbmR1c3RyeS1mdXNpb24uY29tIiwiYXV0aCI6IlpuVnphVzl1YjNkdVpYSTZOV1l5T1RWaE5XWXpZbVU0TkRRME5qWmxaVEJsTUdFd05UWTFZV05tTnpVPSJ9fX0=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: regcred
+  namespace: oisp-devices
+type: kubernetes.io/dockerconfigjson
 
 ---
