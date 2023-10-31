@@ -9,7 +9,7 @@ spec:
       opcuaDiscoveryMethod:
         standard:
           discoveryUrls:
-          - "opc.tcp://192.168.49.195:62548"
+          - "opc.tcp://192.168.49.193:62548"
 
   brokerSpec:
     brokerPodSpec:
@@ -24,7 +24,7 @@ spec:
       - name: fusionopcuadataservice
         env:
           - name: OPC_URL
-            value: "opc.tcp://192.168.49.195"
+            value: "opc.tcp://192.168.49.193"
           - name: OPC_PORT
             value: "62548"
           - name: OISP_URL
@@ -120,27 +120,27 @@ data:
            "specification": [
                {
                    "node_id": "ns=2",
-                   "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
                    "parameter": "laser-cutter-v0.1-laser-cutter-runtime-cutter-head-speed"
                },
                {
                  "node_id": "ns=2",
-                 "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
                  "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-state"
                },
                {
                    "node_id": "ns=2",
-                   "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
+                   "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
                    "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-x"
                },
                {
                  "node_id": "ns=2",
-                 "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
                  "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-y"
                },
                {
                  "node_id": "ns=2",
-                 "identifier": "s=1:MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
                  "parameter": "laser-cutter-v0.1-laser-cutter-runtime-machine-position-z"
                }
            ]
