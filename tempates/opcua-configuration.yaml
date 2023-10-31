@@ -30,6 +30,10 @@ spec:
             value: "127.0.0.1"
           - name: OISP_PORT
             value: "7070"
+          - name: OPC_USERNAME
+            value: ""
+          - name: OPC_PASSWORD
+            value: ""
           - name: OISP_API_ROOT
             value: https://development.industry-fusion.com/oisp/v1/api
           - name: USERNAME
@@ -104,12 +108,12 @@ data:
            "specification": [
               {
                   "node_id": "ns=4",
-                  "identifier": "i=2",
+                  "identifier": "i=39",
                   "parameter": "filter-v0.1-filter-runtime-machine-state"
               },
               {
                   "node_id": "ns=4",
-                  "identifier": "i=17",
+                  "identifier": "i=40",
                   "parameter": "base-objects-v0.1-power-supply-runtime-electric-power"
               },
               {
