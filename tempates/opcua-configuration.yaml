@@ -14,7 +14,8 @@ spec:
           - "opc.tcp://192.168.49.197:62548"
           applicationNames:
             action: Exclude
-            items: ['Microstep OPC UA Server']
+            items: 
+            - "Microstep OPC UA Server"
 
   brokerSpec:
     brokerPodSpec:
