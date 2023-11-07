@@ -1,90 +1,90 @@
-# apiVersion: akri.sh/v0
-# kind: Configuration
-# metadata:
-#   name: akri-opcua
-# spec:
-#   brokerSpec:
-#     brokerPodSpec:
-#       restartPolicy: Always
-#       containers:
-#       - name: busybox
-#         image: docker.io/busybox:latest
-#         imagePullPolicy: Always
-#         command: ["sleep"]
-#         args: ["100000000"]
-#       - name: fusionopcuadataservice
-#         env:
-#           - name: OPC_URL
-#             value: "opc.tcp://192.168.49.151"
-#           - name: OPC_PORT
-#             value: "4840"
-#           - name: OISP_URL
-#             value: "127.0.0.1"
-#           - name: OISP_PORT
-#             value: "7070"
-#           - name: OPC_USERNAME
-#             value: ""
-#           - name: OPC_PASSWORD
-#             value: ""
-#           - name: OISP_API_ROOT
-#             value: https://development.industry-fusion.com/oisp/v1/api
-#           - name: USERNAME
-#             value: factory_admin@industry-fusion.com
-#           - name: OISP_DEVICE_ID
-#             value: "urn:ngsi-ld:assetv5:2:46"
-#           - name: PASSWORD
-#             valueFrom:
-#               secretKeyRef:
-#                 key: password
-#                 name: oisp-password-secret
-#         image: docker.io/ibn40/fusionopcuadataservice:essen-fair-2
-#         imagePullPolicy: Always
-#         volumeMounts:
-#           - name: dataservice-machine-config
-#             mountPath: /resources/config.json
-#             subPath: config.json
-#       - name: oisp-iot-agent
-#         env:
-#           - name: OISP_DEVICE_ID
-#             value: "urn:ngsi-ld:assetv5:2:46"
-#           - name: OISP_DEVICE_NAME
-#             value: "urn:ngsi-ld:assetv5:2:46"
-#           - name: OISP_GATEWAY_ID
-#             value: "urn:ngsi-ld:assetv5:2:46"
-#           - name: OISP_DEVICE_ACTIVATION_CODE
-#             valueFrom:
-#               secretKeyRef:
-#                 key: activation-code
-#                 name: opc-ms-watercut-1-global-devices-secret
-#         volumeMounts:
-#           - name: oisp-devices-config-volume
-#             mountPath: /volume/config
-#         securityContext:
-#           privileged: true
-#           capabilities:
-#             drop: ["ALL"]
-#         image: docker.io/ibn40/oisp-iot-agent:v2.4.2
-#         imagePullPolicy: Always
-#         ports:
-#           - containerPort: 41234
-#             hostPort: 41234
-#           - containerPort: 7070
-#             hostPort: 7070
-#       volumes:
-#         - name: oisp-devices-config-volume
-#           configMap:
-#             name: opc-ms-watercut-1-global-devices-config
-#             items:
-#               - key: config.json
-#                 path: config.json
-#         - name: dataservice-machine-config
-#           configMap:
-#             name: opc-ms-watercut-1-app-config
-#             items:
-#             - key: config.json
-#               path: config.json
-#       imagePullSecrets:
-#         - name: regcred
+apiVersion: akri.sh/v0
+kind: Configuration
+metadata:
+  name: akri-opcua-custom
+spec:
+  brokerSpec:
+    brokerPodSpec:
+      restartPolicy: Always
+      containers:
+      - name: busybox
+        image: docker.io/busybox:latest
+        imagePullPolicy: Always
+        command: ["sleep"]
+        args: ["100000000"]
+      - name: fusionopcuadataservice
+        env:
+          - name: OPC_URL
+            value: "opc.tcp://192.168.49.151"
+          - name: OPC_PORT
+            value: "4840"
+          - name: OISP_URL
+            value: "127.0.0.1"
+          - name: OISP_PORT
+            value: "7070"
+          - name: OPC_USERNAME
+            value: ""
+          - name: OPC_PASSWORD
+            value: ""
+          - name: OISP_API_ROOT
+            value: https://development.industry-fusion.com/oisp/v1/api
+          - name: USERNAME
+            value: factory_admin@industry-fusion.com
+          - name: OISP_DEVICE_ID
+            value: "urn:ngsi-ld:assetv5:2:46"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: oisp-password-secret
+        image: docker.io/ibn40/fusionopcuadataservice:essen-fair-2
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: dataservice-machine-config
+            mountPath: /resources/config.json
+            subPath: config.json
+      - name: oisp-iot-agent
+        env:
+          - name: OISP_DEVICE_ID
+            value: "urn:ngsi-ld:assetv5:2:46"
+          - name: OISP_DEVICE_NAME
+            value: "urn:ngsi-ld:assetv5:2:46"
+          - name: OISP_GATEWAY_ID
+            value: "urn:ngsi-ld:assetv5:2:46"
+          - name: OISP_DEVICE_ACTIVATION_CODE
+            valueFrom:
+              secretKeyRef:
+                key: activation-code
+                name: opc-ms-watercut-1-global-devices-secret
+        volumeMounts:
+          - name: oisp-devices-config-volume
+            mountPath: /volume/config
+        securityContext:
+          privileged: true
+          capabilities:
+            drop: ["ALL"]
+        image: docker.io/ibn40/oisp-iot-agent:v2.4.2
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 41234
+            hostPort: 41234
+          - containerPort: 7070
+            hostPort: 7070
+      volumes:
+        - name: oisp-devices-config-volume
+          configMap:
+            name: opc-ms-watercut-1-global-devices-config
+            items:
+              - key: config.json
+                path: config.json
+        - name: dataservice-machine-config
+          configMap:
+            name: opc-ms-watercut-1-app-config
+            items:
+            - key: config.json
+              path: config.json
+      imagePullSecrets:
+        - name: regcred
 
 ---
 
