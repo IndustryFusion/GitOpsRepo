@@ -17,6 +17,14 @@ helm:
     # is specified.
     useDevelopmentContainers: true
     kubernetesDistro: k8s
+    custom:
+      configuration:
+        # enabled defines whether to load a custom configuration
+        enabled: true
+        # name is the Kubernetes resource name that will be created for this
+        # custom configuration
+        name: akri-custom
+
     opcua:
       discovery: 
         # enabled defines whether discovery handler pods will be deployed in a slim Agent scenario
