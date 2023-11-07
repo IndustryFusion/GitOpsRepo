@@ -20,10 +20,11 @@ helm:
     opcua:
       discovery: 
         # enabled defines whether discovery handler pods will be deployed in a slim Agent scenario
-        enabled: false
+        enabled: true
 
       configuration:
-        enabled: false
+        enabled: true
+        name: akri-opcua
         # brokerProperties is a map of properties that will be passed to any instances
         # created as a result of applying this OPC UA configuration
         brokerProperties: {}
