@@ -23,7 +23,7 @@ helm:
         enabled: true
 
       configuration:
-        enabled: true
+        enabled: false
         # brokerProperties is a map of properties that will be passed to any instances
         # created as a result of applying this OPC UA configuration
         brokerProperties: {}
