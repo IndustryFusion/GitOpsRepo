@@ -8,7 +8,7 @@ defaultNamespace: oisp-devices
 helm:
   chart: akri-dev
   repo: https://project-akri.github.io/akri/
-  releaseName: akri
+  releaseName: akri-test-templates
   values:
     useLatestContainers: true
 
