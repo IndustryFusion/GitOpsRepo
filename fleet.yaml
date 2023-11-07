@@ -24,7 +24,6 @@ helm:
 
       configuration:
         enabled: true
-        name: akri-opcua
         # brokerProperties is a map of properties that will be passed to any instances
         # created as a result of applying this OPC UA configuration
         brokerProperties: {}
