@@ -23,7 +23,6 @@ helm:
         enabled: true
         # name is the Kubernetes resource name that will be created for this
         # custom configuration
-        name: akri-custom
 
     opcua:
       discovery: 
