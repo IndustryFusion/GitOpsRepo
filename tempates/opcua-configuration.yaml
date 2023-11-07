@@ -1,8 +1,31 @@
 apiVersion: akri.sh/v0
 kind: Configuration
 metadata:
-  name: akri-custom
+  name: akri-opcua
 spec:
+  discoveryHandler:
+    name: opcua
+    discoveryDetails: |
+      opcuaDiscoveryMethod:
+        standard:
+          discoveryUrls:
+          - "opc.tcp://192.168.49.151:4840"
+          - "opc.tcp://192.168.49.198:62548"
+          - "opc.tcp://192.168.49.197:62548"
+          - "opc.tcp://192.168.49.173:62548"
+          - "opc.tcp://192.168.49.196:62548"
+          - "opc.tcp://192.168.49.195:62548"
+          - "opc.tcp://192.168.49.194:62548"
+          - "opc.tcp://192.168.49.193:62548"
+          - "opc.tcp://192.168.49.192:62548"
+          - "opc.tcp://192.168.49.172:62548"
+          - "opc.tcp://192.168.49.191:62548"
+          - "opc.tcp://192.168.49.190:62548"
+          - "opc.tcp://192.168.49.171:62548"
+      applicationNames:
+        action: Include
+        items: ["SIMATIC.S7-1200.OPC-UA.Application:PLC_1"]
+
   brokerSpec:
     brokerPodSpec:
       restartPolicy: Always
@@ -85,6 +108,10 @@ spec:
               path: config.json
       imagePullSecrets:
         - name: regcred
+      # nodeSelector:
+      #   kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
+  brokerProperties: {}
+  capacity: 1
 
 ---
 
