@@ -30,11 +30,6 @@ spec:
     brokerPodSpec:
       restartPolicy: Always
       containers:
-      - name: busybox
-        image: docker.io/busybox:latest
-        imagePullPolicy: Always
-        command: ["sleep"]
-        args: ["100000000"]
       - name: fusionopcuadataservice
         env:
           - name: OPC_URL
