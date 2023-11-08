@@ -525,7 +525,7 @@ onvif:
     # discovery defines a set of values for a onvif discovery handler DaemonSet
   discovery: 
     # enabled defines whether discovery handler pods will be deployed in a slim Agent scenario
-    enabled: false
+    enabled: true
     image:
       # repository is the container reference
       repository: ghcr.io/project-akri/akri/onvif-discovery
