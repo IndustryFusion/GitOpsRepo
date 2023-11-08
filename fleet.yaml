@@ -12,7 +12,7 @@ helm:
   values:
     useLatestContainers: true
     useDevelopmentContainers: true
-    kubernetesDistro: k8s
+    kubernetesDistro: k3s
     discovery: 
     # enabled defines whether discovery handler pods will be deployed in a slim Agent scenario
       enabled: true
