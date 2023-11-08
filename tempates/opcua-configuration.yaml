@@ -57,33 +57,33 @@ spec:
           - name: dataservice-machine-config
             mountPath: /resources/config.json
             subPath: config.json
-      - name: oisp-iot-agent
-        env:
-          - name: OISP_DEVICE_ID
-            value: "urn:ngsi-ld:assetv5:2:46"
-          - name: OISP_DEVICE_NAME
-            value: "urn:ngsi-ld:assetv5:2:46"
-          - name: OISP_GATEWAY_ID
-            value: "urn:ngsi-ld:assetv5:2:46"
-          - name: OISP_DEVICE_ACTIVATION_CODE
-            valueFrom:
-              secretKeyRef:
-                key: activation-code
-                name: opc-ms-watercut-1-global-devices-secret
-        volumeMounts:
-          - name: oisp-devices-config-volume
-            mountPath: /volume/config
-        securityContext:
-          privileged: true
-          capabilities:
-            drop: ["ALL"]
-        image: docker.io/ibn40/oisp-iot-agent:v2.4.2
-        imagePullPolicy: Always
-        ports:
-          - containerPort: 41234
-            hostPort: 41234
-          - containerPort: 7070
-            hostPort: 7070
+      # - name: oisp-iot-agent
+      #   env:
+      #     - name: OISP_DEVICE_ID
+      #       value: "urn:ngsi-ld:assetv5:2:46"
+      #     - name: OISP_DEVICE_NAME
+      #       value: "urn:ngsi-ld:assetv5:2:46"
+      #     - name: OISP_GATEWAY_ID
+      #       value: "urn:ngsi-ld:assetv5:2:46"
+      #     - name: OISP_DEVICE_ACTIVATION_CODE
+      #       valueFrom:
+      #         secretKeyRef:
+      #           key: activation-code
+      #           name: opc-ms-watercut-1-global-devices-secret
+      #   volumeMounts:
+      #     - name: oisp-devices-config-volume
+      #       mountPath: /volume/config
+      #   securityContext:
+      #     privileged: true
+      #     capabilities:
+      #       drop: ["ALL"]
+      #   image: docker.io/ibn40/oisp-iot-agent:v2.4.2
+      #   imagePullPolicy: Always
+      #   ports:
+      #     - containerPort: 41234
+      #       hostPort: 41234
+      #     - containerPort: 7070
+      #       hostPort: 7070
       volumes:
         - name: oisp-devices-config-volume
           configMap:
