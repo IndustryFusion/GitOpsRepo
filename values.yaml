@@ -27,7 +27,7 @@ crds:
 
 rbac:
   # enabled defines whether to apply rbac to Akri
-  enabled: false
+  enabled: true
 
 prometheus:
   # enabled defines whether metrics ports are exposed on
