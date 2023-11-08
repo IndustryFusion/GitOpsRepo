@@ -613,7 +613,7 @@ opcua:
         memoryLimit: 200Mi
         # cpuLimit defines the maximum amount of CPU this Pod can consume.
         cpuLimit: 30m
-      env: {"OISP_DEVICE_ID": "urn:ngsi-ld:assetv5:2:46", "OISP_DEVICE_NAME": "urn:ngsi-ld:assetv5:2:46", "OISP_GATEWAY_ID": "urn:ngsi-ld:assetv5:2:46"}
+      #env: {"OISP_DEVICE_ID": "urn:ngsi-ld:assetv5:2:46", "OISP_DEVICE_NAME": "urn:ngsi-ld:assetv5:2:46", "OISP_GATEWAY_ID": "urn:ngsi-ld:assetv5:2:46"}
       # envFrom:
       #   secretRef:
       #     name: opc-ms-watercut-1-global-devices-secret
