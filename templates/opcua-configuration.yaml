@@ -123,11 +123,9 @@ spec:
             {{- end }}
             {{- if .Values.opcua.configuration.brokerJob.envFrom }}
             envFrom:
-            {{- range $val := .Values.opcua.configuration.brokerJob.envFrom.secretRef.name }}
-            {{- range $val2 := .Values.opcua.configuration.brokerJob.envFrom.secretRef.key }}
+            {{- range $val := .Values.opcua.configuration.brokerJob.envFrom.secretRef }}
             - secretRef:
                 name: {{ $val | quote }}
-                key: {{ $val2 | quote }}
             {{- end }}
             {{- range $val := .Values.opcua.configuration.brokerJob.envFrom.configMapRef }}
             - configMapRef:
