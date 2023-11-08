@@ -14,7 +14,7 @@ useDevelopmentContainers: true
 
 # imagePullSecrets is the array of secrets needed to pull images.
 # This can be set from the helm command line using `--set imagePullSecrets[0].name="mysecret"`
-imagePullSecrets: ["regcred"]
+imagePullSecrets: [regcred]
 
 # kubernetesDistro describes the Kubernetes distro Akri is running on. It is used to conditionally set
 # distribution specific values such as container runtime socket. Options: microk8s | k3s | k8s
