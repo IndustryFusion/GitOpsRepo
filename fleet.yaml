@@ -11,14 +11,5 @@ helm:
   releaseName: akri-test-templates
   values:
     useLatestContainers: true
-
-    # useDevelopmentContainers is specified if the non-release (*-dev)
-    # tags should be used.  This will be overridden if *.image.tag
-    # is specified.
     useDevelopmentContainers: true
     kubernetesDistro: k8s
-
-    opcua:
-      discovery: 
-        # enabled defines whether discovery handler pods will be deployed in a slim Agent scenario
-        enabled: true
