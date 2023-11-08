@@ -15,32 +15,4 @@ helm:
     kubernetesDistro: k8s
     discovery: 
     # enabled defines whether discovery handler pods will be deployed in a slim Agent scenario
-      enabled: false
-      image:
-        # repository is the container reference
-        repository: ghcr.io/project-akri/akri/opcua-discovery
-        # tag is the container tag
-        # opcua-configuration.yaml will default to v(AppVersion)[-dev]
-        # with `-dev` added if `useDevelopmentContainers` is specified
-        tag:
-        # pullPolicy is the pull policy
-        pullPolicy: ""
-      # useNetworkConnection specifies whether the discovery handler should make a networked connection
-      # with Agents, using its pod IP address when registering
-      useNetworkConnection: false
-      # port specifies (when useNetworkConnection is true) the port on which the discovery handler advertises its discovery service
-      port: 10000
-      # nodeSelectors is the array of nodeSelectors used to target nodes for the discovery handler to run on
-      # This can be set from the helm command line using `--set opcua.discovery.nodeSelectors.label="value"`
-      nodeSelectors: {}
-      resources:
-        # memoryRequest defines the minimum amount of RAM that must be available to this Pod
-        # for it to be scheduled by the Kubernetes Scheduler
-        memoryRequest: 11Mi
-        # cpuRequest defines the minimum amount of CPU that must be available to this Pod
-        # for it to be scheduled by the Kubernetes Scheduler
-        cpuRequest: 10m
-        # memoryLimit defines the maximum amount of RAM this Pod can consume.
-        memoryLimit: 24Mi
-        # cpuLimit defines the maximum amount of CPU this Pod can consume.
-        cpuLimit: 24m
+      enabled: true
