@@ -86,9 +86,9 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
-            {{`"{{PLACEHOLDER}}"`}} : "1"
+            "{{PLACEHOLDER}}" : "1"
           limits:
-            {{`"{{PLACEHOLDER}}"`}} : "1"
+            "{{PLACEHOLDER}}" : "1"
         ports:
           - containerPort: 41234
             hostPort: 41234
