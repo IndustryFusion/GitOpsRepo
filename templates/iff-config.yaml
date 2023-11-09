@@ -84,11 +84,6 @@ spec:
             drop: ["ALL"]
         image: docker.io/ibn40/oisp-iot-agent:v2.4.2
         imagePullPolicy: Always
-        resources:
-          requests:
-            "{{PLACEHOLDER}}" : "1"
-          limits:
-            "{{PLACEHOLDER}}" : "1"
         ports:
           - containerPort: 41234
             hostPort: 41234
