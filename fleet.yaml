@@ -5,11 +5,11 @@
 
 defaultNamespace: oisp-devices
 
-# helm:
-#   chart: akri-dev
-#   repo: https://project-akri.github.io/akri/
-#   releaseName: akri-test-templates
-#   values:
-#     useLatestContainers: true
-#     useDevelopmentContainers: true
-#     kubernetesDistro: k3s
+helm:
+  chart: akri-dev
+  repo: https://project-akri.github.io/akri/
+  releaseName: akri-test-templates
+  values:
+    useLatestContainers: true
+    useDevelopmentContainers: true
+    kubernetesDistro: k3s
