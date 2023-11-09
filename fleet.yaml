@@ -16,6 +16,5 @@ helm:
     opcua:
       configuration:
         enabled: true
-        name: akri-opcua
       discovery:
         enabled: true
