@@ -8,7 +8,7 @@ defaultNamespace: oisp-devices
 helm:
   chart: akri-dev
   repo: https://project-akri.github.io/akri/
-  releaseName: akri-test-templates
+  releaseName: akri
   values:
     useLatestContainers: true
     useDevelopmentContainers: true
@@ -16,5 +16,6 @@ helm:
     opcua:
       configuration:
         enabled: true
+        name: akri-opcua
       discovery:
         enabled: true
