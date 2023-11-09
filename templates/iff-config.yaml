@@ -31,13 +31,6 @@ spec:
       restartPolicy: Always
       containers:
       - name: fusionopcuadataservice
-        {{- if .Values.opcua.configuration.brokerPod.env }}
-        env:
-          {{- range $key, $val := .Values.opcua.configuration.brokerPod.env }}
-          - name: {{ $key }}
-            value: {{ $val | quote }}
-          {{- end }}
-        {{- end }}
         env:
           - name: OISP_URL
             value: "127.0.0.1"
