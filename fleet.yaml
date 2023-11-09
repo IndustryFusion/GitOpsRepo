@@ -13,3 +13,8 @@ helm:
     useLatestContainers: true
     useDevelopmentContainers: true
     kubernetesDistro: k3s
+    opcua:
+      configuration:
+        enabled: true
+      discovery:
+        enabled: true
