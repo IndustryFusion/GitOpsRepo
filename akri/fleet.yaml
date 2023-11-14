@@ -16,5 +16,3 @@ helm:
     opcua:
       discovery:
         enabled: true
-      configuration:
-        enabled: true
