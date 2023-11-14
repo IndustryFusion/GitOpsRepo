@@ -45,11 +45,8 @@ opcua:
     brokerPod1:
       name: fusionopcuadataservice
       image:
-        # repository is the OPC UA broker container reference
         repository: docker.io/ibn40/fusionopcuadataservice
-        # tag is the OPC UA broker image tag
         tag: essen-fair-2
-        # pullPolicy is the OPC UA broker pull policy
         pullPolicy: Always
       env: 
         OISP_URL: "127.0.0.1"
@@ -73,11 +70,8 @@ opcua:
     brokerPod2:
       name: oisp-iot-agent
       image:
-        # repository is the OPC UA broker container reference
         repository: docker.io/ibn40/oisp-iot-agent
-        # tag is the OPC UA broker image tag
         tag: v2.4.2
-        # pullPolicy is the OPC UA broker pull policy
         pullPolicy: Always
       env:
         OISP_DEVICE_ID: "urn:ngsi-ld:assetv5:2:46"
