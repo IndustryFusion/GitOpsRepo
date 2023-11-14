@@ -19,6 +19,8 @@ spec:
         {{- else }}
         items: []
         {{- end }}
+        {{- end }}
+
 {{- end }}
   # {{- if .Values.opcua.configuration.pod.enabled }}      
   # brokerSpec:
