@@ -20,25 +20,25 @@ spec:
         items: []
         {{- end }}
 
-  {{- if .Values.opcua.configuration.pod.enabled }}      
-  brokerSpec:
-    {{- if .Values.opcua.configuration.pod.enabled }}
-    brokerPodSpec:
-      restartPolicy: {{ .Values.opcua.configuration.pod.restartPolicy }}
-      containers:
-      - name: {{ .Values.opcua.configuration.brokerPod1.name }}
-        {{- if .Values.opcua.configuration.brokerPod1.env }}
-        env:
-          {{- range $key, $val := .Values.opcua.configuration.brokerPod1.env }}
-          - name: {{ $key }}
-            value: {{ $val | quote }}
-          {{- end }}
-        {{- end }}
-        {{- with .Values.opcua.configuration.brokerPod1.envFrom}}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
-        image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod1.image.repository .Values.opcua.configuration.brokerPod1.image.tag | quote }}
-        imagePullPolicy: {{ .Values.opcua.configuration.brokerPod1.image.pullPolicy }}
+  # {{- if .Values.opcua.configuration.pod.enabled }}      
+  # brokerSpec:
+  #   {{- if .Values.opcua.configuration.pod.enabled }}
+  #   brokerPodSpec:
+  #     restartPolicy: {{ .Values.opcua.configuration.pod.restartPolicy }}
+  #     containers:
+  #     - name: {{ .Values.opcua.configuration.brokerPod1.name }}
+  #       {{- if .Values.opcua.configuration.brokerPod1.env }}
+  #       env:
+  #         {{- range $key, $val := .Values.opcua.configuration.brokerPod1.env }}
+  #         - name: {{ $key }}
+  #           value: {{ $val | quote }}
+  #         {{- end }}
+  #       {{- end }}
+  #       {{- with .Values.opcua.configuration.brokerPod1.envFrom}}
+  #         {{- toYaml . | nindent 8 }}
+  #       {{- end }}
+  #       image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod1.image.repository .Values.opcua.configuration.brokerPod1.image.tag | quote }}
+  #       imagePullPolicy: {{ .Values.opcua.configuration.brokerPod1.image.pullPolicy }}
       #   resources:
       #     requests:
       #       {{`"{{PLACEHOLDER}}"`}} : "1"
@@ -93,8 +93,8 @@ spec:
   # {{- end }}
   capacity: {{ .Values.opcua.configuration.capacity }}
 {{- end }}
-{{- end }}
-{{- end }}
+# {{- end }}
+# {{- end }}
 
 ---
 
