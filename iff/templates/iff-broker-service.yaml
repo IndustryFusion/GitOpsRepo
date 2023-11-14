@@ -35,7 +35,7 @@ spec:
         {{- end }}
         {{- end }}
         {{- with .Values.opcua.configuration.brokerPod1.envFrom }}
-          {{- toYaml . nindent 6 }}
+          {{- toYaml . | nindent 6 }}
         {{- end }}
         image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod1.image.repository .Values.opcua.configuration.brokerPod1.image.tag | quote }}
         imagePullPolicy: {{ .Values.opcua.configuration.brokerPod1.image.pullPolicy }}
