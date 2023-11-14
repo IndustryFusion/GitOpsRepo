@@ -65,7 +65,7 @@ opcua:
             key: password
             name: oisp-password-secret
       volumeMounts:
-      - name: dataservice-machine-config
+        name: dataservice-machine-config
         mountPath: /resources/config.json
         subPath: config.json
     
