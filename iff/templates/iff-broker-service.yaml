@@ -34,11 +34,9 @@ spec:
             value: {{ $val | quote }}
           {{- end }}
         {{- end }}
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: password
-                name: oisp-password-secret
+        {{- with .Values.opcua.configuration.brokerPod1.envFrom }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
         image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod1.image.repository .Values.opcua.configuration.brokerPod1.image.tag | quote }}
         imagePullPolicy: {{ .Values.opcua.configuration.brokerPod1.image.pullPolicy }}
         resources:
