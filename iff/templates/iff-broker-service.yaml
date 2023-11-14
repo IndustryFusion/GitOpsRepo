@@ -19,4 +19,5 @@ spec:
         {{- else }}
         items: []
         {{- end }}
-        {{- end }}
+
+{{- end }}
