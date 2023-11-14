@@ -92,8 +92,8 @@ opcua:
           mountPath: /volume/config
       securityContext:
         privileged: true
-          capabilities:
-            drop: ["ALL"]
+        capabilities:
+          drop: ["ALL"]
       ports:
         - containerPort: 41234
           hostPort: 41234
