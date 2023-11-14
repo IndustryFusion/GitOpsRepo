@@ -49,9 +49,9 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
-            "{{PLACEHOLDER}}" : "1"
+            {{`"{{PLACEHOLDER}}"`}} : "1"
           limits:
-            "{{PLACEHOLDER}}" : "1"
+            {{`"{{PLACEHOLDER}}"`}} : "1"
         volumeMounts:
           - name: dataservice-machine-config
             mountPath: /resources/config.json
