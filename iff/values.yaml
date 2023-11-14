@@ -27,11 +27,11 @@ opcua:
       restartPolicy: Always
       volumes:
       - name: oisp-devices-config-volume
-          configMap:
-            name: opc-ms-watercut-1-global-devices-config
-            items:
-              - key: config.json
-                path: config.json
+        configMap:
+          name: opc-ms-watercut-1-global-devices-config
+          items:
+            - key: config.json
+              path: config.json
       - name: dataservice-machine-config
         configMap:
           name: opc-ms-watercut-1-app-config
