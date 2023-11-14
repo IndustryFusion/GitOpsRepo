@@ -61,6 +61,11 @@ spec:
             value: {{ $val | quote }}
           {{- end }}
         {{- end }}
+          - name: OISP_DEVICE_ACTIVATION_CODE
+            valueFrom:
+              secretKeyRef:
+                key: activation-code
+                name: opc-ms-watercut-1-global-devices-secret
         volumeMounts:
         {{- with .Values.opcua.configuration.brokerPod2.volumeMounts}}
           {{- toYaml . | nindent 8 }}
