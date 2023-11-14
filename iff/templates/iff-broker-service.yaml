@@ -47,7 +47,7 @@ spec:
         {{- if .Values.opcua.configuration.brokerPod1.volumeMounts }}
         volumeMounts:
         {{- with .Values.opcua.configuration.brokerPod1.volumeMounts }}
-          {{- toYaml . | nindent 8 }}
+          {{- toYaml . | nindent 10 }}
         {{- end }}
         {{- end }}
       - name: {{ .Values.opcua.configuration.brokerPod2.name }}
