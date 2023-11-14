@@ -90,6 +90,8 @@ spec:
   brokerProperties: {}
   {{- end }}
   capacity: {{ .Values.opcua.configuration.capacity }}
+{{- end }}
+{{- end }}
 
 ---
 
