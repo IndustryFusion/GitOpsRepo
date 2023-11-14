@@ -39,17 +39,6 @@ spec:
         {{- end }}
         image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod1.image.repository .Values.opcua.configuration.brokerPod1.image.tag | quote }}
         imagePullPolicy: {{ .Values.opcua.configuration.brokerPod1.image.pullPolicy }}
-        resources:
-          requests:
-            {{`"{{PLACEHOLDER}}"`}} : "1"
-          limits:
-            {{`"{{PLACEHOLDER}}"`}} : "1"
-        {{- if .Values.opcua.configuration.brokerPod1.volumeMounts }}
-        volumeMounts:
-        {{- with .Values.opcua.configuration.brokerPod1.volumeMounts }}
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
-        {{- end }}
       - name: {{ .Values.opcua.configuration.brokerPod2.name }}
         {{- if .Values.opcua.configuration.brokerPod2.env }}
         env:
