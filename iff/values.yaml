@@ -40,7 +40,7 @@ opcua:
             path: config.json
       imagePullSecrets:
         - name: regcred
-        
+
     brokerPod1:
       name: fusionopcuadataservice
       image:
@@ -59,15 +59,15 @@ opcua:
         USERNAME: factory_admin@industry-fusion.com
         OISP_DEVICE_ID: urn:ngsi-ld:assetv5:2:46
       envFrom:
-        - name: PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: oisp-password-secret
+      - name: PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: oisp-password-secret
       volumeMounts:
-        - name: dataservice-machine-config
-          mountPath: /resources/config.json
-          subPath: config.json
+      - name: dataservice-machine-config
+        mountPath: /resources/config.json
+        subPath: config.json
     
     brokerPod2:
       name: oisp-iot-agent
