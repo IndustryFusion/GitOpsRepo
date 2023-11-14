@@ -63,7 +63,7 @@ spec:
         {{- end }}
         volumeMounts:
         {{- with .Values.opcua.configuration.brokerPod2.volumeMounts}}
-          {{- toYaml . | nindent 8 }}
+          {{- toYaml . | nindent 10 }}
         {{- end }}
         securityContext:
         {{- with .Values.opcua.configuration.brokerPod2.securityContext}}
