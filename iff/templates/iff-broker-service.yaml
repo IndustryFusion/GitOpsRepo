@@ -41,9 +41,9 @@ spec:
         imagePullPolicy: {{ .Values.opcua.configuration.brokerPod1.image.pullPolicy }}
         resources:
           requests:
-            {{`"{{PLACEHOLDER}}"`}} : "1"
+            `"{{PLACEHOLDER}}"` : "1"
           limits:
-            {{`"{{PLACEHOLDER}}"`}} : "1"
+            `"{{PLACEHOLDER}}"` : "1"
         {{- if .Values.opcua.configuration.brokerPod1.volumeMounts }}
         volumeMounts:
         {{- with .Values.opcua.configuration.brokerPod1.volumeMounts }}
