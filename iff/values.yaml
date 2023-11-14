@@ -51,7 +51,9 @@ opcua:
         tag: essen-fair-2
         # pullPolicy is the OPC UA broker pull policy
         pullPolicy: Always
-      env: {OISP_URL: 127.0.0.1}
+      env: 
+        OISP_URL: 
+          - 127.0.0.1
         # OISP_PORT: 7070
         # OPC_USERNAME: ""
         # OPC_PASSWORD: ""
