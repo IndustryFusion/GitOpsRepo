@@ -58,7 +58,10 @@ opcua:
         OISP_DEVICE_ID: "urn:ngsi-ld:assetv5:2:46"
       envFrom:
         - name: PASSWORD
-          valueFrom: jdsfhjdf
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: oisp-password-secret
       volumeMounts:
         - name: dataservice-machine-config
           mountPath: /resources/config.json
