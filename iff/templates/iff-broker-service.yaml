@@ -21,3 +21,99 @@ spec:
         {{- end }}
 
 {{- end }}
+
+---
+
+apiVersion: v1
+data:
+  config.json: |
+    {
+       "fusionopcuadataservice": {
+           "specification": [
+              {
+                  "node_id": "ns=4",
+                  "identifier": "i=39",
+                  "parameter": "filter-v0.1-filter-runtime-machine-state"
+              },
+              {
+                  "node_id": "ns=4",
+                  "identifier": "i=40",
+                  "parameter": "base-objects-v0.1-power-supply-runtime-electric-power"
+              },
+              {
+                  "node_id": "ns=4",
+                  "identifier": "i=24",
+                  "parameter": "filter-v0.1-filter-runtime-operating-hours"
+              }
+           ]
+       }
+     }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: opc-ms-watercut-1-app-config
+
+---
+
+apiVersion: v1
+data:
+  config.json: |
+    {
+                "data_directory": "./data",
+                "listeners": {
+                        "rest_port": 8000,
+                        "udp_port": 41234,
+                        "tcp_port": 7070
+                },
+                "receivers": {
+                        "udp_port": 41235,
+                        "udp_address": "127.0.0.1"
+                },
+                "logger": {
+                        "level": "info",
+                        "path": "/tmp/",
+                        "max_size": 134217728
+                },
+                "connector": {
+                        "rest": {
+                                "host": "development.industry-fusion.com",
+                                "port": 443,
+                                "protocol": "https",
+                                "strictSSL": false,
+                                "timeout": 30000,
+                                "proxy": {
+                                        "host": false,
+                                        "port": false
+                                }
+                        },
+                        "mqtt": {
+                                "host": "development.industry-fusion.com",
+                                "port": 8883,
+                                "websockets": false,
+                                "qos": 1,
+                                "retain": false,
+                                "secure": true,
+                                "retries": 5,
+                                "strictSSL": false,
+                                "sparkplugB": true,
+                                "version": "spBv1.0"        
+                        }
+                }
+        }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: opc-ms-watercut-1-global-devices-config
+
+---
+
+apiVersion: v1
+stringData:
+  activation-code: Bagq8zgU
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: opc-ms-watercut-1-global-devices-secret
+  namespace: oisp-devices
+
+---
