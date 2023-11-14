@@ -44,9 +44,6 @@ spec:
             {{`"{{PLACEHOLDER}}"`}} : "1"
           limits:
             {{`"{{PLACEHOLDER}}"`}} : "1"
-
-
-
         {{- if .Values.opcua.configuration.brokerPod1.volumeMounts }}
         volumeMounts:
         {{- with .Values.opcua.configuration.brokerPod1.volumeMounts }}
@@ -95,6 +92,7 @@ spec:
   brokerProperties: {}
   {{- end }}
   capacity: {{ .Values.opcua.configuration.capacity }}
+{{- end }}
 {{- end }}
 {{- end }}
 
@@ -193,5 +191,3 @@ metadata:
   namespace: oisp-devices
 
 ---
-
-{{- end }}
