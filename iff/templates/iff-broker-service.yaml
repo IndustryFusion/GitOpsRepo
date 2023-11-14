@@ -29,10 +29,10 @@ spec:
       - name: {{ .Values.opcua.configuration.brokerPod1.name }}
         {{- if .Values.opcua.configuration.brokerPod1.env }}
         env:
-          {{- range $key, $val := .Values.opcua.configuration.brokerPod1.env }}
+        {{- range $key, $val := .Values.opcua.configuration.brokerPod1.env }}
           - name: {{ $key }}
             value: {{ $val | quote }}
-          {{- end }}
+        {{- end }}
         {{- end }}
         {{- with .Values.opcua.configuration.brokerPod1.envFrom }}
           {{- toYaml . | nindent 8 }}
