@@ -53,12 +53,12 @@ opcua:
         pullPolicy: Always
       env: 
         OISP_URL: 127.0.0.1
-        # OISP_PORT: 7070
-        # OPC_USERNAME: ""
-        # OPC_PASSWORD: ""
-        # OISP_API_ROOT: https://development.industry-fusion.com/oisp/v1/api
-        # USERNAME: factory_admin@industry-fusion.com
-        # OISP_DEVICE_ID: urn:ngsi-ld:assetv5:2:46
+        OISP_PORT: 7070
+        OPC_USERNAME: ""
+        OPC_PASSWORD: ""
+        OISP_API_ROOT: https://development.industry-fusion.com/oisp/v1/api
+        USERNAME: factory_admin@industry-fusion.com
+        OISP_DEVICE_ID: urn:ngsi-ld:assetv5:2:46
       envFrom:
         - name: PASSWORD
           valueFrom:
