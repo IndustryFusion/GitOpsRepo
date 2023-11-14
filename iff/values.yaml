@@ -2,6 +2,7 @@ opcua:
   configuration:
     enabled: true
     name: akri-opcua
+    capacity: 1
     discoveryDetails:
       # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
       discoveryUrls:
@@ -22,7 +23,83 @@ opcua:
       applicationNames:
         action: Include
         items: ["SIMATIC.S7-1200.OPC-UA.Application:PLC_1"]
-      
+    pod:
+      restartPolicy: Always
+      volumes:
+      - name: oisp-devices-config-volume
+          configMap:
+            name: opc-ms-watercut-1-global-devices-config
+            items:
+              - key: config.json
+                path: config.json
+      - name: dataservice-machine-config
+        configMap:
+          name: opc-ms-watercut-1-app-config
+          items:
+          - key: config.json
+            path: config.json
+      imagePullSecrets:
+        - name: regcred
+    brokerPod1:
+      name: fusionopcuadataservice
+      image:
+        # repository is the OPC UA broker container reference
+        repository: docker.io/ibn40/fusionopcuadataservice
+        # tag is the OPC UA broker image tag
+        tag: essen-fair-2
+        # pullPolicy is the OPC UA broker pull policy
+        pullPolicy: Always
+      env:
+        OISP_URL: 127.0.0.1
+        OISP_PORT: 7070
+        OPC_USERNAME: ""
+        OPC_PASSWORD: ""
+        OISP_API_ROOT: https://development.industry-fusion.com/oisp/v1/api
+        USERNAME: factory_admin@industry-fusion.com
+        OISP_DEVICE_ID: urn:ngsi-ld:assetv5:2:46
+      envFrom:
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: oisp-password-secret
+      volumeMounts:
+        - name: dataservice-machine-config
+          mountPath: /resources/config.json
+          subPath: config.json
+    
+    brokerPod2:
+      name: oisp-iot-agent
+      image:
+        # repository is the OPC UA broker container reference
+        repository: docker.io/ibn40/oisp-iot-agent
+        # tag is the OPC UA broker image tag
+        tag: v2.4.2
+        # pullPolicy is the OPC UA broker pull policy
+        pullPolicy: Always
+      env:
+        OISP_DEVICE_ID: "urn:ngsi-ld:assetv5:2:46"
+        OISP_DEVICE_NAME: "urn:ngsi-ld:assetv5:2:46"
+        OISP_GATEWAY_ID: "urn:ngsi-ld:assetv5:2:46"
+      envFrom:
+        - name: OISP_DEVICE_ACTIVATION_CODE
+          valueFrom:
+            secretKeyRef:
+              key: activation-code
+              name: opc-ms-watercut-1-global-devices-secret
+      volumeMounts:
+        - name: oisp-devices-config-volume
+          mountPath: /volume/config
+      securityContext:
+        privileged: true
+          capabilities:
+            drop: ["ALL"]
+      ports:
+        - containerPort: 41234
+          hostPort: 41234
+        - containerPort: 7070
+          hostPort: 7070
+
 crds:
   group: akri.sh
   version: v0

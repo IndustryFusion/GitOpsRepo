@@ -20,86 +20,76 @@ spec:
         items: []
         {{- end }}
 
+  {{- if .Values.opcua.configuration.brokerPod1.image.repository }}      
   brokerSpec:
+    {{- if .Values.opcua.configuration.brokerPod1.image.repository }}
     brokerPodSpec:
-      restartPolicy: Always
+      restartPolicy: {{ .Values.opcua.configuration.pod.restartPolicy }}
       containers:
-      - name: fusionopcuadataservice
+      - name: {{ .Values.opcua.configuration.brokerPod1.name }}
+        {{- if .Values.opcua.configuration.brokerPod1.env }}
         env:
-          - name: OISP_URL
-            value: "127.0.0.1"
-          - name: OISP_PORT
-            value: "7070"
-          - name: OPC_USERNAME
-            value: ""
-          - name: OPC_PASSWORD
-            value: ""
-          - name: OISP_API_ROOT
-            value: https://development.industry-fusion.com/oisp/v1/api
-          - name: USERNAME
-            value: factory_admin@industry-fusion.com
-          - name: OISP_DEVICE_ID
-            value: "urn:ngsi-ld:assetv5:2:46"
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: password
-                name: oisp-password-secret
-        image: docker.io/ibn40/fusionopcuadataservice:essen-fair-2
-        imagePullPolicy: Always
+          {{- range $key, $val := .Values.opcua.configuration.brokerPod1.env }}
+          - name: {{ $key }}
+            value: {{ $val | quote }}
+          {{- end }}
+        {{- end }}
+        {{- with .Values.opcua.configuration.brokerPod1.envFrom}}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod1.image.repository .Values.opcua.configuration.brokerPod1.image.tag | quote }}
+        imagePullPolicy: {{ .Values.opcua.configuration.brokerPod1.image.pullPolicy }}
         resources:
           requests:
             {{`"{{PLACEHOLDER}}"`}} : "1"
           limits:
             {{`"{{PLACEHOLDER}}"`}} : "1"
         volumeMounts:
-          - name: dataservice-machine-config
-            mountPath: /resources/config.json
-            subPath: config.json
-      - name: oisp-iot-agent
+        {{- with .Values.opcua.configuration.brokerPod1.volumeMounts}}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      - name: {{ .Values.opcua.configuration.brokerPod2.name }}
+        {{- if .Values.opcua.configuration.brokerPod2.env }}
         env:
-          - name: OISP_DEVICE_ID
-            value: "urn:ngsi-ld:assetv5:2:46"
-          - name: OISP_DEVICE_NAME
-            value: "urn:ngsi-ld:assetv5:2:46"
-          - name: OISP_GATEWAY_ID
-            value: "urn:ngsi-ld:assetv5:2:46"
-          - name: OISP_DEVICE_ACTIVATION_CODE
-            valueFrom:
-              secretKeyRef:
-                key: activation-code
-                name: opc-ms-watercut-1-global-devices-secret
+          {{- range $key, $val := .Values.opcua.configuration.brokerPod2.env }}
+          - name: {{ $key }}
+            value: {{ $val | quote }}
+          {{- end }}
+        {{- end }}
+        {{- with .Values.opcua.configuration.brokerPod2.envFrom}}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
         volumeMounts:
-          - name: oisp-devices-config-volume
-            mountPath: /volume/config
+        {{- with .Values.opcua.configuration.brokerPod2.volumeMounts}}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
         securityContext:
-          privileged: true
-          capabilities:
-            drop: ["ALL"]
-        image: docker.io/ibn40/oisp-iot-agent:v2.4.2
-        imagePullPolicy: Always
+        {{- with .Values.opcua.configuration.brokerPod2.securityContext}}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod2.image.repository .Values.opcua.configuration.brokerPod2.image.tag | quote }}
+        imagePullPolicy: {{ .Values.opcua.configuration.brokerPod2.image.pullPolicy }}
         ports:
-          - containerPort: 41234
-            hostPort: 41234
-          - containerPort: 7070
-            hostPort: 7070
+        {{- with .Values.opcua.configuration.brokerPod2.ports}}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       volumes:
-        - name: oisp-devices-config-volume
-          configMap:
-            name: opc-ms-watercut-1-global-devices-config
-            items:
-              - key: config.json
-                path: config.json
-        - name: dataservice-machine-config
-          configMap:
-            name: opc-ms-watercut-1-app-config
-            items:
-            - key: config.json
-              path: config.json
+      {{- with .Values.opcua.configuration.pod.volumes}}
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        - name: regcred
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+  {{- if .Values.opcua.configuration.brokerProperties }}
+  brokerProperties:
+  {{- range $key, $val := .Values.opcua.configuration.brokerProperties }}
+  {{- $key | nindent 4 }}: {{ $val | quote }}
+  {{- end }}
+  {{- else }}
   brokerProperties: {}
-  capacity: 1
+  {{- end }}
+  capacity: {{ .Values.opcua.configuration.capacity }}
 
 {{- end }}
 
