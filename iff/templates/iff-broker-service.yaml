@@ -61,7 +61,7 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
         securityContext:
-          privileged: {{ .Values.opcua.configuration.brokerPod2.securityContext.priviliged }}
+          privileged: {{ .Values.opcua.configuration.brokerPod2.securityContext.privileged }}
           capabilities:
             drop: {{ .Values.opcua.configuration.brokerPod2.securityContext.capabilities.drop }}
         image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod2.image.repository .Values.opcua.configuration.brokerPod2.image.tag | quote }}
