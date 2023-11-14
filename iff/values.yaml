@@ -56,7 +56,7 @@ opcua:
         OISP_API_ROOT: "https://development.industry-fusion.com/oisp/v1/api"
         USERNAME: "factory_admin@industry-fusion.com"
         OISP_DEVICE_ID: "urn:ngsi-ld:assetv5:2:46"
-      envFrom:
+      extraEnv:
         - name: PASSWORD
       volumeMounts:
         - name: dataservice-machine-config
