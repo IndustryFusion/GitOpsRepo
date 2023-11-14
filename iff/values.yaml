@@ -30,14 +30,14 @@ opcua:
         configMap:
           name: opc-ms-watercut-1-global-devices-config
           items:
-          - key: config.json
-            path: config.json
+            - key: config.json
+              path: config.json
       - name: dataservice-machine-config
         configMap:
           name: opc-ms-watercut-1-app-config
           items:
-          - key: config.json
-            path: config.json
+            - key: config.json
+              path: config.json
       imagePullSecrets:
         - name: regcred
 
@@ -65,7 +65,7 @@ opcua:
             key: password
             name: oisp-password-secret
       volumeMounts:
-        name: dataservice-machine-config
+      - name: dataservice-machine-config
         mountPath: /resources/config.json
         subPath: config.json
     
