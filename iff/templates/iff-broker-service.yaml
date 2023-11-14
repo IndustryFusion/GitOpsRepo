@@ -83,14 +83,14 @@ spec:
       # imagePullSecrets:
       #   {{- toYaml . | nindent 6 }}
       # {{- end }}
-  {{- if .Values.opcua.configuration.brokerProperties }}
-  brokerProperties:
-  {{- range $key, $val := .Values.opcua.configuration.brokerProperties }}
-  {{- $key | nindent 4 }}: {{ $val | quote }}
-  {{- end }}
-  {{- else }}
-  brokerProperties: {}
-  {{- end }}
+  # {{- if .Values.opcua.configuration.brokerProperties }}
+  # brokerProperties:
+  # {{- range $key, $val := .Values.opcua.configuration.brokerProperties }}
+  # {{- $key | nindent 4 }}: {{ $val | quote }}
+  # {{- end }}
+  # {{- else }}
+  # brokerProperties: {}
+  # {{- end }}
   capacity: {{ .Values.opcua.configuration.capacity }}
 {{- end }}
 {{- end }}
