@@ -30,8 +30,8 @@ opcua:
         configMap:
           name: opc-ms-watercut-1-global-devices-config
           items:
-            - key: config.json
-              path: config.json
+          - key: config.json
+            path: config.json
       - name: dataservice-machine-config
         configMap:
           name: opc-ms-watercut-1-app-config
@@ -40,6 +40,7 @@ opcua:
             path: config.json
       imagePullSecrets:
         - name: regcred
+        
     brokerPod1:
       name: fusionopcuadataservice
       image:
