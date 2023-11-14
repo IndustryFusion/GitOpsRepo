@@ -20,9 +20,9 @@ spec:
         items: []
         {{- end }}
 
-  {{- if .Values.opcua.configuration.brokerPod1.image.repository }}      
+  {{- if .Values.opcua.configuration.pod.enabled }}      
   brokerSpec:
-    {{- if .Values.opcua.configuration.brokerPod1.image.repository }}
+    {{- if .Values.opcua.configuration.pod.enabled }}
     brokerPodSpec:
       restartPolicy: {{ .Values.opcua.configuration.pod.restartPolicy }}
       containers:

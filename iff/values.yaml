@@ -25,6 +25,7 @@ opcua:
         items: ["SIMATIC.S7-1200.OPC-UA.Application:PLC_1"]
     pod:
       restartPolicy: Always
+      enabled: true
       volumes:
         - name: oisp-devices-config-volume
           configMap:
@@ -77,7 +78,7 @@ opcua:
         # tag is the OPC UA broker image tag
         tag: v2.4.2
         # pullPolicy is the OPC UA broker pull policy
-        pullPolicy: Always
+        pullPolicy: "Always"
       env:
         OISP_DEVICE_ID: "urn:ngsi-ld:assetv5:2:46"
         OISP_DEVICE_NAME: "urn:ngsi-ld:assetv5:2:46"
