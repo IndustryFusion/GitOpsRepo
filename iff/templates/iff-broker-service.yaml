@@ -44,12 +44,12 @@ spec:
         #     {{`"{{PLACEHOLDER}}"`}} : "1"
         #   limits:
         #     {{`"{{PLACEHOLDER}}"`}} : "1"
-        {{- if .Values.opcua.configuration.brokerPod1.volumeMounts }}
-        volumeMounts:
-        {{- with .Values.opcua.configuration.brokerPod1.volumeMounts }}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- end }}
+        # {{- if .Values.opcua.configuration.brokerPod1.volumeMounts }}
+        # volumeMounts:
+        # {{- with .Values.opcua.configuration.brokerPod1.volumeMounts }}
+        #   {{- toYaml . | nindent 8 }}
+        # {{- end }}
+        # {{- end }}
       - name: {{ .Values.opcua.configuration.brokerPod2.name }}
         {{- if .Values.opcua.configuration.brokerPod2.env }}
         env:
