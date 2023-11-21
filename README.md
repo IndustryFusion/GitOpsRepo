@@ -27,6 +27,11 @@ IFF prepares the single node smartbox as a platform by running the above mention
 
 User connects the smartbox to the LAN to which his machine is also connected and switches it on (Akri configuration already knows this IP address range and the machine's OPC server name). The Akri DH scans the network using the IP address list and chooses the right OPC server based on the pre-configured OPC server application name. Once the detection is successful, Akri automatically deploys the IFF broker pod and handles the lifecycle of the pod based on machine availability. Akri not only discovers the machine but also fetches its connection URL and automatically passes it to the IFF broker pod internally as an environment varibales for connection.
 
+**Deployment:**
+
+The helm charts in this project are desgined to be deployed using Rancher's Fleet plugin (GitOps based Continous Delivery plugin). In the Rancher Management Server, navigate to 'Continous Delivery' option from the left navigation bar. Add a new Git Repo, mention name of the repository and branch that contains this project, deploy it to the desired cluster in Rancher.
+
+Note: The charts can also be used to deploy on Kubernetes using Helm CLI with minor modification.
 
 **Troubleshooting/Known Issues**
 
