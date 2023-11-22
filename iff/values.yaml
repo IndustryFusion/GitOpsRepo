@@ -22,7 +22,7 @@ opcua:
 
       applicationNames:
         action: Include
-        items: ["Microstep OPC UA Server"]
+        items: ["SIMATIC.S7-1200.OPC-UA.Application:PLC_1"]
     pod:
       restartPolicy: Always
       enabled: true
