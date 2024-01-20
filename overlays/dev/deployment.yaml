@@ -33,68 +33,40 @@ spec:
               value: "127.0.0.1"
             - name: OISP_PORT
               value: "7070"
-            - name: OISP_API_ROOT
-              value: https://development.industry-fusion.com/oisp/v1/api
-            - name: USERNAME
-              value: factory_admin@industry-fusion.com
-            - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:assetv5:2:44"
-            - name: PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: oisp-password-secret
-          image: docker.io/ibn40/fusionmqttdataservice:essen-fair-2
+          image: docker.io/ibn40/fusionmqttdataservice:latest
           imagePullPolicy: Always
           volumeMounts:
             - name: dataservice-machine-config
               mountPath: /resources/config.json
               subPath: config.json
-        - name: oisp-iot-agent
+        - name: iff-iot-agent
           env:
             - name: OISP_DEVICE_ID
-              value: "urn:ngsi-ld:assetv5:2:44"
-            - name: OISP_DEVICE_NAME
-              value: "urn:ngsi-ld:assetv5:2:44"
+              value: "urn:ngsi-ld:test:0:01"
             - name: OISP_GATEWAY_ID
-              value: "urn:ngsi-ld:assetv5:2:44"
-            - name: OISP_DEVICE_ACTIVATION_CODE
+              value: "gatewayid"
+            - name: REALM_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: activation-code
+                  key: password
                   name: mqtt-teka-airtracker-2-global-devices-secret
           volumeMounts:
-            - name: oisp-devices-config-volume
+            - name: devices-config-volume
               mountPath: /volume/config
           securityContext:
             privileged: true
             capabilities:
               drop:
                 - all
-          image: docker.io/ibn40/oisp-iot-agent:v2.4.2
+          image: docker.io/ibn40/iff-iot-agent:v0.0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 41234
               hostPort: 41234
             - containerPort: 7070
               hostPort: 7070
-        - name: oisp-token-operator
-          image: ibn40/oisp-token-operator:latest
-          imagePullPolicy: Always
-          env:
-            - name: OISP_API_ROOT
-              value: https://development.industry-fusion.com/oisp/v1/api
-            - name: USERNAME
-              value: factory_admin@industry-fusion.com
-            - name: PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: oisp-password-secret
-          securityContext:
-            privileged: true
       volumes:
-        - name: oisp-devices-config-volume
+        - name: devices-config-volume
           configMap:
             name: mqtt-teka-airtracker-2-global-devices-config
             items:
@@ -108,5 +80,3 @@ spec:
               path: config.json
       imagePullSecrets:
         - name: regcred
-      # nodeSelector:
-      #   kubernetes.io/hostname: m-3384eee4-d96c-49c0-8ecb-3feaa267213a

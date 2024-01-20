@@ -19,7 +19,7 @@ data:
                 },
                 "connector": {
                         "rest": {
-                                "host": "development.industry-fusion.com",
+                                "host": "85.215.145.153",
                                 "port": 443,
                                 "protocol": "https",
                                 "strictSSL": false,
@@ -30,7 +30,7 @@ data:
                                 }
                         },
                         "mqtt": {
-                                "host": "development.industry-fusion.com",
+                                "host": "85.215.145.153",
                                 "port": 8883,
                                 "websockets": false,
                                 "qos": 1,

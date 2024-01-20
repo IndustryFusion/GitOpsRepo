@@ -7,37 +7,27 @@ data:
               {
                   "topic": "airtracker-74145/relay1",
                   "key": [],
-                  "parameter": ["sensor-v0.1-sensor-runtime-machine-state"]
+                  "parameter": ["machine-state"]
               },
               {
                   "topic": "airtracker-74145/dust",
                   "key": [],
-                  "parameter": ["sensor-v0.1-sensor-runtime-dustiness"]
+                  "parameter": ["dustiness"]
               },
               {
                   "topic": "airtracker-74145/temperature",
                   "key": [],
-                  "parameter": ["sensor-v0.1-sensor-runtime-ambient-operating-temperature"]
+                  "parameter": ["temperature"]
               },
               {
                   "topic": "airtracker-74145/humidity",
                   "key": [],
-                  "parameter": ["sensor-v0.1-sensor-runtime-relative-humidity"]
+                  "parameter": ["humidity"]
               },
               {
                   "topic": "airtracker-74145/noise",
                   "key": [],
-                  "parameter": ["sensor-v0.1-sensor-runtime-ambient-noise"]
-              },
-              {
-                  "topic": "smartfit/state/807D3AE5C4C8/",
-                  "key": ["phase1:current"],
-                  "parameter": ["base-objects-v0.1-power-supply-runtime-current-strength-l1"]
-              },
-              {
-                  "topic": "smartfit/state/807D3AE5C4C8/",
-                  "key": ["phase1:power"],
-                  "parameter": ["base-objects-v0.1-power-supply-runtime-electric-power"]
+                  "parameter": ["noise"]
               }
           ]
       }
