@@ -46,7 +46,7 @@ spec:
             - name: GATEWAY_ID
               value: "gatewayid"
             - name: KEYCLOAK_URL
-              value: "https://development.industry-fusion.com/auth/realms/iff"
+              value: "https://development.industry-fusion.com/auth/realms"
             - name: REALM_ID
               value: "iff"
             - name: REALM_USER_PASSWORD
