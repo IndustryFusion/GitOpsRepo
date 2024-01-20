@@ -20,7 +20,7 @@ data:
                 },
                 "connector": {
                         "mqtt": {
-                                "host": "development.industry-fusion.com",
+                                "host": "85.215.145.153",
                                 "port": 8883,
                                 "websockets": false,
                                 "qos": 1,
