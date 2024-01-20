@@ -50,11 +50,10 @@ spec:
             - name: REALM_ID
               value: "iff"
             - name: REALM_USER_PASSWORD
-              vale: "qOChMdjLNRM0eHlIQUMuUimy0FzQmvO0"
-              # valueFrom:
-              #   secretKeyRef:
-              #     key: password
-              #     name: mqtt-teka-airtracker-2-global-devices-secret
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: mqtt-teka-airtracker-2-global-devices-secret
           volumeMounts:
             - name: devices-config-volume
               mountPath: /volume/config
