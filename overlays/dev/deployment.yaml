@@ -41,9 +41,9 @@ spec:
               subPath: config.json
         - name: iff-iot-agent
           env:
-            - name: OISP_DEVICE_ID
+            - name: DEVICE_ID
               value: "urn:ngsi-ld:test:0:01"
-            - name: OISP_GATEWAY_ID
+            - name: GATEWAY_ID
               value: "gatewayid"
             - name: KEYCLOAK_URL
               value: "http://development.industry-fusion.com/auth/realms/iff"
