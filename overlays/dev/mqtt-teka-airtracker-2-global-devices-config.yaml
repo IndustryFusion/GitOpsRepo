@@ -20,12 +20,12 @@ data:
                 },
                 "connector": {
                         "mqtt": {
-                                "host": "85.215.145.153",
-                                "port": 1883,
+                                "host": "development.industry-fusion.com",
+                                "port": 8883,
                                 "websockets": false,
                                 "qos": 1,
                                 "retain": false,
-                                "secure": false,
+                                "secure": true,
                                 "retries": 5,
                                 "strictSSL": false,
                                 "sparkplugB": true,
