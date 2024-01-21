@@ -21,13 +21,13 @@ data:
                 "connector": {
                         "mqtt": {
                                 "host": "devalerta.industry-fusion.com",
-                                "port": 1883,
+                                "port": 8883,
                                 "websockets": false,
                                 "qos": 1,
                                 "retain": false,
-                                "secure": false,
+                                "secure": true,
                                 "retries": 5,
-                                "strictSSL": false,
+                                "strictSSL": true,
                                 "sparkplugB": true,
                                 "version": "spBv1.0"   
                         }
