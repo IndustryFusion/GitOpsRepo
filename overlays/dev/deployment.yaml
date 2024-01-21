@@ -33,6 +33,8 @@ spec:
               value: "127.0.0.1"
             - name: OISP_PORT
               value: "7070"
+            - name: SLEEP
+              value: "1"
           image: docker.io/ibn40/fusionmqttdataservice:latest
           imagePullPolicy: Always
           volumeMounts:
