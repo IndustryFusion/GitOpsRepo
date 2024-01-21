@@ -25,7 +25,7 @@ data:
                                 "websockets": false,
                                 "qos": 1,
                                 "retain": false,
-                                "secure": true,
+                                "secure": false,
                                 "retries": 5,
                                 "strictSSL": false,
                                 "sparkplugB": true,
