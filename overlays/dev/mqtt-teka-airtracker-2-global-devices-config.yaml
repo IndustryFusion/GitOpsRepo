@@ -27,7 +27,7 @@ data:
                                 "retain": false,
                                 "secure": true,
                                 "retries": 5,
-                                "strictSSL": true,
+                                "strictSSL": false,
                                 "sparkplugB": true,
                                 "version": "spBv1.0"   
                         }
