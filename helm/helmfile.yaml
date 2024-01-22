@@ -39,3 +39,11 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
+- name: if50
+  labels:
+    order: second
+    app: if50
+  chart: ./charts/if50
+  namespace: {{ .Values.namespace }}
+  values:
+  - values.yaml.gotmpl

@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: if50-application-service
+  name: if50-application-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - port: {{ .Values.if50.backendPort }}
+    targetPort: {{ .Values.if50.backendPort }}
+    name: fusion-backend
+    protocol: TCP
+  - port: {{ .Values.if50.frontendPort }}
+    targetPort: {{ .Values.if50.frontendPort }}
+    name: fusion-frontend
+    protocol: TCP
+  selector:
+    app: if50-application-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: if50-application-service
+  name: if50-application-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: if50-application-service
+  template:
+    metadata:
+      labels:
+        app: if50-application-service
+    spec:
+      containers:
+      - name: fusion-backend
+        image: {{ .Values.mainRepo }}/if50-backend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.if50.backendPort }}
+        resources:
+          limits:
+            cpu: 250m
+            memory: 128Mi
+      - name: fusion-frontend
+        image: {{ .Values.mainRepo }}/if50-frontend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.if50.frontendPort }}
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+        resources:
+          limits:
+            cpu: 250m
+            memory: 128Mi
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: if50-nginx
+          items:
+          - key: config
+            path: default.conf
