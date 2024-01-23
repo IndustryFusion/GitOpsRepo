@@ -60,7 +60,7 @@ spec:
             name: if50-application-service
             port:
               number: {{ .Values.if50.frontendPort }}
-        path: /_next/static/(.*)
+        path: /if50/_next/static/(.*)
         pathType: ImplementationSpecific
   tls:
   - hosts:
