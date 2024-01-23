@@ -4,48 +4,28 @@ metadata:
   name: if50-nginx
 data:
   config: |
+    upstream nextjs_upstream {
+        server localhost:3000;
+    }
     server {
-        listen 3000 default_server;
-        listen [::]:3000 default_server;
+        listen 80 default_server;
+
         server_name _;
-        index index.html index.htm;
 
-        set_by_lua $build_id 'return os.getenv("BUILD_ID")';
+        server_tokens off;
 
-        root /app/public;
-
-        # Serve any static assets with NGINX
-        location /_next/static {
-            alias /app/.next/static/;
-            add_header Cache-Control "public, max-age=31536000, immutable";
-        }
-
-        # Serve any static assets with NGINX
-        location /_next/static/chunks {
-            alias /app/.next/static/chunks;
-            add_header Cache-Control "public, max-age=31536000, immutable";
-        }
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
 
         location / {
-            root /app/.next/server/static/${build_id}/pages;
-            try_files $uri.html $uri/index.html # only serve html files from this dir
-                      @public
-                      @nextjs;
-            add_header Cache-Control "public, max-age=3600";
+          proxy_pass http://nextjs_upstream;
         }
 
-        location @public {
-            root /app/public;
-            add_header Cache-Control "public, max-age=3600";
-        }
-
-        location @nextjs {
-          # reverse proxy for next server
-          proxy_pass http://localhost:3000;
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection 'upgrade';
-          proxy_set_header Host $host;
-          proxy_cache_bypass $http_upgrade;
-        }
+        gzip on;
+        gzip_proxied any;
+        gzip_comp_level 4;
+        gzip_types text/css application/javascript image/svg+xml;
     }
