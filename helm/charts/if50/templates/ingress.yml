@@ -53,7 +53,7 @@ spec:
             name: if50-application-service
             port:
               number: {{ .Values.if50.frontendPort }}
-        path: {{ .Values.if50.frontendExternalPath }}
+        path: {{ .Values.if50.frontendExternalPath }}(/|$)(.*)
         pathType: ImplementationSpecific
       # - backend:
       #     service:
