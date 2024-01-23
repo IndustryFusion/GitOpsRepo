@@ -17,4 +17,11 @@ data:
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
       }
+
+      location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|ttf)$ {
+        root /app/.next;
+        expires 30d;
+        access_log off;
+        add_header Cache-Control "public, max-age=2592000";
+      }
     }
