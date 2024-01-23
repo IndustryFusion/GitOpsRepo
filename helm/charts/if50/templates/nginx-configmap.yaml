@@ -4,11 +4,8 @@ metadata:
   name: if50-nginx
 data:
   config: |
-    upstream nextjs_upstream {
-        server localhost:3000;
-    }
     server {
-        listen 80 default_server;
+        listen 3000 default_server;
 
         server_name _;
 
@@ -21,7 +18,7 @@ data:
         proxy_cache_bypass $http_upgrade;
 
         location / {
-          proxy_pass http://nextjs_upstream;
+          proxy_pass http://localhost:3000;
         }
 
         gzip on;
