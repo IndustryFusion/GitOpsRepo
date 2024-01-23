@@ -4,6 +4,7 @@ metadata:
   name: if50-nginx
 data:
   config: |
+    proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=STATIC:10m inactive=7d use_temp_path=off;
     server {
         listen 80 default_server;
 
@@ -11,18 +12,24 @@ data:
 
         server_tokens off;
 
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-
-        location /if50 {
-          proxy_pass http://localhost:3000;
-        }
-
         gzip on;
         gzip_proxied any;
         gzip_comp_level 4;
         gzip_types text/css application/javascript image/svg+xml;
+
+        location /_next/static {
+          proxy_cache STATIC;
+          proxy_pass http://localhost:3000;
+        }
+
+        location /static {
+          proxy_cache STATIC;
+          proxy_ignore_headers Cache-Control;
+          proxy_cache_valid 60m;
+          proxy_pass http://localhost:3000;
+        }
+
+        location /if50 {
+          proxy_pass http://localhost:3000;
+        }
     }
