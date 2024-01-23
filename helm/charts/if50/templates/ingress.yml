@@ -55,13 +55,13 @@ spec:
               number: {{ .Values.if50.frontendPort }}
         path: {{ .Values.if50.frontendExternalPath }}
         pathType: ImplementationSpecific
-      - backend:
-          service:
-            name: if50-application-service
-            port:
-              number: {{ .Values.if50.frontendPort }}
-        path: /if50/_next/static/(.*)
-        pathType: ImplementationSpecific
+      # - backend:
+      #     service:
+      #       name: if50-application-service
+      #       port:
+      #         number: {{ .Values.if50.frontendPort }}
+      #   path: /if50/_next/static/(.*)
+      #   pathType: ImplementationSpecific
   tls:
   - hosts:
     - {{ .Values.if50.externalHostname }}
