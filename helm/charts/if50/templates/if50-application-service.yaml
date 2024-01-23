@@ -46,7 +46,7 @@ spec:
         image: {{ .Values.mainRepo }}/if50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
-        - port: {{ .Values.if50.frontendPort }}
+        - containerPort: {{ .Values.if50.frontendPort }}
           targetPort: 3000
         volumeMounts:
         - name: nginx-config
