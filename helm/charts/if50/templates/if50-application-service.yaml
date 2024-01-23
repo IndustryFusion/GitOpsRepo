@@ -16,6 +16,7 @@ spec:
     targetPort: {{ .Values.if50.backendPort }}
     name: fusion-frontend
     protocol: TCP
+  type: NodePort
   selector:
     app: if50-application-service
 ---

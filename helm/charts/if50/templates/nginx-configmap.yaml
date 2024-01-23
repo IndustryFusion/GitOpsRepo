@@ -1,27 +1,27 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: if50-nginx
-data:
-  config: |
-    server {
-        listen 80 default_server;
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: if50-nginx
+# data:
+#   config: |
+#     server {
+#         listen 80 default_server;
 
-        server_name _;
+#         server_name _;
 
-        server_tokens off;
+#         server_tokens off;
 
-        gzip on;
-        gzip_proxied any;
-        gzip_comp_level 4;
-        gzip_types text/css application/javascript image/svg+xml;
+#         gzip on;
+#         gzip_proxied any;
+#         gzip_comp_level 4;
+#         gzip_types text/css application/javascript image/svg+xml;
 
-        location ^~ /_next/static/ {
-          alias /usr/app/.next/static/;
-          try_files $uri =404;
-        }
+#         location ^~ /_next/static/ {
+#           alias /usr/app/.next/static/;
+#           try_files $uri =404;
+#         }
         
-        location /if50 {
-          proxy_pass http://localhost:3000;
-        }
-    }
+#         location /if50 {
+#           proxy_pass http://localhost:3000;
+#         }
+#     }
