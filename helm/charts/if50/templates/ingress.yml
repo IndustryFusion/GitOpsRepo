@@ -41,7 +41,7 @@ metadata:
     cert-manager.io/cluster-issuer: {{ .Values.certmanager.issuer }}
     {{- if (eq .Values.ingressType "nginx") }}
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     {{- end }}
 spec:
   rules:
@@ -54,6 +54,20 @@ spec:
             port:
               number: {{ .Values.if50.frontendPort }}
         path: {{ .Values.if50.frontendExternalPath }}(/|$)(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: if50-application-service
+            port:
+              number: {{ .Values.if50.frontendPort }}
+        path: /_next/static/(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: if50-application-service
+            port:
+              number: {{ .Values.if50.frontendPort }}
+        path: /(.*)
         pathType: ImplementationSpecific
   tls:
   - hosts:
