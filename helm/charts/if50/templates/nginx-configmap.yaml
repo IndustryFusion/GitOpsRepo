@@ -5,9 +5,8 @@ metadata:
 data:
   config: |
     server {
-        listen 80 default_server;
-        listen 31460
-        listen 30645
+        listen 31460 default_server;
+        
         server_name development.industry-fusion.com;
 
         server_tokens off;
