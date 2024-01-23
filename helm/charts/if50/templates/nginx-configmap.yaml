@@ -27,6 +27,12 @@ data:
           log_not_found off;
       }
 
+      # Serve any static assets with NGINX
+      location /_next/static {
+            alias /app/.next/static;
+            add_header Cache-Control "public, max-age=3600, immutable";
+      }
+
       error_page 500 502 503 504 /50x.html;
       location = /50x.html {
           root /usr/share/nginx/html;
