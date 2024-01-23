@@ -5,35 +5,35 @@ metadata:
 data:
   config: |
     server {
-      listen 3000 default_server;
-	    listen [::]:3000 default_server;
-      server_name _;
-      index index.html index.htm;
+        listen 3000 default_server;
+        listen [::]:3000 default_server;
+        server_name _;
+        index index.html index.htm;
 
-      set_by_lua $build_id 'return os.getenv("BUILD_ID")';
+        set_by_lua $build_id 'return os.getenv("BUILD_ID")';
 
-      root /app/public;
+        root /app/public;
 
-      # Serve any static assets with NGINX
-      location /_next/static {
-          alias /app/.next/static/;
-          add_header Cache-Control "public, max-age=31536000, immutable";
-      }
+        # Serve any static assets with NGINX
+        location /_next/static {
+            alias /app/.next/static/;
+            add_header Cache-Control "public, max-age=31536000, immutable";
+        }
 
-      location / {
-          root /app/.next/server/static/${build_id}/pages;
-          try_files $uri.html $uri/index.html # only serve html files from this dir
-                    @public
-                    @nextjs;
-          add_header Cache-Control "public, max-age=3600";
-      }
+        location / {
+            root /app/.next/server/static/${build_id}/pages;
+            try_files $uri.html $uri/index.html # only serve html files from this dir
+                      @public
+                      @nextjs;
+            add_header Cache-Control "public, max-age=3600";
+        }
 
-      location @public {
-          root /app/public;
-          add_header Cache-Control "public, max-age=3600";
-      }
+        location @public {
+            root /app/public;
+            add_header Cache-Control "public, max-age=3600";
+        }
 
-      location @nextjs {
+        location @nextjs {
           # reverse proxy for next server
           proxy_pass http://localhost:3000;
           proxy_http_version 1.1;
@@ -41,5 +41,5 @@ data:
           proxy_set_header Connection 'upgrade';
           proxy_set_header Host $host;
           proxy_cache_bypass $http_upgrade;
-      }
+        }
     }
