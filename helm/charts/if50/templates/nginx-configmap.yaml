@@ -5,7 +5,7 @@ metadata:
 data:
   config: |
     server {
-        listen 3000 default_server;
+        listen 80 default_server;
 
         server_name _;
 
@@ -17,7 +17,7 @@ data:
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
 
-        location / {
+        location /if50 {
           proxy_pass http://localhost:3000;
         }
 
