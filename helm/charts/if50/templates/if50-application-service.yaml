@@ -16,6 +16,7 @@ spec:
     targetPort: {{ .Values.if50.frontendPort }}
     name: fusion-frontend
     protocol: TCP
+  type: LoadBalancer
   selector:
     app: if50-application-service
 ---
