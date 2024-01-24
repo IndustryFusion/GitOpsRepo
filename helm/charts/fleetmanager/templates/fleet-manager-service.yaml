@@ -12,7 +12,7 @@ spec:
     targetPort: {{ .Values.fleetmanager.backendPort }}
     name: backend
     protocol: TCP
-  - port: {{ .Values.fleetmanager.frontendPort }}
+  - port: 80
     targetPort: {{ .Values.fleetmanager.frontendPort }}
     name: frontend
     protocol: TCP
