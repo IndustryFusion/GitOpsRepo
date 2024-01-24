@@ -9,7 +9,6 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-remove-path-fleetmanager-backend@kubernetescrd
     {{- else }}
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
     {{- end }}
 spec:
   rules:
