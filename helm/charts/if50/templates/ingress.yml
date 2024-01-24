@@ -50,7 +50,7 @@ spec:
           service:
             name: if50-application-service
             port:
-              number: {{ .Values.if50.backendPort }}
+              number: {{ .Values.if50.frontendPort }}
         path: {{ .Values.if50.frontendExternalPath }}(.*)
         pathType: ImplementationSpecific
   tls:
