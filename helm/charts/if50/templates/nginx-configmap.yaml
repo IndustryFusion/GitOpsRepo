@@ -6,7 +6,6 @@ data:
   config: |
     server {
       listen 80;
-      listen 30646;
 
       location / {
           root /usr/share/nginx/html;
