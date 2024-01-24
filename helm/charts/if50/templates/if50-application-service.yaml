@@ -12,11 +12,10 @@ spec:
     targetPort: {{ .Values.if50.backendPort }}
     name: fusion-backend
     protocol: TCP
-  - port: {{ .Values.if50.frontendPort }}
+  - port: 80
     targetPort: {{ .Values.if50.frontendPort }}
     name: fusion-frontend
     protocol: TCP
-  type: LoadBalancer
   selector:
     app: if50-application-service
 ---
@@ -48,16 +47,16 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.if50.frontendPort }}
-        # volumeMounts:
-        # - name: nginx-config
-        #   mountPath: /etc/nginx/conf.d/default.conf
-        #   subPath: default.conf
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
-      # volumes:
-      # - name: nginx-config
-      #   configMap:
-      #     name: if50-nginx
-      #     items:
-      #     - key: config
-      #       path: default.conf
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: if50-nginx
+          items:
+          - key: config
+            path: default.conf
