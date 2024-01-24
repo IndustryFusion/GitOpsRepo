@@ -9,7 +9,6 @@ data:
         server_name development.industry-fusion.com;
 
         location /if50 {
-            rewrite ^/if50/(.*)$ /$1 break;
             proxy_pass http://localhost:31460; # Replace with the correct address of your Next.js service
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
