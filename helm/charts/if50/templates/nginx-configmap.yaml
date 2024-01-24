@@ -20,7 +20,7 @@ data:
 
         # Handle static files (served directly by Nginx)
         location /if50/_next/static/ {
-            alias /app/public/_next/static/; # Adjust the path to your Next.js static files
+            alias /app/.next/static/; # Adjust the path to your Next.js static files
             expires 365d;
             access_log off;
         }
