@@ -1,27 +1,27 @@
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: if50-nginx
-# data:
-#   config: |
-#     server {
-#         listen 80 default_server;
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: if50-nginx
+data:
+  config: |
+    server {
+        listen 80;
+        server_name development.industry-fusion.com;
 
-#         server_name development.industry-fusion.com;
+        location /if50 {
+            rewrite ^/if50/(.*)$ /$1 break;
+            proxy_pass http://localhost:31460; # Replace with the correct address of your Next.js service
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
 
-#         server_tokens off;
-
-#         gzip on;
-#         gzip_proxied any;
-#         gzip_comp_level 4;
-#         gzip_types text/css application/javascript image/svg+xml;
-
-#         location ^~ /_next/static/ {
-#           alias /app/.next/static/;
-#           try_files $uri =404;
-#         }
-        
-#         location /if50 {
-#           proxy_pass http://localhost:31460;
-#         }
-#     }
+        # Handle static files (served directly by Nginx)
+        location /if50/_next/static/ {
+            alias /app/public/_next/static/; # Adjust the path to your Next.js static files
+            expires 365d;
+            access_log off;
+        }
+    }
