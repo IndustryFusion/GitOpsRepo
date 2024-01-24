@@ -44,9 +44,9 @@ spec:
         - name: iff-iot-agent
           env:
             - name: DEVICE_ID
-              value: "urn:ngsi-ld:test:0:01"
+              value: "urn:ngsi-ld:test:0:02"
             - name: GATEWAY_ID
-              value: "urn:ngsi-ld:test:0:01"
+              value: "urn:ngsi-ld:test:0:02"
             - name: KEYCLOAK_URL
               value: "https://development.industry-fusion.com/auth/realms"
             - name: REALM_ID
