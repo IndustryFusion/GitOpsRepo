@@ -6,8 +6,8 @@ data:
   config: |
     server {
       listen 80;
-      listen 30645;
-      
+      listen 30646;
+
       location / {
           root /usr/share/nginx/html;
           try_files $uri /index.html;
