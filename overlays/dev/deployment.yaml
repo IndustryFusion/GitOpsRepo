@@ -29,9 +29,9 @@ spec:
               value: "192.168.49.26"
             - name: BROKER_PORT
               value: "1883"
-            - name: OISP_URL
+            - name: IFF_AGENT_URL
               value: "127.0.0.1"
-            - name: OISP_PORT
+            - name: IFF_AGENT_PORT
               value: "7070"
             - name: SLEEP
               value: "1"
