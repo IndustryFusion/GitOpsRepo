@@ -12,10 +12,11 @@ spec:
     targetPort: {{ .Values.if50.backendPort }}
     name: fusion-backend
     protocol: TCP
-  - port: 80
+  - port: {{ .Values.if50.frontendPort }}
     targetPort: {{ .Values.if50.frontendPort }}
     name: fusion-frontend
     protocol: TCP
+  type: LoadBalancer
   selector:
     app: if50-application-service
 ---
