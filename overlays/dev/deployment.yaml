@@ -46,7 +46,7 @@ spec:
             - name: DEVICE_ID
               value: "urn:ngsi-ld:asset:2:100"
             - name: GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:100"
+              value: "gatewayid"
             - name: KEYCLOAK_URL
               value: "https://development.industry-fusion.com/auth/realms"
             - name: REALM_ID
