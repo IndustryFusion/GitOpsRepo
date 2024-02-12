@@ -48,8 +48,8 @@ spec:
           volumeMounts:
             - name: devices-config-volume
               mountPath: /volume/config
-            - name: devices-config-volume
-              mountPath: /app7data
+            - name: devices-data-volume
+              mountPath: /app/data
           securityContext:
             privileged: true
             capabilities:
