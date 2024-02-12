@@ -43,19 +43,8 @@ spec:
               subPath: config.json
         - name: iff-iot-agent
           env:
-            - name: DEVICE_ID
-              value: "urn:ngsi-ld:asset:2:101"
-            - name: GATEWAY_ID
-              value: "urn:ngsi-ld:asset:2:101"
-            - name: KEYCLOAK_URL
-              value: "https://development.industry-fusion.com/auth/realms"
-            - name: REALM_ID
-              value: "iff"
-            - name: REALM_USER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: mqtt-teka-airtracker-2-global-devices-secret
+            - name: ACTIVATION_MODE
+              value: "secret"
           volumeMounts:
             - name: devices-config-volume
               mountPath: /volume/config
@@ -64,7 +53,7 @@ spec:
             capabilities:
               drop:
                 - all
-          image: docker.io/ibn40/iff-iot-agent:v0.0.1
+          image: docker.io/ibn40/iff-iot-agent:v0.0.2
           imagePullPolicy: Always
           ports:
             - containerPort: 41234
