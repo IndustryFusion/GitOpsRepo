@@ -50,6 +50,8 @@ spec:
               mountPath: /volume/config
             - name: devices-data-volume
               mountPath: /app/data
+            - name: devices-kube-volume
+              mountPath: /root/.kube/config
           securityContext:
             privileged: true
             capabilities:
@@ -72,6 +74,9 @@ spec:
         - name: devices-data-volume
           hostPath:
             path: /root/device/data/
+        - name: devices-kube-volume
+          hostPath:
+            path: /root/kube/config.yaml
         - name: dataservice-machine-config
           configMap:
             name: mqtt-teka-airtracker-2-app-config
