@@ -50,6 +50,7 @@ spec:
               mountPath: /volume/config
             - name: devices-data-volume
               mountPath: /app/data
+              readOnly: true
             - name: devices-kube-volume
               mountPath: /root/.kube/config
           securityContext:
