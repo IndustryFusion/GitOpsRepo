@@ -49,7 +49,7 @@ spec:
             - name: devices-config-volume
               mountPath: /volume/config
             - name: devices-data-volume
-              mountPath: /app/data
+              mountPath: /volume/data
               readOnly: false
             - name: devices-kube-volume
               mountPath: /root/.kube/config
