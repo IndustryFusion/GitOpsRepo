@@ -73,7 +73,7 @@ spec:
                 path: config.json
         - name: devices-data-volume
           configMap:
-            name: mqtt-teka-airtracker-2-global-devices-config
+            name: mqtt-teka-airtracker-2-global-data-config
             items:
               - key: device.json
                 path: device.json
