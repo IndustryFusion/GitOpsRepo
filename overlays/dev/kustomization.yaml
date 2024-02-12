@@ -4,4 +4,3 @@ resources:
 - mqtt-teka-airtracker-2-global-devices-secret.yaml
 - mqtt-teka-airtracker-2-app-config.yaml
 - mqtt-teka-airtracker-2-service-account.yaml
-- mqtt-teka-airtracker-2-data-config.yaml

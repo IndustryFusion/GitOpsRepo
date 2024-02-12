@@ -50,7 +50,6 @@ spec:
               mountPath: /volume/config
             - name: devices-data-volume
               mountPath: /volume/data
-              readOnly: false
             - name: devices-kube-volume
               mountPath: /root/.kube/config
           securityContext:
@@ -73,11 +72,8 @@ spec:
               - key: config.json
                 path: config.json
         - name: devices-data-volume
-          configMap:
-            name: mqtt-teka-airtracker-2-data-config
-            items:
-              - key: device.json
-                path: device.json
+          hostPath:
+            path: /var/device/data/
         - name: devices-kube-volume
           hostPath:
             path: /var/kube/config.yaml
