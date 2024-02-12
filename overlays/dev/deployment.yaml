@@ -72,8 +72,11 @@ spec:
               - key: config.json
                 path: config.json
         - name: devices-data-volume
-          hostPath:
-            path: /root/device/data/
+          configMap:
+            name: mqtt-teka-airtracker-2-global-devices-config
+            items:
+              - key: device.json
+                path: device.json
         - name: devices-kube-volume
           hostPath:
             path: /root/kube/config.yaml

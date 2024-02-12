@@ -1,38 +1,13 @@
 apiVersion: v1
 data:
-  config.json: |
+  device.json: |
     {
-      "fusionmqttdataservice": {
-          "specification": [
-              {
-                  "topic": "airtracker-74145/relay1",
-                  "key": [],
-                  "parameter": ["machine-state"]
-              },
-              {
-                  "topic": "airtracker-74145/dust",
-                  "key": [],
-                  "parameter": ["dustiness"]
-              },
-              {
-                  "topic": "airtracker-74145/temperature",
-                  "key": [],
-                  "parameter": ["temperature"]
-              },
-              {
-                  "topic": "airtracker-74145/humidity",
-                  "key": [],
-                  "parameter": ["humidity"]
-              },
-              {
-                  "topic": "airtracker-74145/noise",
-                  "key": [],
-                  "parameter": ["noise"]
-              }
-          ]
-      }
+        "device_id": "urn:ngsi-ld:asset:2:101",
+        "gateway_id": "urn:ngsi-ld:asset:2:101",
+        "realm_id": "iff",
+        "keycloak_url": "https://development.industry-fusion.com/auth/realms"
     }
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: mqtt-teka-airtracker-2-app-config
+  name: mqtt-teka-airtracker-2-data-config
