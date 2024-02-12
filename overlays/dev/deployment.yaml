@@ -48,6 +48,8 @@ spec:
           volumeMounts:
             - name: devices-config-volume
               mountPath: /volume/config
+            - name: devices-config-volume
+              mountPath: /app7data
           securityContext:
             privileged: true
             capabilities:
@@ -67,6 +69,9 @@ spec:
             items:
               - key: config.json
                 path: config.json
+        - name: devices-data-volume
+          hostPath:
+            path: /root/device/data/
         - name: dataservice-machine-config
           configMap:
             name: mqtt-teka-airtracker-2-app-config
