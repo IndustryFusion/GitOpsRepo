@@ -47,3 +47,11 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
+- name: factory50
+  labels:
+    order: second
+    app: factory50
+  chart: ./charts/factory50
+  namespace: {{ .Values.namespace }}
+  values:
+  - values.yaml.gotmpl
