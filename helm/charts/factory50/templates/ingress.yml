@@ -21,15 +21,11 @@ spec:
             port:
               number: {{ .Values.factory50.backendPort }}
         {{- if (eq .Values.ingressType "nginx") }}
-        path: {{ .Values.factory50.backendExternalPath }}(.*)
+        path: {{ .Values.factory50.backendExternalPath }}
         {{- else }}
         path: {{ .Values.factory50.backendExternalPath }}
         {{- end }}
         pathType: ImplementationSpecific
-  tls:
-  - hosts:
-    - {{ .Values.factory50.externalHostname }}
-    secretName: {{ .Values.certmanager.secret }}-factory50-backend
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
