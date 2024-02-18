@@ -21,7 +21,7 @@ spec:
             port:
               number: {{ .Values.factory50.backendPort }}
         {{- if (eq .Values.ingressType "nginx") }}
-        path: {{ .Values.factory50.backendExternalPath }}
+        path: {{ .Values.factory50.backendExternalPath }}(.*)
         {{- else }}
         path: {{ .Values.factory50.backendExternalPath }}
         {{- end }}
