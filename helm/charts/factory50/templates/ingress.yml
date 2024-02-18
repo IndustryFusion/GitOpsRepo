@@ -1,31 +1,31 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: factory50-backend-ingress
-  namespace: {{ .Release.Namespace }}
-  annotations:
-    cert-manager.io/cluster-issuer: {{ .Values.certmanager.issuer }}
-    {{- if (eq .Values.ingressType "traefik") }}
-    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-remove-path-factory50-backend@kubernetescrd
-    {{- else }}
-    kubernetes.io/ingress.class: nginx
-    {{- end }}
-spec:
-  rules:
-  - host: {{ .Values.factory50.externalHostname }}
-    http:
-      paths:
-      - backend:
-          service:
-            name: factory50-application-service
-            port:
-              number: {{ .Values.factory50.backendPort }}
-        {{- if (eq .Values.ingressType "nginx") }}
-        path: {{ .Values.factory50.backendExternalPath }}(.*)
-        {{- else }}
-        path: {{ .Values.factory50.backendExternalPath }}
-        {{- end }}
-        pathType: ImplementationSpecific
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: factory50-backend-ingress
+#   namespace: {{ .Release.Namespace }}
+#   annotations:
+#     cert-manager.io/cluster-issuer: {{ .Values.certmanager.issuer }}
+#     {{- if (eq .Values.ingressType "traefik") }}
+#     traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-remove-path-factory50-backend@kubernetescrd
+#     {{- else }}
+#     kubernetes.io/ingress.class: nginx
+#     {{- end }}
+# spec:
+#   rules:
+#   - host: {{ .Values.factory50.externalHostname }}
+#     http:
+#       paths:
+#       - backend:
+#           service:
+#             name: factory50-application-service
+#             port:
+#               number: {{ .Values.factory50.backendPort }}
+#         {{- if (eq .Values.ingressType "nginx") }}
+#         path: {{ .Values.factory50.backendExternalPath }}(.*)
+#         {{- else }}
+#         path: {{ .Values.factory50.backendExternalPath }}
+#         {{- end }}
+#         pathType: ImplementationSpecific
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
