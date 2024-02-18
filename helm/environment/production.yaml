@@ -9,9 +9,9 @@ if50ExternalHostname: development.industry-fusion.com
 if50BackendExternalPath: /if50/backend/ # must end with /
 if50FrontendExternalPath: /if50 # must end without /
 
-fleet50ExternalHostname: development.industry-fusion.com
-fleet50BackendExternalPath: /fleet50/backend/ # must end with /
-fleet50FrontendExternalPath: /fleet50 # must end without /
+factory50ExternalHostname: development.industry-fusion.com
+factory50BackendExternalPath: /factory50/backend/ # must end with /
+factory50FrontendExternalPath: /factory50 # must end without /
 
 fleet50ExternalHostname: development.industry-fusion.com
 fleet50BackendExternalPath: /fleet50/backend/ # must end with /
