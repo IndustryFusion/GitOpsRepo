@@ -20,8 +20,8 @@ data:
                 },
                 "connector": {
                         "mqtt": {
-                                "host": "devalerta.industry-fusion.com",
-                                "port": 8883,
+                                "host": "mqtt.local",
+                                "port": 1883,
                                 "websockets": false,
                                 "qos": 1,
                                 "retain": false,
