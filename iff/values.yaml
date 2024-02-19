@@ -27,18 +27,24 @@ opcua:
       restartPolicy: Always
       enabled: true
       volumes:
-        - name: oisp-devices-config-volume
+        - name: devices-config-volume
           configMap:
-            name: opc-ms-watercut-1-global-devices-config
+            name: opc-teka-aircube-1-global-devices-config
             items:
               - key: config.json
                 path: config.json
         - name: dataservice-machine-config
           configMap:
-            name: opc-ms-watercut-1-app-config
+            name: opc-teka-aircube-1-app-config
             items:
               - key: config.json
                 path: config.json
+        - name: devices-data-volume
+          hostPath:
+            path: /var/device/data/
+        - name: devices-kube-volume
+          hostPath:
+            path: /var/kube/config.yaml
       imagePullSecrets:
         - name: regcred
 
@@ -46,22 +52,13 @@ opcua:
       name: fusionopcuadataservice
       image:
         repository: docker.io/ibn40/fusionopcuadataservice
-        tag: essen-fair-2
+        tag: latest
         pullPolicy: Always
       env: 
-        OISP_URL: "127.0.0.1"
-        OISP_PORT: "7070"
+        IFF_AGENT_URL: "127.0.0.1"
+        IFF_AGENT_PORT: "7070"
         OPC_USERNAME: ""
         OPC_PASSWORD: ""
-        OISP_API_ROOT: "https://development.industry-fusion.com/oisp/v1/api"
-        USERNAME: "factory_admin@industry-fusion.com"
-        OISP_DEVICE_ID: "urn:ngsi-ld:assetv5:2:46"
-      envFrom:
-        - name: PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: oisp-password-secret
       volumeMounts:
         - name: dataservice-machine-config
           mountPath: /resources/config.json
@@ -70,22 +67,18 @@ opcua:
     brokerPod2:
       name: oisp-iot-agent
       image:
-        repository: docker.io/ibn40/oisp-iot-agent
-        tag: v2.4.2
+        repository: docker.io/ibn40/iff-iot-agent
+        tag: v0.0.2
         pullPolicy: Always
       env:
-        OISP_DEVICE_ID: "urn:ngsi-ld:assetv5:2:46"
-        OISP_DEVICE_NAME: "urn:ngsi-ld:assetv5:2:46"
-        OISP_GATEWAY_ID: "urn:ngsi-ld:assetv5:2:46"
-      envFrom:
-        - name: OISP_DEVICE_ACTIVATION_CODE
-          valueFrom:
-            secretKeyRef:
-              key: activation-code
-              name: opc-ms-watercut-1-global-devices-secret
+        ACTIVATION_MODE: "secret"
       volumeMounts:
-        - name: oisp-devices-config-volume
+        - name: devices-config-volume
           mountPath: /volume/config
+        - name: devices-data-volume
+          mountPath: /volume/data
+        - name: devices-kube-volume
+          mountPath: /root/.kube/config
       securityContext:
         privileged: true
         capabilities:

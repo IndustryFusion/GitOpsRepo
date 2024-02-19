@@ -34,9 +34,9 @@ spec:
             value: {{ $val | quote }}
         {{- end }}
         {{- end }}
-        {{- with .Values.opcua.configuration.brokerPod1.envFrom }}
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+        # {{- with .Values.opcua.configuration.brokerPod1.envFrom }}
+        #   {{- toYaml . | nindent 10 }}
+        # {{- end }}
         image: {{ printf "%s:%s" .Values.opcua.configuration.brokerPod1.image.repository .Values.opcua.configuration.brokerPod1.image.tag | quote }}
         imagePullPolicy: {{ .Values.opcua.configuration.brokerPod1.image.pullPolicy }}
         resources:
@@ -59,9 +59,9 @@ spec:
             value: {{ $val | quote }}
           {{- end }}
         {{- end }}
-        {{- with .Values.opcua.configuration.brokerPod2.envFrom }}
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+        # {{- with .Values.opcua.configuration.brokerPod2.envFrom }}
+        #   {{- toYaml . | nindent 10 }}
+        # {{- end }}
         volumeMounts:
         {{- with .Values.opcua.configuration.brokerPod2.volumeMounts}}
           {{- toYaml . | nindent 8 }}
@@ -101,17 +101,17 @@ data:
               {
                   "node_id": "ns=4",
                   "identifier": "i=39",
-                  "parameter": "filter-v0.1-filter-runtime-machine-state"
+                  "parameter": "machine-state"
               },
               {
                   "node_id": "ns=4",
                   "identifier": "i=40",
-                  "parameter": "base-objects-v0.1-power-supply-runtime-electric-power"
+                  "parameter": "electric-power"
               },
               {
                   "node_id": "ns=4",
                   "identifier": "i=24",
-                  "parameter": "filter-v0.1-filter-runtime-operating-hours"
+                  "parameter": "operating-hours"
               }
            ]
        }
@@ -119,7 +119,7 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-ms-watercut-1-app-config
+  name: opc-teka-aircube-1-app-config
 
 ---
 
@@ -129,34 +129,24 @@ data:
     {
                 "data_directory": "./data",
                 "listeners": {
-                        "rest_port": 8000,
                         "udp_port": 41234,
                         "tcp_port": 7070
-                },
-                "receivers": {
-                        "udp_port": 41235,
-                        "udp_address": "127.0.0.1"
                 },
                 "logger": {
                         "level": "info",
                         "path": "/tmp/",
                         "max_size": 134217728
                 },
+                "dbManager": {
+                        "file": "metrics.db",
+                        "retentionInSeconds": 3600,
+                        "housekeepingIntervalInSeconds": 60,
+                        "enabled": false
+                },
                 "connector": {
-                        "rest": {
-                                "host": "development.industry-fusion.com",
-                                "port": 443,
-                                "protocol": "https",
-                                "strictSSL": false,
-                                "timeout": 30000,
-                                "proxy": {
-                                        "host": false,
-                                        "port": false
-                                }
-                        },
                         "mqtt": {
-                                "host": "development.industry-fusion.com",
-                                "port": 8883,
+                                "host": "mqtt.local",
+                                "port": 1883,
                                 "websockets": false,
                                 "qos": 1,
                                 "retain": false,
@@ -164,24 +154,25 @@ data:
                                 "retries": 5,
                                 "strictSSL": false,
                                 "sparkplugB": true,
-                                "version": "spBv1.0"        
+                                "version": "spBv1.0"   
                         }
                 }
         }
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-ms-watercut-1-global-devices-config
+  name: opc-teka-aircube-1-global-devices-config
 
 ---
 
 apiVersion: v1
-stringData:
-  activation-code: Bagq8zgU
 kind: Secret
 metadata:
-  creationTimestamp: null
-  name: opc-ms-watercut-1-global-devices-secret
-  namespace: oisp-devices
+  name: iff-device-onboarding
+  namespace: devices
+  labels:
+    iff-device-onboarding: "true"
+data:
+  onboarding_token: ewogICJhY2Nlc3NfdG9rZW4iOiAiZXlKaGJHY2lPaUpTVXpJMU5pSXNJblI1Y0NJZ09pQWlTbGRVSWl3aWEybGtJaUE2SUNKUVIxSXRSbXBSUlZOZmExcGxNazVVUVhGSGQwTjFkblJUWTJoeFVtbERaVWx4WlRreFpsUkpTbkJ2SW4wLmV5SmxlSEFpT2pFM01EYzVNRGMzTnpRc0ltbGhkQ0k2TVRjd056a3dOelEzTkN3aWFuUnBJam9pWWpZNVlUTTBNbUV0TldZME1TMDBOek16TFdFeU5EVXRNemsxTmpFNE5qSTBaVGt3SWl3aWFYTnpJam9pYUhSMGNITTZMeTlrWlhabGJHOXdiV1Z1ZEM1cGJtUjFjM1J5ZVMxbWRYTnBiMjR1WTI5dEwyRjFkR2d2Y21WaGJHMXpMMmxtWmlJc0ltRjFaQ0k2SW0xeGRIUXRZbkp2YTJWeUlpd2ljM1ZpSWpvaU5UUXlaamt5WW1JdE5tWTNZeTAwT0RWakxXSmlNakV0T0dVelpHRXhaV0l4WkRnM0lpd2lkSGx3SWpvaVFtVmhjbVZ5SWl3aVlYcHdJam9pWkdWMmFXTmxJaXdpYzJWemMybHZibDl6ZEdGMFpTSTZJalk1TVRVeVpUa3lMVGRqWVRNdE5EZ3hPQzA1TW1NeUxXTTRORGxpTTJZNU1XSmlOeUlzSW5OamIzQmxJam9pWkdWMmFXTmxYMmxrSUdkaGRHVjNZWGtnYlhGMGRDMWljbTlyWlhJZ2IyWm1iR2x1WlY5aFkyTmxjM01pTENKemFXUWlPaUkyT1RFMU1tVTVNaTAzWTJFekxUUTRNVGd0T1RKak1pMWpPRFE1WWpObU9URmlZamNpZlEuTzB5bmJlYzdPVVpBUzJWeDl4T3c1Yl9tcm5TN0s3VjZFcnJRT2VudzNpRlhlRk14QnhaNVVKalY2Z3BiZmRlQi0tUjVvam51NF9BMGhZazdwMHJENjhHalRDTWxHQ1VoLWR0WF9meGhrV1d4SFZzcEhKeDNVRWptUmYwZ3Z5ZDR0NDJody1ZQ2tlaFVXLVpzLWM0Q0liekhDRmduclJ1cjZtZFcyU081YndZbE9DUDA1bXlDNDJJVThpS3J6NjJhNld2aDgyOThsTVpIanRZOVZiM2Fkd0xTazZWdzkyVU9IbXh3dVVOa2xRaXhZRXQybUt6cmc4VXRmbEhVbXdSMDBXN2g0QjJLQ0l3cF9xUk82RmlTb2hJYnFVVmZLOXZia0ZjS3kxb3RDUXY0T09pQ2Foa0dsMjllOVpzaHhob2RkdUpBMktha0p3cXhoQnNSNXpFQ3RnIiwKICAiZXhwaXJlc19pbiI6IDMwMCwKICAicmVmcmVzaF9leHBpcmVzX2luIjogMCwKICAicmVmcmVzaF90b2tlbiI6ICJleUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0lnT2lBaVNsZFVJaXdpYTJsa0lpQTZJQ0pqWXpZeU9URTBNUzB6WkRSbUxUUm1Nakl0WWpRM09DMHlZekZtTWpnMk1USTNaVGdpZlEuZXlKcFlYUWlPakUzTURjNU1EYzBOelFzSW1wMGFTSTZJalprWkdNek16STRMVEpoTlRJdE5ETTNNUzA1TldReUxUQXpOelE0T0ROaVl6UTRaaUlzSW1semN5STZJbWgwZEhCek9pOHZaR1YyWld4dmNHMWxiblF1YVc1a2RYTjBjbmt0Wm5WemFXOXVMbU52YlM5aGRYUm9MM0psWVd4dGN5OXBabVlpTENKaGRXUWlPaUpvZEhSd2N6b3ZMMlJsZG1Wc2IzQnRaVzUwTG1sdVpIVnpkSEo1TFdaMWMybHZiaTVqYjIwdllYVjBhQzl5WldGc2JYTXZhV1ptSWl3aWMzVmlJam9pTlRReVpqa3lZbUl0Tm1ZM1l5MDBPRFZqTFdKaU1qRXRPR1V6WkdFeFpXSXhaRGczSWl3aWRIbHdJam9pVDJabWJHbHVaU0lzSW1GNmNDSTZJbVJsZG1salpTSXNJbk5sYzNOcGIyNWZjM1JoZEdVaU9pSTJPVEUxTW1VNU1pMDNZMkV6TFRRNE1UZ3RPVEpqTWkxak9EUTVZak5tT1RGaVlqY2lMQ0p6WTI5d1pTSTZJbVJsZG1salpWOXBaQ0JuWVhSbGQyRjVJRzF4ZEhRdFluSnZhMlZ5SUc5bVpteHBibVZmWVdOalpYTnpJaXdpYzJsa0lqb2lOamt4TlRKbE9USXROMk5oTXkwME9ERTRMVGt5WXpJdFl6ZzBPV0l6WmpreFltSTNJbjAuMjJzVDhCZGVUaWdoWUxJUklRd0Zzd3NCTlhES3BWVUROekhfVmo4UDdjTSIsCiAgInRva2VuX3R5cGUiOiAiQmVhcmVyIiwKICAibm90LWJlZm9yZS1wb2xpY3kiOiAwLAogICJzZXNzaW9uX3N0YXRlIjogIjY5MTUyZTkyLTdjYTMtNDgxOC05MmMyLWM4NDliM2Y5MWJiNyIsCiAgInNjb3BlIjogImRldmljZV9pZCBnYXRld2F5IG1xdHQtYnJva2VyIG9mZmxpbmVfYWNjZXNzIgp9
 
 ---
