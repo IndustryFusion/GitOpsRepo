@@ -145,7 +145,7 @@ data:
                 },
                 "connector": {
                         "mqtt": {
-                                "host": "mqtt.local",
+                                "host": "192.168.49.154",
                                 "port": 1883,
                                 "websockets": false,
                                 "qos": 1,
