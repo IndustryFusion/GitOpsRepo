@@ -99,19 +99,39 @@ data:
        "fusionopcuadataservice": {
            "specification": [
               {
-                  "node_id": "ns=4",
-                  "identifier": "i=39",
+                  "node_id": "ns=2",
+                  "identifier": "s=Model.MachineInfo.State",
                   "parameter": "machine-state"
               },
               {
-                  "node_id": "ns=4",
-                  "identifier": "i=40",
-                  "parameter": "electric-power"
+                "node_id": "ns=2",
+                "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL1",
+                "parameter": "supply-voltage-l1"
               },
               {
-                  "node_id": "ns=4",
-                  "identifier": "i=24",
-                  "parameter": "operating-hours"
+                  "node_id": "ns=2",
+                  "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL2",
+                  "parameter": "supply-voltage-l2"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL3",
+                "parameter": "supply-voltage-l3"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL1",
+                "parameter": "current-strength-l1"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL2",
+                "parameter": "current-strength-l2"
+              },
+              {
+                "node_id": "ns=2",
+                "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL3",
+                "parameter": "current-strength-l3"
               }
            ]
        }
@@ -119,7 +139,7 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-teka-aircube-1-app-config
+  name: opc-akri-mse-smartfl-1-app-config
 
 ---
 
@@ -161,7 +181,7 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-teka-aircube-1-global-devices-config
+  name: opc-akri-mse-smartfl-1-global-devices-config
 
 ---
 
