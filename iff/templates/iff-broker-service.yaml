@@ -98,48 +98,53 @@ data:
     {
        "fusionopcuadataservice": {
            "specification": [
-              {
+               {
                   "node_id": "ns=2",
-                  "identifier": "s=Model.MachineInfo.State",
-                  "parameter": "machine-state"
-              },
-              {
-                "node_id": "ns=2",
-                "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL1",
-                "parameter": "supply-voltage-l1"
-              },
-              {
+                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.aSpd",
+                  "parameter": "cutter-head-speed"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualState?msnc.mMov",
+                 "parameter": "machine-state"
+               },
+               {
                   "node_id": "ns=2",
-                  "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL2",
-                  "parameter": "supply-voltage-l2"
-              },
-              {
-                "node_id": "ns=2",
-                "identifier": "s=Model.MachineInfo.CurrentMeasurement.VoltageL3",
-                "parameter": "supply-voltage-l3"
-              },
-              {
-                "node_id": "ns=2",
-                "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL1",
-                "parameter": "current-strength-l1"
-              },
-              {
-                "node_id": "ns=2",
-                "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL2",
-                "parameter": "current-strength-l2"
-              },
-              {
-                "node_id": "ns=2",
-                "identifier": "s=Model.MachineInfo.CurrentMeasurement.CurrentL3",
-                "parameter": "current-strength-l3"
-              }
+                  "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxX",
+                  "parameter": "machine-position-x"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxY",
+                 "parameter": "machine-position-y"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/ActualStateOfCuttingMachine/ActualPosition?msnc.mAxZ",
+                 "parameter": "machine-position-z"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/RequiredTechParams?msnc.TP_NahrT[2]",
+                 "parameter": "supply-voltage-l1"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/CuttingHeadStateObject?msnc.TC_Acur[0]",
+                 "parameter": "current-strength-l1"
+               },
+               {
+                 "node_id": "ns=2",
+                 "identifier": "s=1:MergedRootGroupNode/MsncCoreRootNode/Gas?msnc.Press[0]",
+                 "parameter": "input-pressure"
+               }
            ]
        }
-     }
+    }
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-akri-mse-smartfl-1-app-config
+  name: opc-akri-msf-compact-1-app-config
 
 ---
 
@@ -181,7 +186,7 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: opc-akri-mse-smartfl-1-global-devices-config
+  name: opc-akri-msf-compact-1-global-devices-config
 
 ---
 
