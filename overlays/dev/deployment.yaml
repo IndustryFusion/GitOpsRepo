@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mqtt-teka-airtracker-2
+  name: mqtt-kjellberg-q3000-1
   labels:
-    app: mqtt-teka-airtracker-2-oisp-sensor
+    app: mqtt-kjellberg-q3000-1-oisp-sensor
 spec:
   selector:
     matchLabels:
-      app: mqtt-teka-airtracker-2-oisp-sensor
+      app: mqtt-kjellberg-q3000-1-oisp-sensor
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: mqtt-teka-airtracker-2-oisp-sensor
+        app: mqtt-kjellberg-q3000-1-oisp-sensor
     spec:
       serviceAccountName: devices-account
       restartPolicy: Always
@@ -67,7 +67,7 @@ spec:
       volumes:
         - name: devices-config-volume
           configMap:
-            name: mqtt-teka-airtracker-2-global-devices-config
+            name: mqtt-kjellberg-q3000-1-global-devices-config
             items:
               - key: config.json
                 path: config.json
@@ -79,7 +79,7 @@ spec:
             path: /var/kube/config.yaml
         - name: dataservice-machine-config
           configMap:
-            name: mqtt-teka-airtracker-2-app-config
+            name: mqtt-kjellberg-q3000-1-app-config
             items:
             - key: config.json
               path: config.json

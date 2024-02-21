@@ -35,4 +35,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: mqtt-teka-airtracker-2-app-config
+  name: mqtt-kjellberg-q3000-1-app-config

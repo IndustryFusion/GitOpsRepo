@@ -36,4 +36,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: mqtt-teka-airtracker-2-global-devices-config
+  name: mqtt-kjellberg-q3000-1-global-devices-config
