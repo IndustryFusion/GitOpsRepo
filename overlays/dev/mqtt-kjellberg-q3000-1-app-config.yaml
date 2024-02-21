@@ -5,29 +5,29 @@ data:
       "fusionmqttdataservice": {
           "specification": [
               {
-                  "topic": "airtracker-74145/relay1",
-                  "key": [],
+                  "topic": "kjellberg/plasma/Q-Series/Q-3000/system/status/qunit/json",
+                  "key": ["DEVICE_STATUS"],
                   "parameter": ["machine-state"]
               },
               {
-                  "topic": "airtracker-74145/dust",
-                  "key": [],
-                  "parameter": ["dustiness"]
+                  "topic": "kjellberg/plasma/Q-Series/Q-3000/consumption/power/json",
+                  "key": ["POWER_SUPPLY"],
+                  "parameter": ["electric-power"]
               },
               {
-                  "topic": "airtracker-74145/temperature",
-                  "key": [],
-                  "parameter": ["temperature"]
+                  "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/actual/json",
+                  "key": ["CUTTING_CURRENT", "CUTTING_VOLTAGE"],
+                  "parameter": ["current-strength-l1", "supply-voltage-l1"]
               },
               {
-                  "topic": "airtracker-74145/humidity",
-                  "key": [],
-                  "parameter": ["humidity"]
+                  "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/actual",
+                  "key": ["PG1"],
+                  "parameter": ["input-pressure"]
               },
               {
-                  "topic": "airtracker-74145/noise",
-                  "key": [],
-                  "parameter": ["noise"]
+                  "topic": "kjellberg/plasma/Q-Series/Q-3000/parameter/reference",
+                  "key": ["PG1"],
+                  "parameter": ["static-input-pressure"]
               }
           ]
       }
