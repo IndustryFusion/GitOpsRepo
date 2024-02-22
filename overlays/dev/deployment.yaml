@@ -86,3 +86,10 @@ spec:
               path: config.json
       imagePullSecrets:
         - name: regcred
+      hostAliases:
+      - ip: "192.168.49.154" # The IP address you want to map the hostnames to
+        hostnames:
+        - "keycloak.local"
+        - "alerta.local"
+        - "ngsild.local"
+        - "pgrest.local"
