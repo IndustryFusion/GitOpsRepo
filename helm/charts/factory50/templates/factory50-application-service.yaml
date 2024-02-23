@@ -43,20 +43,29 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.factory50.backendPort }}
+        volumeMounts:
+        - name: backend-app-config
+          mountPath: /app/backend/.env
       - name: factory50-frontend
         image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.factory50.frontendPort }}
         volumeMounts:
-        - name: app-config
-          mountPath: /app/backend/.env
+        - name: frontend-app-config
+          mountPath: /app/frontend/.env
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
       volumes:
-      - name: app-config
+      - name: frontend-app-config
         configMap:
-          name: factory50-env
+          name: factory50-backend-env
+          items:
+          - key: config
+            path: .env
+      - name: backend-app-config
+        configMap:
+          name: factory50-frontend-env
           items:
           - key: config
             path: .env
