@@ -43,11 +43,35 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.fleet50.backendPort }}
+        env:
+        - name: GITHUB_BASE_URL
+          value: https://api.github.com/repos/IndustryFusion/templates/contents
+        - name: GITHUB_TOKEN
+          value: github_pat_11A6RZMJA0QDyiYIs3w0Ox_7GkNR4jcGJZtHnQelpBFJm8iX7VSzWMippI0jXgcEa2RF77GYX7y0RRJcJ
+        - name: SCORPIO_URL
+          value: https://development.industry-fusion.com/scorpio/ngsi-ld/v1/entities
+        - name: S3_URL
+          value: s3-eu-central-1.ionoscloud.com
+        - name: S3_ACCESS_KEY
+          value: 00a2a60dfb1b2ff13356
+        - name: S3_SECRET_KEY
+          value: 79SOXZke/2oDZEHOmPVQP1+E182aT3VsE//0klww
+        - name: S3_BUCKET
+          value: iff-dev
+        - name: USERNAME
+          value: admin
+        - name: PASSWORD
+          value: iffadmin
+        - name: CORS_ORIGIN
+          value: http://85.215.128.232:3001
       - name: fleet50-frontend
         image: {{ .Values.mainRepo }}/fleet50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.fleet50.frontendPort }}
+        env:
+        - name: NEXT_PUBLIC_BACKEND_API_URL
+          value: http://85.215.128.232:4001
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
