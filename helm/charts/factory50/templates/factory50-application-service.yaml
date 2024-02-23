@@ -43,29 +43,42 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.factory50.backendPort }}
-        volumeMounts:
-        - name: backend-app-config
-          mountPath: /app/backend/.env
+        env:
+        - name: GITHUB_BASE_URL
+          value: https://api.github.com/repos/IndustryFusion/templates/contents
+        - name: GITHUB_TOKEN
+          value: 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
+        - name: API_URL
+          value: https://development.industry-fusion.com/auth/realms/iff/protocol/openid-connect/token
+        - name: CLIENT_ID
+          value: scorpio
+        - name: SCORPIO_URL
+          value: https://development.industry-fusion.com/scorpio/ngsi-ld/v1/entities
+        - name: S3_URL
+          value: s3-eu-central-1.ionoscloud.com
+        - name: S3_ACCESS_KEY
+          value: 00a2a60dfb1b2ff13356
+        - name: S3_SECRET_KEY
+          value: 79SOXZke/2oDZEHOmPVQP1+E182aT3VsE//0klww
+        - name: S3_BUCKET
+          value: iff-dev
+        - name: ALERTA_URL
+          value: https://development.industry-fusion.com/alerta/api
+        - name: ALERTA_KEY
+          value: m1PTpd5JaTYwlmp22HhO1676hNhlxmrt
+        - name: TIMESCALE_URL
+          value: https://development.industry-fusion.com/pgrest/entityhistory
+        - name: MONGO_URL
+          value: mongodb://my-user:ibmistura123@194.164.195.235:31183/admin?directconnection=true&retryWrites=true&w=majority
+        - name: CORS_ORIGIN
+          value: http://85.215.128.232:3002
       - name: factory50-frontend
         image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.factory50.frontendPort }}
-        volumeMounts:
-        - name: frontend-app-config
-          mountPath: /app/frontend/.env
+        env:
+        - name: NEXT_PUBLIC_BACKEND_API_URL
+          value: http://85.215.128.232:4002
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
-      volumes:
-      - name: frontend-app-config
-        configMap:
-          name: factory50-backend-env
-          items:
-          - key: config
-            path: .env
-      - name: backend-app-config
-        configMap:
-          name: factory50-frontend-env
-          items:
-          - key: config
-            path: .env
