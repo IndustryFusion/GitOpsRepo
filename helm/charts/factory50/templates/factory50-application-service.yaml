@@ -48,16 +48,15 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.factory50.frontendPort }}
-        # volumeMounts:
-        # - name: nginx-config
-        #   mountPath: /etc/nginx/conf.d/default.conf
-        #   subPath: default.conf
+        volumeMounts:
+        - name: app-config
+          mountPath: /app/backend/.env
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
-      # volumes:
-      # - name: nginx-config
-      #   configMap:
-      #     name: if50-nginx
-      #     items:
-      #     - key: config
-      #       path: default.conf
+      volumes:
+      - name: app-config
+        configMap:
+          name: factory50-env
+          items:
+          - key: config
+            path: .env
