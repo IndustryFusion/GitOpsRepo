@@ -225,7 +225,7 @@ spec:
       labels:
         app: iff-akri-controller
     spec:
-      serviceAccountName: kopfexample-account
+      serviceAccountName: devices-account
       restartPolicy: Always
       containers:
         - name: oisp-token-operator
