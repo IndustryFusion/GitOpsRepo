@@ -205,3 +205,35 @@ subjects:
   - kind: ServiceAccount
     name: devices-account
     namespace: devices
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iff-akri-controller
+  labels:
+    app: iff-akri-controller
+spec:
+  selector:
+    matchLabels:
+      app: iff-akri-controller
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: iff-akri-controller
+    spec:
+      serviceAccountName: kopfexample-account
+      restartPolicy: Always
+      containers:
+        - name: oisp-token-operator
+          image: ibn40/iff-akri-controller:v0.0.1
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+      imagePullSecrets:
+        - name: regcred
+      # nodeSelector:
+      #   kubernetes.io/hostname: m-3a07708c-8356-460a-81d4-0e62619027bf
