@@ -228,7 +228,7 @@ spec:
       serviceAccountName: devices-account
       restartPolicy: Always
       containers:
-        - name: oisp-token-operator
+        - name: iff-akri-controller
           image: ibn40/iff-akri-controller:v0.0.1
           imagePullPolicy: Always
           securityContext:
