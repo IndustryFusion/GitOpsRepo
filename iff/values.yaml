@@ -24,70 +24,70 @@ opcua:
         action: Include
         items: ["SIMATIC.S7-1200.OPC-UA.Application:PLC_1"]
     pod:
-      restartPolicy: Always
-      enabled: true
-      volumes:
-        - name: devices-config-volume
-          configMap:
-            name: opc-teka-aircube-1-global-devices-config
-            items:
-              - key: config.json
-                path: config.json
-        - name: dataservice-machine-config
-          configMap:
-            name: opc-teka-aircube-1-app-config
-            items:
-              - key: config.json
-                path: config.json
-        - name: devices-data-volume
-          hostPath:
-            path: /var/device/data/
-        - name: devices-kube-volume
-          hostPath:
-            path: /var/kube/config.yaml
-      imagePullSecrets:
-        - name: regcred
+    #   restartPolicy: Always
+      enabled: false
+    #   volumes:
+    #     - name: devices-config-volume
+    #       configMap:
+    #         name: opc-teka-aircube-1-global-devices-config
+    #         items:
+    #           - key: config.json
+    #             path: config.json
+    #     - name: dataservice-machine-config
+    #       configMap:
+    #         name: opc-teka-aircube-1-app-config
+    #         items:
+    #           - key: config.json
+    #             path: config.json
+    #     - name: devices-data-volume
+    #       hostPath:
+    #         path: /var/device/data/
+    #     - name: devices-kube-volume
+    #       hostPath:
+    #         path: /var/kube/config.yaml
+    #   imagePullSecrets:
+    #     - name: regcred
 
-    brokerPod1:
-      name: fusionopcuadataservice
-      image:
-        repository: docker.io/ibn40/fusionopcuadataservice
-        tag: latest
-        pullPolicy: Always
-      env: 
-        IFF_AGENT_URL: "127.0.0.1"
-        IFF_AGENT_PORT: "7070"
-        OPC_USERNAME: ""
-        OPC_PASSWORD: ""
-      volumeMounts:
-        - name: dataservice-machine-config
-          mountPath: /resources/config.json
-          subPath: config.json
+    # brokerPod1:
+    #   name: fusionopcuadataservice
+    #   image:
+    #     repository: docker.io/ibn40/fusionopcuadataservice
+    #     tag: latest
+    #     pullPolicy: Always
+    #   env: 
+    #     IFF_AGENT_URL: "127.0.0.1"
+    #     IFF_AGENT_PORT: "7070"
+    #     OPC_USERNAME: ""
+    #     OPC_PASSWORD: ""
+    #   volumeMounts:
+    #     - name: dataservice-machine-config
+    #       mountPath: /resources/config.json
+    #       subPath: config.json
 
-    brokerPod2:
-      name: oisp-iot-agent
-      image:
-        repository: docker.io/ibn40/iff-iot-agent
-        tag: v0.0.2
-        pullPolicy: Always
-      env:
-        ACTIVATION_MODE: "secret"
-      volumeMounts:
-        - name: devices-config-volume
-          mountPath: /volume/config
-        - name: devices-data-volume
-          mountPath: /volume/data
-        - name: devices-kube-volume
-          mountPath: /root/.kube/config
-      securityContext:
-        privileged: true
-        capabilities:
-          drop: ["ALL"]
-      ports:
-        - containerPort: 41234
-          hostPort: 41234
-        - containerPort: 7070
-          hostPort: 7070
+    # brokerPod2:
+    #   name: oisp-iot-agent
+    #   image:
+    #     repository: docker.io/ibn40/iff-iot-agent
+    #     tag: v0.0.2
+    #     pullPolicy: Always
+    #   env:
+    #     ACTIVATION_MODE: "secret"
+    #   volumeMounts:
+    #     - name: devices-config-volume
+    #       mountPath: /volume/config
+    #     - name: devices-data-volume
+    #       mountPath: /volume/data
+    #     - name: devices-kube-volume
+    #       mountPath: /root/.kube/config
+    #   securityContext:
+    #     privileged: true
+    #     capabilities:
+    #       drop: ["ALL"]
+    #   ports:
+    #     - containerPort: 41234
+    #       hostPort: 41234
+    #     - containerPort: 7070
+    #       hostPort: 7070
 
 crds:
   group: akri.sh
