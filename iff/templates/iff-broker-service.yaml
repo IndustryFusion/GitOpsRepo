@@ -215,6 +215,7 @@ metadata:
   labels:
     app: iff-akri-controller
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: iff-akri-controller
