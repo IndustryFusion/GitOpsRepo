@@ -1,0 +1,92 @@
+{{- if .Values.opcua.configuration.enabled }}
+apiVersion: {{ printf "%s/%s" .Values.crds.group .Values.crds.version }}
+kind: Configuration
+metadata:
+  name: {{ .Values.opcua.configuration.name }}
+spec:
+  discoveryHandler:
+    name: opcua
+    discoveryDetails: |+
+      opcuaDiscoveryMethod: 
+        standard:
+          discoveryUrls: 
+          {{- toYaml .Values.opcua.configuration.discoveryDetails.discoveryUrls | nindent 10 }}
+      applicationNames:
+        action: {{ .Values.opcua.configuration.discoveryDetails.applicationNames.action }}
+        {{- if .Values.opcua.configuration.discoveryDetails.applicationNames.items}}
+        items:
+        {{- toYaml .Values.opcua.configuration.discoveryDetails.applicationNames.items | nindent 8 }}
+        {{- else }}
+        items: []
+        {{- end }}
+
+  capacity: {{ .Values.opcua.configuration.capacity }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: devices-account
+  namespace: devices
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: devices-role
+rules:
+
+  # Framework: knowing which other operators are running (i.e. peering).
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: devices-rolebinding-cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: devices-role
+subjects:
+  - kind: ServiceAccount
+    name: devices-account
+    namespace: devices
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iff-akri-controller
+  labels:
+    app: iff-akri-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iff-akri-controller
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: iff-akri-controller
+    spec:
+      serviceAccountName: devices-account
+      restartPolicy: Always
+      hostAliases:
+      - ip: "192.168.49.154"
+        hostnames:
+        - "keycloak.local"
+      containers:
+        - name: iff-akri-controller
+          image: ibn40/iff-akri-controller:v0.0.1
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+      imagePullSecrets:
+        - name: regcred
