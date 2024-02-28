@@ -22,8 +22,6 @@ spec:
 
   capacity: {{ .Values.opcua.configuration.capacity }}
 {{- end }}
-{{- end }}
-{{- end }}
 
 ---
 apiVersion: v1
