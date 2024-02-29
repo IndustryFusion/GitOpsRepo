@@ -1,28 +1,14 @@
-opcua:
+mqtt:
   configuration:
     enabled: true
-    name: akri-opcua
+    name: akri-mqtt
     capacity: 1
     discoveryDetails:
       # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
-      discoveryUrls:
-        - "opc.tcp://192.168.49.151:4840"
-        - "opc.tcp://192.168.49.198:62548"
-        - "opc.tcp://192.168.49.197:62548"
-        - "opc.tcp://192.168.49.173:62548"
-        - "opc.tcp://192.168.49.196:62548"
-        - "opc.tcp://192.168.49.195:62548"
-        - "opc.tcp://192.168.49.194:62548"
-        - "opc.tcp://192.168.49.193:62548"
-        - "opc.tcp://192.168.49.192:62548"
-        - "opc.tcp://192.168.49.172:62548"
-        - "opc.tcp://192.168.49.191:62548"
-        - "opc.tcp://192.168.49.190:62548"
-        - "opc.tcp://192.168.49.171:62548"
-
-      applicationNames:
-        action: Include
-        items: ["SIMATIC.S7-1200.OPC-UA.Application:PLC_1"]
+      mqttBrokerUri: "192.168.49.26:1883"
+      topics:
+        - "airtracker-74145/relay1"
+      timeoutSeconds: 5
 
 crds:
   group: akri.sh
