@@ -6,11 +6,11 @@ metadata:
 spec:
   discoveryHandler:
     name: mqtt
-    discoveryDetails:
-        mqttBrokerUri: "192.168.49.26:1883"
-        topics:
-          - "airtracker-74145/relay1"
-        timeoutSeconds: 5
+    discoveryDetails: |+
+      mqttBrokerUri: "192.168.49.26:1883"
+      topics:
+        - "airtracker-74145/relay1"
+      timeoutSeconds: 5
 
   capacity: {{ .Values.mqtt.configuration.capacity }}
 {{- end }}
