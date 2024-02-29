@@ -16,3 +16,14 @@ helm:
     controller:
       # enabled defines whether to apply the Akri Controller
       enabled: false
+    custom:
+      discovery:
+        enabled: true
+        image: 
+          repository: ibn40/akri-mqtt-discovery-handler
+          tag: iff
+        name: akri-mqtt-discovery
+      configuration:
+        enabled: true
+        name: akri-mqtt
+        discoveryHandlerName: mqtt
