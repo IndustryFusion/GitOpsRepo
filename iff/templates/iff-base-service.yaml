@@ -88,3 +88,38 @@ spec:
             privileged: true
       imagePullSecrets:
         - name: regcred
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: akri-mqtt-discovery-handler
+  labels:
+    app: akri-mqtt-discovery-handler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: akri-mqtt-discovery-handler
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: akri-mqtt-discovery-handler
+    spec:
+      serviceAccountName: devices-account
+      restartPolicy: Always
+      # hostAliases:
+      # - ip: "192.168.49.154"
+      #   hostnames:
+      #   - "keycloak.local"
+      containers:
+        - name: akri-mqtt-discovery-handler
+          image: ibn40/akri-mqtt-discovery-handler:iff
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+      imagePullSecrets:
+        - name: regcred

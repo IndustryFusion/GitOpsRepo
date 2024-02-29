@@ -13,9 +13,6 @@ helm:
     useLatestContainers: true
     useDevelopmentContainers: true
     kubernetesDistro: k3s
-    opcua:
-      discovery:
-        enabled: true
     controller:
       # enabled defines whether to apply the Akri Controller
       enabled: false
