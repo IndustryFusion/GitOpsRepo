@@ -7,7 +7,7 @@ spec:
   discoveryHandler:
     name: mqtt
     discoveryDetails: |+
-      mqttBrokerUri: "192.168.49.26:1883"
+      mqttBrokerUri: "mqtt://192.168.49.26:1883"
       topics:
         - "airtracker-74145/relay1"
       timeoutSeconds: 5
