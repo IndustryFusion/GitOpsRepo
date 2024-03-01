@@ -5,7 +5,7 @@ mqtt:
     capacity: 1
     discoveryDetails:
       # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
-      mqttBrokerUri: "192.168.49.26:1883"
+      mqttBrokerUri: "mqtt://192.168.49.26:1883"
       topics:
         - "airtracker-74145/relay1"
       timeoutSeconds: 5
