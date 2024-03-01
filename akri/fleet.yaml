@@ -16,6 +16,13 @@ helm:
     controller:
       # enabled defines whether to apply the Akri Controller
       enabled: false
+    opcua:
+      discovery:
+        enabled: true
+      configuration:
+        enabled: true
+        name: akri-opcua
+        discoveryHandlerName: opcua
     custom:
       discovery:
         enabled: true

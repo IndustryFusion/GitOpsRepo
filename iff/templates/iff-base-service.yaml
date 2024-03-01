@@ -7,12 +7,39 @@ spec:
   discoveryHandler:
     name: mqtt
     discoveryDetails: |+
-      mqttBrokerUri: "mqtt://192.168.49.26:1883"
-      topics:
-        - "airtracker-74145/relay1"
-      timeoutSeconds: 5
+      {{- with .Values.mqtt.configuration.discoveryDetails}}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 
   capacity: {{ .Values.mqtt.configuration.capacity }}
+{{- end }}
+
+
+---
+
+{{- if .Values.opcua.configuration.enabled }}
+apiVersion: {{ printf "%s/%s" .Values.crds.group .Values.crds.version }}
+kind: Configuration
+metadata:
+  name: {{ .Values.opcua.configuration.name }}
+spec:
+  discoveryHandler:
+    name: opcua
+    discoveryDetails: |+
+      opcuaDiscoveryMethod: 
+        standard:
+          discoveryUrls: 
+          {{- toYaml .Values.opcua.configuration.discoveryDetails.discoveryUrls | nindent 10 }}
+      applicationNames:
+        action: {{ .Values.opcua.configuration.discoveryDetails.applicationNames.action }}
+        {{- if .Values.opcua.configuration.discoveryDetails.applicationNames.items}}
+        items:
+        {{- toYaml .Values.opcua.configuration.discoveryDetails.applicationNames.items | nindent 8 }}
+        {{- else }}
+        items: []
+        {{- end }}
+
+  capacity: {{ .Values.opcua.configuration.capacity }}
 {{- end }}
 
 ---
