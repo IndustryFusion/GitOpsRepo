@@ -69,7 +69,7 @@ spec:
         - name: TIMESCALE_URL
           value: https://development.industry-fusion.com/pgrest/entityhistory
         - name: MONGO_URL
-          value: mongodb://my-user:ibmistura123@194.164.195.88:31183/admin?directconnection=true&retryWrites=true&w=majority
+          value: mongodb://my-user:ibmistura123@185.56.150.47:31183/admin?directconnection=true&retryWrites=true&w=majority
         - name: CORS_ORIGIN
           value: http://85.215.128.232:3002
       - name: factory50-frontend
