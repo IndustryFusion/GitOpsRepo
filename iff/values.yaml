@@ -11,7 +11,8 @@ opcua:
 
       applicationNames:
         action: Include
-        items: []
+        items: 
+         - "OPCUAServer@RESIT8"
 
 crds:
   group: akri.sh
