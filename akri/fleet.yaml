@@ -10,8 +10,8 @@ helm:
   repo: https://project-akri.github.io/akri/
   releaseName: akri
   values:
-    useLatestContainers: false
-    useDevelopmentContainers: false
+    useLatestContainers: true
+    useDevelopmentContainers: true
     kubernetesDistro: k3s
     opcua:
       discovery:
