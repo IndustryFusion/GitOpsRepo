@@ -67,7 +67,7 @@ spec:
         - name: ALERTA_KEY
           value: gq9UGyYh5vSIJsxAhingE4SebcNgSvcb
         - name: TIMESCALE_URL
-          value: https://platform.industry-fusion.com/pgrest/entityhistory
+          value: https://platform.industry-fusion.com/pgrest/
         - name: MONGO_URL
           value: mongodb://prod-user:ibmistura123@212.132.111.97:31183/admin?directconnection=true&retryWrites=true&w=majority
         - name: CORS_ORIGIN
