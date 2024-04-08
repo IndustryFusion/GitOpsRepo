@@ -12,7 +12,7 @@ opcua:
       applicationNames:
         action: Include
         items: 
-         - "OPCUAServer@RESIT8"
+         - "NodeRED-Compact"
 
 crds:
   group: akri.sh
