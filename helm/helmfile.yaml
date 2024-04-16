@@ -11,14 +11,6 @@ environments:
     - common.yaml
 ---
 releases:
-- name: mongodb
-  labels:
-    order: first
-    app: mongodb
-  chart: ./charts/mongodb
-  namespace: {{ .Values.namespace }}
-  values:
-  - values.yaml.gotmpl
 - name: icsdb
   labels:
     order: second
@@ -26,24 +18,6 @@ releases:
   needs:
   - mongodb
   chart: ./charts/icsdb
-  namespace: {{ .Values.namespace }}
-  values:
-  - values.yaml.gotmpl
-- name: fleetmanager
-  labels:
-    order: second
-    app: fleetmanager
-  needs:
-  - mongodb
-  chart: ./charts/fleetmanager
-  namespace: {{ .Values.namespace }}
-  values:
-  - values.yaml.gotmpl
-- name: if50
-  labels:
-    order: second
-    app: if50
-  chart: ./charts/if50
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
@@ -60,6 +34,14 @@ releases:
     order: second
     app: fleet50
   chart: ./charts/fleet50
+  namespace: {{ .Values.namespace }}
+  values:
+  - values.yaml.gotmpl
+- name: icid
+  labels:
+    order: first
+    app: icid
+  chart: ./charts/icid
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
