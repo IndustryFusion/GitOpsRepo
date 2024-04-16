@@ -5,10 +5,6 @@ pullSecretCredentials: {{ .StateValues.pullSecretCredentials }}
 
 ingressType: {{ .StateValues.ingressType }}
 
-mongodb:
-  username: mongodb-user
-  password: {{ .StateValues.mongodbPassword }}
-
 certmanager:
   secret: {{ .StateValues.certmanager.secret }}
   issuer: {{ .StateValues.certmanager.issuer }}
@@ -20,15 +16,6 @@ icsdb:
   username: icsdb-user
   password: {{ .StateValues.icsdbPassword }}
 
-fleetmanager:
-  externalHostname: {{ .StateValues.fleetmanagerExternalHostname }}
-  backendExternalPath: {{ .StateValues.fleetmanagerBackendExternalPath }}
-  frontendExternalPath: {{ .StateValues.fleetmanagerFrontendExternalPath }}
-  backendPort: 3090
-  frontendPort: 80
-  username: fleetmanager-user
-  password: {{ .StateValues.fleetmanagerPassword }}
-
 s3:
   url: {{ .StateValues.s3.url }}
   accessKey: {{ .StateValues.s3.accessKey }}
@@ -38,13 +25,6 @@ s3:
 alerta:
   url: {{ .StateValues.alerta.url }}
   accesskey: {{ .StateValues.alerta.accesskey }}
-
-if50:
-  externalHostname: {{ .StateValues.if50ExternalHostname }}
-  backendExternalPath: {{ .StateValues.if50BackendExternalPath }}
-  frontendExternalPath: {{ .StateValues.if50FrontendExternalPath }}
-  backendPort: 4000
-  frontendPort: 3000
 
 factory50:
   externalHostname: {{ .StateValues.factory50ExternalHostname }}
@@ -59,3 +39,6 @@ fleet50:
   frontendExternalPath: {{ .StateValues.fleet50FrontendExternalPath }}
   backendPort: 4001
   frontendPort: 3001
+
+icsdb:
+  backendPort: 4010
