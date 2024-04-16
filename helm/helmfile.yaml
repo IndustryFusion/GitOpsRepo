@@ -11,16 +11,16 @@ environments:
     - common.yaml
 ---
 releases:
-- name: icsdb
-  labels:
-    order: second
-    app: icsdb
-  needs:
-  - mongodb
-  chart: ./charts/icsdb
-  namespace: {{ .Values.namespace }}
-  values:
-  - values.yaml.gotmpl
+# - name: icsdb
+#   labels:
+#     order: second
+#     app: icsdb
+#   needs:
+#   - mongodb
+#   chart: ./charts/icsdb
+#   namespace: {{ .Values.namespace }}
+#   values:
+#   - values.yaml.gotmpl
 - name: factory50
   labels:
     order: second
