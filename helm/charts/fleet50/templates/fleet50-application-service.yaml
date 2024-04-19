@@ -67,7 +67,9 @@ spec:
         - name: ICID_ORIGIN
           value: http://87.106.207.10:4010
         - name: ASSETS_DEFAULT_CODE
-          value: ifx-eur-nld-ast
+          value: IFX-EUR-NLD-AST
+        - name: USERS_DEFAULT_CODE
+          value: IFX-EUR-NLD-USR
       - name: fleet50-frontend
         image: {{ .Values.mainRepo }}/fleet50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
