@@ -44,6 +44,10 @@ spec:
         ports:
         - containerPort: {{ .Values.factory50.backendPort }}
         env:
+        - name: GATEWAY_BASE_URL
+          value: https://api.github.com/repos/IndustryFusion/gateway-configs/contents
+        - name: GATEWAY_TOKEN
+          value: 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
         - name: GITHUB_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/templates/contents
         - name: GITHUB_TOKEN
