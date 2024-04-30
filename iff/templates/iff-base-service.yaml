@@ -77,5 +77,14 @@ spec:
           imagePullPolicy: Always
           securityContext:
             privileged: true
+          env:
+          - name: GITHUB_OWNER
+            value: IndustryFusion
+          - name: GITHUB_REPO
+            value: gateway-configs
+          - name: GITHUB_PATH
+            value: ''
+          - name: GITHUB_TOKEN
+            value: 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
       imagePullSecrets:
         - name: regcred
