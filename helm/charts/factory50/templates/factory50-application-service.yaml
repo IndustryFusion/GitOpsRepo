@@ -69,7 +69,7 @@ spec:
         - name: ALERTA_URL
           value: https://platform.industry-fusion.com/alerta/api
         - name: ALERTA_KEY
-          value: g9Q2is5nkdGLtYH8C7VzJDX8WkGEc9ia
+          value: gIdxrVczIYdVDtcDIlv88q50Fo1YTMF7
         - name: TIMESCALE_URL
           value: https://platform.industry-fusion.com/pgrest/
         - name: MONGO_URL
