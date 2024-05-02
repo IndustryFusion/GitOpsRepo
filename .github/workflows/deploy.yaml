@@ -90,6 +90,7 @@ jobs:
     steps:
       - name: Deploy
         run: |
+          helm plugin install https://github.com/databus23/helm-diff
           helm plugin list
           export NAMESPACE="${{ inputs.NAMESPACE }}"
           cd /home/deployer/GitOpsRepo/helm
