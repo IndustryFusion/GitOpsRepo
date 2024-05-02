@@ -84,7 +84,7 @@ jobs:
     runs-on: private-2
     container:
       image: ibn40/deployer:latest
-      options: --user deployer
+      options: --user root
       volumes:
         - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
     steps:
