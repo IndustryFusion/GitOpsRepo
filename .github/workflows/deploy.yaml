@@ -90,6 +90,7 @@ jobs:
     steps:
       - name: Deploy
         run: |
+          helm plugin list
           export NAMESPACE="${{ inputs.NAMESPACE }}"
           cd /home/deployer/GitOpsRepo/helm
           bash install_operators.sh
