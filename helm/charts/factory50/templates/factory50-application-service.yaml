@@ -75,7 +75,7 @@ spec:
         - name: MONGO_URL
           value: mongodb://prod-user:ibmistura123@212.132.111.97:31183/admin?directconnection=true&retryWrites=true&w=majority
         - name: CORS_ORIGIN
-          value: http://85.215.128.232:3002
+          value: http://212.132.126.41:3002
         - name: REDIS_SERVER
           value: "212.132.115.235"
         - name: REDIS_PORT
@@ -87,6 +87,6 @@ spec:
         - containerPort: {{ .Values.factory50.frontendPort }}
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
-          value: http://85.215.128.232:4002
+          value: http://212.132.126.41:4002
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
