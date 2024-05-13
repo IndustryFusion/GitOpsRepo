@@ -8,7 +8,7 @@ mqtt:
       mqttBrokerUri: "mqtt://192.168.49.26:1883"
       topics:
         - "kjellberg/plasma/Q-Series/Q-3000/system/status/qunit/json"
-      timeoutSeconds: 5
+      timeoutSeconds: 1000
 
 crds:
   group: akri.sh
