@@ -10,6 +10,7 @@ mqtt:
         - "shellypro3em-08d1f912f61c/online"
         - "shellypro3em-34987a45fe34/online"
         - "shellypro3em-34987a466638/online"
+        - "shellypro3em-fcb467058c54/online"
       timeoutSeconds: 1000
 
 
