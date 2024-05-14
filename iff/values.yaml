@@ -10,7 +10,7 @@ opcua:
 
       applicationNames:
         action: Include
-        items: 
+        items:
          - "Microstep OPC UA Server"
 crds:
   group: akri.sh
