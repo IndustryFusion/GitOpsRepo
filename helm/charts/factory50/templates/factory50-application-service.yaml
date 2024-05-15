@@ -47,11 +47,11 @@ spec:
         - name: GATEWAY_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/gateway-configs/contents
         - name: GATEWAY_TOKEN
-          value: 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
+          value: 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
         - name: GITHUB_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/templates/contents
         - name: GITHUB_TOKEN
-          value: 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
+          value: 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
         - name: API_URL
           value: https://alerta.industry-fusion.com/auth/realms/iff/protocol/openid-connect/token
         - name: CLIENT_ID
