@@ -47,7 +47,7 @@ spec:
         - name: GITHUB_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/templates/contents
         - name: GITHUB_TOKEN
-          value: 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
+          value: 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
         - name: SCORPIO_URL
           value: http://87.106.163.176:9090/ngsi-ld/v1/entities
         - name: S3_URL
