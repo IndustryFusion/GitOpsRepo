@@ -68,6 +68,31 @@ on:
       S3_SECRET_KEY:
         description: 'S3 secret key to use in the cluster'
         required: false
+      HUB_TOKEN:
+        description: ''
+        required: false
+      GATEWAY_TOKEN:
+        description: ''
+        required: false
+      ALERTA_KEY:
+        description: ''
+        required: false
+      FACTORY_MONGO_URL:
+        description: ''
+        required: false
+      USERNAME:
+        description: ''
+        required: false
+      PASSWORD:
+        description: ''
+        required: false
+      ICID_MONGO_URL:
+        description: ''
+        required: false
+      NAMESPACE:
+        description: ''
+        required: false
+
 
 jobs:
   clone-repo:
