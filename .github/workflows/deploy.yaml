@@ -89,7 +89,7 @@ on:
       ICID_MONGO_URL:
         description: ''
         required: false
-      NAMESPACE:
+      ICID_NAMESPACE:
         description: ''
         required: false
 
@@ -143,4 +143,4 @@ jobs:
             --set fleet50.username="${{ secrets.USERNAME }}" \
             --set fleet50.password="${{ secrets.PASSWORD }}" \
             --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL }}" \
-            --set icid.namespace="${{ secrets.NAMESPACE }}"
+            --set icid.namespace="${{ secrets.ICID_NAMESPACE }}"
