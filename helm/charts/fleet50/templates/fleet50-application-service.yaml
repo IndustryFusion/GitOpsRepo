@@ -47,21 +47,21 @@ spec:
         - name: GITHUB_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/templates/contents
         - name: GITHUB_TOKEN
-          value: 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
+          value: {{ .Values.fleet50.githubToken }}
         - name: SCORPIO_URL
           value: http://87.106.163.176:9090/ngsi-ld/v1/entities
         - name: S3_URL
           value: s3-eu-central-1.ionoscloud.com
         - name: S3_ACCESS_KEY
-          value: 00a2a60dfb1b2ff13356
+          value: {{ .Values.fleet50.s3AccessKey }}
         - name: S3_SECRET_KEY
-          value: 79SOXZke/2oDZEHOmPVQP1+E182aT3VsE//0klww
+          value: {{ .Values.fleet50.s3SecretKey }}
         - name: S3_BUCKET
-          value: iff-dev
+          value: iff-prod
         - name: USERNAME
-          value: admin
+          value: {{ .Values.fleet50.username }}
         - name: PASSWORD
-          value: iffadmin
+          value: {{ .Values.fleet50.password }}
         - name: CORS_ORIGIN
           value: http://85.215.129.117:3001
         - name: ICID_ORIGIN

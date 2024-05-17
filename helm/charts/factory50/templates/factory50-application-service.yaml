@@ -47,11 +47,11 @@ spec:
         - name: GATEWAY_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/gateway-configs/contents
         - name: GATEWAY_TOKEN
-          value: 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
+          value: {{ .Values.factory50.gatewayToken }}
         - name: GITHUB_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/templates/contents
         - name: GITHUB_TOKEN
-          value: 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
+          value: {{ .Values.factory50.githubToken }}
         - name: API_URL
           value: https://alerta.industry-fusion.com/auth/realms/iff/protocol/openid-connect/token
         - name: CLIENT_ID
@@ -61,19 +61,19 @@ spec:
         - name: S3_URL
           value: s3-eu-central-1.ionoscloud.com
         - name: S3_ACCESS_KEY
-          value: 00a2a60dfb1b2ff13356
+          value: {{ .Values.factory50.s3AccessKey }}
         - name: S3_SECRET_KEY
-          value: 79SOXZke/2oDZEHOmPVQP1+E182aT3VsE//0klww
+          value: {{ .Values.factory50.s3SecretKey }}
         - name: S3_BUCKET
           value: iff-prod
         - name: ALERTA_URL
           value: https://alerta.industry-fusion.com/alerta/api
         - name: ALERTA_KEY
-          value: dWe68afKWxTVakCu16Ima2vLWCaPsAcb
+          value: {{ .Values.factory50.alertaKey }}
         - name: TIMESCALE_URL
           value: https://alerta.industry-fusion.com/pgrest/
         - name: MONGO_URL
-          value: mongodb://prod-user:ibmistura123@212.132.111.97:31183/admin?directconnection=true&retryWrites=true&w=majority
+          value: {{ .Values.factory50.mongoUrl }}
         - name: CORS_ORIGIN
           value: http://212.132.126.41:3002
         - name: REDIS_SERVER

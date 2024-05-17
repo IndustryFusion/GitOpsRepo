@@ -41,9 +41,9 @@ spec:
         - containerPort: {{ .Values.icid.backendPort }}
         env:
         - name: MONGO_URL
-          value: mongodb://icid-prod-user:ibmisturaicidprod123@87.106.176.152:31181/admin?directconnection=true&retryWrites=true&w=majority
+          value: {{ .Values.icid.mongoUrl }}
         - name: IFRIC_NAMESPACE
-          value: 44861b91-99d1-559b-ad96-046a8584528d
+          value: {{ .Values.icid.namespace }}
         - name: CORS_ORIGIN
           value: http://85.215.129.117:4001
       imagePullSecrets:
