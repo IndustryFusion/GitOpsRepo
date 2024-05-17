@@ -21,11 +21,11 @@ certmanager:
   secret: prod-cert-tls
   issuer: letsencrypt-prod
 
-s3:
-  url: https://s3-eu-central-1.ionoscloud.com
-  accessKey: access-key
-  secretKey: secret-key
-  fleetmanagerBucket: iff-dev
+# s3:
+#   url: https://s3-eu-central-1.ionoscloud.com
+#   accessKey: access-key
+#   secretKey: secret-key
+#   fleetmanagerBucket: iff-dev
 
 alerta:
   url: https://development.industry-fusion.com/alerta
