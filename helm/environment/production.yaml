@@ -32,20 +32,20 @@ alerta:
   accesskey: access-key
 
 icid:
-  mongoUrl: ''
-  namespace: ''
+#   mongoUrl: ''
+#   namespace: ''
 
-fleet50:
-  githubToken: ''
-  s3AccessKey: ''
-  s3SecretKey: ''
-  username: ''
-  password: ''
+# fleet50:
+#   githubToken: ''
+#   s3AccessKey: ''
+#   s3SecretKey: ''
+#   username: ''
+#   password: ''
 
-factory50:
-  gatewayToken: ''
-  githubToken: ''
-  s3AccessKey: ''
-  s3SecretKey: ''
-  alertaKey: ''
-  mongoUrl: ''
+# factory50:
+#   gatewayToken: ''
+#   githubToken: ''
+#   s3AccessKey: ''
+#   s3SecretKey: ''
+#   alertaKey: ''
+#   mongoUrl: ''
