@@ -45,7 +45,7 @@ spec:
         - containerPort: {{ .Values.fleet50.backendPort }}
         env:
         - name: GITHUB_BASE_URL
-          value: https://api.github.com/repos/IndustryFusion/templates/new-model/contents
+          value: https://api.github.com/repos/IndustryFusion/templates/contents/new-model
         - name: GITHUB_TOKEN
           value: {{ .Values.fleet50.githubToken }}
         - name: SCORPIO_URL
