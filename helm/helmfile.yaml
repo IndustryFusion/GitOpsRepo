@@ -45,3 +45,11 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
+- name: fleet50_prod
+  labels:
+    order: second
+    app: fleet50_prod
+  chart: ./charts/fleet50_prod
+  namespace: {{ .Values.namespace }}
+  values:
+  - values.yaml.gotmpl
