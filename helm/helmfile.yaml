@@ -45,7 +45,7 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
-- name: fleet50
+- name: fleet50prod
   labels:
     order: second
     app: fleet50_prod
