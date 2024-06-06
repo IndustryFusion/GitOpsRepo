@@ -9,11 +9,11 @@ metadata:
 spec:
   ports:
   - port: {{ .Values.fleet50.backendPort }}
-    targetPort: {{ .Values.fleet50.backendPort }}
+    targetPort: {{ .Values.fleet50_prod.backendPort }}
     name: fleet50-backend
     protocol: TCP
   - port: {{ .Values.fleet50.frontendPort }}
-    targetPort: {{ .Values.fleet50.frontendPort }}
+    targetPort: {{ .Values.fleet50_prod.frontendPort }}
     name: fleet50-frontend
     protocol: TCP
   type: LoadBalancer
@@ -42,30 +42,30 @@ spec:
         image: {{ .Values.mainRepo }}/fleet50-backend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.fleet50.backendPort }}
+        - containerPort: {{ .Values.fleet50_prod.backendPort }}
         env:
         - name: GITHUB_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/templates/contents/new-model
         - name: GITHUB_TOKEN
-          value: {{ .Values.fleet50.githubToken }}
+          value: {{ .Values.fleet50_prod.githubToken }}
         - name: SCORPIO_URL
           value: http://87.106.163.176:9090/ngsi-ld/v1/entities
         - name: S3_URL
           value: s3-eu-central-1.ionoscloud.com
         - name: S3_ACCESS_KEY
-          value: {{ .Values.fleet50.s3AccessKey }}
+          value: {{ .Values.fleet50_prod.s3AccessKey }}
         - name: S3_SECRET_KEY
-          value: {{ .Values.fleet50.s3SecretKey }}
+          value: {{ .Values.fleet50_prod.s3SecretKey }}
         - name: S3_BUCKET
           value: iff-prod
         - name: USERNAME
-          value: {{ .Values.fleet50.username }}
+          value: {{ .Values.fleet50_prod.username }}
         - name: PASSWORD
-          value: {{ .Values.fleet50.password }}
+          value: {{ .Values.fleet50_prod.password }}
         - name: CORS_ORIGIN
-          value: http://85.215.129.117:3001
+          value: ''
         - name: ICID_ORIGIN
-          value: http://87.106.207.10:4010
+          value: ''
         - name: ASSETS_DEFAULT_CODE
           value: IFX-EUR-NLD-AST
         - name: USERS_DEFAULT_CODE
@@ -76,10 +76,10 @@ spec:
         image: {{ .Values.mainRepo }}/fleet50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.fleet50.frontendPort }}
+        - containerPort: {{ .Values.fleet50_prod.frontendPort }}
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
-          value: http://85.215.129.117:4001
+          value: ''
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
