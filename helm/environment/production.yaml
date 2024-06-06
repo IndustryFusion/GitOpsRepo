@@ -9,27 +9,14 @@ icsdbExternalPath: /ics/ # must end with /
 # if50BackendExternalPath: /if50/backend/ # must end with /
 # if50FrontendExternalPath: /if50 # must end without /
 
-#dev config
-dev:
-  factory50ExternalHostname: development.industry-fusion.com
-  factory50BackendExternalPath: /factory50/backend/ # must end with /
-  factory50FrontendExternalPath: /factory50 # must end without /
 
-  fleet50ExternalHostname: development.industry-fusion.com
-  fleet50BackendExternalPath: /fleet50/backend/ # must end with /
-  fleet50FrontendExternalPath: /fleet50 # must end without /
+factory50ExternalHostname: platform.industry-fusion.com
+factory50BackendExternalPath: /factory50/backend/ # must end with /
+factory50FrontendExternalPath: /factory50 # must end without /
 
-
-
-#prod config
-prod:
-  factory50ExternalHostname: platform.industry-fusion.com
-  factory50BackendExternalPath: /factory50/backend/ # must end with /
-  factory50FrontendExternalPath: /factory50 # must end without /
-
-  fleet50ExternalHostname: platform.industry-fusion.com
-  fleet50BackendExternalPath: /fleet50/backend/ # must end with /
-  fleet50FrontendExternalPath: /fleet50 # must end without /
+fleet50ExternalHostname: platform.industry-fusion.com
+fleet50BackendExternalPath: /fleet50/backend/ # must end with /
+fleet50FrontendExternalPath: /fleet50 # must end without /
 
 
 
@@ -37,22 +24,8 @@ certmanager:
   secret: prod-cert-tls
   issuer: letsencrypt-prod
 
-# s3:
-#   url: https://s3-eu-central-1.ionoscloud.com
-#   accessKey: access-key
-#   secretKey: secret-key
-#   fleetmanagerBucket: iff-dev
 
-alerta_dev:
-  url: https://development.industry-fusion.com/alerta
-  accesskey: access-key
-
-alerta_prod:
-  url: https://alerta.industry-fusion.com/alerta
-  accesskey: access-key
-
-
-icid:
+# icid:
 #   mongoUrl: ''
 #   namespace: ''
 
