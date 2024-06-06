@@ -1,0 +1,92 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: factory50-application-service-prod
+  name: factory50-application-service-prod
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - port: {{ .Values.factory50_prod.backendPort }}
+    targetPort: {{ .Values.factory50_prod.backendPort }}
+    name: factory50-backend
+    protocol: TCP
+  - port: {{ .Values.factory50_prod.frontendPort }}
+    targetPort: {{ .Values.factory50_prod.frontendPort }}
+    name: factory50-frontend
+    protocol: TCP
+  type: LoadBalancer
+  selector:
+    app: factory50-application-service-prod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: factory50-application-service-prod
+  name: factory50-application-service-prod
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: factory50-application-service-prod
+  template:
+    metadata:
+      labels:
+        app: factory50-application-service-prod
+    spec:
+      containers:
+      - name: factory50-backend
+        image: {{ .Values.mainRepo }}/factory50-backend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.factory50_prod.backendPort }}
+        env:
+        - name: GATEWAY_BASE_URL
+          value: https://api.github.com/repos/IndustryFusion/gateway-configs/contents
+        - name: GATEWAY_TOKEN
+          value: {{ .Values.factory50_prod.gatewayToken }}
+        - name: GITHUB_BASE_URL
+          value: https://api.github.com/repos/IndustryFusion/templates/contents/new-model
+        - name: GITHUB_TOKEN
+          value: {{ .Values.factory50_prod.githubToken }}
+        - name: API_URL
+          value: https://alerta.industry-fusion.com/auth/realms/iff/protocol/openid-connect/token
+        - name: CLIENT_ID
+          value: scorpio
+        - name: SCORPIO_URL
+          value: https://alerta.industry-fusion.com/scorpio/ngsi-ld/v1/entities
+        - name: S3_URL
+          value: s3-eu-central-1.ionoscloud.com
+        - name: S3_ACCESS_KEY
+          value: {{ .Values.factory50_prod.s3AccessKey }}
+        - name: S3_SECRET_KEY
+          value: {{ .Values.factory50_prod.s3SecretKey }}
+        - name: S3_BUCKET
+          value: iff-prod
+        - name: ALERTA_URL
+          value: https://alerta.industry-fusion.com/alerta/api
+        - name: ALERTA_KEY
+          value: {{ .Values.factory50_prod.alertaKey }}
+        - name: TIMESCALE_URL
+          value: https://alerta.industry-fusion.com/pgrest/
+        - name: MONGO_URL
+          value: {{ .Values.factory50_prod.mongoUrl }}
+        - name: CORS_ORIGIN
+          value: http://212.132.126.41:3002
+        - name: REDIS_SERVER
+          value: "212.132.115.235"
+        - name: REDIS_PORT
+          value: "6379"
+      - name: factory50-frontend
+        image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.factory50_prod.frontendPort }}
+        env:
+        - name: NEXT_PUBLIC_BACKEND_API_URL
+          value: http://212.132.126.41:4002
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
