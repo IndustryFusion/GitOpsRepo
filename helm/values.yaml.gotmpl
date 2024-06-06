@@ -16,14 +16,19 @@ icsdb:
   username: icsdb-user
   password: {{ .StateValues.icsdbPassword }}
 
-alerta:
-  url: {{ .StateValues.alerta.url }}
-  accesskey: {{ .StateValues.alerta.accesskey }}
+alerta_dev:
+  url: {{ .StateValues.alerta_dev.url }}
+  accesskey: {{ .StateValues.alerta_dev.accesskey }}
+
+alerta_prod:
+  url: {{ .StateValues.alerta_prod.url }}
+  accesskey: {{ .StateValues.alerta_prod.accesskey }}
+
 
 factory50:
-  externalHostname: {{ .StateValues.factory50ExternalHostname }}
-  backendExternalPath: {{ .StateValues.factory50BackendExternalPath }}
-  frontendExternalPath: {{ .StateValues.factory50FrontendExternalPath }}
+  externalHostname: {{ .StateValues.dev.factory50ExternalHostname }}
+  backendExternalPath: {{ .StateValues.dev.factory50BackendExternalPath }}
+  frontendExternalPath: {{ .StateValues.dev.factory50FrontendExternalPath }}
   backendPort: 4002
   frontendPort: 3002
   gatewayToken: 'gateway-token'
@@ -35,9 +40,9 @@ factory50:
 
 
 fleet50:
-  externalHostname: {{ .StateValues.fleet50ExternalHostname }}
-  backendExternalPath: {{ .StateValues.fleet50BackendExternalPath }}
-  frontendExternalPath: {{ .StateValues.fleet50FrontendExternalPath }}
+  externalHostname: {{ .StateValues.dev.fleet50ExternalHostname }}
+  backendExternalPath: {{ .StateValues.dev.fleet50BackendExternalPath }}
+  frontendExternalPath: {{ .StateValues.dev.fleet50FrontendExternalPath }}
   backendPort: 4001
   frontendPort: 3001
   githubToken: 'github-token'
@@ -50,3 +55,30 @@ icid:
   backendPort: 4010
   mongoUrl: 'mongo-url'
   namespace: 'namespace'
+
+factory50_prod:
+  externalHostname: {{ .StateValues.prod.factory50ExternalHostname }}
+  backendExternalPath: {{ .StateValues.prod.factory50BackendExternalPath }}
+  frontendExternalPath: {{ .StateValues.prod.factory50FrontendExternalPath }}
+  backendPort: 4002
+  frontendPort: 3002
+  gatewayToken: 'gateway-token'
+  githubToken: 'github-token'
+  s3AccessKey: 's3-access-key'
+  s3SecretKey: 's3-secret-key'
+  alertaKey: 'alerta-key'
+  mongoUrl: 'mongo-url'
+
+
+fleet50_prod:
+  externalHostname: {{ .StateValues.prod.fleet50ExternalHostname }}
+  backendExternalPath: {{ .StateValues.prod.fleet50BackendExternalPath }}
+  frontendExternalPath: {{ .StateValues.prod.fleet50FrontendExternalPath }}
+  backendPort: 4001
+  frontendPort: 3001
+  githubToken: 'github-token'
+  s3AccessKey: 's3-access-key'
+  s3SecretKey: 's3-access-key'
+  username: 'username'
+  password: 'password'
+

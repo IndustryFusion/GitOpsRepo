@@ -1,0 +1,95 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fleet50-application-service-prod
+  name: fleet50-application-service-prod
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - port: {{ .Values.fleet50.backendPort }}
+    targetPort: {{ .Values.fleet50.backendPort }}
+    name: fleet50-backend
+    protocol: TCP
+  - port: {{ .Values.fleet50.frontendPort }}
+    targetPort: {{ .Values.fleet50.frontendPort }}
+    name: fleet50-frontend
+    protocol: TCP
+  type: LoadBalancer
+  selector:
+    app: fleet50-application-service-prod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fleet50-application-service-prod
+  name: fleet50-application-service-prod
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fleet50-application-service-prod
+  template:
+    metadata:
+      labels:
+        app: fleet50-application-service-prod
+    spec:
+      containers:
+      - name: fleet50-backend
+        image: {{ .Values.mainRepo }}/fleet50-backend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.fleet50.backendPort }}
+        env:
+        - name: GITHUB_BASE_URL
+          value: https://api.github.com/repos/IndustryFusion/templates/contents/new-model
+        - name: GITHUB_TOKEN
+          value: {{ .Values.fleet50.githubToken }}
+        - name: SCORPIO_URL
+          value: http://87.106.163.176:9090/ngsi-ld/v1/entities
+        - name: S3_URL
+          value: s3-eu-central-1.ionoscloud.com
+        - name: S3_ACCESS_KEY
+          value: {{ .Values.fleet50.s3AccessKey }}
+        - name: S3_SECRET_KEY
+          value: {{ .Values.fleet50.s3SecretKey }}
+        - name: S3_BUCKET
+          value: iff-prod
+        - name: USERNAME
+          value: {{ .Values.fleet50.username }}
+        - name: PASSWORD
+          value: {{ .Values.fleet50.password }}
+        - name: CORS_ORIGIN
+          value: http://85.215.129.117:3001
+        - name: ICID_ORIGIN
+          value: http://87.106.207.10:4010
+        - name: ASSETS_DEFAULT_CODE
+          value: IFX-EUR-NLD-AST
+        - name: USERS_DEFAULT_CODE
+          value: IFX-EUR-NLD-USR
+        - name: CONTEXT
+          value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
+      - name: fleet50-frontend
+        image: {{ .Values.mainRepo }}/fleet50-frontend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.fleet50.frontendPort }}
+        env:
+        - name: NEXT_PUBLIC_BACKEND_API_URL
+          value: http://85.215.129.117:4001
+        # volumeMounts:
+        # - name: nginx-config
+        #   mountPath: /etc/nginx/conf.d/default.conf
+        #   subPath: default.conf
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+      # volumes:
+      # - name: nginx-config
+      #   configMap:
+      #     name: if50-nginx
+      #     items:
+      #     - key: config
+      #       path: default.conf
