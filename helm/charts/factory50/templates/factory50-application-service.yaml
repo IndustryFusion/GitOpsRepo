@@ -57,7 +57,7 @@ spec:
         - name: CLIENT_ID
           value: scorpio
         - name: SCORPIO_URL
-          value: https://alerta.industry-fusion.com/scorpio/ngsi-ld/v1/entities
+          value: https://development.industry-fusion.com/scorpio/ngsi-ld/v1/entities
         - name: S3_URL
           value: s3-eu-central-1.ionoscloud.com
         - name: S3_ACCESS_KEY
@@ -65,7 +65,7 @@ spec:
         - name: S3_SECRET_KEY
           value: {{ .Values.factory50.s3SecretKey }}
         - name: S3_BUCKET
-          value: iff-prod
+          value: iff-dev
         - name: ALERTA_URL
           value: https://alerta.industry-fusion.com/alerta/api
         - name: ALERTA_KEY
