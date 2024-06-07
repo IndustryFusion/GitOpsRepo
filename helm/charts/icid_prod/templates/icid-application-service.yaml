@@ -44,7 +44,9 @@ spec:
           value: {{ .Values.icid_prod.mongoUrl }}
         - name: IFRIC_NAMESPACE
           value: {{ .Values.icid_prod.namespace }}
-        - name: CORS_ORIGIN
-          value: http://85.215.129.117:4001
+        - name: FLEET_CORS_ORIGIN
+          value: http://212.132.122.100:4001
+        - name: PASS_CORS_ORIGIN
+          value: ''
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
