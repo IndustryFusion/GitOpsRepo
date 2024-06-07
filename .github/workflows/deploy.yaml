@@ -74,10 +74,10 @@ on:
       GATEWAY_TOKEN:
         description: ''
         required: false
-      ALERTA_KEY:
+      ALERTA_KEY_DEV:
         description: ''
         required: false
-      FACTORY_MONGO_URL:
+      FACTORY_MONGO_URL_DEV:
         description: ''
         required: false
       USERNAME:
@@ -86,7 +86,7 @@ on:
       PASSWORD:
         description: ''
         required: false
-      ICID_MONGO_URL:
+      ICID_MONGO_URL_DEV:
         description: ''
         required: false
       ICID_NAMESPACE:
