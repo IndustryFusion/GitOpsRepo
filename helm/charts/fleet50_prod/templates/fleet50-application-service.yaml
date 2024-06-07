@@ -63,7 +63,7 @@ spec:
         - name: PASSWORD
           value: {{ .Values.fleet50_prod.password }}
         - name: CORS_ORIGIN
-          value: ''
+          value: http://194.164.207.219:3001
         - name: ICID_ORIGIN
           value: ''
         - name: ASSETS_DEFAULT_CODE
@@ -79,7 +79,7 @@ spec:
         - containerPort: {{ .Values.fleet50_prod.frontendPort }}
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
-          value: ''
+          value: http://194.164.207.219:4001
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
