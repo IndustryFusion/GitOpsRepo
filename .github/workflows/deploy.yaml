@@ -74,10 +74,10 @@ on:
       GATEWAY_TOKEN:
         description: ''
         required: false
-      ALERTA_KEY:
+      ALERTA_KEY_DEV:
         description: ''
         required: false
-      FACTORY_MONGO_URL:
+      FACTORY_MONGO_URL_DEV:
         description: ''
         required: false
       USERNAME:
@@ -86,7 +86,7 @@ on:
       PASSWORD:
         description: ''
         required: false
-      ICID_MONGO_URL:
+      ICID_MONGO_URL_DEV:
         description: ''
         required: false
       ICID_NAMESPACE:
@@ -135,12 +135,12 @@ jobs:
             --set factory50.gatewayToken="${{ secrets.GATEWAY_TOKEN }}" \
             --set factory50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
             --set factory50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set factory50.alertaKey="${{ secrets.ALERTA_KEY }}" \
-            --set factory50.mongoUrl="${{ secrets.FACTORY_MONGO_URL }}"\
+            --set factory50.alertaKey="${{ secrets.ALERTA_KEY_DEV }}" \
+            --set factory50.mongoUrl="${{ secrets.FACTORY_MONGO_URL_DEV }}"\
             --set fleet50.githubToken="${{ secrets.HUB_TOKEN }}" \
             --set fleet50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
             --set fleet50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
             --set fleet50.username="${{ secrets.USERNAME }}" \
             --set fleet50.password="${{ secrets.PASSWORD }}" \
-            --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL }}" \
+            --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL_DEV }}" \
             --set icid.namespace="${{ secrets.ICID_NAMESPACE }}"
