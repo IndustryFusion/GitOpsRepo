@@ -53,7 +53,7 @@ spec:
         - name: GITHUB_TOKEN
           value: {{ .Values.factory50.githubToken }}
         - name: API_URL
-          value: https://alerta.industry-fusion.com/auth/realms/iff/protocol/openid-connect/token
+          value: https://development.industry-fusion.com/auth/realms/iff/protocol/openid-connect/token
         - name: CLIENT_ID
           value: scorpio
         - name: SCORPIO_URL
@@ -71,13 +71,13 @@ spec:
         - name: ALERTA_KEY
           value: {{ .Values.factory50.alertaKey }}
         - name: TIMESCALE_URL
-          value: https://alerta.industry-fusion.com/pgrest/
+          value: https://development.industry-fusion.com/pgrest/
         - name: MONGO_URL
           value: {{ .Values.factory50.mongoUrl }}
         - name: CORS_ORIGIN
           value: http://212.132.126.41:3002
         - name: REDIS_SERVER
-          value: "212.132.115.235"
+          value: "212.132.115.232"
         - name: REDIS_PORT
           value: "6379"
       - name: factory50-frontend
