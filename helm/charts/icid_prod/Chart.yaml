@@ -1,0 +1,6 @@
+apiVersion: v2
+name: icid-application-service-prod
+description: A Helm chart for IFRIC ICID application service in production
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
