@@ -67,7 +67,7 @@ spec:
         - name: S3_BUCKET
           value: iff-dev
         - name: ALERTA_URL
-          value: https://alerta.industry-fusion.com/alerta/api
+          value: https://development.industry-fusion.com/alerta/api
         - name: ALERTA_KEY
           value: {{ .Values.factory50.alertaKey }}
         - name: TIMESCALE_URL
