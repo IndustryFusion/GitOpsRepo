@@ -53,3 +53,19 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
+- name: factory50
+  labels:
+    order: second
+    app: factory50_prod
+  chart: ./charts/factory50_prod
+  namespace: {{ .Values.namespace }}
+  values:
+  - values.yaml.gotmpl
+- name: icid
+  labels:
+    order: first
+    app: icid_prod
+  chart: ./charts/icid_prod
+  namespace: {{ .Values.namespace }}
+  values:
+  - values.yaml.gotmpl

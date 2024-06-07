@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: icid-application-service-prod
+  name: icid-application-service-prod
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - port: {{ .Values.icid_prod.backendPort }}
+    targetPort: {{ .Values.icid_prod.backendPort }}
+    name: icid-backend
+    protocol: TCP
+  type: LoadBalancer
+  selector:
+    app: icid-application-service-prod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: icid-application-service-prod
+  name: icid-application-service-prod
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: icid-application-service-prod
+  template:
+    metadata:
+      labels:
+        app: icid-application-service-prod
+    spec:
+      containers:
+      - name: icid-backend
+        image: {{ .Values.mainRepo }}/icid-backend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.icid_prod.backendPort }}
+        env:
+        - name: MONGO_URL
+          value: {{ .Values.icid_prod.mongoUrl }}
+        - name: IFRIC_NAMESPACE
+          value: {{ .Values.icid_prod.namespace }}
+        - name: CORS_ORIGIN
+          value: http://85.215.129.117:4001
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
