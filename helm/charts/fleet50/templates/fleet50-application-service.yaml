@@ -79,7 +79,7 @@ spec:
         - containerPort: {{ .Values.fleet50.frontendPort }}
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
-          value: https://dev-fleet-backend.industry-fusion.com/
+          value: https://dev-fleet-backend.industry-fusion.com
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
