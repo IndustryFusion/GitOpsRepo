@@ -63,7 +63,7 @@ spec:
         - name: PASSWORD
           value: {{ .Values.fleet50.password }}
         - name: CORS_ORIGIN
-          value: http://85.215.129.117:3001
+          value: ''
         - name: ICID_ORIGIN
           value: http://87.106.207.10:4010
         - name: ASSETS_DEFAULT_CODE
