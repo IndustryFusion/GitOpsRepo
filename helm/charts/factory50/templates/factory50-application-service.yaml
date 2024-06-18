@@ -87,6 +87,6 @@ spec:
         - containerPort: {{ .Values.factory50.frontendPort }}
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
-          value: http://212.132.126.41:4002
+          value: https://dev-factory-backend.industry-fusion.com
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
