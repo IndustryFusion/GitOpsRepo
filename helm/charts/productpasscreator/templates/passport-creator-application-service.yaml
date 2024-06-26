@@ -4,7 +4,7 @@ metadata:
   labels:
     app: passport-creator-application-service
   name: passport-creator-application-service
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.passport_creator.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: passport-creator-backend
-        image: {{ .Values.mainRepo }}/passport-creator-backend:{{ .Values.mainVersion}}
+        image: {{ .Values.mainRepo }}/passport-creator-backend:{{ .Values.passport_creator.mainVersion }}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.passport_creator.backendPort }}
