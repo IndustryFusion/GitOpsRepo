@@ -28,8 +28,8 @@ on:
         required: false
         default: 'regcred'
         type: string
-      IFF_DEV_DPP_IFRIC_CLUSTER:
-        description: 'base64 config of the Kubernetes cluster'
+      CLUSTER:
+        description: 'Deployer image with the Kubernetes cluster config'
         required: true
         type: string
 
@@ -59,8 +59,8 @@ on:
         required: false
         default: 'regcred'
         type: string
-      IFF_DEV_DPP_IFRIC_CLUSTER:
-        description: 'base64 config of the Kubernetes cluster'
+      CLUSTER:
+        description: 'Deployer image with the Kubernetes cluster config'
         required: true
         type: string
     secrets:
@@ -101,7 +101,6 @@ on:
         description: ''
         required: false
 
-
 jobs:
   clone-repo:
     runs-on: private-2
@@ -116,7 +115,7 @@ jobs:
     needs: clone-repo
     runs-on: private-2
     container:
-      image: ibn40/deployer:latest
+      image: ibn40/deployer:${{ inputs.CLUSTER }}
       options: --user root
       volumes:
         - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
@@ -124,9 +123,9 @@ jobs:
       - name: Deploy
         run: |
           helm plugin list
-          export NAMESPACE="${{ inputs.NAMESPACE }}"
+          #export NAMESPACE="${{ inputs.NAMESPACE }}"
           cd /home/deployer/GitOpsRepo/helm
-          # bash install_operators.sh
+          #bash install_operators.sh
           APPS="${{ inputs.APPS }}"
           LABEL_ARG=""
           for app in ${APPS}; do
@@ -134,11 +133,6 @@ jobs:
             LABEL_ARG="${LABEL_ARG} -l app=${app}"
           done
           echo "Deploying with selector: ${LABEL_ARG}"
-          
-          # Decode Kubernetes cluster config from base64
-          echo "${{ inputs.IFF_DEV_DPP_IFRIC_CLUSTER }}" | base64 -d > /tmp/kubeconfig.yaml
-          export KUBECONFIG=/tmp/kubeconfig.yaml
-          chmod 600 /tmp/kubeconfig.yaml
           
           helmfile ${LABEL_ARG} apply \
             --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
