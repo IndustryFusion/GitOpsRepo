@@ -108,7 +108,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: IndustryFusion/GitOpsRepo.git
-          ref: main
+          ref: IFFDP-74
           path: GitOpsRepo
           #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
   deploy-action:
