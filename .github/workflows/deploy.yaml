@@ -136,7 +136,7 @@ jobs:
           echo "Deploying with selector: ${LABEL_ARG}"
           
           # Decode Kubernetes cluster config from base64
-          echo "${{ inputs.IFF_DEV_DPP_IFRIC_CLUSTER }}" | base64 --decode > /tmp/kubeconfig.yaml
+          echo "${{ inputs.IFF_DEV_DPP_IFRIC_CLUSTER }}" | base64 -d > /tmp/kubeconfig.yaml
           export KUBECONFIG=/tmp/kubeconfig.yaml
           export NAMESPACE=digital-product-passport
                       
