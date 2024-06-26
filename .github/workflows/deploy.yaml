@@ -28,6 +28,11 @@ on:
         required: false
         default: 'regcred'
         type: string
+      IFF_DEV_DPP_IFRIC_CLUSTER:
+        description: 'base64 config of the Kubernetes cluster'
+        required: true
+        type: string
+
   workflow_call:
     inputs:
       APPS:
