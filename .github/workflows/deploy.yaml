@@ -126,7 +126,7 @@ jobs:
           helm plugin list
           export NAMESPACE="${{ inputs.NAMESPACE }}"
           cd /home/deployer/GitOpsRepo/helm
-          bash install_operators.sh
+          # bash install_operators.sh
           APPS="${{ inputs.APPS }}"
           LABEL_ARG=""
           for app in ${APPS}; do
