@@ -74,7 +74,7 @@ releases:
     order: second
     app: passport-creator
   chart: ./charts/productpasscreator
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.passport_creator.namespace }}
   values:
   - values.yaml.gotmpl
 - name: passport-viewer
