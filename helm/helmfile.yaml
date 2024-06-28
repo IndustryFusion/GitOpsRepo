@@ -82,6 +82,6 @@ releases:
     order: second
     app: passport-viewer
   chart: ./charts/productpassviewer
-  namespace: {{ .Values.namespace }}
+  namespace: digital-product-passport
   values:
   - values.yaml.gotmpl
