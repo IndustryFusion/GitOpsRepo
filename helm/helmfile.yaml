@@ -69,3 +69,19 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
+- name: passport-creator
+  labels:
+    order: second
+    app: passport-creator
+  chart: ./charts/productpasscreator
+  namespace: digital-product-passport
+  values:
+  - values.yaml.gotmpl
+- name: passport-viewer
+  labels:
+    order: second
+    app: passport-viewer
+  chart: ./charts/productpassviewer
+  namespace: digital-product-passport
+  values:
+  - values.yaml.gotmpl
