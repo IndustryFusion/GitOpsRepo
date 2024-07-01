@@ -51,7 +51,7 @@ spec:
         - name: CONTEXT
           value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
       - name: passport-viewer-frontend
-        image: {{ .Values.mainRepo }}/passport-viewer-frontend:{{ .Values.mainVersion}}
+        image: {{ .Values.mainRepo }}/passport-viewer-frontend:{{ .Values.passport_viewer.mainVersion}}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.passport_viewer.frontendPort }}
