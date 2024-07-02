@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ifric-registry-application-service
+description: A Helm chart for ifric registry application service
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
