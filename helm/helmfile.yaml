@@ -85,3 +85,11 @@ releases:
   namespace: digital-product-passport
   values:
   - values.yaml.gotmpl
+- name: ifric-registry
+  labels:
+    order: second
+    app: ifric-registry
+  chart: ./charts/ifricregistry
+  namespace: ifric-registry-service
+  values:
+  - values.yaml.gotmpl
