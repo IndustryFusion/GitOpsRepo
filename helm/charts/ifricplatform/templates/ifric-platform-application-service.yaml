@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ifric-platform-application-service
+  name: ifric-platform-application-service
+  namespace: {{ .Values.ifric_platform.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifric-platform-application-service
+  template:
+    metadata:
+      labels:
+        app: ifric-platform-application-service
+    spec:
+      containers:
+      - name: ifric-platform-backend
+        image: {{ .Values.mainRepo }}/ifric-platform-backend:{{ .Values.ifric_platform.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.ifric_platform.backendPort }}
+        env:
+        - name: GITHUB_BASE_URL
+          value: https://api.github.com/repos/IndustryFusion/templates/contents/new-model
+        - name: GITHUB_TOKEN
+          value: {{ .Values.ifric_platform.githubToken }}
+        - name: CORS_ORIGIN
+          value: http://212.132.67.130:3006
+        - name: IFRIC_REGISTRY
+          value: http://212.132.71.118:4007
+      - name: ifric-platform-frontend
+        image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.ifric_platform.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.ifric_platform.frontendPort }}
+        env:
+        - name: BACKEND_URL
+          value: http://212.132.67.130:4006
+        # volumeMounts:
+        # - name: nginx-config
+        #   mountPath: /etc/nginx/conf.d/default.conf
+        #   subPath: default.conf
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+      # volumes:
+      # - name: nginx-config
+      #   configMap:
+      #     name: if50-nginx
+      #     items:
+      #     - key: config
+      #       path: default.conf
