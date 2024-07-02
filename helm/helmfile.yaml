@@ -93,3 +93,11 @@ releases:
   namespace: ifric-registry-service
   values:
   - values.yaml.gotmpl
+- name: ifric-platform
+  labels:
+    order: second
+    app: ifric-platform
+  chart: ./charts/ifricplatform
+  namespace: ifric-platform
+  values:
+  - values.yaml.gotmpl
