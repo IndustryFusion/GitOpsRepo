@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: passport-creator-backend
-        image: {{ .Values.mainRepo }}/passport-creator-backend:{{ .Values.passport_creator.mainVersion }}
+        image: {{ .Values.mainRepo }}/passport-creator-backend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.passport_creator.backendPort }}
