@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: ifric-platform-backend
-        image: {{ .Values.mainRepo }}/ifric-platform-backend:{{ .Values.ifric_platform.mainVersion }}
+        image: {{ .Values.mainRepo }}/ifric-platform-backend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.ifric_platform.backendPort }}
@@ -31,7 +31,7 @@ spec:
         - name: IFRIC_REGISTRY
           value: http://212.132.71.118:4007
       - name: ifric-platform-frontend
-        image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.ifric_platform.mainVersion}}
+        image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.ifric_platform.frontendPort }}
