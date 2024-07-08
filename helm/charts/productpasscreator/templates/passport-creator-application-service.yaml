@@ -50,8 +50,6 @@ spec:
           value: IFX-EUR-NLD-USR
         - name: CONTEXT
           value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
-        - name: MONGO_URL
-          value: {{ .Values.passport_creator.mongoUrl }}
       - name: passport-creator-frontend
         image: {{ .Values.mainRepo }}/passport-creator-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
