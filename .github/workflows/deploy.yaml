@@ -110,6 +110,12 @@ on:
       TENANT_ID:
         description: ''
         required: false
+      ICID_NAMESPACE:
+        description: ''
+        required: false
+      CREATOR_MONGO_URL_DEV:
+        description: ''
+        required: false
 
 
 
