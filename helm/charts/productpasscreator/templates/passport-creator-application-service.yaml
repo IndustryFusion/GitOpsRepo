@@ -60,16 +60,5 @@ spec:
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
           value: http://212.132.67.127:4003
-        # volumeMounts:
-        # - name: nginx-config
-        #   mountPath: /etc/nginx/conf.d/default.conf
-        #   subPath: default.conf
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
-      # volumes:
-      # - name: nginx-config
-      #   configMap:
-      #     name: if50-nginx
-      #     items:
-      #     - key: config
-      #       path: default.conf
