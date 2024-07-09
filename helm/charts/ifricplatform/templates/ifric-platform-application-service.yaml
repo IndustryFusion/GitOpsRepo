@@ -36,8 +36,10 @@ spec:
         ports:
         - containerPort: {{ .Values.ifric_platform.frontendPort }}
         env:
-        - name: BACKEND_URL
+        - name: NEXT_PUBLIC_BACKEND_URL
           value: http://87.106.197.15:4006
+        - name: NEXT_PUBLIC_DPP_CREATOR_IP
+          value: https://dev-dpp-creator.ifric.org
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
