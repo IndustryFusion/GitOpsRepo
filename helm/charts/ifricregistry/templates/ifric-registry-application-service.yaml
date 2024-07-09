@@ -40,6 +40,9 @@ spec:
           value: {{ .Values.ifric_registry.client_secret }}
         - name: TENANT_ID
           value: {{ .Values.ifric_registry.tenant_id }}
+        - name: NEXT_PUBLIC_IFRIC_PLATEFORM_IP
+          value: 'http://87.106.197.15:3006'
+
 
 
         # volumeMounts:
