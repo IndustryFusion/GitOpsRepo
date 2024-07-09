@@ -59,6 +59,6 @@ spec:
         - containerPort: {{ .Values.passport_creator.frontendPort }}
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
-          value: http://212.132.67.127:4003
+          value: https://dev-dpp-creator-backend.ifric.org
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
