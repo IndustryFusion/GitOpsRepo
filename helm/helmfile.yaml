@@ -101,3 +101,11 @@ releases:
   namespace: ifric-platform
   values:
   - values.yaml.gotmpl
+- name: template-sandbox
+  labels:
+    order: second
+    app: template-sandbox
+  chart: ./charts/templatesandbox
+  namespace: template-sandbox
+  values:
+  - values.yaml.gotmpl
