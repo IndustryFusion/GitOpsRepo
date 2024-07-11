@@ -27,7 +27,7 @@ spec:
         - name: GITHUB_TOKEN
           value: {{ .Values.ifric_platform.githubToken }}
         - name: CORS_ORIGIN
-          value: http://87.106.197.15:3006
+          value: https://dev-platform.ifric.org
         - name: IFRIC_REGISTRY
           value: http://212.132.71.118:4007
       - name: ifric-platform-frontend
@@ -37,7 +37,7 @@ spec:
         - containerPort: {{ .Values.ifric_platform.frontendPort }}
         env:
         - name: NEXT_PUBLIC_BACKEND_URL
-          value: http://87.106.197.15:4006
+          value: https://dev-platform-backend.ifric.org
         - name: NEXT_PUBLIC_DPP_CREATOR_IP
           value: https://dev-dpp-creator.ifric.org
         # volumeMounts:
