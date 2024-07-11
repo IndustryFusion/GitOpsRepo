@@ -40,8 +40,6 @@ spec:
           value: {{ .Values.passport_creator.username }}
         - name: PASSWORD
           value: {{ .Values.passport_creator.password }}
-        - name: CORS_ORIGIN
-          value: ''
         - name: ICID_ORIGIN
           value: http://87.106.207.10:4010
         - name: ASSETS_DEFAULT_CODE
