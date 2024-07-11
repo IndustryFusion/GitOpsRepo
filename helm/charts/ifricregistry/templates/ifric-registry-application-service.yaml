@@ -29,7 +29,7 @@ spec:
         - name: MONGO_URL
           value: {{ .Values.ifric_registry.mongoUrl }}
         - name: CORS_ORIGIN
-          value: https://dev-platform-backend.ifric.org
+          value: https://dev-registry.ifric.org
         - name: ICID_ORIGIN
           value: http://87.106.207.10:4010
         - name: EMAIL_URL
