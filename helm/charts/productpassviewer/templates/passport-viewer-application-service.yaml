@@ -40,16 +40,6 @@ spec:
           value: {{ .Values.passport_viewer.username }}
         - name: PASSWORD
           value: {{ .Values.passport_viewer.password }}
-        - name: CORS_ORIGIN
-          value: http://212.132.67.130:3004
-        - name: ICID_ORIGIN
-          value: http://87.106.207.10:4010
-        - name: ASSETS_DEFAULT_CODE
-          value: IFX-EUR-NLD-AST
-        - name: USERS_DEFAULT_CODE
-          value: IFX-EUR-NLD-USR
-        - name: CONTEXT
-          value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
       - name: passport-viewer-frontend
         image: {{ .Values.mainRepo }}/passport-viewer-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
