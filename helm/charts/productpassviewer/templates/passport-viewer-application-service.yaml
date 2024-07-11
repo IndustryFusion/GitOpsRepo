@@ -27,7 +27,7 @@ spec:
         - name: GITHUB_TOKEN
           value: {{ .Values.passport_viewer.githubToken }}
         - name: SCORPIO_URL
-          value: http://212.132.87.228:9090/ngsi-ld/v1/entities
+          value: https://dev-dataroom.ifric.org/ngsi-ld/v1/entities
         - name: S3_URL
           value: s3-eu-central-1.ionoscloud.com
         - name: S3_ACCESS_KEY
