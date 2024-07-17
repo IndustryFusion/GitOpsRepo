@@ -36,6 +36,8 @@ This script compares the environment variables of a Kubernetes deployment with t
 
 ```sh
 python3 fetch_k3s_env_vars.py -e example.env
+Enter the path to kubeconfig file: /mnt/c/Users/Ragunanthan/Downloads/IFF-DEV-DPP-IFRIC.yaml
+Enter the deployment name: passport-creator-application-service
 ```
 
 When prompted, enter the path to your kubeconfig file and the deployment name. The script will display the comparison results.
