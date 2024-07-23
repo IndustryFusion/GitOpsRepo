@@ -40,6 +40,8 @@ spec:
           value: {{ .Values.template_sandbox.password }}
         - name: MONGO_URL
           value: {{ .Values.template_sandbox.mongoUrl }}
+        - name: CORS_ORIGIN
+          value: https://dev-sandbox.industry-fusion.com
       - name: template-sandbox-frontend
         image: {{ .Values.mainRepo }}/template-sandbox-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
