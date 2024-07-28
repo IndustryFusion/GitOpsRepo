@@ -93,14 +93,14 @@ releases:
   namespace: ifric-registry-service
   values:
   - values.yaml.gotmpl
-- name: ifric-platform-temp
-  labels:
-    order: second
-    app: ifric-platform-temp
-  chart: ./charts/ifricplatformtemp
-  namespace: ifric-platform
-  values:
-  - values.yaml.gotmpl
+# - name: ifric-platform-temp
+#   labels:
+#     order: second
+#     app: ifric-platform-temp
+#   chart: ./charts/ifricplatformtemp
+#   namespace: ifric-platform
+#   values:
+#   - values.yaml.gotmpl
 - name: template-sandbox
   labels:
     order: second
