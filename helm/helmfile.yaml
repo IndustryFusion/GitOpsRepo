@@ -69,11 +69,11 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
-- name: passport-creator
+- name: ifric-platform
   labels:
     order: second
-    app: passport-creator
-  chart: ./charts/productpasscreator
+    app: ifric-platform
+  chart: ./charts/ifricplatform
   namespace: digital-product-passport
   values:
   - values.yaml.gotmpl
@@ -93,11 +93,11 @@ releases:
   namespace: ifric-registry-service
   values:
   - values.yaml.gotmpl
-- name: ifric-platform
+- name: ifric-platform-temp
   labels:
     order: second
-    app: ifric-platform
-  chart: ./charts/ifricplatform
+    app: ifric-platform-temp
+  chart: ./charts/ifricplatformtemp
   namespace: ifric-platform
   values:
   - values.yaml.gotmpl

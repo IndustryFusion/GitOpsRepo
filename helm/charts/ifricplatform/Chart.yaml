@@ -1,6 +1,6 @@
 apiVersion: v2
 name: ifric-platform-application-service
-description: A Helm chart for ifric platform application service
+description: A Helm chart for DPP IFRIC Platform
 type: application
 version: 0.1.0
 appVersion: "0.1.0"
