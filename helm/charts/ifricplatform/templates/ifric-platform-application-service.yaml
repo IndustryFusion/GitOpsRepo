@@ -4,7 +4,7 @@ metadata:
   labels:
     app: ifric-platform-application-service
   name: ifric-platform-application-service
-  namespace: {{ .Values.passport_creator.Namespace }}
+  namespace: {{ .Values.ifric_platform.Namespace }}
 spec:
   replicas: 1
   selector:
