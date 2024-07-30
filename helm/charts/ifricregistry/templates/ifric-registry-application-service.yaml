@@ -42,7 +42,8 @@ spec:
           value: {{ .Values.ifric_registry.tenant_id }}
         - name: NEXT_PUBLIC_IFRIC_PLATEFORM_IP
           value: https://dev-platform.ifric.org
-
+        - name: NEXT_PUBLIC_IFRIC_WEBSITE
+          value: https://www.ifric.org/
 
 
         # volumeMounts:
