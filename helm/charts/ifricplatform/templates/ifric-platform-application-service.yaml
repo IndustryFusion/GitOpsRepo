@@ -54,6 +54,8 @@ spec:
           value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
         - name: MONGO_URL
           value: {{ .Values.ifric_platform.mongoUrl }}
+        - name: REGISTRY_ORIGIN
+          value: https://dev-registry.ifric.org
       - name: ifric-platform-frontend
         image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
@@ -62,5 +64,11 @@ spec:
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
           value: https://dev-platform-backend.ifric.org
+        - name: CONTEXT
+          value: https://industry-fusion.org/base/v0.1/
+        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
+          value: https://dev-registry.ifric.org
+        - name: NEXT_TEMPLATE_SANDBOX_URL
+          value: https://dev-sandbox.industry-fusion.com
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
