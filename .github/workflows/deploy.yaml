@@ -128,7 +128,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: IndustryFusion/IfricPlatform.git
+          repository: IndustryFusion/IfricPlatform
           ref: main
           path: IfricPlatform
           token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
