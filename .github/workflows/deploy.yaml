@@ -194,7 +194,7 @@ jobs:
             LABEL_ARG="${LABEL_ARG} -l app=${app}"
           done
           echo "Deploying with selector: ${LABEL_ARG}"
-          helmfile -l app=ifric-platform apply \
+          helmfile ${LABEL_ARG} apply \
             --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
             --set mainVersion=${{ inputs.DOCKER_TAG }} \
             --set namespace=${{ inputs.NAMESPACE }} \
