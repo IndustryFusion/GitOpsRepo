@@ -53,7 +53,7 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
-- name: factory50
+- name: factory50prod
   labels:
     order: second
     app: factory50_prod
