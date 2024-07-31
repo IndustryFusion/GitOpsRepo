@@ -17,7 +17,7 @@ on:
       DOCKER_REGISTRY:
         description: 'Name of the docker registry'
         required: false
-        default: ibn40
+        default: ifx40
         type: string
       DOCKER_TAG:
         description: 'Docker tag to use in the deployment'
@@ -47,7 +47,7 @@ on:
       DOCKER_REGISTRY: 
         description: 'Name of the docker registry'
         required: false
-        default: ibn40
+        default: ifx40
         type: string
       DOCKER_TAG:
         description: 'Docker tag to use in the deployment'
@@ -128,7 +128,7 @@ jobs:
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      DOCKER_PREFIX: ${{ secrets.DOCKER_PREFIX }}
+      DOCKER_PREFIX: docker.io/ifx40
     outputs:
       DOCKER_TAG: ${{ steps.build.outputs.NIGHTLY_DOCKER_TAG }}
     steps:
