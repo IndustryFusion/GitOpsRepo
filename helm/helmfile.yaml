@@ -61,7 +61,7 @@ releases:
   namespace: {{ .Values.namespace }}
   values:
   - values.yaml.gotmpl
-- name: icid
+- name: icidprod
   labels:
     order: first
     app: icid_prod
