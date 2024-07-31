@@ -167,7 +167,17 @@ jobs:
           docker rmi ${DOCKER_PREFIX}/ifric-platform-frontend:${DOCKER_TAG}
           docker rmi ${DOCKER_PREFIX}/ifric-platform-frontend:${NIGHTLY_DOCKER_TAG}
           echo "NIGHTLY_DOCKER_TAG=${NIGHTLY_DOCKER_TAG}" >> "${GITHUB_OUTPUT}"           
+   clone-repo:
+    runs-on: private-2
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: IndustryFusion/GitOpsRepo.git
+          ref: ${{ github.ref }}
+          path: GitOpsRepo
+          #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}          
    deploy-action:
+    needs: clone-repo
     runs-on: private-2
     container:
       image: ifx40/deployer:${{ inputs.CLUSTER }}
@@ -175,13 +185,6 @@ jobs:
       volumes:
         - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref }}
-          repository: IndustryFusion/GitOpsRepo
-      - name: List directory contents
-        run: |
-          ls -la /home/deployer/GitOpsRepo            
       - name: Deploy
         run: |
           helm plugin list
