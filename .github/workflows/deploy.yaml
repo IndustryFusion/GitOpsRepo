@@ -147,6 +147,7 @@ jobs:
         name: Build & Push Image
         shell: bash
         run: |
+          cd IfricPlatform
           export DOCKER_TAG="latest"
           NIGHTLY_DOCKER_TAG=nightly-$(date -I)-$(date +%s)
           docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
