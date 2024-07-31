@@ -150,16 +150,7 @@ jobs:
           export DOCKER_TAG="latest"
           NIGHTLY_DOCKER_TAG=nightly-$(date -I)-$(date +%s)
           docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
-          
-          # Check for docker-compose.yml
-          if [ -f docker-compose.yml ]; then
-            echo "docker-compose.yml found, proceeding with build"
-            docker-compose build
-          else
-            echo "docker-compose.yml not found, exiting"
-            exit 1
-          fi
-          
+          docker-compose -f docker-compose.yaml build
           docker tag ${DOCKER_PREFIX}/ifric-platform-backend:${DOCKER_TAG} ${DOCKER_PREFIX}/ifric-platform-backend:${NIGHTLY_DOCKER_TAG}
           docker tag ${DOCKER_PREFIX}/ifric-platform-frontend:${DOCKER_TAG} ${DOCKER_PREFIX}/ifric-platform-frontend:${NIGHTLY_DOCKER_TAG}
           docker push ${DOCKER_PREFIX}/ifric-platform-backend:${DOCKER_TAG}
