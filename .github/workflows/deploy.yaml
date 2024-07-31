@@ -142,9 +142,6 @@ jobs:
     outputs:
       DOCKER_TAG: ${{ steps.build.outputs.NIGHTLY_DOCKER_TAG }}
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref }}
       - id: build
         name: Build & Push Image
         shell: bash
