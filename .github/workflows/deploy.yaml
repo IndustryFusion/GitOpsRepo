@@ -130,7 +130,7 @@ jobs:
         with:
           repository: IndustryFusion/IfricPlatform.git
           ref: main
-          token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+          token: ${{ secrets.HUB_TOKEN }}
 
   build:
     needs: clone-repo
