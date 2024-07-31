@@ -125,7 +125,6 @@ on:
 jobs:
    build:
     runs-on: private-2
-    needs: clone
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
