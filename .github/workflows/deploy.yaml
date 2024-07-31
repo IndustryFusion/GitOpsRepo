@@ -162,7 +162,7 @@ jobs:
           docker rmi ${DOCKER_PREFIX}/ifric-platform-frontend:${NIGHTLY_DOCKER_TAG}
           echo "NIGHTLY_DOCKER_TAG=${NIGHTLY_DOCKER_TAG}" >> "${GITHUB_OUTPUT}"           
    clone-repo:
-    runs-on: private-2
+    runs-on: private
     steps:
       - uses: actions/checkout@v3
         with:
@@ -172,7 +172,7 @@ jobs:
           #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
    deploy-action:
     needs: clone-repo
-    runs-on: private-2
+    runs-on: private
     container:
       image: ifx40/deployer:${{ inputs.CLUSTER }}
       options: --user root
