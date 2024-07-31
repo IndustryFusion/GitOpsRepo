@@ -123,7 +123,7 @@ on:
         required: false
 
 jobs:
-  build:
+   build:
     runs-on: private-2
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -171,7 +171,7 @@ jobs:
           docker rmi ${DOCKER_PREFIX}/ifric-platform-frontend:${DOCKER_TAG}
           docker rmi ${DOCKER_PREFIX}/ifric-platform-frontend:${NIGHTLY_DOCKER_TAG}
           echo "NIGHTLY_DOCKER_TAG=${NIGHTLY_DOCKER_TAG}" >> "${GITHUB_OUTPUT}"         
-  clone-repo:
+   clone-repo:
     runs-on: private-2
     steps:
       - uses: actions/checkout@v3
