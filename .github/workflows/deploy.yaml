@@ -172,6 +172,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
+      - name: List directory contents
+        run: |
+          ls -la /home/deployer/GitOpsRepo            
       - name: Deploy
         run: |
           helm plugin list
