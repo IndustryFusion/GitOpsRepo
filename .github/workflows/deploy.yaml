@@ -169,7 +169,7 @@ jobs:
           repository: IndustryFusion/GitOpsRepo.git
           ref: ${{ github.ref }}
           path: GitOpsRepo
-          #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+          token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
    deploy-action:
     needs: clone-repo
     runs-on: private
