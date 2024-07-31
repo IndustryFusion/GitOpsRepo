@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: ifric-platform-frontend-ingress
+  namespace: ifric-platform
+spec:
+  rules:
+  - host: platform.ifric.org
+    http:
+      paths:
+      - backend:
+          service:
+            name: ifric-platform-application-service
+            port:
+              number: 3003
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - platform.ifric.org
+    secretName: prod-cert-tls-ifric-platform-frontend
+status:
+  loadBalancer: {}

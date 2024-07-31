@@ -74,7 +74,7 @@ releases:
     order: second
     app: ifric-platform
   chart: ./charts/ifricplatform
-  namespace: digital-product-passport
+  namespace: ifric-platform
   values:
   - values.yaml.gotmpl
 - name: passport-viewer

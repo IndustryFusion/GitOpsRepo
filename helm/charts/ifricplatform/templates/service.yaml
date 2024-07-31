@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ifric-platform-application-service
+  name: ifric-platform-application-service
+  namespace: ifric-platform
+spec:
+  clusterIP: 100.64.30.16
+  clusterIPs:
+  - 100.64.30.16
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: ifric-platform-backend
+    port: 4003
+    protocol: TCP
+    targetPort: 4003
+  - name: ifric-platform-frontend
+    port: 3003
+    protocol: TCP
+    targetPort: 3003
+  selector:
+    app: ifric-platform-application-service
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
