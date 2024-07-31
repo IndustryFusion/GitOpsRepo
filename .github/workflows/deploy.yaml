@@ -123,7 +123,7 @@ on:
         required: false
 
 jobs:
-   build:
+  build:
     runs-on: private-2
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
