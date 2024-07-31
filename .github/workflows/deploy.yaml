@@ -196,7 +196,7 @@ jobs:
           echo "Deploying with selector: ${LABEL_ARG}"
           helmfile --debug ${LABEL_ARG} apply \
             --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
-            --set mainVersion=${{ inputs.NIGHTLY_DOCKER_TAG }} \
+            --set mainVersion=${ NIGHTLY_DOCKER_TAG } \
             --set namespace=${{ inputs.NAMESPACE }} \
             --set pullSecretCredentials=${{ inputs.PULL_SECRET_CREDENTIALS }} \
             --set ifric_platform.githubToken="${{ secrets.HUB_TOKEN }}" \
