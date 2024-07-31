@@ -1,6 +1,8 @@
-name: Deploy
+name: Prod-Deploy
 
 on:
+  schedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       APPS:
@@ -120,73 +122,47 @@ on:
         description: ''
         required: false
 
-
-
 jobs:
   clone-repo:
     runs-on: private-2
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: IndustryFusion/GitOpsRepo.git
-          ref: ${{ github.ref }}
-          path: GitOpsRepo
-          #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-  deploy-action:
+          repository: IndustryFusion/IfricPlatform.git
+          ref: main
+          token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+
+  build:
     needs: clone-repo
-    runs-on: private-2
-    container:
-      image: ibn40/deployer:${{ inputs.CLUSTER }}
-      options: --user root
-      volumes:
-        - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
+    runs-on: private
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_PREFIX: ifx40
+    outputs:
+      DOCKER_TAG: ${{ steps.build.outputs.NIGHTLY_DOCKER_TAG }}
     steps:
-      - name: Deploy
+      - uses: actions/checkout@v3
+        with:
+          repository: IndustryFusion/IfricPlatform.git
+          ref: main
+          token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+      - id: build
+        name: Build & Push Image
+        shell: bash
         run: |
-          helm plugin list
-          #export NAMESPACE="${{ inputs.NAMESPACE }}"
-          cd /home/deployer/GitOpsRepo/helm
-          #bash install_operators.sh
-          APPS="${{ inputs.APPS }}"
-          LABEL_ARG=""
-          for app in ${APPS}; do
-            echo "Adding app: ${app} to deployment"
-            LABEL_ARG="${LABEL_ARG} -l app=${app}"
-          done
-          echo "Deploying with selector: ${LABEL_ARG}"
-          helmfile ${LABEL_ARG} apply \
-            --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
-            --set mainVersion=${{ inputs.DOCKER_TAG }} \
-            --set namespace=${{ inputs.NAMESPACE }} \
-            --set pullSecretCredentials=${{ inputs.PULL_SECRET_CREDENTIALS }} \
-            --set factory50.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set factory50.gatewayToken="${{ secrets.GATEWAY_TOKEN }}" \
-            --set factory50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set factory50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set factory50.alertaKey="${{ secrets.ALERTA_KEY_DEV }}" \
-            --set factory50.mongoUrl="${{ secrets.FACTORY_MONGO_URL_DEV }}" \
-            --set template_sandbox.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set template_sandbox.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set template_sandbox.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set template_sandbox.mongoUrl="${{ secrets.TEMPLATE_MONGO_URL_DEV }}" \
-            --set ifric_platform.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set ifric_platform.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set ifric_platform.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set passport_viewer.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set ifric_platform.mongoUrl="${{ secrets.CREATOR_MONGO_URL_DEV }}" \
-            --set passport_viewer.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set passport_viewer.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set ifric_registry.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set ifric_registry.client_id="${{ secrets.CLIENT_ID }}" \
-            --set ifric_registry.client_secret="${{ secrets.CLIENT_SECRET }}" \
-            --set ifric_registry.tenant_id="${{ secrets.TENANT_ID }}" \
-            --set ifric_registry.mongoUrl="${{ secrets.MONGO_URL }}" \
-            --set ifric_registry.email_url="${{ secrets.EMAIL_URL }}" \
-            --set ifric_platform_temp.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set fleet50.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set fleet50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set fleet50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set fleet50.username="${{ secrets.USERNAME }}" \
-            --set fleet50.password="${{ secrets.PASSWORD }}" \
-            --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL_DEV }}" \
-            --set icid.namespace="${{ secrets.ICID_NAMESPACE }}"
+          export DOCKER_TAG="latest"
+          NIGHTLY_DOCKER_TAG=nightly-`date -I`-`date +%s`
+          docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+          docker compose build
+          docker tag ${DOCKER_PREFIX}/ifric-platform-backend:${DOCKER_TAG} ${DOCKER_PREFIX}/ifric-platform-backend:${NIGHTLY_DOCKER_TAG}
+          docker tag ${DOCKER_PREFIX}/ifric-platform-frontend:${DOCKER_TAG} ${DOCKER_PREFIX}/ifric-platform-frontend:${NIGHTLY_DOCKER_TAG}
+          docker push ${DOCKER_PREFIX}/ifric-platform-backend:${DOCKER_TAG}
+          docker push ${DOCKER_PREFIX}/ifric-platform-backend:${NIGHTLY_DOCKER_TAG}
+          docker push ${DOCKER_PREFIX}/ifric-platform-frontend:${DOCKER_TAG}
+          docker push ${DOCKER_PREFIX}/ifric-platform-frontend:${NIGHTLY_DOCKER_TAG}
+          docker rmi ${DOCKER_PREFIX}/ifric-platform-backend:${DOCKER_TAG}
+          docker rmi ${DOCKER_PREFIX}/ifric-platform-backend:${NIGHTLY_DOCKER_TAG}
+          docker rmi ${DOCKER_PREFIX}/ifric-platform-frontend:${DOCKER_TAG}
+          docker rmi ${DOCKER_PREFIX}/ifric-platform-frontend:${NIGHTLY_DOCKER_TAG}
+          echo "NIGHTLY_DOCKER_TAG=${NIGHTLY_DOCKER_TAG}" >> "${GITHUB_OUTPUT}"
