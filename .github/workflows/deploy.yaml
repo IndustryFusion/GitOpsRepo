@@ -67,60 +67,6 @@ on:
       PRIVATE_GITHUB_TOKEN:
         description: 'Token to use to clone the repositories'
         required: true
-      S3_URL:
-        description: 'S3 url to use in the cluster'
-        required: false
-      S3_ACCESS_KEY:
-        description: 'S3 access key to use in the cluster'
-        required: false
-      S3_SECRET_KEY:
-        description: 'S3 secret key to use in the cluster'
-        required: false
-      HUB_TOKEN:
-        description: ''
-        required: false
-      GATEWAY_TOKEN:
-        description: ''
-        required: false
-      ALERTA_KEY_DEV:
-        description: ''
-        required: false
-      FACTORY_MONGO_URL_DEV:
-        description: ''
-        required: false
-      USERNAME:
-        description: ''
-        required: false
-      PASSWORD:
-        description: ''
-        required: false
-      ICID_MONGO_URL_DEV:
-        description: ''
-        required: false
-      CLIENT_ID:
-        description: ''
-        required: false
-      CLIENT_SECRET:
-        description: ''
-        required: false
-      EMAIL_URL:
-        description: ''
-        required: false
-      MONGO_URL:
-        description: ''
-        required: false
-      TENANT_ID:
-        description: ''
-        required: false
-      ICID_NAMESPACE:
-        description: ''
-        required: false
-      CREATOR_MONGO_URL_DEV:
-        description: ''
-        required: false
-      TEMPLATE_MONGO_URL_DEV:
-        description: ''
-        required: false
 
 jobs:
    build:
