@@ -3,36 +3,6 @@ name: Prod-Deploy
 on:
   schedule:
     - cron: '0 0 * * *'
-  workflow_dispatch:
-    inputs:
-      APPS:
-        description: 'Space-separated list of apps to deploy/upgrade, leave empty to deploy everything'
-        required: false
-        default: ''
-        type: string
-      NAMESPACE:
-        description: 'Namespace to deploy'
-        required: true
-        type: string
-      DOCKER_REGISTRY:
-        description: 'Name of the docker registry'
-        required: false
-        default: ifx40
-        type: string
-      DOCKER_TAG:
-        description: 'Docker tag to use in the deployment'
-        required: false
-        default: 'latest'
-        type: string
-      PULL_SECRET_CREDENTIALS:
-        description: 'Name of the secret in cluster that contains docker registry credentials'
-        required: false
-        default: 'regcred'
-        type: string
-      CLUSTER:
-        description: 'Tag of the deployer image with the Kubernetes cluster config'
-        required: true
-        type: string
   workflow_call:
     inputs:
       APPS:
