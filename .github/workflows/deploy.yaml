@@ -86,9 +86,6 @@ jobs:
           path: IfricPlatform
           token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
 
-      - name: List directory contents
-        run: ls -la IfricPlatform
-
       - id: build
         name: Build & Push Image
         shell: bash
