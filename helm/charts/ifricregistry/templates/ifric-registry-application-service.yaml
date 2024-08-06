@@ -36,6 +36,8 @@ spec:
           value: https://dev-platform-backend.ifric.org
         - name: VIEWER_ORIGIN
           value: https://dev-passport-backend.ifric.org
+        - name: VIEWER_FRONTEND_ORIGIN
+          value: https://dev-passport.ifric.org
         - name: EMAIL_URL
           value: {{ .Values.ifric_registry.email_url }}
         - name: CLIENT_ID
