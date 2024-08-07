@@ -59,7 +59,7 @@ spec:
         - name: NEXT_PUBLIC_IFRIC_REGISTRY
           value: https://dev-registry.ifric.org
         - name: NEXT_TEMPLATE_SANDBOX_URL
-          value: https://dev-sandbox.industry-fusion.com
+          value: https://dev-sandbox-backend.industry-fusion.com
       - name: ifric-platform-frontend
         image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
