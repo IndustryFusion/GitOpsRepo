@@ -30,13 +30,13 @@ spec:
           value: https://dev-dataroom.ifric.org/ngsi-ld/v1/entities
         - name: CORS_ORIGIN
           value: https://dev-passport.ifric.org
-        - name: ICID_ORIGIN
+        - name: ICID_SERVICE_BACKEND_URL
           value: https://dev-icid-service.ifric.org
         - name: ASSETS_DEFAULT_CODE
           value: IFX-EUR-NLD-AST
         - name: USERS_DEFAULT_CODE
           value: IFX-EUR-NLD-USR
-        - name: REGISTRY_ORIGIN
+        - name: IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
         - name: CONTEXT
           value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
@@ -58,9 +58,9 @@ spec:
         ports:
         - containerPort: {{ .Values.passport_viewer.frontendPort }}
         env:
-        - name: NEXT_PUBLIC_BACKEND_API_URL
+        - name: IFRIC_DIGITAL_PASSPORT_BACKEND_URL
           value: https://dev-passport-backend.ifric.org
-        - name: NEXT_PUBLIC_IFRIC_API_URL
+        - name: IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
         - name: NODE_ENV
           value: production
