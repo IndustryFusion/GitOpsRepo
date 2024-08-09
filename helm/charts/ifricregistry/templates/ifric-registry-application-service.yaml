@@ -33,7 +33,7 @@ spec:
         - name: ICID_ORIGIN
           value: https://dev-icid-service.ifric.org
         - name: CREATOR_ORIGIN
-          value: https://dev-platform-backend.ifric.org
+          value: https://dev-platform.ifric.org
         - name: VIEWER_ORIGIN
           value: https://dev-passport-backend.ifric.org
         - name: VIEWER_FRONTEND_ORIGIN
