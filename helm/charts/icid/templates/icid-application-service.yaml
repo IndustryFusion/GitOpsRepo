@@ -44,7 +44,11 @@ spec:
           value: {{ .Values.icid.mongoUrl }}
         - name: IFRIC_NAMESPACE
           value: {{ .Values.icid.namespace }}
-        - name: CORS_ORIGIN
-          value: http://85.215.129.117:4001
+        - name: FLEET_MANAGER_BACKEND_URL
+          value: {{ .Values.icid.fleetBackendUrl }}
+        - name: IFRIC_PLATFORM_BACKEND_URL
+          value: {{ .Values.icid.platformBackendUrl }}
+        - name: IFRIC_REGISTRY_BACKEND_URL
+          value: {{ .Values.icid.registryUrl }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
