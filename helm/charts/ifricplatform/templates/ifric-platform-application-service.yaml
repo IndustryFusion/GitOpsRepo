@@ -42,7 +42,7 @@ spec:
           value: {{ .Values.ifric_platform.username }}
         - name: PASSWORD
           value: {{ .Values.ifric_platform.password }}
-        - name: ICID_ORIGIN
+        - name: ICID_SERVICE_BACKEND_URL
           value: https://dev-icid-service.ifric.org
         - name: CORS_ORIGIN
           value: https://dev-platform.ifric.org
@@ -54,11 +54,9 @@ spec:
           value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
         - name: MONGO_URL
           value: {{ .Values.ifric_platform.mongoUrl }}
-        - name: REGISTRY_ORIGIN
+        - name: IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
-        - name: NEXT_PUBLIC_IFRIC_REGISTRY
-          value: https://dev-registry.ifric.org
-        - name: NEXT_TEMPLATE_SANDBOX_URL
+        - name: TEMPLATE_SANDBOX_BACKEND_URL
           value: https://dev-sandbox-backend.industry-fusion.com
       - name: ifric-platform-frontend
         image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.mainVersion }}
@@ -66,15 +64,11 @@ spec:
         ports:
         - containerPort: {{ .Values.ifric_platform.frontendPort }}
         env:
-        - name: NEXT_PUBLIC_BACKEND_API_URL
+        - name: IFRIC_PLATFORM_BACKEND_URL
           value: https://dev-platform-backend.ifric.org
         - name: CONTEXT
           value: https://industry-fusion.org/base/v0.1/
-        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
+        - name: IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
-        - name: NEXT_TEMPLATE_SANDBOX_URL
-          value: https://dev-sandbox-backend.industry-fusion.com
-        - name: NEXT_PUBLIC_IFRIC_PLATFORM
-          value: https://dev-platform.ifric.org
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
