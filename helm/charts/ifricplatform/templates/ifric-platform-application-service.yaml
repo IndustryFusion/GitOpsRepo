@@ -64,11 +64,11 @@ spec:
         ports:
         - containerPort: {{ .Values.ifric_platform.frontendPort }}
         env:
-        - name: IFRIC_PLATFORM_BACKEND_URL
+        - name: NEXT_PUBLIC_IFRIC_PLATFORM_BACKEND_URL
           value: https://dev-platform-backend.ifric.org
         - name: CONTEXT
           value: https://industry-fusion.org/base/v0.1/
-        - name: IFRIC_REGISTRY_BACKEND_URL
+        - name: NEXT_PUBLIC_NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}

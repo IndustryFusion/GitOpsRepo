@@ -58,12 +58,10 @@ spec:
         ports:
         - containerPort: {{ .Values.passport_viewer.frontendPort }}
         env:
-        - name: IFRIC_DIGITAL_PASSPORT_BACKEND_URL
+        - name: NEXT_PUBLIC_IFRIC_DIGITAL_PASSPORT_BACKEND_URL
           value: https://dev-passport-backend.ifric.org
-        - name: IFRIC_REGISTRY_BACKEND_URL
+        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
-        - name: NODE_ENV
-          value: production
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf

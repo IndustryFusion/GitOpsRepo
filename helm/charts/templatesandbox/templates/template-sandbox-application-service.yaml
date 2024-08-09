@@ -65,7 +65,7 @@ spec:
         ports:
         - containerPort: {{ .Values.template_sandbox.frontendPort }}
         env:
-        - name: TEMPLATE_SANDBOX_BACKEND_URL
+        - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
           value: https://dev-sandbox-backend.industry-fusion.com
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
