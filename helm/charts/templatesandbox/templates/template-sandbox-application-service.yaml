@@ -58,6 +58,8 @@ spec:
           value: ./certificates/accesskey.key
         - name: ECLASS_CERTIFICATE_PATH
           value: ./certificates/certificate.pem
+        - name: IFX_PLATFORM_FRONTEND_URL
+          value: http://217.160.218.225:3008
 
       - name: template-sandbox-frontend
         image: {{ .Values.mainRepo }}/template-sandbox-frontend:{{ .Values.mainVersion }}
