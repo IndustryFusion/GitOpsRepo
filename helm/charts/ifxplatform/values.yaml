@@ -1,0 +1,8 @@
+mainVersion: latest
+mainRepo: ifx40
+namespace: ifx-platform
+pullSecretCredentials: regcred
+ifx_platform:
+  Namespace: ifx-platform
+  backendPort: 4003
+  frontendPort: 3008

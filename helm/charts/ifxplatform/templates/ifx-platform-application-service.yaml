@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ifx-platform-application-service
+  name: ifx-platform-application-service
+  namespace: {{ .Values.ifx_platform.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifx-platform-application-service
+  template:
+    metadata:
+      labels:
+        app: ifx-platform-application-service
+    spec:
+      containers:
+      - name: ifx-platform-frontend
+        image: {{ .Values.mainRepo }}/ifx-platform-frontend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.ifx_platform.frontendPort }}
+        env:
+        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
+          value: https://dev-registry.ifric.org
+        - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
+          value: https://dev-sandbox-backend.industry-fusion.com
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
