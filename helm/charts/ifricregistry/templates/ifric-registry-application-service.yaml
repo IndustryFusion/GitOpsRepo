@@ -50,7 +50,8 @@ spec:
           value: {{ .Values.ifric_registry.tenant_id }}
         - name: IFRIC_WEBSITE
           value: https://www.ifric.org/
-
+        - name: IFX_PLATFORM_FRONTEND_URL
+          value: http://217.160.218.225:3008
 
         # volumeMounts:
         # - name: nginx-config
