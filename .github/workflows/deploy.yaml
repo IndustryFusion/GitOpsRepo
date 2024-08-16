@@ -33,7 +33,7 @@ on:
       CLUSTER:
         description: 'Tag of the deployer image with the Kubernetes cluster config'
         required: false
-        default: 'IFRIC-PRODUCTION'
+        default: 'IFF-DEV-DPP-IFRIC'
         type: string
   workflow_call:
     inputs:
@@ -66,7 +66,7 @@ on:
         description: 'Tag of the deployer image with the Kubernetes cluster config'
         required: false
         type: string
-        default: 'IFRIC-PRODUCTION'
+        default: 'IFF-DEV-DPP-IFRIC'
     secrets:
       PRIVATE_GITHUB_TOKEN:
         description: 'Token to use to clone the repositories'
