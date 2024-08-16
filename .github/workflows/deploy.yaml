@@ -1,6 +1,8 @@
-name: Deploy
+name: IFX-Platform-Pipeline
 
 on:
+  schedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       APPS:
@@ -10,12 +12,13 @@ on:
         type: string
       NAMESPACE:
         description: 'Namespace to deploy'
-        required: true
+        required: false
+        default: 'ifx-platform'
         type: string
       DOCKER_REGISTRY:
         description: 'Name of the docker registry'
         required: false
-        default: ibn40
+        default: ifx40
         type: string
       DOCKER_TAG:
         description: 'Docker tag to use in the deployment'
@@ -29,7 +32,8 @@ on:
         type: string
       CLUSTER:
         description: 'Tag of the deployer image with the Kubernetes cluster config'
-        required: true
+        required: false
+        default: 'IFRIC-PRODUCTION'
         type: string
   workflow_call:
     inputs:
@@ -40,12 +44,13 @@ on:
         type: string
       NAMESPACE:
         description: 'Namespace to deploy'
-        required: true
+        required: false
+        default: 'ifx-platform'
         type: string
       DOCKER_REGISTRY: 
         description: 'Name of the docker registry'
         required: false
-        default: ibn40
+        default: ifx40
         type: string
       DOCKER_TAG:
         description: 'Docker tag to use in the deployment'
@@ -59,71 +64,48 @@ on:
         type: string
       CLUSTER:
         description: 'Tag of the deployer image with the Kubernetes cluster config'
-        required: true
+        required: false
         type: string
+        default: 'IFRIC-PRODUCTION'
     secrets:
       PRIVATE_GITHUB_TOKEN:
         description: 'Token to use to clone the repositories'
         required: true
-      S3_URL:
-        description: 'S3 url to use in the cluster'
-        required: false
-      S3_ACCESS_KEY:
-        description: 'S3 access key to use in the cluster'
-        required: false
-      S3_SECRET_KEY:
-        description: 'S3 secret key to use in the cluster'
-        required: false
-      HUB_TOKEN:
-        description: ''
-        required: false
-      GATEWAY_TOKEN:
-        description: ''
-        required: false
-      ALERTA_KEY_DEV:
-        description: ''
-        required: false
-      FACTORY_MONGO_URL_DEV:
-        description: ''
-        required: false
-      USERNAME:
-        description: ''
-        required: false
-      PASSWORD:
-        description: ''
-        required: false
-      ICID_MONGO_URL_DEV:
-        description: ''
-        required: false
-      CLIENT_ID:
-        description: ''
-        required: false
-      CLIENT_SECRET:
-        description: ''
-        required: false
-      EMAIL_URL:
-        description: ''
-        required: false
-      MONGO_URL:
-        description: ''
-        required: false
-      TENANT_ID:
-        description: ''
-        required: false
-      ICID_NAMESPACE:
-        description: ''
-        required: false
-      CREATOR_MONGO_URL_DEV:
-        description: ''
-        required: false
-      TEMPLATE_MONGO_URL_DEV:
-        description: ''
-        required: false
-
-
 
 jobs:
-  clone-repo:
+   build:
+    runs-on: private-2
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_PREFIX: ${{ secrets.DOCKER_PREFIX }}
+    outputs:
+      DOCKER_TAG: ${{ steps.build.outputs.NIGHTLY_DOCKER_TAG }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: IndustryFusion/IFXPlatform
+          ref: main
+          path: IFXPlatform
+          token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+
+      - id: build
+        name: Build & Push Image
+        shell: bash
+        run: |
+          cd IfricPlatform
+          export DOCKER_TAG="latest"
+          NIGHTLY_DOCKER_TAG=nightly-$(date -I)-$(date +%s)
+          docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+          docker-compose -f docker-compose.yaml build
+          docker tag ${DOCKER_PREFIX}/ifx-platform-frontend:${DOCKER_TAG} ${DOCKER_PREFIX}/ifx-platform-frontend:${NIGHTLY_DOCKER_TAG}
+          docker push ${DOCKER_PREFIX}/ifx-platform-frontend:${DOCKER_TAG}
+          docker push ${DOCKER_PREFIX}/ifx-platform-frontend:${NIGHTLY_DOCKER_TAG}
+          docker rmi ${DOCKER_PREFIX}/ifx-platform-frontend:${DOCKER_TAG}
+          docker rmi ${DOCKER_PREFIX}/ifx-platform-frontend:${NIGHTLY_DOCKER_TAG}
+          echo "NIGHTLY_DOCKER_TAG=${NIGHTLY_DOCKER_TAG}" >> "${GITHUB_OUTPUT}"         
+   clone-repo:
     runs-on: private-2
     steps:
       - uses: actions/checkout@v3
@@ -131,12 +113,12 @@ jobs:
           repository: IndustryFusion/GitOpsRepo.git
           ref: ${{ github.ref }}
           path: GitOpsRepo
-          #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-  deploy-action:
-    needs: clone-repo
+            #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}          
+   deploy-action:
+    needs: [clone-repo, build]
     runs-on: private-2
     container:
-      image: ibn40/deployer:${{ inputs.CLUSTER }}
+      image: ifx40/deployer:${{ inputs.CLUSTER }}
       options: --user root
       volumes:
         - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
@@ -156,37 +138,5 @@ jobs:
           echo "Deploying with selector: ${LABEL_ARG}"
           helmfile ${LABEL_ARG} apply \
             --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
-            --set mainVersion=${{ inputs.DOCKER_TAG }} \
+            --set mainVersion=${{ needs.build.outputs.DOCKER_TAG }} \
             --set namespace=${{ inputs.NAMESPACE }} \
-            --set pullSecretCredentials=${{ inputs.PULL_SECRET_CREDENTIALS }} \
-            --set factory50.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set factory50.gatewayToken="${{ secrets.GATEWAY_TOKEN }}" \
-            --set factory50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set factory50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set factory50.alertaKey="${{ secrets.ALERTA_KEY_DEV }}" \
-            --set factory50.mongoUrl="${{ secrets.FACTORY_MONGO_URL_DEV }}" \
-            --set template_sandbox.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set template_sandbox.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set template_sandbox.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set template_sandbox.mongoUrl="${{ secrets.TEMPLATE_MONGO_URL_DEV }}" \
-            --set ifric_platform.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set ifric_platform.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set ifric_platform.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set passport_viewer.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set ifric_platform.mongoUrl="${{ secrets.CREATOR_MONGO_URL_DEV }}" \
-            --set passport_viewer.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set passport_viewer.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set ifric_registry.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set ifric_registry.client_id="${{ secrets.CLIENT_ID }}" \
-            --set ifric_registry.client_secret="${{ secrets.CLIENT_SECRET }}" \
-            --set ifric_registry.tenant_id="${{ secrets.TENANT_ID }}" \
-            --set ifric_registry.mongoUrl="${{ secrets.MONGO_URL }}" \
-            --set ifric_registry.email_url="${{ secrets.EMAIL_URL }}" \
-            --set ifric_platform_temp.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set fleet50.githubToken="${{ secrets.HUB_TOKEN }}" \
-            --set fleet50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
-            --set fleet50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
-            --set fleet50.username="${{ secrets.USERNAME }}" \
-            --set fleet50.password="${{ secrets.PASSWORD }}" \
-            --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL_DEV }}" \
-            --set icid.namespace="${{ secrets.ICID_NAMESPACE }}"
