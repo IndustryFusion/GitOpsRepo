@@ -23,7 +23,7 @@ spec:
         - containerPort: {{ .Values.template_sandbox.backendPort }}
         env:
         - name: GITHUB_BASE_URL
-          value: https://api.github.com/repos/IndustryFusion/templates/contents/new-temp
+          value: https://api.github.com/repos/IndustryFusion/templates/contents/base-templates
         - name: GITHUB_TOKEN
           value: {{ .Values.template_sandbox.githubToken }}
         - name: SCORPIO_URL
