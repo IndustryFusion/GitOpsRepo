@@ -55,11 +55,15 @@ spec:
         - name: IFRIC_PLATFORM_BACKEND_URL
           value: https://dev-platform-backend.ifric.org
         - name: ECLASS_KEY_PATH
-          value: ./certificates/accesskey.key
+          value: /etc/ssl/certs/key.pem
         - name: ECLASS_CERTIFICATE_PATH
-          value: ./certificates/certificate.pem
+          value: /etc/ssl/certs/cert.pem
         - name: IFX_PLATFORM_FRONTEND_URL
           value: http://217.160.218.225:3008
+        volumeMounts:
+        - name: sandbox-cert-volume
+          mountPath: /etc/ssl/certs
+          readOnly: true
 
       - name: template-sandbox-frontend
         image: {{ .Values.mainRepo }}/template-sandbox-frontend:{{ .Values.mainVersion }}
@@ -71,3 +75,12 @@ spec:
           value: https://dev-sandbox-backend.industry-fusion.com
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
+      volumes:
+      - name: sandbox-cert-volume
+        configMap:
+          name: sandbox-cert-config
+          items:
+          - key: key.pem
+            path: key.pem
+          - key: cert.pem
+            path: cert.pem      
