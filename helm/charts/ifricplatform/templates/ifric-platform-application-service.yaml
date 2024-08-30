@@ -58,6 +58,21 @@ spec:
           value: https://dev-registry.ifric.org
         - name: TEMPLATE_SANDBOX_BACKEND_URL
           value: https://dev-sandbox-backend.industry-fusion.com
+        - name: IFX_PLATFORM_SCORPIO_URL
+          value: 212.132.81.11:9090
+        - name: JIRA_URL
+          value: https://ib-systems.atlassian.net/rest/api/3
+        - name: JIRA_TOKEN
+          value: {{ .Values.ifric_platform.jiraToken }}
+        - name: EMAIL_URL
+          value: https://graph.microsoft.com/v1.0
+        - name: CLIENT_ID
+          value: {{ .Values.ifric_platform.clientId }}
+        - name: CLIENT_SECRET
+          value: {{ .Values.ifric_platform.clientSecret }}
+        - name: TENANT_ID
+          value: {{ .Values.ifric_platform.tenantId }}
+
       - name: ifric-platform-frontend
         image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
