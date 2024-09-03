@@ -16,6 +16,50 @@ spec:
         app: ifx-platform-application-service
     spec:
       containers:
+      - name: ifx-platform-backend
+        image: {{ .Values.mainRepo }}/ifx-platform-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.ifx_platform.backendPort }}
+        env:
+        - name: GITHUB_BASE_URL
+          value: https://api.github.com/repos/IndustryFusion/templates/contents/new-temp
+        - name: GITHUB_TOKEN
+          value: {{ .Values.ifx_platform.githubToken }}
+        - name: GITHUB_ERP_URL
+          value: https://api.github.com/repos/IndustryFusion/templates/contents/erp-field-maps
+        - name: SCORPIO_URL
+          value: 212.132.81.11:9090
+        - name: S3_URL
+          value: s3-eu-central-1.ionoscloud.com
+        - name: S3_ACCESS_KEY
+          value: {{ .Values.ifx_platform.s3AccessKey }}
+        - name: S3_SECRET_KEY
+          value: {{ .Values.ifx_platform.s3SecretKey }}
+        - name: S3_BUCKET
+          value: iff-dev
+        - name: USERNAME
+          value: {{ .Values.ifx_platform.username }}
+        - name: PASSWORD
+          value: {{ .Values.ifx_platform.password }}
+        - name: ICID_SERVICE_BACKEND_URL
+          value: {{ .Values.ifx_platform.icidOrigin }}
+        - name: CORS_ORIGIN
+          value: http://217.160.218.225:3008
+        - name: ASSETS_DEFAULT_CODE
+          value: IFX-EUR-NLD-AST
+        - name: USERS_DEFAULT_CODE
+          value: IFX-EUR-NLD-USR
+        - name: CONTEXT
+          value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
+        - name: MONGO_URL
+          value: {{ .Values.ifx_platform.mongoUrl }}
+        - name: IFRIC_REGISTRY_BACKEND_URL      
+          value: {{ .Values.ifx_platform.registryUrl }}
+        - name: TEMPLATE_SANDBOX_BACKEND_URL
+          value: {{ .Values.ifx_platform.sandboxUrl }}
+        - name: IFRIC_PLATFORM_SCORPIO_URL    
+          value: {{ .Values.ifx_platform.scorpioUrl }}
       - name: ifx-platform-frontend
         image: {{ .Values.mainRepo }}/ifx-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
@@ -23,8 +67,8 @@ spec:
         - containerPort: {{ .Values.ifx_platform.frontendPort }}
         env:
         - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
-          value: https://dev-registry.ifric.org
+          value: {{ .Values.ifx_platform.registryUrl }}
         - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
-          value: https://dev-sandbox-backend.industry-fusion.com
+          value: {{ .Values.ifx_platform.sandboxUrl }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}

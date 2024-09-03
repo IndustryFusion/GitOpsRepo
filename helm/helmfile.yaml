@@ -117,3 +117,11 @@ releases:
   namespace: ifx-platform
   values:
   - values.yaml.gotmpl
+- name: ifx-suite
+  labels:
+    order: second
+    app: ifx-suite
+  chart: ./charts/ifxsuite
+  namespace: ifx-suite
+  values:
+  - values.yaml.gotmpl
