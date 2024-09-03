@@ -109,7 +109,7 @@ releases:
   namespace: template-sandbox
   values:
   - values.yaml.gotmpl
- - name: ifx-platform
+- name: ifx-platform
   labels:
     order: second
     app: ifx-platform
