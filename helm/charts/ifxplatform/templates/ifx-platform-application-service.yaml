@@ -59,7 +59,7 @@ spec:
         - name: TEMPLATE_SANDBOX_BACKEND_URL
           value: {{ .Values.ifx_platform.sandboxUrl }}
         - name: IFRIC_PLATFORM_SCORPIO_URL    
-          value: {{ .Values.ifx_platform.scorpioUrl }}
+          value: {{ .Values.ifx_platform.platformScorpioUrl }}
       - name: ifx-platform-frontend
         image: {{ .Values.mainRepo }}/ifx-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
