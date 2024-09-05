@@ -109,3 +109,19 @@ releases:
   namespace: template-sandbox
   values:
   - values.yaml.gotmpl
+- name: ifx-platform
+  labels:
+    order: second
+    app: ifx-platform
+  chart: ./charts/ifxplatform
+  namespace: ifx-platform
+  values:
+  - values.yaml.gotmpl
+- name: ifx-suite
+  labels:
+    order: second
+    app: ifx-suite
+  chart: ./charts/ifxsuite
+  namespace: ifx-suite
+  values:
+  - values.yaml.gotmpl
