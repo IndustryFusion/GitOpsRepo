@@ -45,7 +45,7 @@ spec:
         - name: ICID_SERVICE_BACKEND_URL
           value: {{ .Values.ifx_platform.icidOrigin }}
         - name: CORS_ORIGIN
-          value: http://217.160.218.225:3008
+          value: {{ .Values.ifx_platform.corsOrigin }}
         - name: ASSETS_DEFAULT_CODE
           value: IFX-EUR-NLD-AST
         - name: USERS_DEFAULT_CODE
@@ -70,5 +70,7 @@ spec:
           value: {{ .Values.ifx_platform.registryUrl }}
         - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
           value: {{ .Values.ifx_platform.sandboxUrl }}
+        - name: NEXT_PUBLIC_IFX_BACKEND_URL
+          value: {{ .Values.ifx_platform.ifxBackendUrl }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
