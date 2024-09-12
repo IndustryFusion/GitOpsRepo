@@ -56,5 +56,18 @@ spec:
           value: /etc/ssl/certs/root-ca-key.pem
         - name: CERTIFICATE_PATH
           value: /etc/ssl/certs/root-ca-cert.pem
+        volumeMounts:
+        - name: icid-cert-volume
+          mountPath: /etc/ssl/certs
+          readOnly: true
+      volumes:
+      - name: icid-cert-volume
+        configMap:
+          name: icid-cert-config
+          items:
+          - key: root-ca-key.pem
+            path: root-ca-key.pem
+          - key: root-ca-cert.pem
+            path: root-ca-cert.pem
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
