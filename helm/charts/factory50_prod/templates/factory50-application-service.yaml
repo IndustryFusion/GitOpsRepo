@@ -75,7 +75,7 @@ spec:
         - name: MONGO_URL
           value: {{ .Values.factory50_prod.mongoUrl }}
         - name: CORS_ORIGIN
-          value: http://85.215.136.89:3002
+          value: https://prod-factory.industry-fusion.com
         - name: REDIS_SERVER
           value: "212.132.115.235"
         - name: REDIS_PORT
