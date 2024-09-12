@@ -50,5 +50,11 @@ spec:
           value: {{ .Values.icid.platformBackendUrl }}
         - name: IFRIC_REGISTRY_BACKEND_URL
           value: {{ .Values.icid.registryUrl }}
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: {{ .Values.icid.ifxPlatformBackendUrl }}
+        - name: KEY_PATH
+          value: /etc/ssl/certs/root-ca-key.pem
+        - name: CERTIFICATE_PATH
+          value: /etc/ssl/certs/root-ca-cert.pem
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
