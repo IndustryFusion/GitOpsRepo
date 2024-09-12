@@ -57,7 +57,7 @@ spec:
         - name: IFRIC_REGISTRY_BACKEND_URL
           value: {{ .Values.ifx_platform.registryUrl }}
         - name: TEMPLATE_SANDBOX_BACKEND_URL
-          value: {{ .Values.ifx_platform.sandboxUrl }}
+          value: {{ .Values.ifx_platform.sandboxBackendUrl }}
         - name: IFRIC_PLATFORM_SCORPIO_URL
           value: {{ .Values.ifx_platform.scorpioUrl }}
       - name: ifx-platform-frontend
@@ -69,7 +69,7 @@ spec:
         - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
           value: {{ .Values.ifx_platform.registryUrl }}
         - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
-          value: {{ .Values.ifx_platform.sandboxUrl }}
+          value: {{ .Values.ifx_platform.sandboxBackendUrl }}
         - name: NEXT_PUBLIC_IFX_BACKEND_URL
           value: {{ .Values.ifx_platform.ifxBackendUrl }}
       imagePullSecrets:
