@@ -45,7 +45,7 @@ spec:
         - containerPort: {{ .Values.factory50_prod.backendPort }}
         env:
         - name: GATEWAY_BASE_URL
-          value: https://api.github.com/repos/IndustryFusion/gateway-configs/contents
+          value: https://api.github.com/repos/IndustryFusion/prod-gw-configs/contents
         - name: GATEWAY_TOKEN
           value: {{ .Values.factory50_prod.gatewayToken }}
         - name: GITHUB_BASE_URL
