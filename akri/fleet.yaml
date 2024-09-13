@@ -11,7 +11,7 @@ helm:
   releaseName: akri
   values:
     useLatestContainers: false
-    useDevelopmentContainers: false
+    useDevelopmentContainers: true
     kubernetesDistro: k3s
     opcua:
       discovery:
