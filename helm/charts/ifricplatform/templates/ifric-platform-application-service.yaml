@@ -72,7 +72,8 @@ spec:
           value: {{ .Values.ifric_platform.clientSecret }}
         - name: TENANT_ID
           value: {{ .Values.ifric_platform.tenantId }}
-
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: https://dev-platform-backend.industryfusion-x.org
       - name: ifric-platform-frontend
         image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
