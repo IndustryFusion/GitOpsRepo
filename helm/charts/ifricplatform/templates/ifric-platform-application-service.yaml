@@ -86,5 +86,9 @@ spec:
           value: https://industry-fusion.org/base/v0.1/
         - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
+        - name: NEXT_PUBLIC_ENVIRONMENT
+          value: dev
+        - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
+          value: https://dev-platform-backend.industryfusion-x.org
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
