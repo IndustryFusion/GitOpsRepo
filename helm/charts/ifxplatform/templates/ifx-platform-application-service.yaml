@@ -60,6 +60,10 @@ spec:
           value: {{ .Values.ifx_platform.sandboxBackendUrl }}
         - name: IFRIC_PLATFORM_SCORPIO_URL
           value: {{ .Values.ifx_platform.scorpioUrl }}
+        - name: IFRIC_PLATFORM_FRONTEND_URL
+          value: {{ .Values.ifx_platform.platformFrontendUrl }}
+        - name: IFRIC_PLATFORM_BACKEND_URL
+          value: {{ .Values.ifx_platform.platformBackendUrl }}
       - name: ifx-platform-frontend
         image: {{ .Values.mainRepo }}/ifx-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
