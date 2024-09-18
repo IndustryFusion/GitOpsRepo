@@ -71,7 +71,7 @@ spec:
         - name: ALERTA_KEY
           value: {{ .Values.factory50_prod.alertaKey }}
         - name: TIMESCALE_URL
-          value: https://platform.industry-fusion.com/pgrest/
+          value: https://platform.industry-fusion.com/pgrest
         - name: MONGO_URL
           value: {{ .Values.factory50_prod.mongoUrl }}
         - name: CORS_ORIGIN
