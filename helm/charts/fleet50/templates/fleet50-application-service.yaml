@@ -80,7 +80,7 @@ spec:
         ports:
         - containerPort: {{ .Values.fleet50.frontendPort }}
         env:
-        - name: NEXT_PUBLIC_BACKEND_API_URL
+        - name: NEXT_PUBLIC_FLEET_MANAGER_BACKEND_URL
           value: https://dev-fleet-backend.industry-fusion.com
         - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
