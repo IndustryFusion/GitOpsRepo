@@ -82,6 +82,8 @@ spec:
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
           value: https://dev-fleet-backend.industry-fusion.com
+        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
+          value: https://dev-registry.ifric.org
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
