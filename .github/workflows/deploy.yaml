@@ -200,5 +200,6 @@ jobs:
             --set fleet50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
             --set fleet50.username="${{ secrets.USERNAME }}" \
             --set fleet50.password="${{ secrets.PASSWORD }}" \
+            --set fleet50.mongoUrl="${{ secrets.MONGO_URL }}" \
             --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL_DEV }}" \
             --set icid.namespace="${{ secrets.ICID_NAMESPACE }}"
