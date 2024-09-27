@@ -48,10 +48,20 @@ spec:
           value: {{ .Values.ifric_registry.client_secret }}
         - name: TENANT_ID
           value: {{ .Values.ifric_registry.tenant_id }}
+        - name: COMPANY_DEFAULT_CODE
+          value: {{ .Values.ifric_registry.company_default_code }}
         - name: IFRIC_WEBSITE
           value: https://www.ifric.org/
         - name: IFX_PLATFORM_FRONTEND_URL
-          value: http://217.160.218.225:3008
+          value: https://dev-platform.industryfusion-x.org
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: https://dev-platform-backend.industryfusion-x.org
+        - name: FLEET_MANAGER_BACKEND_URL
+          value: https://dev-fleet-backend.industry-fusion.com
+        - name: FLEET_MANAGER_FRONTEND_URL
+          value: https://dev-fleet.industry-fusion.com
+        - name: FACTORY_MANAGER_BACKEND_URL
+          value: https://dev-factory-backend.industry-fusion.com
 
         # volumeMounts:
         # - name: nginx-config
