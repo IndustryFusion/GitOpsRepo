@@ -76,6 +76,8 @@ spec:
           value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
         - name: IFRIC_REGISTRY_BACKEND_URL
           value: https://dev-registry.ifric.org
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: https://dev-platform-backend.industryfusion-x.org
       - name: fleet50-frontend
         image: {{ .Values.mainRepo }}/fleet50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
