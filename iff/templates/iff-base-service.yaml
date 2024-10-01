@@ -77,10 +77,10 @@ spec:
           - name: GITHUB_OWNER
             value: IndustryFusion
           - name: GITHUB_REPO
-            value: gateway-configs
+            value: prod-gw-configs
           - name: GITHUB_PATH
             value: ''
           - name: GITHUB_TOKEN
-            value: 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
+            value: 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
       imagePullSecrets:
         - name: regcred
