@@ -64,6 +64,8 @@ spec:
           value: {{ .Values.factory50.s3AccessKey }}
         - name: S3_SECRET_KEY
           value: {{ .Values.factory50.s3SecretKey }}
+        - name: JWT_SECRET_KEY
+          value: {{ .Values.factory50.jwtSecretKey }}
         - name: S3_BUCKET
           value: iff-dev
         - name: ALERTA_URL
