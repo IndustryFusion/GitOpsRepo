@@ -56,10 +56,16 @@ spec:
           value: https://dev-platform.industryfusion-x.org
         - name: IFX_PLATFORM_BACKEND_URL
           value: https://dev-platform-backend.industryfusion-x.org
+        - name: IFX_SUITE_FRONTEND_URL
+          value: ''
+        - name: IFX_SUITE_BACKEND_URL
+          value: ''
         - name: FLEET_MANAGER_BACKEND_URL
           value: https://dev-fleet-backend.industry-fusion.com
         - name: FLEET_MANAGER_FRONTEND_URL
           value: https://dev-fleet.industry-fusion.com
+        - name: FACTORY_MANAGER_FRONTEND_URL
+          value: https://dev-factory.industry-fusion.com
         - name: FACTORY_MANAGER_BACKEND_URL
           value: https://dev-factory-backend.industry-fusion.com
 
