@@ -10,7 +10,7 @@ ifx_platform:
   s3SecretKey: '79SOXZke/2oDZEHOmPVQP1+E182aT3VsE//0klww'
   username: admin
   password: iffadmin
-  mongoUrl: mongodb://productpass-user:k8ce8aTNgBS60Qw@212.227.233.76:31184/admin?directconnection=true&retryWrites=true&w=majority
+  mongoUrl: 'mongodb://ifxplatform-user:k8ce8aTNgBS60Qw@82.165.177.215:31182/admin?directconnection=true&retryWrites=true&w=majority'
   registryUrl: https://dev-registry.ifric.org
   sandboxUrl: https://dev-sandbox-backend.industry-fusion.com
   scorpioUrl: https://dev-dataroom.ifric.org/ngsi-ld/v1/entities
