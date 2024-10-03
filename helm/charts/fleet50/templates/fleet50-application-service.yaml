@@ -49,7 +49,7 @@ spec:
         - name: GITHUB_TOKEN
           value: {{ .Values.fleet50.githubToken }}
         - name: SCORPIO_URL
-          value: http://85.215.171.58:9090/ngsi-ld/v1/entities
+          value: {{ .Values.fleet50.scorpioUrl }}
         - name: S3_URL
           value: s3-eu-central-1.ionoscloud.com
         - name: MONGO_URL
@@ -65,9 +65,9 @@ spec:
         - name: PASSWORD
           value: {{ .Values.fleet50.password }}
         - name: CORS_ORIGIN
-          value: https://dev-fleet.industry-fusion.com
+          value:  {{ .Values.fleet50.corsOrigin }}
         - name: ICID_SERVICE_BACKEND_URL
-          value: https://dev-icid-service.ifric.org
+          value:  {{ .Values.fleet50.icidOrigin }}
         - name: ASSETS_DEFAULT_CODE
           value: IFX-EUR-NLD-AST
         - name: USERS_DEFAULT_CODE
@@ -75,9 +75,11 @@ spec:
         - name: CONTEXT
           value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
         - name: IFRIC_REGISTRY_BACKEND_URL
-          value: https://dev-registry.ifric.org
+          value: {{ .Values.fleet50.registryUrl }}
         - name: IFX_PLATFORM_BACKEND_URL
-          value: https://dev-platform-backend.industryfusion-x.org
+          value: {{ .Values.fleet50.ifxplatformBackendUrl }}
+        - name: JWT_SECRET_KEY
+          value: {{ .Values.fleet50.jwtSecretKey }}
       - name: fleet50-frontend
         image: {{ .Values.mainRepo }}/fleet50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
@@ -85,9 +87,11 @@ spec:
         - containerPort: {{ .Values.fleet50.frontendPort }}
         env:
         - name: NEXT_PUBLIC_FLEET_MANAGER_BACKEND_URL
-          value: https://dev-fleet-backend.industry-fusion.com
+          value: {{ .Values.fleet50.fleetBackendUrl }}
         - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
-          value: https://dev-registry.ifric.org
+          value: {{ .Values.fleet50.registryUrl }}
+        - name: NEXT_PUBLIC_IFX_SUITE_FRONTEND_URL
+          value: {{ .Values.fleet50.ifxSuiteBackendUrl }}
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
