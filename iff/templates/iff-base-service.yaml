@@ -81,6 +81,6 @@ spec:
           - name: GITHUB_PATH
             value: ''
           - name: GITHUB_TOKEN
-            value: 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
+            value: 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
       imagePullSecrets:
         - name: regcred
