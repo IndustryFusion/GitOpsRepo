@@ -56,6 +56,8 @@ spec:
           value: {{ .Values.factory50.apiUrl }}
         - name: CLIENT_ID
           value: scorpio
+        - name: CONTEXT
+          value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
         - name: SCORPIO_URL
           value: {{ .Values.factory50.scorpioUrl }}
         - name: S3_URL
@@ -76,6 +78,10 @@ spec:
           value: {{ .Values.factory50.timescaleUrl }}
         - name: MONGO_URL
           value: {{ .Values.factory50.mongoUrl }}
+        - name: IFRIC_REGISTRY_BACKEND_URL
+          value: {{ .Values.factory50.registryUrl }}
+        - name: TEMPLATE_SANDBOX_BACKEND_URL
+          value: {{ .Values.factory50.sandboxBackendUrl }}
         - name: CORS_ORIGIN
           value: {{ .Values.factory50.corsOrigin }}
         - name: REDIS_SERVER
