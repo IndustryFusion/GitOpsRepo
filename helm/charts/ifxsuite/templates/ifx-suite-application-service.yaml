@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ifx-suite-application-service
+  name: ifx-suite-application-service
+  namespace: {{ .Values.ifx_suite.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifx-suite-application-service
+  template:
+    metadata:
+      labels:
+        app: ifx-suite-application-service
+    spec:
+      containers:
+      - name: ifx-suite-backend
+        image: {{ .Values.mainRepo }}/ifx-suite-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.ifx_suite.backendPort }}
+        env:
+        - name: CORS_ORIGIN 
+          value: {{ .Values.ifx_suite.corsOrigin }}
+        - name: ICID_SERVICE_BACKEND_URL
+          value: {{ .Values.ifx_suite.icidOrigin }}
+        - name: IFRIC_REGISTRY_BACKEND_URL
+          value:  {{ .Values.ifx_suite.registryUrl }}
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: {{ .Values.ifx_suite.ifxPlatformBackendUrl }}
+        - name: JWT_SECRET_KEY
+          value: {{ .Values.ifx_suite.jwtSecretKey }}
+      containers:
+      - name: ifx-suite-frontend
+        image: {{ .Values.mainRepo }}/ifx-suite-frontend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.ifx_suite.frontendPort }}
+        env:
+        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
+          value:  {{ .Values.ifx_suite.registryUrl }}
+        - name: NEXT_PUBLIC_ENVIRONMENT
+          value: dev
+        - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
+          value:  {{ .Values.ifx_suite.ifxPlatformBackendUrl }}
+        - name: NEXT_PUBLIC_IFX_SUITE_BACKEND_URL
+          value:  {{ .Values.ifx_suite.ifxSuiteBackendUrl }}
+        - name: NEXT_PUBLIC_FLEET_FRONTEND_URL
+          value:  {{ .Values.ifx_suite.fleetFrontendUrl }}
+        - name: NEXT_PUBLIC_FACTORY_FRONTEND_URL
+          value:  {{ .Values.ifx_suite.factoryFrontendUrl }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
