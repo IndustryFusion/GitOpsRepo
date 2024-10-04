@@ -22,7 +22,7 @@ spec:
         ports:
         - containerPort: {{ .Values.ifx_suite.backendPort }}
         env:
-        - name: CORS_ORIGIN 
+        - name: CORS_ORIGIN
           value: {{ .Values.ifx_suite.corsOrigin }}
         - name: ICID_SERVICE_BACKEND_URL
           value: {{ .Values.ifx_suite.icidOrigin }}
@@ -32,7 +32,6 @@ spec:
           value: {{ .Values.ifx_suite.ifxPlatformBackendUrl }}
         - name: JWT_SECRET_KEY
           value: {{ .Values.ifx_suite.jwtSecretKey }}
-      containers:
       - name: ifx-suite-frontend
         image: {{ .Values.mainRepo }}/ifx-suite-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
