@@ -24,4 +24,6 @@ helm:
           tag: iff
         name: akri-mqtt-discovery
       configuration:
-        enabled: false
+        enabled: true
+        name: akri-mqtt
+        discoveryHandlerName: mqtt
