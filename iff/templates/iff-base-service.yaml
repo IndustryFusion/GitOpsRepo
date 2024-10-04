@@ -81,9 +81,9 @@ spec:
           - name: GITHUB_PATH
             value: ''
           - name: GITHUB_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: github-token
-                  key: HUB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: github-token
+                key: HUB_TOKEN
       imagePullSecrets:
         - name: regcred
