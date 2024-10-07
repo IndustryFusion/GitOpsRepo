@@ -82,6 +82,10 @@ spec:
           value: {{ .Values.factory50.registryUrl }}
         - name: TEMPLATE_SANDBOX_BACKEND_URL
           value: {{ .Values.factory50.sandboxBackendUrl }}
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: {{ .Values.factory50.ifxPlatformBackendUrl }}
+        - name: ICID_SERVICE_BACKEND_URL
+          value: {{ .Values.factory50.icidOrigin }}
         - name: CORS_ORIGIN
           value: {{ .Values.factory50.corsOrigin }}
         - name: REDIS_SERVER
