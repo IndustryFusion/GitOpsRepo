@@ -56,6 +56,10 @@ spec:
           value: /etc/ssl/certs/root-ca-key.pem
         - name: CERTIFICATE_PATH
           value: /etc/ssl/certs/root-ca-cert.pem
+        - name: BINDING_DEFAULT_CODE
+          value: IFX-CON-DEF
+        - name: CONTRACT_DEFAULT_CODE
+          value: IFX-CON-BND
         volumeMounts:
         - name: icid-cert-volume
           mountPath: /etc/ssl/certs
