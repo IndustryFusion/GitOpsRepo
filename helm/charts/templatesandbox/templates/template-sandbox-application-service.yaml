@@ -60,6 +60,10 @@ spec:
           value: /etc/ssl/certs/cert.pem
         - name: IFX_PLATFORM_FRONTEND_URL
           value: http://217.160.218.225:3008
+        - name: FACTORY_MANAGER_BACKEND_URL
+          value: https://dev-factory-backend.industry-fusion.com
+        - name: FLEET_MANAGER_FRONTEND_URL
+          value: https://dev-fleet.industry-fusion.com
         volumeMounts:
         - name: sandbox-cert-volume
           mountPath: /etc/ssl/certs
