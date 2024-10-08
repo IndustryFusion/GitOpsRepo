@@ -90,5 +90,7 @@ spec:
           value: dev
         - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
           value: https://dev-platform-backend.industryfusion-x.org
+        - name: NEXT_PUBLIC_JWT_SECRET
+          value: {{ .Values.ifric_platform.jwtSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
