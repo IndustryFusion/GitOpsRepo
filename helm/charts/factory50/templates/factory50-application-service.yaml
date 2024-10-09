@@ -104,5 +104,7 @@ spec:
           value: {{ .Values.factory50.registryUrl }}
         - name: NEXT_PUBLIC_IFX_SUITE_FRONTEND_URL
           value: {{ .Values.factory50.ifxSuiteFrontendUrl }}
+        - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
+          value: {{ .Values.factory50.sandboxBackendUrl }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
