@@ -77,6 +77,12 @@ spec:
         env:
         - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
           value: https://dev-sandbox-backend.industry-fusion.com
+        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
+          value: https://dev-registry.ifric.org
+        - name: NEXT_PUBLIC_IFX_SUITE_FRONTEND_URL
+          value: https://dev-suite.industryfusion-x.org
+        - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
+          value: https://dev-sandbox-backend.industry-fusion.com
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
       volumes:
