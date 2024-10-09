@@ -95,7 +95,7 @@ spec:
         - name: USERNAME
           value: factory_admin@industry-fusion.com
         - name: PASSWORD
-          value: @zN8k51@ORJg
+          value: "@zN8k51@ORJg"
       - name: factory50-frontend
         image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
