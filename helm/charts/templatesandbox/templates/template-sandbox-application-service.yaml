@@ -64,6 +64,8 @@ spec:
           value: https://dev-factory-backend.industry-fusion.com
         - name: FLEET_MANAGER_FRONTEND_URL
           value: https://dev-fleet.industry-fusion.com
+        - name: FACTORY_MANAGER_FRONTEND_URL
+          value: https://dev-factory.industry-fusion.com
         volumeMounts:
         - name: sandbox-cert-volume
           mountPath: /etc/ssl/certs
