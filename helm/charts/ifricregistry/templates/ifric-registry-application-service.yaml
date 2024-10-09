@@ -57,9 +57,9 @@ spec:
         - name: IFX_PLATFORM_BACKEND_URL
           value: https://dev-platform-backend.industryfusion-x.org
         - name: IFX_SUITE_FRONTEND_URL
-          value: ''
+          value: {{ .Values.ifric_registry.ifxSuiteFrontendUrl }}
         - name: IFX_SUITE_BACKEND_URL
-          value: ''
+          value: {{ .Values.ifric_registry.ifxSuiteBackendUrl }}
         - name: FLEET_MANAGER_BACKEND_URL
           value: https://dev-fleet-backend.industry-fusion.com
         - name: FLEET_MANAGER_FRONTEND_URL
