@@ -92,6 +92,10 @@ spec:
           value: "212.132.115.232"
         - name: REDIS_PORT
           value: "6379"
+        - name: USERNAME
+          value: factory_admin@industry-fusion.com
+        - name: PASSWORD
+          value: @zN8k51@ORJg
       - name: factory50-frontend
         image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
