@@ -88,7 +88,13 @@ factory50_prod:
   s3SecretKey: 's3-secret-key'
   alertaKey: 'alerta-key'
   mongoUrl: 'mongo-url'
-
+  jwtSecretKey: 'your-secret-key'
+  icidOrigin: https://icid-service.ifric.org
+  FactoryBackendUrl: https://prod-factory-backend.industry-fusion.com
+  ifxPlatformBackendUrl: 'https://platform-backend.industryfusion-x.org'
+  ifxSuiteFrontendUrl: ''
+  sandboxBackendUrl: https://sandbox-backend.industry-fusion.com
+  registryUrl: https://registry.ifric.org
 
 fleet50_prod:
   externalHostname: {{ .StateValues.fleet50ExternalHostname }}
