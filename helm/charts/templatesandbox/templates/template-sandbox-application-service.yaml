@@ -59,7 +59,7 @@ spec:
         - name: ECLASS_CERTIFICATE_PATH
           value: /etc/ssl/certs/cert.pem
         - name: IFX_PLATFORM_FRONTEND_URL
-          value: http://217.160.218.225:3008
+          value: https://platform.industryfusion-x.org
         - name: FACTORY_MANAGER_BACKEND_URL
           value: https://dev-factory-backend.industry-fusion.com
         - name: FLEET_MANAGER_FRONTEND_URL
