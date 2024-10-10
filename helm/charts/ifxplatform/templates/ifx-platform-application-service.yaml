@@ -66,8 +66,10 @@ spec:
           value: {{ .Values.ifx_platform.platformBackendUrl }}
         - name: FACTORY_MANAGER_FRONTEND_URL
           value: {{ .Values.ifx_platform.factoryFrontendUrl }}
-        - name: FLEET_MANAGER_FRONTEND_URL
+        - name: FLEET_FRONTEND_URL
           value: {{ .Values.ifx_platform.fleetFrontendUrl }}
+        - name: FLEET_BACKEND_URL
+          value: {{ .Values.ifx_platform.fleetBackendUrl }}
       - name: ifx-platform-frontend
         image: {{ .Values.mainRepo }}/ifx-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
