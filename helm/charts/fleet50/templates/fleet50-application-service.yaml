@@ -93,7 +93,7 @@ spec:
         - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
           value: {{ .Values.fleet50.sandboxBackendUrl }}
         - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
-          value: {{ .Values.fleet50.ifxPlatformBackendUrl }}
+          value: https://dev-platform-backend.industryfusion-x.org
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
