@@ -82,6 +82,21 @@ spec:
           value: "6379"
         - name: TEMPLATE_SANDBOX_BACKEND_URL
           value: https://sandbox-backend.industry-fusion.com
+        - name: CONTEXT
+          value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
+        - name: JWT_SECRET_KEY
+          value: {{ .Values.factory50_prod.jwtSecretKey }}
+        - name: IFRIC_REGISTRY_BACKEND_URL
+          value: {{ .Values.factory50_prod.registryUrl }}
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: {{ .Values.factory50_prod.ifxPlatformBackendUrl }}
+        - name: ICID_SERVICE_BACKEND_URL
+          value: {{ .Values.factory50_prod.icidOrigin }}
+        - name: USERNAME
+          value: factory_admin@industry-fusion.com
+        - name: PASSWORD
+          value: "@zN8k51@ORJg"
+        
       - name: factory50-frontend
         image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
@@ -90,5 +105,13 @@ spec:
         env:
         - name: NEXT_PUBLIC_BACKEND_API_URL
           value: https://prod-factory-backend.industry-fusion.com
+        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
+          value: {{ .Values.factory50_prod.registryUrl }}
+        - name: NEXT_PUBLIC_IFX_SUITE_FRONTEND_URL
+          value: {{ .Values.factory50_prod.ifxSuiteFrontendUrl }}
+        - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
+          value: {{ .Values.factory50_prod.sandboxBackendUrl }}
+        - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
+          value: {{ .Values.factory50_prod.ifxPlatformBackendUrl }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
