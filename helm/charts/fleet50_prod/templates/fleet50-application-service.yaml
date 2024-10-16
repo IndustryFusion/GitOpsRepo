@@ -91,7 +91,7 @@ spec:
         - name: NEXT_PUBLIC_IFX_SUITE_FRONTEND_URL
           value: {{ .Values.fleet50_prod.ifxSuiteFrontendUrl }}
         - name: NEXT_PUBLIC_IFX_BACKEND_URL
-          value: {{ .Values.fleet50_prod.ifxPlatformBackendUrl }}
+          value: https://platform-backend.industryfusion-x.org
         - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
           value: {{ .Values.fleet50_prod.sandboxBackendUrl }}
 
