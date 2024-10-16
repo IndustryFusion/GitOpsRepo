@@ -54,6 +54,18 @@ spec:
           value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
         - name: MONGO_URL
           value: {{ .Values.ifx_platform.mongoUrl }}
+        - name: JIRA_URL
+          value: {{ .Values.ifx_platform.jiraUrl }}
+        - name: EMAIL_URL
+          value: {{ .Values.ifx_platform.emailUrl }}
+        - name: CLIENT_ID
+          value: {{ .Values.ifx_platform.clientId }}
+        - name: CLIENT_SECRET
+          value: {{ .Values.ifx_platform.clientSecret }}
+        - name: TENANT_ID
+          value: {{ .Values.ifx_platform.tenantId }}
+        - name: JIRA_TOKEN
+          value: {{ .Values.ifx_platform.jiraToken }}
         - name: IFRIC_REGISTRY_BACKEND_URL
           value: {{ .Values.ifx_platform.registryUrl }}
         - name: TEMPLATE_SANDBOX_BACKEND_URL
