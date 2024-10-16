@@ -89,7 +89,7 @@ spec:
         - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
           value: {{ .Values.fleet50_prod.registryUrl }}
         - name: NEXT_PUBLIC_IFX_SUITE_FRONTEND_URL
-          value: {{ .Values.fleet50_prod.ifxSuiteBackendUrl }}
+          value: {{ .Values.fleet50_prod.ifxSuiteFrontendUrl }}
         - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
           value: {{ .Values.fleet50_prod.sandboxBackendUrl }}
         - name: NEXT_PUBLIC_IFX_BACKEND_URL
