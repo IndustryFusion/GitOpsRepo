@@ -113,5 +113,7 @@ spec:
           value: {{ .Values.factory50_prod.sandboxBackendUrl }}
         - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
           value: {{ .Values.factory50_prod.ifxPlatformBackendUrl }}
+        - name: NEXT_PUBLIC_JWT_SECRET
+          value: {{ .Values.factory50_prod.jwtSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
