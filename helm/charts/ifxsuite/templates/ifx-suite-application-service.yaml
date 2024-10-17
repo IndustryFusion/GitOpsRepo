@@ -50,5 +50,7 @@ spec:
           value:  {{ .Values.ifx_suite.fleetFrontendUrl }}
         - name: NEXT_PUBLIC_FACTORY_FRONTEND_URL
           value:  {{ .Values.ifx_suite.factoryFrontendUrl }}
+        - name: NEXT_PUBLIC_JWT_SECRET
+          value: {{ .Values.fleet50.jwtSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
