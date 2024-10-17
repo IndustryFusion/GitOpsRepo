@@ -101,6 +101,9 @@ on:
       CLIENT_SECRET:
         description: ''
         required: false
+      JWT_SECRET:
+        description: ''
+        required: false
       EMAIL_URL:
         description: ''
         required: false
