@@ -28,6 +28,7 @@ factory50:
   s3AccessKey: 's3-access-key'
   s3SecretKey: 's3-secret-key'
   alertaKey: 'alerta-key'
+  jwtSecret: 'jwt-secret'
   mongoUrl: 'mongo-url'
   jwtSecretKey: 'your-secret-key'
   icidOrigin: https://dev-icid-service.ifric.org
@@ -83,6 +84,7 @@ factory50_prod:
   frontendExternalPath: {{ .StateValues.factory50FrontendExternalPath }}
   backendPort: 4002
   frontendPort: 3002
+  jwtSecret: 'jwt-secret'
   gatewayToken: 'gateway-token'
   githubToken: 'github-token'
   s3AccessKey: 's3-access-key'
@@ -104,6 +106,7 @@ fleet50_prod:
   backendPort: 4001
   frontendPort: 3001
   githubToken: 'github-token'
+  jwtSecret: 'jwt-secret'
   s3AccessKey: 's3-access-key'
   s3SecretKey: 's3-access-key'
   username: 'username'
@@ -224,4 +227,4 @@ ifx_suite:
   factoryFrontendUrl: https://dev-factory.industry-fusion.com
   ifxSuiteBackendUrl: https://dev-suite-backend.industryfusion-x.org
   jwtSecretKey: 'your-secret-key'
-
+  jwtSecret: 'jwt-secret'
