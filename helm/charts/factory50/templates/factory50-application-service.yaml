@@ -113,6 +113,6 @@ spec:
         - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
           value: {{ .Values.factory50.ifxPlatformBackendUrl }}
         - name: NEXT_PUBLIC_JWT_SECRET
-          value: {{ .Values.fleet50.jwtSecret }}
+          value: {{ .Values.factory50.jwtSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
