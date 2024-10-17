@@ -135,6 +135,7 @@ jobs:
             --set factory50_prod.gatewayToken="${{ secrets.GATEWAY_TOKEN }}" \
             --set factory50_prod.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
             --set factory50_prod.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
+            --set factory50_prod.jwtSecret="${{ secrets.JWT_SECRET }}" \
             --set factory50_prod.alertaKey="${{ secrets.ALERTA_KEY }}" \
             --set factory50_prod.mongoUrl="${{ secrets.FACTORY_MONGO_URL }}"\
             --set fleet50_prod.githubToken="${{ secrets.HUB_TOKEN }}" \
@@ -142,5 +143,6 @@ jobs:
             --set fleet50_prod.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
             --set fleet50_prod.username="${{ secrets.USERNAME }}" \
             --set fleet50_prod.password="${{ secrets.PASSWORD }}" \
+            --set fleet50_prod.jwtSecret="${{ secrets.JWT_SECRET }}" \
             --set icid_prod.mongoUrl="${{ secrets.ICID_MONGO_URL }}" \
             --set icid_prod.namespace="${{ secrets.ICID_NAMESPACE }}"
