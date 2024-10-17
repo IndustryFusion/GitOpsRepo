@@ -68,6 +68,9 @@ on:
       S3_SECRET_KEY:
         description: 'S3 secret key to use in the cluster'
         required: false
+      JWT_SECRET:
+        description: 'JWT secret key to use in the cluster'
+        required: false
       HUB_TOKEN:
         description: ''
         required: false
