@@ -58,6 +58,8 @@ spec:
           value: scorpio
         - name: SCORPIO_URL
           value: https://platform.industry-fusion.com/scorpio/ngsi-ld/v1/entities
+        - name: PDT_SCORPIO_URL
+          value: {{ .Values.factory50_prod.pdtScorpioUrl }}
         - name: S3_URL
           value: s3-eu-central-1.ionoscloud.com
         - name: S3_ACCESS_KEY
