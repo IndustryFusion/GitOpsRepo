@@ -43,7 +43,7 @@ spec:
         - name: MONGO_URL
           value: {{ .Values.template_sandbox.mongoUrl }}
         - name: CORS_ORIGIN
-          value: https://dev-sandbox.industry-fusion.com
+          value: {{ .Values.template_sandbox.corsOrigin }}
         - name: ICID_SERVICE_URL
           value: https://dev-icid-service.ifric.org
         - name: ASSETS_DEFAULT_CODE
