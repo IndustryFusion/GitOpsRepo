@@ -16,16 +16,13 @@ jobs:
         id: pr
         run: |
           PR_BODY="${{ github.event.pull_request.body }}"
-          # Escape special characters and store it safely in the environment variable
-          echo "PR_DESCRIPTION<<EOF" >> $GITHUB_ENV
-          printf "%s\n" "$PR_BODY" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "PR_DESCRIPTION=${PR_BODY//[$'\t\r\n']/ }" >> $GITHUB_ENV  # Remove tabs and new lines
 
       - name: Check if Environment Variables were Modified
         id: check-env-modifications
         run: |
-          if [[ "${{ env.PR_DESCRIPTION }}" == *"Have you added, removed, or modified any environment variables in this PR? (yes/no)*" ]]; then
-            if [[ "${{ env.PR_DESCRIPTION }}" == *"No"* ]]; then
+          if echo "${{ env.PR_DESCRIPTION }}" | grep -q "Have you added, removed, or modified any environment variables in this PR? (yes/no)"; then
+            if echo "${{ env.PR_DESCRIPTION }}" | grep -q "No"; then
               echo "No modifications to environment variables."
               echo "env_modified=false" >> $GITHUB_ENV
             else
@@ -39,7 +36,6 @@ jobs:
       - name: Update env.template
         if: env.env_modified == 'true'
         run: |
-          PR_DESCRIPTION="${{ env.PR_DESCRIPTION }}"
           ENV_TEMPLATE="env.template"
           
           # Initialize arrays for added and removed variables
@@ -53,7 +49,7 @@ jobs:
             elif [[ $line == -* ]]; then
               REMOVED_VARS+=("${line:2}")
             fi
-          done <<< "$(echo "$PR_DESCRIPTION" | grep -E '^\+|^-' )"
+          done <<< "$(echo "${{ env.PR_DESCRIPTION }}" | grep -E '^\+|^-' )"
 
           # Update env.template
           # Add new variables only if they are not hardcoded
