@@ -16,13 +16,15 @@ jobs:
         id: pr
         run: |
           echo "${{ github.event.pull_request.body }}" > pr_description.txt
-          echo "PR_DESCRIPTION=$(cat pr_description.txt)" >> $GITHUB_ENV
+          # Ensure the content is safely formatted and store in environment variable
+          PR_BODY=$(<pr_description.txt)
+          echo "PR_DESCRIPTION=${PR_BODY//[$'\t\r\n']/ }" >> $GITHUB_ENV
 
       - name: Check if Environment Variables were Modified
         id: check-env-modifications
         run: |
-          if grep -q "Have you added, removed, or modified any environment variables in this PR? (yes/no)" "$GITHUB_ENV"; then
-            if grep -q "No" "$GITHUB_ENV"; then
+          if echo "${{ env.PR_DESCRIPTION }}" | grep -q "Have you added, removed, or modified any environment variables in this PR? (yes/no)"; then
+            if echo "${{ env.PR_DESCRIPTION }}" | grep -q "No"; then
               echo "No modifications to environment variables."
               echo "env_modified=false" >> $GITHUB_ENV
             else
