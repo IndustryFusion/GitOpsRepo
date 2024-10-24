@@ -15,8 +15,10 @@ jobs:
       - name: Get PR Description
         id: pr
         run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          # Escape special characters and store it safely in the environment variable
           echo "PR_DESCRIPTION<<EOF" >> $GITHUB_ENV
-          echo "${{ github.event.pull_request.body }}" >> $GITHUB_ENV
+          printf "%s\n" "$PR_BODY" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Check if Environment Variables were Modified
