@@ -53,4 +53,5 @@ jobs:
           git config --local user.name "jragunanthan"
           git add env.template
           git commit -m "Update env.template based on PR changes"
-          git push
+          # Extract the branch name from the GITHUB_REF and push to that branch
+          git push origin HEAD:${{ github.head_ref }}
