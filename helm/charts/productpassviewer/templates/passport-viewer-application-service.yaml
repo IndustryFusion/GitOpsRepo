@@ -29,7 +29,7 @@ spec:
         - name: SCORPIO_URL
           value: https://dev-dataroom.ifric.org/ngsi-ld/v1/entities
         - name: CORS_ORIGIN
-          value: https://dev-passport.ifric.org
+          value: {{ .Values.passport_viewer.corsOrigin }}
         - name: ICID_SERVICE_BACKEND_URL
           value: https://dev-icid-service.ifric.org
         - name: ASSETS_DEFAULT_CODE
