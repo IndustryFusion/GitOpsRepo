@@ -44,6 +44,8 @@ spec:
           value: {{ .Values.icid.mongoUrl }}
         - name: IFRIC_NAMESPACE
           value: {{ .Values.icid.namespace }}
+        - name: CORS_ORIGIN
+          value: {{ .Values.icid.corsOrigin }}
         - name: FLEET_MANAGER_BACKEND_URL
           value: {{ .Values.icid.fleetBackendUrl }}
         - name: IFRIC_PLATFORM_BACKEND_URL
