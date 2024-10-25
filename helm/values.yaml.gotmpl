@@ -39,7 +39,7 @@ factory50:
   scorpioUrl: https://development.industry-fusion.com/scorpio/ngsi-ld/v1/entities
   alertaUrl: https://development.industry-fusion.com/alerta/api
   timescaleUrl: https://development.industry-fusion.com/pgrest
-  corsOrigin: https://dev-factory.industry-fusion.com
+  corsOrigin: http://localhost:3002,https://dev-factory.industry-fusion.com
   FactoryBackendUrl: https://dev-factory-backend.industry-fusion.com
   ifxPlatformBackendUrl: 'https://dev-platform-backend.industryfusion-x.org'
   ifxSuiteFrontendUrl: https://dev-suite.industryfusion-x.org
@@ -60,7 +60,7 @@ fleet50:
   password: 'password'
   mongoUrl: 'mongo-url'
   scorpioUrl: http://85.215.171.58:9090/ngsi-ld/v1/entities
-  corsOrigin: https://dev-fleet.industry-fusion.com
+  corsOrigin: http://localhost:3001,https://dev-fleet.industry-fusion.com
   icidOrigin: https://dev-icid-service.ifric.org
   registryUrl: https://dev-registry.ifric.org
   ifxplatformBackendUrl: https://dev-platform-backend.industryfusion-x.org
@@ -79,6 +79,7 @@ icid:
   platformBackendUrl: 'https://dev-platform-backend.ifric.org'
   fleetBackendUrl: 'https://dev-fleet-backend.industry-fusion.com'
   ifxPlatformBackendUrl: 'https://dev-platform-backend.industryfusion-x.org'
+  corsOrigin: http://localhost:4001,http://localhost:4003,http://localhost:4007,http://localhost:4008,https://dev-fleet-backend.industry-fusion.com,https://dev-registry.ifric.org,https://dev-platform-backend.ifric.org,https://dev-platform-backend.industryfusion-x.org
 
 factory50_prod:
   externalHostname: {{ .StateValues.factory50ExternalHostname }}
@@ -140,6 +141,7 @@ ifric_platform:
   s3SecretKey: 's3-access-key'
   username: 'username'
   jwtSecret: 'your-secret-key'
+  corsOrigin: http://localhost:3003,http://localhost:4007,https://dev-platform.ifric.org,https://dev-registry.ifric.org
 
 template_sandbox:
   backendPort: 4005
@@ -164,7 +166,7 @@ passport_viewer:
   s3AccessKey: 's3-access-key'
   s3SecretKey: 's3-access-key'
   username: 'username'
-
+  corsOrigin: http://localhost:3004,https://dev-passport.ifric.org
 ifric_registry:
   namespace: ifric-registry-service
   mainVersion: v0.1
@@ -178,6 +180,7 @@ ifric_registry:
   company_default_code: IFX-COM-NAP
   ifxSuiteFrontendUrl: https://dev-suite.industryfusion-x.org
   ifxSuiteBackendUrl: https://dev-suite-backend.industryfusion-x.org
+  corsOrigin: http://localhost:4007,http://localhost:3003,http://localhost:4003,http://localhost:3004,http://localhost:4004,http://localhost:3001,http://localhost:4001,http://localhost:3002,http://localhost:4002,http://localhost:3008,http://localhost:4008,http://localhost:3009,http://localhost:4009,https://dev-registry.ifric.org,https://dev-platform.ifric.org,https://dev-platform-backend.ifric.org,https://dev-passport.ifric.org,https://dev-passport-backend.ifric.org,https://dev-platform-backend.ifric.org,https://dev-fleet.industry-fusion.com,https://dev-fleet-backend.industry-fusion.com,https://dev-factory.industry-fusion.com,https://dev-factory-backend.industry-fusion.com,https://dev-platform.industryfusion-x.org,https://dev-platform-backend.industryfusion-x.org,https://dev-suite.industryfusion-x.org,https://dev-suite-backend.industryfusion-x.org
 
 ifric_platform_temp:
   mainVersion: v0.1
@@ -206,7 +209,7 @@ ifx_platform:
   registryUrl: https://dev-registry.ifric.org
   scorpioUrl: https://dev-dataroom.ifric.org/ngsi-ld/v1/entities
   icidOrigin: https://dev-icid-service.ifric.org
-  corsOrigin: https://dev-platform.industryfusion-x.org
+  corsOrigin: http://localhost:3008,http://localhost:4007,http://localhost:4010,http://localhost:3003,http://localhost:4003,http://localhost:3001,http://localhost:4001,http://localhost:4008,http://localhost:3001,https://dev-platform.industryfusion-x.org,https://dev-registry.ifric.org,https://dev-icid-service.ifric.org,https://dev-platform.ifric.org,https://dev-platform-backend.ifric.org,https://dev-fleet.industry-fusion.com,https://dev-fleet-backend.industry-fusion.com,https://dev-factory.industry-fusion.com,https://dev-platform-backend.industryfusion-x.org
   ifxBackendUrl: https://dev-platform-backend.industryfusion-x.org
   platformFrontendUrl: https://dev-platform.ifric.org
   platformBackendUrl: https://dev-platform-backend.ifric.org
@@ -224,7 +227,7 @@ ifx_suite:
   registryUrl: https://dev-registry.ifric.org
   scorpioUrl: https://dev-dataroom.ifric.org/ngsi-ld/v1/entities
   icidOrigin: https://dev-icid-service.ifric.org
-  corsOrigin: https://dev-platform.industryfusion-x.org
+  corsOrigin: http://localhost:3009,http://localhost:4007,https://dev-registry.ifric.org,https://dev-suite.industryfusion-x.org
   ifxPlatformBackendUrl: https://dev-platform-backend.industryfusion-x.org
   fleetFrontendUrl: https://dev-fleet.industry-fusion.com
   factoryFrontendUrl: https://dev-factory.industry-fusion.com
