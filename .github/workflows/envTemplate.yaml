@@ -53,5 +53,7 @@ jobs:
           git config --local user.name "jragunanthan"
           git add env.template
           git commit -m "Update env.template based on PR changes"
-          # Extract the branch name from the GITHUB_REF and push to that branch
+          # Pull the latest changes from the remote branch to avoid conflicts
+          git pull origin ${{ github.head_ref }} --rebase
+          # Push the changes to the PR branch
           git push origin HEAD:${{ github.head_ref }}
