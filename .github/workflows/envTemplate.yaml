@@ -1,0 +1,80 @@
+name: Update Env Template
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  update-env-template:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get PR Description
+        id: pr
+        run: |
+          echo "PR_DESCRIPTION<<EOF" >> $GITHUB_ENV
+          echo "${{ github.event.pull_request.body }}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Check if Environment Variables were Modified
+        id: check-env-modifications
+        run: |
+          if [[ "${{ env.PR_DESCRIPTION }}" == *"Have you added, removed, or modified any environment variables in this PR? (yes/no)*" ]]; then
+            if [[ "${{ env.PR_DESCRIPTION }}" == *"No"* ]]; then
+              echo "No modifications to environment variables."
+              echo "env_modified=false" >> $GITHUB_ENV
+            else
+              echo "env_modified=true" >> $GITHUB_ENV
+            fi
+          else
+            echo "No modifications detected."
+            echo "env_modified=false" >> $GITHUB_ENV
+          fi
+
+      - name: Update env.template
+        if: env.env_modified == 'true'
+        run: |
+          PR_DESCRIPTION="${{ env.PR_DESCRIPTION }}"
+          ENV_TEMPLATE="env.template"
+          
+          # Initialize arrays for added and removed variables
+          ADDED_VARS=()
+          REMOVED_VARS=()
+
+          # Parse PR description for added variables
+          while IFS= read -r line; do
+            if [[ $line == +* ]]; then
+              ADDED_VARS+=("${line:2}")
+            elif [[ $line == -* ]]; then
+              REMOVED_VARS+=("${line:2}")
+            fi
+          done <<< "$(echo "$PR_DESCRIPTION" | grep -E '^\+|^-' )"
+
+          # Update env.template
+          # Add new variables only if they are not hardcoded
+          for VAR in "${ADDED_VARS[@]}"; do
+            if ! grep -q "^$VAR=" "$ENV_TEMPLATE"; then
+              if [[ "$VAR" != "ENV_KEY_1" && "$VAR" != "ENV_KEY_2" && "$VAR" != "ENV_KEY_3" && "$VAR" != "ENV_KEY_4" ]]; then
+                echo "$VAR=dummy_value" >> "$ENV_TEMPLATE"  # Replace 'dummy_value' with the actual placeholder
+              fi
+            fi
+          done
+
+          # Remove variables
+          for VAR in "${REMOVED_VARS[@]}"; do
+            sed -i "/^$VAR=/d" "$ENV_TEMPLATE"
+          done
+
+          echo "Updated env.template with added and removed variables."
+
+      - name: Commit Changes
+        if: env.env_modified == 'true'
+        run: |
+          git config --local user.email "ragunanthan.j@ib-systems.org"
+          git config --local user.name "jragunanthan"
+          git add env.template
+          git commit -m "Update env.template based on PR changes"
+          git push
