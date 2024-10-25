@@ -45,7 +45,7 @@ spec:
         - name: ICID_SERVICE_BACKEND_URL
           value: https://dev-icid-service.ifric.org
         - name: CORS_ORIGIN
-          value: https://dev-platform.ifric.org
+          value: {{ .Values.ifric_platform.corsOrigin }}
         - name: ASSETS_DEFAULT_CODE
           value: IFX-EUR-NLD-AST
         - name: USERS_DEFAULT_CODE
