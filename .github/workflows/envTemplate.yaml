@@ -34,9 +34,13 @@ jobs:
       - name: Update env.template with added variables
         if: steps.parse_pr.outputs.env_changes == 'yes' && steps.parse_pr.outputs.added_envs != ''
         run: |
-          # For each added environment variable, append a mock value to the env.template file
+          # For each added environment variable, check if it exists in env.template and append if not present
           echo "${{ steps.parse_pr.outputs.added_envs }}" | while IFS= read -r env; do
-            echo "$env=http://mock-$env-url" >> env.template
+            if ! grep -q "^$env=" env.template; then
+              echo "$env=http://mock-$env-url" >> env.template
+            else
+              echo "$env already exists in env.template, skipping..."
+            fi
           done
 
       - name: Remove variables from env.template
