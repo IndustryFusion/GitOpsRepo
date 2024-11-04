@@ -31,14 +31,22 @@ jobs:
           IONOS_ENDPOINT: https://s3-eu-central-1.ionoscloud.com
         run: |
           python utils/fetch_env.py
-
       - name: Parse env_mapping.yaml for dev values
         id: parse_mapping
         run: |
           # Parse env_mapping.yaml and extract only dev values
-          eval $(awk '/dev:/ { gsub(":","="); gsub("dev=",""); print $1 "=" $2 }' env_mapping.yaml)
-          echo "Parsed env_mapping.yaml for dev environment values"
+          awk '/dev:/ {
+          gsub(":", ""); # Remove colons
+          gsub(/^[^:]+/, ""); # Remove everything before the key name
+          env_var = $1; # Get the environment variable name
+          sub(/dev:/, ""); # Remove 'dev:' from the value
+          print env_var "=" $2; # Print as key=value
+        }' env_mapping.yaml > parsed_env_vars.sh
 
+          source parsed_env_vars.sh
+  
+      echo "Parsed env_mapping.yaml for dev environment values"          
+          
       - name: Compare env.template and env.development
         id: compare_files
         run: |
