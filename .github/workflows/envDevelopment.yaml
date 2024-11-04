@@ -1,0 +1,64 @@
+name: Update env.development
+
+on:
+  push:
+    paths:
+      - "env.template"
+
+jobs:
+  update-env-development:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install required Python libraries
+        run: |
+          pip install boto3
+
+      - name: Fetch env.development file from IONOS S3
+        env:
+          IONOS_BUCKET: iff-env
+          IONOS_FILE_KEY: env.development
+          IONOS_ACCESS_KEY: ${{ secrets.IONOS_ACCESS_KEY }}
+          IONOS_SECRET_KEY: ${{ secrets.IONOS_SECRET_KEY }}
+          IONOS_ENDPOINT: https://s3-eu-central-1.ionoscloud.com
+        run: |
+          python utils/fetch_env_file.py
+
+      - name: Parse env_mapping.yaml for dev values
+        id: parse_mapping
+        run: |
+          # Parse env_mapping.yaml and extract only dev values
+          eval $(awk '/dev:/ { gsub(":","="); gsub("dev=",""); print $1 "=" $2 }' env_mapping.yaml)
+          echo "Parsed env_mapping.yaml for dev environment values"
+
+      - name: Compare env.template and env.development
+        id: compare_files
+        run: |
+          # Find differences between env.template and env.development
+          ADDED_ENVS=$(comm -23 <(grep -o '^[^#]*' env.template | sort) <(grep -o '^[^#]*' env.development | sort))
+          REMOVED_ENVS=$(comm -13 <(grep -o '^[^#]*' env.template | sort) <(grep -o '^[^#]*' env.development | sort))
+
+          echo "::set-output name=added_envs::$ADDED_ENVS"
+          echo "::set-output name=removed_envs::$REMOVED_ENVS"
+
+          # Check if any changes (additions or removals) exist
+          if [ -z "$ADDED_ENVS" ] && [ -z "$REMOVED_ENVS" ]; then
+            echo "No changes detected between env.template and env.development."
+            exit 0
+
+      - name: Update env.development with added variables (dev values from env_mapping.yaml)
+        if: steps.compare_files.outputs.added_envs != ''
+        run: |
+          # For each added environment variable, append the key and its dev value from env_mapping.yaml
+          echo "${{ steps.compare_files.outputs.added_envs }}" | while IFS= read -r env; do
+            VALUE=$(awk -v env="$env" '/^'"$env"'/ {getline; print $2}' env_mapping.yaml | tr -d '"')
+            echo "$env=$VALUE" >> env.development
+          done
