@@ -1,0 +1,31 @@
+NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL:
+  dev: "http://dev-ifric-registry-url"
+  prod: "http://prod-ifric-registry-url"
+
+NEXT_PUBLIC_ENVIRONMENT:
+  dev: "development"
+  prod: "production"
+
+NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL:
+  dev: "http://dev-ifx-platform-url"
+  prod: "http://prod-ifx-platform-url"
+
+NEXT_PUBLIC_IFX_SUITE_BACKEND_URL:
+  dev: "http://dev-ifx-suite-url"
+  prod: "http://prod-ifx-suite-url"
+
+NEXT_PUBLIC_FLEET_FRONTEND_URL:
+  dev: "http://dev-fleet-frontend-url"
+  prod: "http://prod-fleet-frontend-url"
+
+NEXT_PUBLIC_FACTORY_FRONTEND_URL:
+  dev: "http://dev-factory-frontend-url"
+  prod: "http://prod-factory-frontend-url"
+
+NEXT_PUBLIC_JWT_SECRET:
+  dev: "dev_jwt_secret"
+  prod: "prod_jwt_secret"
+
+NEXT_PUBLIC_TEST_API_URL:
+  dev: "http://dev-test-api-url"
+  prod: "http://prod-test-api-url"
