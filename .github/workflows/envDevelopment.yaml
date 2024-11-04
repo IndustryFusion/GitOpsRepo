@@ -30,7 +30,7 @@ jobs:
           IONOS_SECRET_KEY: ${{ secrets.IONOS_SECRET_KEY }}
           IONOS_ENDPOINT: https://s3-eu-central-1.ionoscloud.com
         run: |
-          python utils/fetch_env_file.py
+          python utils/fetch_env.py
 
       - name: Parse env_mapping.yaml for dev values
         id: parse_mapping
