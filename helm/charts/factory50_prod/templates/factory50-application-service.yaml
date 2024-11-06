@@ -49,7 +49,7 @@ spec:
         - name: GATEWAY_TOKEN
           value: {{ .Values.factory50_prod.gatewayToken }}
         - name: GITHUB_BASE_URL
-          value: https://api.github.com/repos/IndustryFusion/templates/contents/new-model
+          value: https://api.github.com/repos/IndustryFusion/templates/contents/contracts
         - name: GITHUB_TOKEN
           value: {{ .Values.factory50_prod.githubToken }}
         - name: API_URL
