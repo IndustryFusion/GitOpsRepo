@@ -68,7 +68,12 @@ spec:
           value: https://dev-factory.industry-fusion.com
         - name: FACTORY_MANAGER_BACKEND_URL
           value: https://dev-factory-backend.industry-fusion.com
-
+        - name: ZOHO_CLIENT_ID
+          value: {{ .Values.ifric_registry.zoho_client_id }}
+        - name: ZOHO_CLIENT_SECRET
+          value: {{ .Values.ifric_registry.zoho_client_secret }}
+        - name: ZOHO_REFRESH_TOKEN
+          value: {{ .Values.ifric_registry.zoho_refresh_token }}
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
