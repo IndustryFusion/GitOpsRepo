@@ -73,9 +73,9 @@ spec:
         - name: ZOHO_CLIENT_SECRET
           value: {{ .Values.ifric_registry.zoho_client_secret }}
         - name: ZOHO_REFRESH_TOKEN
-          value: {{ .Values.ifric_registry.zoho_refresh_token }}
+          value: 1000.b6f830e5b89c7917b6f24ac480ca87b9.ecab7e4d30bb523f075d4d5fe40704c3
         - name: ZOHO_ORGANIZATION_ID
-          value: {{ .Values.ifric_registry.zoho_organization_id }}
+          value: 20101939223
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
