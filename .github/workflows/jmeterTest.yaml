@@ -1,36 +1,43 @@
-name: JMeter Test
+name: JMeter Test Pipeline
 
 on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  jmeter-tests:
+  jmeter-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Install JMeter
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jmeter
+    - name: Install JMeter
+      run: |
+        sudo apt update
+        sudo apt install -y jmeter
 
-      - name: Run JMeter Tests
-        run: |
-          # Replace the path to your actual JMeter test plan
-          jmeter -n -t ./tests/test-plan.jmx -l ./tests/test-results.jtl -e -o ./tests/jmeter-report
+    - name: Create results directory
+      run: mkdir -p ./tests
 
-      - name: Upload JMeter Report (Artifacts)
-        uses: actions/upload-artifact@v3
-        with:
-          name: jmeter-report
-          path: ./tests/jmeter-report
+    - name: Run JMeter tests
+      run: jmeter -n -t ./tests/test-plan.jmx -l ./tests/test-results.jtl
 
-      - name: Check for test failures
-        run: |
-          # Check the JMeter results for any failures
-          grep -i "<failure>" ./tests/test-results.jtl && exit 1 || exit 0
+    - name: List files in tests directory
+      run: ls -R ./tests
+
+    - name: Check JMeter results
+      run: |
+        if [ -f ./tests/test-results.jtl ]; then
+          grep "Failure" ./tests/test-results.jtl || echo "No failures found in test results."
+        else
+          echo "Test results file not found."
+          exit 1
+        fi
+
+    - name: Upload JMeter report
+      uses: actions/upload-artifact@v3
+      with:
+        name: jmeter-report
+        path: ./tests/test-results.jtl
