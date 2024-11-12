@@ -22,7 +22,7 @@ jobs:
       run: mkdir -p ./tests
 
     - name: Run JMeter tests
-      run: jmeter -n -t ./tests/test-plan.jmx -l ./tests/test-results.jtl -Djava.security.manager=allow
+      run: jmeter -n -t ./tests/test-plan.jmx -l ./tests/test-results.jtl -Duser.jmeter.save.saveservice.classname=true
 
     - name: List files in tests directory
       run: ls -R ./tests
