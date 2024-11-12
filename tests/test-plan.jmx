@@ -1,98 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
+  <testPlan>
+    <stringProp name="TestPlan.comments"></stringProp>
+    <boolProp name="TestPlan.functional_mode">false</boolProp>
+    <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+    <elementProp name="TestPlan.user_defined_variables" elementType="Arguments"/>
+    <boolProp name="TestPlan.enable_all_threads">true</boolProp>
+  </testPlan>
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
-      <stringProp name="TestPlan.comments"></stringProp>
-      <boolProp name="TestPlan.functional_mode">false</boolProp>
-      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
-      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
-      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-        <collectionProp name="Arguments.arguments"/>
-      </elementProp>
-      <stringProp name="TestPlan.user_define_classpath"></stringProp>
-    </TestPlan>
+    <!-- Thread Group -->
+    <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+      <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+      <stringProp name="ThreadGroup.num_threads">5</stringProp>  <!-- 5 threads/users -->
+      <stringProp name="ThreadGroup.ramp_time">10</stringProp>   <!-- Ramp-up time (seconds) -->
+      <stringProp name="ThreadGroup.loops">1</stringProp>  <!-- Number of iterations per thread -->
+    </ThreadGroup>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Example Thread Group" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1634899902000</longProp>
-        <longProp name="ThreadGroup.end_time">1634899902000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.name"></stringProp>
-                <stringProp name="Argument.value"></stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">invalid-domain.local</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol">http</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/nonexistent</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.monitor">false</stringProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree/>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <boolProp name="xml">false</boolProp>
-              <boolProp name="fieldNames">true</boolProp>
-              <boolProp name="label">true</boolProp>
-              <boolProp name="responseCode">true</boolProp>
-              <boolProp name="responseMessage">true</boolProp>
-              <boolProp name="success">true</boolProp>
-              <boolProp name="failureMessage">true</boolProp>
-              <boolProp name="bytes">true</boolProp>
-              <boolProp name="sentBytes">false</boolProp>
-              <boolProp name="threadName">true</boolProp>
-              <boolProp name="latency">true</boolProp>
-              <boolProp name="connectTime">false</boolProp>
-              <boolProp name="encoding">false</boolProp>
-              <boolProp name="sampleCount">true</boolProp>
-              <boolProp name="errorCount">true</boolProp>
-              <boolProp name="hostname">false</boolProp>
-              <boolProp name="idleTime">true</boolProp>
-              <boolProp name="requestHeaders">false</boolProp>
-              <boolProp name="responseHeaders">false</boolProp>
-              <boolProp name="responseData">false</boolProp>
-              <boolProp name="subresults">false</boolProp>
-              <boolProp name="assertions">false</boolProp>
-              <boolProp name="saveAssertionResultsFailureMessage">true</boolProp>
-              <boolProp name="assertionsResultsToSave">0</boolProp>
-              <boolProp name="samplerData">false</boolProp>
-              <boolProp name="saveDataType">false</boolProp>
-              <boolProp name="saveLabel">true</boolProp>
-              <boolProp name="saveResponseData">false</boolProp>
-              <boolProp name="saveSamplerData">false</boolProp>
-            </value>
-          </objProp>
-          <stringProp name="ResultCollector.filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-      </hashTree>
+      <!-- HTTP Request Sampler -->
+      <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="true">
+        <stringProp name="HTTPSampler.domain">localhost</stringProp>   <!-- Replace with your domain -->
+        <stringProp name="HTTPSampler.port">8080</stringProp>          <!-- Replace with your port -->
+        <stringProp name="HTTPSampler.path">/api/test</stringProp>     <!-- Replace with your test endpoint -->
+        <stringProp name="HTTPSampler.method">GET</stringProp>         <!-- Use GET, POST, etc. -->
+      </HTTPSamplerProxy>
+      <hashTree/>
+      <!-- Add more HTTP samplers here if needed -->
     </hashTree>
+    <!-- Result Collector to capture test results -->
+    <ResultCollector guiclass="ResultCollector" testclass="ResultCollector" testname="Results" enabled="true">
+      <stringProp name="filename">./tests/test-results.jtl</stringProp>  <!-- Save results to this file -->
+    </ResultCollector>
+    <hashTree/>
   </hashTree>
 </jmeterTestPlan>
