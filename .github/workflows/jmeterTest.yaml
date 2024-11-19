@@ -32,6 +32,9 @@ jobs:
       - name: Run JMeter test
         run: /opt/jmeter/bin/jmeter -n -t tests/failing-test-plan.jmx -l results/results.jtl
 
+      - name: Verify results
+        run: cat results/results.jtl
+
       # Step 4: Check for Test Failures
       - name: Check for JMeter Test Failures
         run: |
