@@ -30,7 +30,7 @@ jobs:
         run: chmod +x /opt/jmeter/bin/*
       
       - name: Run JMeter test
-        run: /opt/jmeter/bin/jmeter -n -t tests/failing-test-plan.jmx -l results/results.jtl
+        run: /opt/jmeter/bin/jmeter -n -t tests/test-plan.jmx -l results/results.jtl
 
       - name: Verify results
         run: cat results/results.jtl
