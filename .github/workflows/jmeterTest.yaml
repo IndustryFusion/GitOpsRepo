@@ -35,10 +35,10 @@ jobs:
       - name: Verify results
         run: cat results/results.jtl
 
-      # Step 4: Check for Test Failures
+      # Step 3: Check for JMeter Test Failures
       - name: Check for JMeter Test Failures
         run: |
-          if grep "<failure>" results/results.jtl; then
+          if grep ',false,' results/results.jtl; then
             echo "JMeter Tests Failed"
             exit 1
           else
