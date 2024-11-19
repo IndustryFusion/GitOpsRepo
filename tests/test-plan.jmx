@@ -1,35 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
-  <testPlan>
-    <stringProp name="TestPlan.comments"></stringProp>
-    <boolProp name="TestPlan.functional_mode">false</boolProp>
-    <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
-    <elementProp name="TestPlan.user_defined_variables" elementType="Arguments"/>
-    <boolProp name="TestPlan.enable_all_threads">true</boolProp>
-  </testPlan>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
-    <!-- Thread Group -->
-    <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
-      <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-      <stringProp name="ThreadGroup.num_threads">5</stringProp>  <!-- 5 threads/users -->
-      <stringProp name="ThreadGroup.ramp_time">10</stringProp>   <!-- Ramp-up time (seconds) -->
-      <stringProp name="ThreadGroup.loops">1</stringProp>  <!-- Number of iterations per thread -->
-    </ThreadGroup>
-    <hashTree>
-      <!-- HTTP Request Sampler -->
-      <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="true">
-        <stringProp name="HTTPSampler.domain">localhost</stringProp>   <!-- Replace with your domain -->
-        <stringProp name="HTTPSampler.port">8080</stringProp>          <!-- Replace with your port -->
-        <stringProp name="HTTPSampler.path">/api/test</stringProp>     <!-- Replace with your test endpoint -->
-        <stringProp name="HTTPSampler.method">GET</stringProp>         <!-- Use GET, POST, etc. -->
-      </HTTPSamplerProxy>
-      <hashTree/>
-      <!-- Add more HTTP samplers here if needed -->
-    </hashTree>
-    <!-- Result Collector to capture test results -->
-    <ResultCollector guiclass="ResultCollector" testclass="ResultCollector" testname="Results" enabled="true">
-      <stringProp name="filename">./tests/test-results.jtl</stringProp>  <!-- Save results to this file -->
-    </ResultCollector>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"/>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+    </TestPlan>
     <hashTree/>
   </hashTree>
 </jmeterTestPlan>
