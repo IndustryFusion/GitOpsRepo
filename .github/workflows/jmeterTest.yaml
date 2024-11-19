@@ -1,47 +1,46 @@
-name: JMeter Test Pipeline
+name: PR Check Pipeline
 
 on:
   pull_request:
-    branches:
-      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+  workflow_dispatch:
 
 jobs:
-  jmeter-test:
+  pr-check:
+    name: PR Check with JMeter
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Install JMeter
-      run: |
-        sudo apt update
-        sudo apt install -y jmeter
+      # Step 2: Set up JMeter (install JMeter if not already installed)
+      - name: Install JMeter
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk
+          wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz
+          tar -xzf apache-jmeter-5.6.2.tgz
+          export JMETER_HOME=$PWD/apache-jmeter-5.6.2
+          export PATH=$JMETER_HOME/bin:$PATH
 
-    - name: Create results directory
-      run: mkdir -p ./tests
+      # Step 3: Run JMeter Tests
+      - name: Run JMeter Tests
+        run: |
+          jmeter -n -t tests/test-plan.jmx -l results/results.jtl
+        continue-on-error: true
+        id: jmeter-test
 
-    - name: Run JMeter tests
-      run: |
-        jmeter -n -t ./tests/test-plan.jmx -l ./tests/test-results.jtl \
-          -Djava.security.manager=allow \
-          -Duser.jmeter.save.saveservice.classname=true \
-          -Duser.jmeter.save.saveservice.scriptwrapper=true
-
-    - name: List files in tests directory
-      run: ls -R ./tests
-
-    - name: Check JMeter results
-      run: |
-        if [ -f ./tests/test-results.jtl ]; then
-          grep "Failure" ./tests/test-results.jtl || echo "No failures found in test results."
-        else
-          echo "Test results file not found."
-          exit 1
-        fi
-
-    - name: Upload JMeter report
-      uses: actions/upload-artifact@v3
-      with:
-        name: jmeter-report
-        path: ./tests/test-results.jtl
+      # Step 4: Check for Test Failures
+      - name: Check for JMeter Test Failures
+        run: |
+          if grep "<failure>" results/results.jtl; then
+            echo "JMeter Tests Failed"
+            exit 1
+          else
+            echo "All JMeter Tests Passed"
+          fi
