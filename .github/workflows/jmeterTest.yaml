@@ -1,13 +1,9 @@
 name: PR Check Pipeline
 
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
   workflow_dispatch:
-
+  repository_dispatch:
+    types: [jmeter-test-trigger]
 jobs:
   pr-check:
     name: PR Check with JMeter
