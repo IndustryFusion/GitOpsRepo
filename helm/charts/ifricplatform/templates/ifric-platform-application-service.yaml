@@ -75,9 +75,9 @@ spec:
         - name: IFX_PLATFORM_BACKEND_URL
           value: https://dev-platform-backend.industryfusion-x.org
         - name: ZOHO_DESK_ORGANIZATION_ID
-          value: 20101939812
+          value: {{ .Values.ifric_platform.zohoOrgId }}
         - name: ZOHO_DEPARTMENT_ID
-          value: 186093000000007061
+          value: {{ .Values.ifric_platform.zohoDepId }}
       - name: ifric-platform-frontend
         image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
