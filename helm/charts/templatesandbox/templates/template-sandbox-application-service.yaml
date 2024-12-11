@@ -17,55 +17,23 @@ spec:
     spec:
       containers:
       - name: template-sandbox-backend
-        image: {{ .Values.mainRepo }}/template-sandbox-backend:{{ .Values.mainVersion }}
+        image: {{ .Values.mainRepo }}/template-sandbox-backend:pipeline-test  
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.template_sandbox.backendPort }}
         env:
-        - name: GITHUB_BASE_URL
-          value: https://api.github.com/repos/IndustryFusion/templates/contents/base-templates
-        - name: GITHUB_TOKEN
-          value: {{ .Values.template_sandbox.githubToken }}
-        - name: SCORPIO_URL
-          value: https://dev-dataroom.ifric.org/ngsi-ld/v1/entities
-        - name: S3_URL
-          value: s3-eu-central-1.ionoscloud.com
-        - name: S3_ACCESS_KEY
+        - name: IONOS_ACCESS_KEY
           value: {{ .Values.template_sandbox.s3AccessKey }}
-        - name: S3_SECRET_KEY
+        - name: IONOS_SECRET_KEY
           value: {{ .Values.template_sandbox.s3SecretKey }}
-        - name: S3_BUCKET
-          value: iff-dev
-        - name: USERNAME
-          value: {{ .Values.template_sandbox.username }}
-        - name: PASSWORD
-          value: {{ .Values.template_sandbox.password }}
-        - name: MONGO_URL
-          value: {{ .Values.template_sandbox.mongoUrl }}
-        - name: CORS_ORIGIN
-          value: {{ .Values.template_sandbox.corsOrigin }}
-        - name: ICID_SERVICE_URL
-          value: https://dev-icid-service.ifric.org
-        - name: ASSETS_DEFAULT_CODE
-          value: IFX-EUR-NLD-AST
-        - name: USERS_DEFAULT_CODE
-          value: IFX-EUR-NLD-USR
-        - name: CONTEXT
-          value: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
-        - name: IFRIC_PLATFORM_BACKEND_URL
-          value: https://dev-platform-backend.ifric.org
-        - name: ECLASS_KEY_PATH
-          value: /etc/ssl/certs/key.pem
-        - name: ECLASS_CERTIFICATE_PATH
-          value: /etc/ssl/certs/cert.pem
-        - name: IFX_PLATFORM_FRONTEND_URL
-          value: https://platform.industryfusion-x.org
-        - name: FACTORY_MANAGER_BACKEND_URL
-          value: https://dev-factory-backend.industry-fusion.com
-        - name: FLEET_MANAGER_FRONTEND_URL
-          value: https://dev-fleet.industry-fusion.com
-        - name: FACTORY_MANAGER_FRONTEND_URL
-          value: https://dev-factory.industry-fusion.com
+        - name: IONOS_BUCKET
+          value: iff-env
+        - name: IONOS_FILE_KEY
+          value: template-sandbox/dev/backend/.env.development
+        - name: IONOS_ENDPOINT
+          value: https://s3-eu-central-1.ionoscloud.com
+        - name: LOCAL_FILE_PATH
+          value: /app/.env
         volumeMounts:
         - name: sandbox-cert-volume
           mountPath: /etc/ssl/certs
