@@ -73,7 +73,7 @@ spec:
         - name: ZOHO_CLIENT_SECRET
           value: {{ .Values.ifric_registry.zoho_client_secret }}
         - name: ZOHO_REFRESH_TOKEN
-          value: 1000.eb770435848d77e234f4ed558a027af1.565f52b78685f9a7a05a25b917fc75b6
+          value: 1000.ca24904003c11711c1152bd5fdf4fa95.88f3eaec436a64d424b2fbb038fe16bc
         - name: ZOHO_ORGANIZATION_ID
           value: "20101939223"
         # volumeMounts:
