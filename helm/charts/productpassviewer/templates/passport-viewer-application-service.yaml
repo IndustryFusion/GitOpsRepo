@@ -52,6 +52,8 @@ spec:
           value: {{ .Values.passport_viewer.username }}
         - name: PASSWORD
           value: {{ .Values.passport_viewer.password }}
+        - name: PRODUCT_PASS_VIEWER_TOKEN
+          value: "59075641a001650afcac6316a6d2e049"
       - name: passport-viewer-frontend
         image: {{ .Values.mainRepo }}/passport-viewer-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
