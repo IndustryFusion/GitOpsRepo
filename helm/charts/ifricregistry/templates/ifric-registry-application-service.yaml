@@ -76,6 +76,8 @@ spec:
           value: 1000.ca24904003c11711c1152bd5fdf4fa95.88f3eaec436a64d424b2fbb038fe16bc
         - name: ZOHO_ORGANIZATION_ID
           value: "20101939223"
+        - name: PRODUCT_PASS_VIEWER_TOKEN
+          value: "59075641a001650afcac6316a6d2e049"
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
