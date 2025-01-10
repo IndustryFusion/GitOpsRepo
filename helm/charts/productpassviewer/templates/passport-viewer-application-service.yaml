@@ -54,6 +54,10 @@ spec:
           value: {{ .Values.passport_viewer.password }}
         - name: PRODUCT_PASS_VIEWER_TOKEN
           value: "59075641a001650afcac6316a6d2e049"
+        - name: TEMPLATE_SANDBOX_BACKEND_URL
+          value: https://dev-sandbox-backend.industry-fusion.com
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: https://dev-platform-backend.industryfusion-x.org
       - name: passport-viewer-frontend
         image: {{ .Values.mainRepo }}/passport-viewer-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
