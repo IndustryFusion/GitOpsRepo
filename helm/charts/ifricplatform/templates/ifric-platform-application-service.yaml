@@ -78,6 +78,8 @@ spec:
           value: "{{ .Values.ifric_platform.zohoOrgId }}"
         - name: ZOHO_DEPARTMENT_ID
           value: "{{ .Values.ifric_platform.zohoDepId }}"
+        - name: ZOHO_DESK_URL
+          value: https://desk.zoho.eu/api/v1
       - name: ifric-platform-frontend
         image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
