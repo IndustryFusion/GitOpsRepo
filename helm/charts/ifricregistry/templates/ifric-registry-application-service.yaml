@@ -73,9 +73,9 @@ spec:
         - name: ZOHO_CLIENT_SECRET
           value: {{ .Values.ifric_registry.zoho_client_secret }}
         - name: ZOHO_REFRESH_TOKEN
-          value: 1000.ca24904003c11711c1152bd5fdf4fa95.88f3eaec436a64d424b2fbb038fe16bc
+          value: 1000.85d3b55a1c3d64db594a2ae4cc4e7b56.60dc86982c125de957d45658565edd4c
         - name: ZOHO_ORGANIZATION_ID
-          value: "20101939223"
+          value: "20103551623"
         - name: PRODUCT_PASS_VIEWER_TOKEN
           value: "59075641a001650afcac6316a6d2e049"
         - name: ZOHO_BILLING_URL
