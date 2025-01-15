@@ -67,10 +67,10 @@ spec:
     spec:
       serviceAccountName: devices-account
       restartPolicy: Always
-      hostAliases:
-      - ip: "192.168.49.154"
-        hostnames:
-        - "keycloak.local"
+      # hostAliases:
+      # - ip: "192.168.49.154"
+      #   hostnames:
+      #   - "keycloak.local"
       containers:
         - name: iff-akri-controller
           image: ibn40/iff-akri-controller:v0.0.1
@@ -85,6 +85,6 @@ spec:
           - name: GITHUB_PATH
             value: ''
           - name: GITHUB_TOKEN
-            value: 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
+            value: ""
       imagePullSecrets:
         - name: regcred
