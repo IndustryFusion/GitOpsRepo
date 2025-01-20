@@ -58,6 +58,8 @@ spec:
           value: https://dev-sandbox-backend.industry-fusion.com
         - name: IFX_PLATFORM_BACKEND_URL
           value: https://dev-platform-backend.industryfusion-x.org
+        - name: IFRIC_PLATFORM_BACKEND_URL
+          value: https://dev-platform-backend.ifric.org
       - name: passport-viewer-frontend
         image: {{ .Values.mainRepo }}/passport-viewer-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
