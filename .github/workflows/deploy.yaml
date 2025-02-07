@@ -208,6 +208,7 @@ jobs:
             --set ifx_platform.jiraToken="${{ secrets.JIRA_TOKEN }}" \
             --set ifx_platform.jiraUrl="${{ secrets.JIRA_URL }}" \
             --set ifx_platform.emailUrl="${{ secrets.EMAIL_URL }}" \
+            --set ifx_platform.jwtSecret="${{ secrets.JWT_SECRET }}" \
             --set ifx_suite.jwtSecret="${{ secrets.JWT_SECRET }}" \
             --set fleet50.githubToken="${{ secrets.HUB_TOKEN }}" \
             --set fleet50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
