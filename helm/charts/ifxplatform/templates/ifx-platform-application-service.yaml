@@ -21,6 +21,9 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.ifx_platform.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
         env:
         - name: GITHUB_BASE_URL
           value: https://api.github.com/repos/IndustryFusion/templates/contents/new-temp
