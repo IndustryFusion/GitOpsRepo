@@ -39,6 +39,9 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.icid.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
         env:
         - name: MONGO_URL
           value: {{ .Values.icid.mongoUrl }}
