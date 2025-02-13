@@ -21,6 +21,9 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.template_sandbox.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
         env:
         - name: IONOS_ACCESS_KEY
           value: {{ .Values.template_sandbox.s3AccessKey }}
