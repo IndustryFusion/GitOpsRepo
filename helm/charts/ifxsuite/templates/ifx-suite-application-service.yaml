@@ -21,6 +21,9 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.ifx_suite.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
         env:
         - name: CORS_ORIGIN
           value: {{ .Values.ifx_suite.corsOrigin }}
