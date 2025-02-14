@@ -15,49 +15,68 @@ spec:
       labels:
         app: template-sandbox-application-service
     spec:
-      containers:
-      - name: template-sandbox-backend
-        image: {{ .Values.mainRepo }}/template-sandbox-backend:{{ .Values.mainVersion }}
-        imagePullPolicy: Always
-        ports:
-        - containerPort: {{ .Values.template_sandbox.backendPort }}
-        envFrom:
-          - secretRef:
-              name: vault-secrets
-        env:
-        - name: IONOS_ACCESS_KEY
-          value: {{ .Values.template_sandbox.s3AccessKey }}
-        - name: IONOS_SECRET_KEY
-          value: {{ .Values.template_sandbox.s3SecretKey }}
-        - name: IONOS_BUCKET
-          value: iff-env
-        - name: IONOS_FILE_KEY
-          value: template-sandbox/dev/backend/.env.development
-        - name: IONOS_ENDPOINT
-          value: https://s3-eu-central-1.ionoscloud.com
-        - name: LOCAL_FILE_PATH
-          value: /app/.env
-        volumeMounts:
-        - name: sandbox-cert-volume
-          mountPath: /etc/ssl/certs
-          readOnly: true
+      initContainers:
+        - name: copy-certs
+          image: alpine:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - cp /certs/cert.pem /certs/key.pem /etc/ssl/certs/;
+          volumeMounts:
+            - name: sandbox-cert-config
+              mountPath: /certs
+              readOnly: true
+            - name: sandbox-cert-volume
+              mountPath: /etc/ssl/certs
 
-      - name: template-sandbox-frontend
-        image: {{ .Values.mainRepo }}/template-sandbox-frontend:{{ .Values.mainVersion }}
-        imagePullPolicy: Always
-        ports:
-        - containerPort: {{ .Values.template_sandbox.frontendPort }}
-        env:
-        - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
-          value: https://dev-sandbox-backend.industry-fusion.com
+      containers:
+        - name: template-sandbox-backend
+          image: {{ .Values.mainRepo }}/template-sandbox-backend:{{ .Values.mainVersion }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.template_sandbox.backendPort }}
+          envFrom:
+            - secretRef:
+                name: vault-secrets
+          env:
+            - name: IONOS_ACCESS_KEY
+              value: {{ .Values.template_sandbox.s3AccessKey }}
+            - name: IONOS_SECRET_KEY
+              value: {{ .Values.template_sandbox.s3SecretKey }}
+            - name: IONOS_BUCKET
+              value: iff-env
+            - name: IONOS_FILE_KEY
+              value: template-sandbox/dev/backend/.env.development
+            - name: IONOS_ENDPOINT
+              value: https://s3-eu-central-1.ionoscloud.com
+            - name: LOCAL_FILE_PATH
+              value: /app/.env
+            - name: ECLASS_CERTIFICATE_PATH
+              value: /etc/ssl/certs/cert.pem
+            - name: ECLASS_KEY_PATH
+              value: /etc/ssl/certs/key.pem
+          volumeMounts:
+            - name: sandbox-cert-volume
+              mountPath: /etc/ssl/certs
+
+        - name: template-sandbox-frontend
+          image: {{ .Values.mainRepo }}/template-sandbox-frontend:{{ .Values.mainVersion }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.template_sandbox.frontendPort }}
+          env:
+            - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
+              value: https://dev-sandbox-backend.industry-fusion.com
       imagePullSecrets:
-      - name: {{ .Values.pullSecretCredentials }}
+        - name: {{ .Values.pullSecretCredentials }}
+      
       volumes:
-      - name: sandbox-cert-volume
-        configMap:
-          name: sandbox-cert-config
-          items:
-          - key: key.pem
-            path: key.pem
-          - key: cert.pem
-            path: cert.pem      
+        - name: sandbox-cert-config
+          configMap:
+            name: sandbox-cert-config
+            items:
+              - key: key.pem
+                path: key.pem
+              - key: cert.pem
+                path: cert.pem
+        - name: sandbox-cert-volume
+          emptyDir: {}
