@@ -42,6 +42,29 @@ spec:
         envFrom:
           - secretRef:
               name: vault-secrets
+        env:
+        - name: MONGO_URL
+          value: {{ .Values.icid.mongoUrl }}
+        - name: IFRIC_NAMESPACE
+          value: {{ .Values.icid.namespace }}
+        - name: CORS_ORIGIN
+          value: {{ .Values.icid.corsOrigin }}
+        - name: FLEET_MANAGER_BACKEND_URL
+          value: {{ .Values.icid.fleetBackendUrl }}
+        - name: IFRIC_PLATFORM_BACKEND_URL
+          value: {{ .Values.icid.platformBackendUrl }}
+        - name: IFRIC_REGISTRY_BACKEND_URL
+          value: {{ .Values.icid.registryUrl }}
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: {{ .Values.icid.ifxPlatformBackendUrl }}
+        - name: KEY_PATH
+          value: /etc/ssl/certs/root-ca-key.pem
+        - name: CERTIFICATE_PATH
+          value: /etc/ssl/certs/root-ca-cert.pem
+        - name: BINDING_DEFAULT_CODE
+          value: IFX-CON-BND
+        - name: CONTRACT_DEFAULT_CODE
+          value: IFX-CON-DEF
         volumeMounts:
         - name: icid-cert-volume
           mountPath: /etc/ssl/certs
