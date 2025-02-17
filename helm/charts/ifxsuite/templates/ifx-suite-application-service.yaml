@@ -24,36 +24,10 @@ spec:
         envFrom:
           - secretRef:
               name: vault-secrets
-        env:
-        - name: CORS_ORIGIN
-          value: {{ .Values.ifx_suite.corsOrigin }}
-        - name: ICID_SERVICE_BACKEND_URL
-          value: {{ .Values.ifx_suite.icidOrigin }}
-        - name: IFRIC_REGISTRY_BACKEND_URL
-          value:  {{ .Values.ifx_suite.registryUrl }}
-        - name: IFX_PLATFORM_BACKEND_URL
-          value: {{ .Values.ifx_suite.ifxPlatformBackendUrl }}
-        - name: JWT_SECRET_KEY
-          value: {{ .Values.ifx_suite.jwtSecretKey }}
       - name: ifx-suite-frontend
         image: {{ .Values.mainRepo }}/ifx-suite-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.ifx_suite.frontendPort }}
-        env:
-        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
-          value:  {{ .Values.ifx_suite.registryUrl }}
-        - name: NEXT_PUBLIC_ENVIRONMENT
-          value: dev
-        - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
-          value:  {{ .Values.ifx_suite.ifxPlatformBackendUrl }}
-        - name: NEXT_PUBLIC_IFX_SUITE_BACKEND_URL
-          value:  {{ .Values.ifx_suite.ifxSuiteBackendUrl }}
-        - name: NEXT_PUBLIC_FLEET_FRONTEND_URL
-          value:  {{ .Values.ifx_suite.fleetFrontendUrl }}
-        - name: NEXT_PUBLIC_FACTORY_FRONTEND_URL
-          value:  {{ .Values.ifx_suite.factoryFrontendUrl }}
-        - name: NEXT_PUBLIC_JWT_SECRET
-          value: {{ .Values.fleet50.jwtSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
