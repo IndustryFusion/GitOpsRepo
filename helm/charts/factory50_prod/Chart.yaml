@@ -1,6 +1,0 @@
-apiVersion: v2
-name: factory50-application-service-prod
-description: A Helm chart for IF50 application service in production enviroment
-type: application
-version: 0.1.0
-appVersion: "0.1.0"
