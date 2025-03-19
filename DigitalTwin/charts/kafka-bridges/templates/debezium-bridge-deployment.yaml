@@ -1,0 +1,66 @@
+---
+# yamllint disable rule:line-length
+# yamllint disable rule:braces
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debezium-bridge
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: debezium-bridge
+  annotations:
+    configmap.reloader.stakater.com/reload: "knowledge"
+spec:
+  replicas: {{ .Values.kafkaBridge.debezium.replicaCount }}
+  selector:
+    matchLabels:
+      app: debezium-bridge
+  template:
+    metadata:
+      labels:
+        app: debezium-bridge
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/bridge-configmap.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: debezium-bridge
+          image: '{{ .Values.mainRegistry }}/{{ .Values.mainRepo }}/kafka-bridge:{{ .Values.mainVersion }}'
+          command: ["node"]
+          args: ["/opt/debeziumBridge/app.js"]
+          imagePullPolicy: Always
+          env:
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+                - cat
+                - /tmp/healthy
+            initialDelaySeconds: 300
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /tmp/ready
+            initialDelaySeconds: 5
+          volumeMounts:
+            - name: config
+              mountPath: /opt/config/config.json
+              readOnly: true
+              subPath: config.json
+            - name: knowledge-config
+              mountPath: /opt/config/knowledge.ttl
+              subPath: knowledge.ttl
+              readOnly: true
+          resources:
+      volumes:
+        - name: config
+          configMap:
+            name: bridge-configmap
+        - name: knowledge-config
+          configMap:
+            name: knowledge
+      imagePullSecrets:
+        - name: {{ .Values.pullSecretCredentials }}

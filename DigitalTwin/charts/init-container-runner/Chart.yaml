@@ -1,0 +1,6 @@
+# charts/init-container-runner/Chart.yaml
+apiVersion: v2
+name: init-container-runner
+description: A Helm chart to run init containers for pre-requisite tasks.
+version: 0.1.0
+appVersion: "1.0"
