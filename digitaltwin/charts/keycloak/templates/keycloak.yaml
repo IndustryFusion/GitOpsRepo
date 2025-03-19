@@ -1,0 +1,57 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+  annotations:
+  namespace: {{ .Release.Namespace }}
+  labels:
+   app: {{ .Values.custom_resource.name }}
+spec:
+  instances: {{ .Values.custom_resource.instances }}
+  image: '{{ .Values.mainRegistry }}/{{ .Values.mainRepo }}/keycloak:{{ .Values.mainVersion }}'
+  hostname:
+    hostname: {{ .Values.keycloak.externalAuthService.domainname }}
+  http:
+    httpEnabled: true
+  db:
+    vendor: postgres
+    usernameSecret:
+      name: keycloak-db-secret
+      key: POSTGRES_USERNAME
+    passwordSecret:
+      name: keycloak-db-secret
+      key: POSTGRES_PASSWORD
+    database: {{ quote .Values.keycloak_db.stringData.POSTGRES_DATABASE  }}
+    host: {{ quote .Values.clusterExternalSvcName }}
+    port: {{ .Values.keycloak_db.stringData.POSTGRES_EXTERNAL_PORT }}
+  ingress:
+    enabled: false
+  additionalOptions:
+    - name: http-relative-path
+      value: /auth
+    - name: hostname-strict-https
+      value: "false"
+    - name: proxy
+      value: edge
+  features:
+    enabled:
+      - admin-fine-grained-authz
+      - token-exchange
+      - scripts
+  unsupported:
+    podTemplate:
+      spec:
+        containers:
+          - args: ['start']
+            env:
+              - name: OISP_FRONTEND_USER_ACCOUNT_ENDPOINT
+                value: {{ .Values.keycloak.oisp.frontendUrl }}/keycloak/users/:userId/accounts
+              - name: OISP_FRONTEND_DEVICE_ACCOUNT_ENDPOINT
+                value: {{ .Values.keycloak.oisp.frontendUrl }}/keycloak/activationcode/:activationCode/devices/:deviceUID/account
+              - name: OISP_FRONTEND_USER_DELETE_ENDPOINT
+                value: {{ .Values.keycloak.oisp.frontendUrl }}/keycloak/users/:userId
+              - name: OISP_FRONTEND_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: keycloak-client-secret-oisp-frontend
+                    key: CLIENT_SECRET

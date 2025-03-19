@@ -1,0 +1,17 @@
+{{- if not .Values.aaio.enabled }}
+{{- if and .Values.QueryManager.enabled .Values.QueryManager.hpa.enabled .Values.scorpio.hpa.enabled }}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+ name: {{ .Values.QueryManager.name }}-hpa
+ namespace: {{ .Release.Namespace }}
+spec:
+ scaleTargetRef:
+   apiVersion: apps/v1
+   kind: Deployment
+   name: {{ .Values.QueryManager.name }}
+ minReplicas: {{ .Values.QueryManager.hpa.minReplicas }}
+ maxReplicas: {{ .Values.QueryManager.hpa.maxReplicas }}
+ targetCPUUtilizationPercentage: {{ .Values.QueryManager.hpa.targetCPUUtilizationPercentage }}
+{{- end }}
+{{- end }}

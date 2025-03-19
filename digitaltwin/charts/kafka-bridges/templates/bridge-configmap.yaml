@@ -1,0 +1,125 @@
+---
+# yamllint disable rule:line-length
+# yamllint disable rule:braces
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bridge-configmap
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: bridge-configmap
+data:
+  config.json: |
+    {
+      "kafka": {
+              "brokers": [{{ .Values.kafka.bootstrapServer | quote }}]
+      },
+      "alerta": {
+              "topic": {{ .Values.kafkaBridge.alerta.listenTopic | quote }},
+              "hostname": {{ .Values.alerta.internalService | quote }},
+              "heartbeatTopic": {{ .Values.kafkaBridge.alerta.bulkTopic | quote }},
+              "port": {{ .Values.alerta.internalPort | quote }},
+              "protocol": {{ .Values.alerta.internalProtocol | quote }},
+              "accessKeyVariable": "ALERTA_API_KEY",
+              "kafkaResumeTimeout": {{ .Values.alerta.kafkaResumeTimeout }},
+              "heartbeatInterval": {{ .Values.alerta.heartbeatInterval }},
+              "heartbeatDelay": {{ .Values.alerta.heartbeatDelay }},
+              "requestTimeout": {{ .Values.alerta.requestTimeout }},
+              "kafkaCommitThreshold": {{ .Values.alerta.kafkaCommitThreshold }}
+      },
+      "logger": {
+              "loglevel": "info"
+      },
+      "keycloak": {
+              "ngsildUpdatesAuthService": {
+                      "auth-server-url":  {{ printf "%s//%s%s" .Values.keycloak.externalAuthService.protocol .Values.keycloak.externalAuthService.domainname .Values.keycloak.externalAuthService.path | quote}},
+                      "realm": {{ .Values.keycloak.ngsildUpdates.realm | quote }},
+                      "clientId": {{ .Values.keycloak.ngsildUpdates.client | quote }},
+                      "resource": {{ .Values.keycloak.ngsildUpdates.client | quote }},
+                      "secret": "secret",
+                      "bearer-only": true,
+                      "verify-token-audience": false,
+                      "ssl-required": false
+              },
+              "mqttAuthService": {
+                        "auth-server-url": {{ printf "%s//%s%s" .Values.keycloak.externalAuthService.protocol .Values.keycloak.externalAuthService.domainname .Values.keycloak.externalAuthService.path | quote}},
+                        "realm": "iff",
+                        "clientId": "mqtt-broker",
+                        "resource": "mqtt-broker",
+                        "secret": "secret",
+                        "bearer-only": true,
+                        "verify-token-audience": true,
+                        "ssl-required": "external"
+                }
+      },
+      "ngsildUpdates": {
+              "topic": {{ .Values.kafkaBridge.ngsildUpdates.listenTopic | quote }},
+              "refreshIntervalInSeconds": {{ .Values.kafkaBridge.ngsildUpdates.tokenRefreshInterval | quote}},
+              "clientSecretVariable": "NGSILD_UPDATES_CLIENT_SECRET"
+      },
+      "ngsildServer": {
+              "hostname": {{ .Values.scorpio.internalHostname | quote}},
+              "port": {{ .Values.scorpio.internalPort | quote}},
+              "protocol": {{ .Values.scorpio.internalProtocol | quote}}
+      },
+      "debeziumBridge": {
+              "topic": "iff.ngsild.public.entity",
+              "entityTopicPrefix": "iff.ngsild.entities",
+              "attributesTopic": "iff.ngsild.attributes"
+      },
+      "bridgeCommon": {
+              "kafkaSyncOnAttribute": "https://industry-fusion.com/types/v0.9/metadata/kafkaSyncOn",
+              "hashLength": 24
+      },
+      "mqtt": {
+                "host": {{ .Values.mqtt.broker.url | quote }},
+                "port": {{ .Values.mqtt.broker.localport }},
+                "retain": false,
+                "secure": {{ .Values.mqtt.broker.secure }},
+                "retries": {{ .Values.mqtt.broker.retries }},
+                "adminUsername": {{ .Values.mqtt.broker.adminUsername | quote}},
+                "adminPassword": {{ .Values.mqtt.broker.adminPassword | quote}},
+                "clientSecretVariable": "MQTT_CLIENT_SECRET",
+                "authServicePort": {{ .Values.mqtt.bridge.port }},
+                "sparkplug": {
+                        "spBKafkaProduce": false,
+                        "spBkafKaTopic": "sparkplugB",
+                        "ngsildKafkaProduce": true,
+                        "ngsildKafkaTopic": {{ .Values.kafkaBridge.mqtt.attributesTopic | quote }},
+                        "topics": {
+                                "subscribe": {
+                                        "sparkplugb_data_ingestion": "$share/kafka/spBv1.0/+/+/+/+"
+                                },
+                                "publish": {
+                                        "error": "server/error/{accountId}/{deviceId}",
+                                        "actuation": "/{realmId}/DCMD/{gatewayId}/{deviceId}"
+                                }
+                        }
+                },
+                "kafka": {
+                        "requestTimeout": {{ .Values.mqtt.kafka.requestTimeout }},
+                        "maxRetryTime": {{ .Values.mqtt.kafka.maxRetryTime }},
+                        "retries": {{ .Values.mqtt.kafka.retries }},
+                        "linger": {{ .Values.mqtt.kafka.linger }},
+                        "partitioner": {{ .Values.mqtt.kafka.partitioner | quote }}
+                }
+        },
+        "cache": {
+                "host": {{ .Values.mqtt.cache.host | quote }},
+                "port": {{ .Values.mqtt.cache.port }}
+        },
+      "timescaledb": {
+              "attributeTopic": {{ .Values.kafkaBridge.debezium.attributesTopic | quote}},
+              "entityTopic": {{ .Values.kafkaBridge.debezium.entitiesTopic | quote}},
+              "PGSSLMODE": "require",
+              "dbname": {{ .Values.db.timescaleDb | quote }},
+              "attributeTablename": {{ .Values.db.timescaleAttributeTable | quote }},
+              "entityTablename": {{ .Values.db.timescaleEntityTable | quote }},
+              "hostname": "acid-cluster",
+              "port": "5432",
+              "username": {{ .Values.db.scorpioDb | quote }},
+              "tsdbuser": {{ .Values.db.dbReaderUser| quote }},
+              "password": "POSTGRES_PASSWORD"
+      }
+    }
+
