@@ -32,7 +32,7 @@ helm:
       internalProtocol: "http:"
       # apiKey: {{ .StateValues.alertaApiKey }}
       adminPassword: {{ .StateValues.alertaAdminPassword }}
-      adminKey: {{ .StateValues.alertaAdminKey }}
+      adminKey: "AAA"
       kafkaResumeTimeout: 2000
       heartbeatInterval: 1000
       heartbeatDelay: 2000
