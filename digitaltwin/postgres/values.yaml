@@ -63,3 +63,506 @@ databases:
 
 preparedTimescaleDatabases: tsdb
 preparedPostgisDatabases: ngb
+
+# Default values for alerta.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: alerta/alerta-web
+  tag: 8.1.0
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 1
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+extraSecretMounts:
+  []
+  # - name: secret-files
+  #   mountPath: /etc/secrets
+  #   subPath: ""
+  #   secretName: alertmanager-secret-files
+  #   readOnly: true
+
+# alertaAdminPassword: "admin" # if not provided will be randomly generated
+#alertaAdminUsers: # list of email addresses
+ # - {{ .Values.alerta.adminUser }}
+#   - "admin@alerta.io"
+# alertaAdminKey: "<your_api_key_here>"
+# alertaApiKey: "<your_api_key_here>" # you probably want to set this to the same value as 'alertaAdminKey'
+
+# Alerta plugins to install
+# alertaInstallPlugins:
+#   - normalise
+#   - enhance
+alerta:
+  externalHostname: alerta.local
+  externalPath: /
+  adminUser: admin
+  internalService: alerta
+  internalPort: 8080
+  internalProtocol: "http:"
+  # apiKey: {{ .StateValues.alertaApiKey }}
+  adminPassword: "adminpass"
+  adminKey: "adminkey"
+  kafkaResumeTimeout: 2000
+  heartbeatInterval: 1000
+  heartbeatDelay: 2000
+  requestTimeout: 2000
+  kafkaCommitThreshold: 200
+# ref: http://docs.alerta.io/en/latest/configuration.html
+alertaConfig: |
+  AUTH_REQUIRED = "True"
+
+  SEVERITY_MAP = {
+  'critical': 0,
+  'major': 1,
+  'warning': 4,
+  'indeterminate': 5,
+  'ok': 5,
+  'normal':5,
+  'unknown': 9,
+  'up': 5,
+  'down': 0
+  }
+
+  COLOR_MAP = {
+  'severity': {
+  'critical': 'red',
+  'major': 'red',
+  'warning': '#1E90FF',
+  'indeterminate': 'lightblue',
+  'ok': '#00CC00',
+  'unknown': 'silver',
+  'up' : '#00CC00',
+  'down' : 'red'
+  }
+  }
+
+  DEFAULT_NORMAL_SEVERITY = 'ok'
+  COLUMNS = ['severity', 'status', 'lastReceiveTime', 'duplicateCount', 'customer', 'environment', 'service', 'resource', 'event', 'value', 'text']
+  PLUGINS=['reject']
+  ALLOWED_ENVIRONMENTS=['Production', 'Development', 'Code']
+
+  AUTH_PROVIDER = 'keycloak'
+
+  REQUESTS_CA_BUNDLE=True
+  ADMIN_USERS = ['admin']
+  USER_DEFAULT_SCOPES = ['read','write:alerts']
+
+alertaConfigSecrets:
+
+# ref: http://docs.alerta.io/en/latest/webui.html
+alertaWebUIConfig: |
+  {"endpoint": "/api"}
+#   // contents of config.js
+#   'use strict';
+#   angular.module('config', [])
+#     .constant('config', {
+#       'endpoint'    : "/api",
+#       'provider'    : "basic"
+#     })
+#     .constant('colors', {});
+
+postgresql:
+  enabled: false
+  postgresqlUsername: alerta
+  postgresqlDatabase: monitoring
+  postgresqlPassword: "changeme" # provide a password here, otherwise it will be randomly generated inside postgresql helm chart and will not be available as a variable in the alerta helm chart
+  persistence:
+    enabled: true
+    size: 10Gi
+
+  # If deploying on OpenShift
+  # volumePermissions:
+  #   securityContext:
+  #     runAsUser: "auto"
+  # securityContext:
+  #  enabled: false
+  # containerSecurityContext:
+  #  enabled: false,
+  # shmVolume:
+  #  chmod:
+  #    enabled: false
+
+  ################################### ingress service #######################################################################
+ingress:
+  ## Enable the ingress service
+  enabled: true
+  apiVersion: networking.k8s.io/v1
+  name: alerta-ingress
+  serviceName: alerta
+
+certmanager:
+  secret: selfsigned-cert-tls
+  issuer: letsencrypt-self
+
+# Consolidated values.yaml
+
+mainVersion: v0.6.0-beta.1
+mainRepo: ibn40
+mainRegistry: docker.io
+namespace: iff
+pullSecretCredentials: regcred
+externalRegistry: docker.io
+externalRegistry2: quay.io
+externalRegistry3: registry.opensource.zalan.do
+externalRegistry4: ghcr.io
+
+ingressType: traefik
+
+# Passwords and secrets (in a real scenario, these would be randomly generated)
+dbpassword: RANDOM_PASSWORD_PLACEHOLDER
+dbReaderPassword: RANDOM_PASSWORD_PLACEHOLDER
+keycloakpassword: RANDOM_PASSWORD_PLACEHOLDER
+minioAdminSecretKey: RANDOM_PASSWORD_PLACEHOLDER
+minioUserSecretKey: RANDOM_PASSWORD_PLACEHOLDER
+alertaClientSecret: RANDOM_PASSWORD_PLACEHOLDER
+alertaApiKey: RANDOM_PASSWORD_PLACEHOLDER
+alertaAdminPassword: RANDOM_PASSWORD_PLACEHOLDER
+alertaAdminKey: RANDOM_PASSWORD_PLACEHOLDER
+keycloakRealmTestUser: RANDOM_PASSWORD_PLACEHOLDER
+ngsildUpdatesClientSecret: RANDOM_PASSWORD_PLACEHOLDER
+oispFrontendClientSecret: RANDOM_PASSWORD_PLACEHOLDER
+mqttBrokerClientSecret: RANDOM_PASSWORD_PLACEHOLDER
+fusionBackendClientSecret: RANDOM_PASSWORD_PLACEHOLDER
+mqttAdminPassword: RANDOM_PASSWORD_PLACEHOLDER
+
+clusterSvcName: acid-cluster
+clusterExternalSvcName: acid-cluster.iff.svc.cluster.local
+
+db:
+  teamId: acid
+  clusterSvcPostfix: cluster
+  svcPort: "5432"
+  pvSize: 1Gi
+  podInstances: 1
+  alertaDb: monitoring
+  dbUser: "ngb"
+  dbReaderUser: "dbreader"
+  scorpioDb: ngb
+  timescaleDb: tsdb
+  timescaleEntityTable: entities
+  timescaleAttributeTable: attributes
+  secretPostfix: credentials.postgresql.acid.zalan.do
+  backupBucket: db-backup
+  backupNum: "5"
+  backupSchedule: '00 00 * * *'
+  cloneEnabled: false
+  cloneTimeStamp: '2025-03-20T00:00:00+00:00'
+
+scorpio:
+  tag: 3.0.0-SNAPSHOT
+  externalHostname: ngsild.local
+  externalProtocol: "http:"
+  externalPath: /
+  internalHostname: scorpio-all-in-one-runner
+  internalPort: 9090
+  internalProtocol: "http:"
+  heap_min:
+    Xms: "-Xms64M"
+    Xmx: "-Xmx64M"
+  heap_main:
+    Xms: "-Xms64M"
+    Xmx: "-Xmx64M"
+  hpa:
+    enabled: false
+  resources_min:
+    limits:
+      cpu: 100m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  resources_main:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
+flink:
+  imageTag: 1.16.1
+  clusterId: iff
+  taskmanagers: 1
+  jobmanager: 1
+  sqlClientPort: 9000
+  bucket: flink
+  haDir: recovery
+  checkpointDir: checkpoints
+  checkpointInterval: 1 min
+  savepointDir: savepoints
+  defaultParalellism: 1
+  alertWindow: '0.5'
+  alertDelay: '0.001'
+  ngsildUpdateWindow: '0.001'
+  attributeInsertWindow: '0.001'
+  jobmanagerCacheSize: 2Gi
+  taskmanagerCacheSize: 10Gi
+  ttl: "86400000 ms"
+  coreTtl: "300000 ms"
+
+minio:
+  enabled: true
+  storageSize: 10G
+  healthPath: /minio/health/live
+  adminAccessKey: console
+  mcImage: minio/mc:RELEASE.2023-06-28T21-54-17Z
+  minioImage: minio/minio:RELEASE.2023-01-12T02-06-16Z
+
+s3:
+  protocol: http
+  endpoint: minio.iff.svc.cluster.local
+  userAccessKey: minio
+  userSecretKey: RANDOM_PASSWORD_PLACEHOLDER
+
+alerta:
+  externalHostname: alerta.local
+  externalPath: /
+  adminUser: admin
+  internalService: alerta
+  internalPort: 8080
+  internalProtocol: "http:"
+  adminPassword: RANDOM_PASSWORD_PLACEHOLDER
+  adminKey: RANDOM_PASSWORD_PLACEHOLDER
+  kafkaResumeTimeout: 2000
+  heartbeatInterval: 1000
+  heartbeatDelay: 2000
+  requestTimeout: 2000
+  kafkaCommitThreshold: 200
+
+kafka:
+  name: my-cluster
+  resources:
+    requests:
+      memory: 400Mi
+      cpu: 200m
+    limits:
+      memory: 800Mi
+      cpu: 500m
+  jvmOptions:
+    "-Xmx": "400m"
+  bootstrapServer: my-cluster-kafka-bootstrap:9092
+  storage:
+    type: persistent-claim
+    size: 5Gi
+  zookeeper:
+    replicas: 1
+    storage:
+      type: persistent-claim
+      size: 1Gi
+  connect:
+    debeziumTopicPrefix: iff.ngsild
+    tableIncludeList: public.entity$
+    image: debezium-postgresql-connector
+    snapshotMode: always
+    restartAfter: 43200
+  config:
+    logRetentionHours: 24
+
+kafkaBridge:
+  debezium:
+    replicaCount: 1
+    listenTopic: "iff.ngsild.public.entity"
+    listenTopicRetention: "3600000"
+    listenTopicCompression: uncompressed
+    entityTopicPrefix: "iff.ngsild.entities"
+    entityTopicRetention: "3600000"
+    attributesTopic: "iff.ngsild.attributes"
+    entitiesTopic: "iff.ngsild.entities"
+    attributesTopicRetention: "3600000"
+    attributesTopicCompression: uncompressed
+  alerta:
+    replicaCount: 1
+    listenTopic: "iff.alerts"
+    bulkTopic: "iff.alerts.bulk"
+    bulkTopicRetention: "10000"
+    listenTopicRetention: "3600000"
+  ngsildUpdates:
+    replicaCount: 1
+    tokenRefreshInterval: 200
+    listenTopic: "iff.ngsild-updates"
+    listenTopicRetention: "3600000"
+  mqtt:
+    replicaCount: 1
+    attributesTopic: "iff.ngsild.attributes"
+  timescaledb:
+    postgresPort: 5432
+    replicaCount: 1
+    tokenRefreshInterval: 200
+    listenTopic: "iff.ngsild.attributes"
+    listenTopicRetention: "3600000"
+
+keycloak:
+  adminName: admin
+  adminPassword: RANDOM_PASSWORD_PLACEHOLDER
+  externalAuthService:
+    protocol: "http:"
+    domainname: "keycloak.local"
+    path: "/auth/"
+  internalAuthService:
+    name: keycloak-service
+    port: 8080
+    path: /auth
+  oisp:
+    frontendUrl: http://frontend.oisp.svc.cluster.local:4004
+    frontend:
+      client: oisp-frontend
+      clientSecret: RANDOM_PASSWORD_PLACEHOLDER
+    mqttBroker:
+      client: mqtt-broker
+      clientSecret: RANDOM_PASSWORD_PLACEHOLDER
+    fusionBackend:
+      client: fusion-backend
+      clientSecret: RANDOM_PASSWORD_PLACEHOLDER
+    fusionFrontend:
+      client: fusion-frontend
+  alerta:
+    clientSecret: RANDOM_PASSWORD_PLACEHOLDER
+    realm: iff
+    client: alerta-ui
+    redirectUris:
+    - http://alerta.local/*
+    - https://alerta.local/*
+    defaultClientScopes:
+    - oisp-frontend
+    - accounts
+    - offline_access
+    - openid
+    - profile
+    - email
+    - type
+    - roles
+    - pgrest_role
+  scorpio:
+    realm: iff
+    client: scorpio
+  ngsildUpdates:
+    clientSecret: RANDOM_PASSWORD_PLACEHOLDER
+    realm: iff
+    client: ngsild-updates
+    serviceRole: scorpio.Factory-Admin
+  realmTestUser:
+    username: "realm_user"
+    password: RANDOM_PASSWORD_PLACEHOLDER
+
+keycloak_db:
+  stringData:
+    POSTGRES_DATABASE: keycloakdb
+    POSTGRES_EXTERNAL_ADDRESS: acid-cluster
+    POSTGRES_ADDR: acid-cluster
+    POSTGRES_EXTERNAL_PORT: "5432"
+    POSTGRES_SUPERUSER: "true"
+    POSTGRES_USERNAME: ngb
+
+ontology:
+  baseUri: https://industryfusion.github.io/contexts/staging/example/v0.1/
+
+velero:
+  image:
+    repository: velero/velero
+    tag: v1.10.0
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+  initContainers:
+    - name: velero-plugin-for-aws
+      image: velero/velero-plugin-for-aws:v1.5.0
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /target
+          name: plugins
+  configuration:
+    provider: aws
+    backupStorageLocation:
+      name: minio
+      bucket: velero-backup
+      default: true
+      accessMode: ReadWrite
+      config:
+        region: de
+        s3Url: http://minio.iff.svc.cluster.local
+        s3ForcePathStyle: true
+      defaultVolumesToRestic: true
+  credentials:
+    useSecret: true
+    existingSecret: "velero-s3-credentials"
+  snapshotsEnabled: false
+
+redis:
+  storage:
+    size: 2Gi
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 50m
+      memory: 100Mi
+
+emqx:
+  replicas: 1
+  externalHostname: mqtt.local
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+mqtt:
+  broker:
+    adminUsername: admin
+    adminPassword: RANDOM_PASSWORD_PLACEHOLDER
+    url: emqx-listeners
+    localport: 1883
+    secure: false
+    retries: 100
+  bridge:
+    port: 3025
+    url: mqtt-bridge
+  kafka:
+    linger: 50
+    partitioner: "defaultPartitioner"
+    retries: 10
+    maxRetryTime: 5000
+    "requestTimeout": 20000
+  cache:
+    host: redis
+    port: 6379
+
+pgrest:
+  externalHostname: pgrest.local
+  externalPath: /
+  dbPool: 10
