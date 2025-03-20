@@ -22,4 +22,19 @@ helm:
   # How long for helm to wait for the release to be active. If the value
   # is less that or equal to zero, we will not wait in Helm
   timeoutSeconds: 0
-  valuesFile: "../values.yaml.gotmpl"
+  values:
+    alerta:
+      externalHostname: {{ .StateValues.alerta.externalHostname }}
+      externalPath: {{ .StateValues.alerta.externalPath }}
+      adminUser: admin
+      internalService: alerta
+      internalPort: 8080
+      internalProtocol: "http:"
+      # apiKey: {{ .StateValues.alertaApiKey }}
+      adminPassword: {{ .StateValues.alertaAdminPassword }}
+      adminKey: {{ .StateValues.alertaAdminKey }}
+      kafkaResumeTimeout: 2000
+      heartbeatInterval: 1000
+      heartbeatDelay: 2000
+      requestTimeout: 2000
+      kafkaCommitThreshold: 200
