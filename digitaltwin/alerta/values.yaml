@@ -47,7 +47,7 @@ extraSecretMounts:
 #alertaAdminUsers: # list of email addresses
  # - {{ .Values.alerta.adminUser }}
 #   - "admin@alerta.io"
-# alertaAdminKey: "<your_api_key_here>"
+alertaAdminKey: "<your_api_key_here>"
 # alertaApiKey: "<your_api_key_here>" # you probably want to set this to the same value as 'alertaAdminKey'
 
 # Alerta plugins to install
