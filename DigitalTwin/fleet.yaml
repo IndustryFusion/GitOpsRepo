@@ -1,5 +1,0 @@
-# fleet.yaml
-namespace: digital-twin
-defaultNamespace: digital-twin
-helm:
-  releaseName: digital-twin
