@@ -153,4 +153,4 @@ releases:
   values:
   - values.yaml.gotmpl
   needs:
-  - postgres  
+  - postgres

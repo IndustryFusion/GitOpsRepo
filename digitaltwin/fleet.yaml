@@ -1,5 +1,4 @@
 # fleet.yaml
-namespace: digital-twin
-defaultNamespace: digital-twin
-helm:
-  releaseName: digital-twin
+namespace: iff
+helmfile:
+  path: ./helmfile.yaml
