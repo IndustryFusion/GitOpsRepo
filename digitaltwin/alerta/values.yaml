@@ -42,19 +42,33 @@ extraSecretMounts:
   #   subPath: ""
   #   secretName: alertmanager-secret-files
   #   readOnly: true
-alerta:
-  alertaAdminPassword: "admin" # if not provided will be randomly generated
+
+# alertaAdminPassword: "admin" # if not provided will be randomly generated
 #alertaAdminUsers: # list of email addresses
  # - {{ .Values.alerta.adminUser }}
 #   - "admin@alerta.io"
-  alertaAdminKey: "<your_api_key_here>"
+# alertaAdminKey: "<your_api_key_here>"
 # alertaApiKey: "<your_api_key_here>" # you probably want to set this to the same value as 'alertaAdminKey'
 
 # Alerta plugins to install
 # alertaInstallPlugins:
 #   - normalise
 #   - enhance
-
+alerta:
+  externalHostname: alerta.local
+  externalPath: /
+  adminUser: admin
+  internalService: alerta
+  internalPort: 8080
+  internalProtocol: "http:"
+  # apiKey: {{ .StateValues.alertaApiKey }}
+  adminPassword: {{ randAlphaNum 32 }}
+  adminKey: {{ randAlphaNum 32 }}
+  kafkaResumeTimeout: 2000
+  heartbeatInterval: 1000
+  heartbeatDelay: 2000
+  requestTimeout: 2000
+  kafkaCommitThreshold: 200
 # ref: http://docs.alerta.io/en/latest/configuration.html
 alertaConfig: |
   AUTH_REQUIRED = "True"
