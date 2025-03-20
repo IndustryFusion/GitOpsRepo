@@ -9,7 +9,7 @@ spec:
       containers:
       - name: init-script
         image: bitnami/kubectl:latest
-        command: ["/bin/sh", "-c", "/scripts/script.sh"]
+        command: ["/bin/sh", "-c", "chmod +x /scripts/script.sh && /scripts/script.sh"]
         volumeMounts:
         - name: script-volume
           mountPath: /scripts
