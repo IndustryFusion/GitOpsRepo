@@ -16,7 +16,7 @@ releases:
     order: first
     app: postgres
   chart: ./charts/postgres
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   needs:
   - minio
   values:
@@ -26,7 +26,7 @@ releases:
     order: second
     app: kafka
   chart: ./charts/kafka
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   needs:
   - postgres
   values:
@@ -36,7 +36,7 @@ releases:
     order: first
     app: cert-manager
   chart: ./charts/cert-manager
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
 - name: keycloak
@@ -44,7 +44,7 @@ releases:
     order: first
     app: keycloak
   chart: ./charts/keycloak
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   needs:
   - postgres
   values:
@@ -54,7 +54,7 @@ releases:
     order: third
     app: alerta
   chart: ./charts/alerta
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
   needs:
@@ -65,7 +65,7 @@ releases:
     order: second
     app: scorpio
   chart: ./charts/scorpio
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
   needs:
@@ -77,7 +77,7 @@ releases:
     app: flink
     order: third
   chart: ./charts/flink
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
   needs:
@@ -88,7 +88,7 @@ releases:
     order: first
     app: minio
   chart: ./charts/minio
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
 - name: kafka-bridges
@@ -96,7 +96,7 @@ releases:
     app: kafka-bridges
     order: third
   chart: ./charts/kafka-bridges
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
   needs:
@@ -108,7 +108,7 @@ releases:
     app: sql-core
     order: third
   chart: ./charts/sql-core
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
   needs:
@@ -125,13 +125,13 @@ releases:
   values:
   - values.yaml.gotmpl
   needs:
-  - {{ .Values.namespace }}/minio
+  - iff/minio
 - name: redis
   labels:
     app: redis
     order: first
   chart: ./charts/redis
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
 - name: emqx
@@ -139,7 +139,7 @@ releases:
     app: emqx
     order: third
   chart: ./charts/emqx
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
   needs:
@@ -149,7 +149,7 @@ releases:
     app: pgrest
     order: second
   chart: ./charts/pgrest
-  namespace: {{ .Values.namespace }}
+  namespace: iff
   values:
   - values.yaml.gotmpl
   needs:
