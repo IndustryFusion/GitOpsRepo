@@ -1,4 +1,120 @@
 # fleet.yaml
-namespace: iff
-helmfile:
-  path: ./helmfile.yaml
+namespace: iff  # Namespace for all resources
+
+# Define all charts (releases) directly in Fleet
+charts:
+  - name: postgres
+    chart: ./charts/postgres
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - minio
+
+  - name: kafka
+    chart: ./charts/kafka
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - postgres
+
+  - name: cert-manager
+    chart: ./charts/cert-manager
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+
+  - name: keycloak
+    chart: ./charts/keycloak
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - postgres
+
+  - name: alerta
+    chart: ./charts/alerta
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - postgres
+    - keycloak
+
+  - name: scorpio
+    chart: ./charts/scorpio
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - postgres
+    - keycloak
+    - kafka
+
+  - name: flink
+    chart: ./charts/flink
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - kafka
+    - minio
+
+  - name: minio
+    chart: ./charts/minio
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+
+  - name: kafka-bridges
+    chart: ./charts/kafka-bridges
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - kafka
+    - keycloak
+    - alerta
+
+  - name: sql-core
+    chart: ./charts/sql-core
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - kafka
+    - flink
+    - alerta
+    - scorpio
+    - kafka-bridges
+
+  - name: velero
+    chart: ./charts/velero
+    namespace: velero
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - iff/minio
+
+  - name: redis
+    chart: ./charts/redis
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+
+  - name: emqx
+    chart: ./charts/emqx
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - kafka-bridges
+
+  - name: pgrest
+    chart: ./charts/pgrest
+    namespace: iff
+    values:
+    - values.yaml.gotmpl
+    needs:
+    - postgres
