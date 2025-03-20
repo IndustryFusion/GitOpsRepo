@@ -62,8 +62,8 @@ alerta:
   internalPort: 8080
   internalProtocol: "http:"
   # apiKey: {{ .StateValues.alertaApiKey }}
-  adminPassword: {{ randAlphaNum 32 }}
-  adminKey: {{ randAlphaNum 32 }}
+  adminPassword: "adminpass"
+  adminKey: "adminkey"
   kafkaResumeTimeout: 2000
   heartbeatInterval: 1000
   heartbeatDelay: 2000
