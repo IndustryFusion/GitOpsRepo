@@ -20,3 +20,9 @@ helm:
   # How long for helm to wait for the release to be active. If the value
   # is less that or equal to zero, we will not wait in Helm
   timeoutSeconds: 0
+  values:
+    files:
+      - ../environments/default.yaml
+      - ../common.gotmpl
+      - ../common.yaml
+      - ../values.yaml.gotmpl
