@@ -23,7 +23,8 @@ db:
   svcPort: "5432"
   dbUser: "ngb"
   dbReaderUser: "dbreader"
-
+clusterSvcName: acid-cluster
+secretPostfix: credentials.postgresql.acid.zalan.do
 #################################### ibn40 Dockerhub secret #########################
 imageCredentials:
   registry: https://index.docker.io/v1/
