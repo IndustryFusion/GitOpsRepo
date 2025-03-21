@@ -70,3 +70,63 @@ ingress:
     ################################### keycloak-db-secret #######################################################################
 keycloak_db:
   enabled: true
+
+certmanager:
+  issuer: letsencrypt-self
+  secret: selfsigned-cert-tls
+
+custom_resource:
+  instances: 1
+  name: keycloak-instance
+
+db:
+  dbReaderUser: dbreader
+
+dbpassword: "r7M2hP9TzK5XvG1cYqL8N0w3B6D4JfZQ"
+
+ingressType: "nginx"
+
+keycloak:
+  adminName: admin
+  adminPassword: "X5L3P9B7N1Q0J2T8YfG6D4MZKrCwYqV"
+  externalAuthService:
+    domainname: keycloak.local
+  internalAuthService:
+    name: keycloak-service
+    port: 8080
+  alerta:
+    client: alerta-ui
+    clientSecret: "T7Q3X9B1Y0J5N8L2M6D4PZKrGfCYwV"
+    realm: iff
+  ngsildUpdates:
+    client: ngsild-updates
+    clientSecret: "M9T1Q3X5B7L0J8N2D4P6ZKrGfCYwVY"
+    serviceRole: scorpio.Factory-Admin
+  oisp:
+    frontendUrl: http://frontend.oisp.svc.cluster.local:4004
+    frontend:
+      client: oisp-frontend
+      clientSecret: "P9B1X3L7Q0J5N8M2T4D6ZKrGfCYwVY"
+    fusionBackend:
+      client: fusion-backend
+      clientSecret: "X1L3P7B9N0J5T8Q2D4M6ZKrGfCYwVY"
+    fusionFrontend:
+      client: fusion-frontend
+    mqttBroker:
+      client: mqtt-broker
+      clientSecret: "Q3X9B1L5N7J0T8M2D4P6ZKrGfCYwVY"
+  realmTestUser:
+    username: realm_user
+    password: "N7X1L3P9B5J0T8Q2D4M6ZKrGfCYwVY"
+  scorpio:
+    client: scorpio
+
+keycloak_db:
+  stringData:
+    POSTGRES_EXTERNAL_PORT: "5432"
+
+mainRegistry: docker.io
+mainRepo: ibn40
+mainVersion: v0.6.0-beta.1
+externalRegistry: docker.io
+namespace: iff
