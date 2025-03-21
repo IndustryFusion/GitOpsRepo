@@ -1,0 +1,12 @@
+redis:
+  storage:
+    size: 2Gi
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 50m
+      memory: 100Mi
+
+externalRegistry: docker.io
