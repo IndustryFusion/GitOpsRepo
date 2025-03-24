@@ -93,6 +93,7 @@ zookeeper:
     name: kafka
     tagPrefix: ""
 kafka:
+  bootstrapServer: my-cluster-kafka-bootstrap:9092
   image:
     registry: ""
     repository: ""
