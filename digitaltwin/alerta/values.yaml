@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+
+
 image:
   repository: alerta/alerta-web
   tag: 8.1.0
