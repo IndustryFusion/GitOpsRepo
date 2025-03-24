@@ -105,12 +105,12 @@ dnsPolicy: ClusterFirst
 # Init containers to add to the Velero deployment's pod spec. At least one plugin provider image is required.
 # If the value is a string then it is evaluated as a template.
 initContainers:
-  # - name: velero-plugin-for-aws
-  #   image: velero/velero-plugin-for-aws:v1.10.0
-  #   imagePullPolicy: IfNotPresent
-  #   volumeMounts:
-  #     - mountPath: /target
-  #       name: plugins
+  - name: velero-plugin-for-aws
+    image: velero/velero-plugin-for-aws:v1.10.0
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+      - mountPath: /target
+        name: plugins
 
 # SecurityContext to use for the Velero deployment. Optional.
 # Set fsGroup for `AWS IAM Roles for Service Accounts`
@@ -316,18 +316,16 @@ configuration:
   backupStorageLocation:
     # name is the name of the backup storage location where backups should be stored. If a name is not provided,
     # a backup storage location will be created with the name "default". Optional.
-  - name:
+  - name: minio
     # provider is the name for the backup storage location provider.
-    provider:
+    provider: aws
     # bucket is the name of the bucket to store backups in. Required.
-    bucket:
+    bucket: velero-backup
     # caCert defines a base64 encoded CA bundle to use when verifying TLS connections to the provider. Optional.
     caCert:
     # prefix is the directory under which all Velero data should be stored within the bucket. Optional.
     prefix:
-    # default indicates this location is the default backup storage location. Optional.
-    default:
-    # validationFrequency defines how frequently Velero should validate the object storage. Optional.
+    default: true
     validationFrequency:
     # accessMode determines if velero can write to this backup storage location. Optional.
     # default to ReadWrite, ReadOnly is used during migrations and restores.
@@ -337,25 +335,12 @@ configuration:
       name:
       # name of key that contains the secret data to be used.
       key:
-    # Additional provider-specific configuration. See link above
     # for details of required/optional fields for your provider.
-    config: {}
-    #  region:
-    #  s3ForcePathStyle:
-    #  s3Url:
-    #  kmsKeyId:
-    #  resourceGroup:
-    #  The ID of the subscription containing the storage account, if different from the cluster’s subscription. (Azure only)
-    #  subscriptionId:
-    #  storageAccount:
-    #  publicUrl:
-    #  Name of the GCP service account to use for this backup storage location. Specify the
-    #  service account here if you want to use workload identity instead of providing the key file.(GCP only)
-    #  serviceAccount:
-    #  Option to skip certificate validation or not if insecureSkipTLSVerify is set to be true, the client side should set the
-    #  flag. For Velero client Command like velero backup describe, velero backup logs needs to add the flag --insecure-skip-tls-verify
-    #  insecureSkipTLSVerify:
-
+      config:
+        region: de
+        s3Url: http://minio.velero.svc.cluster.local
+        s3ForcePathStyle: true
+      defaultVolumesToRestic: true
     # annotations allows adding arbitrary annotations to this BackupStorageLocation resource. Optional.
     annotations: {}
 
@@ -371,19 +356,8 @@ configuration:
       name:
       # name of key that contains the secret data to be used.
       key:
-    # Additional provider-specific configuration. See link above
-    # for details of required/optional fields for your provider.
-    config: {}
-  #    region:
-  #    apiTimeout:
-  #    resourceGroup:
-  #    The ID of the subscription where volume snapshots should be stored, if different from the cluster’s subscription. If specified, also requires `configuration.volumeSnapshotLocation.config.resourceGroup`to be set. (Azure only)
-  #    subscriptionId:
-  #    incremental:
-  #    snapshotLocation:
-  #    project:
 
-    # annotations allows adding arbitrary annotations to this VolumeSnapshotLocation resource. Optional.
+    config: {}
     annotations: {}
 
   # These are server-level settings passed as CLI flags to the `velero server` command. Velero
@@ -501,19 +475,11 @@ credentials:
   # - using kube2iam or kiam to provide AWS IAM credentials instead of providing the key file. (AWS only)
   # - using workload identity instead of providing the key file. (Azure/GCP only)
   useSecret: true
+  existingSecret: "velero-s3-credentials"  
   # Name of the secret to create if `useSecret` is true and `existingSecret` is empty
   name:
   # Name of a pre-existing secret (if any) in the Velero namespace
   # that should be used to get IAM account credentials. Optional.
-  existingSecret:
-  # Data to be stored in the Velero secret, if `useSecret` is true and `existingSecret` is empty.
-  # As of the current Velero release, Velero only uses one secret key/value at a time.
-  # The key must be named `cloud`, and the value corresponds to the entire content of your IAM credentials file.
-  # Note that the format will be different for different providers, please check their documentation.
-  # Here is a list of documentation for plugins maintained by the Velero team:
-  # [AWS] https://github.com/vmware-tanzu/velero-plugin-for-aws/blob/main/README.md
-  # [GCP] https://github.com/vmware-tanzu/velero-plugin-for-gcp/blob/main/README.md
-  # [Azure] https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure/blob/main/README.md
   secretContents: {}
   #  cloud: |
   #    [default]
@@ -529,7 +495,7 @@ credentials:
 # Whether to create backupstoragelocation crd, if false => do not create a default backup location
 backupsEnabled: true
 # Whether to create volumesnapshotlocation crd, if false => disable snapshot feature
-snapshotsEnabled: true
+snapshotsEnabled: false
 
 # Whether to deploy the node-agent daemonset.
 deployNodeAgent: false
@@ -542,12 +508,12 @@ nodeAgent:
   # Resource requests/limits to specify for the node-agent daemonset deployment. Optional.
   # https://velero.io/docs/v1.6/customize-installation/#customize-resource-requests-and-limits
   resources: {}
-    # requests:
-    #   cpu: 500m
-    #   memory: 512Mi
-    # limits:
-    #   cpu: 1000m
-    #   memory: 1024Mi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
 
   # Tolerations to use for the node-agent daemonset. Optional.
   tolerations: []
@@ -610,54 +576,8 @@ nodeAgent:
   # Update strategy to use for the node-agent daemonset. Optional.
   updateStrategy: {}
 
-# Backup schedules to create.
-# Eg:
-# schedules:
-#   mybackup:
-#     disabled: false
-#     labels:
-#       myenv: foo
-#     annotations:
-#       myenv: foo
-#     schedule: "0 0 * * *"
-#     useOwnerReferencesInBackup: false
-#     paused: false
-#     skipImmediately: false
-#     template:
-#       ttl: "240h"
-#       storageLocation: default
-#       includedNamespaces:
-#       - foo
-#       # See: https://velero.io/docs/v1.14/resource-filtering/#excludes
-#       excludedNamespaceScopedResources:
-#       - persistentVolumeClaims
-#       excludedClusterScopedResources:
-#       - persistentVolumes
 schedules: {}
 
-# Velero ConfigMaps.
-# Eg:
-# configMaps:
-    # See: https://velero.io/docs/v1.11/file-system-backup/
-#   fs-restore-action-config:
-#     labels:
-#       velero.io/plugin-config: ""
-#       velero.io/pod-volume-restore: RestoreItemAction
-#     data:
-#       image: velero/velero-restore-helper:v1.10.2
-#       cpuRequest: 200m
-#       memRequest: 128Mi
-#       cpuLimit: 200m
-#       memLimit: 128Mi
-#       secCtx: |
-#         capabilities:
-#           drop:
-#           - ALL
-#           add: []
-#         allowPrivilegeEscalation: false
-#         readOnlyRootFilesystem: true
-#         runAsUser: 1001
-#         runAsGroup: 999
 configMaps: {}
 
 ##
