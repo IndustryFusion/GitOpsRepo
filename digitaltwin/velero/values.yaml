@@ -506,7 +506,7 @@ nodeAgent:
   priorityClassName: ""
   # Resource requests/limits to specify for the node-agent daemonset deployment. Optional.
   # https://velero.io/docs/v1.6/customize-installation/#customize-resource-requests-and-limits
-  resources: {}
+  resources:
     requests:
       cpu: 100m
       memory: 512Mi
