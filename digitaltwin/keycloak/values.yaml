@@ -80,8 +80,13 @@ custom_resource:
   name: keycloak-instance
 
 db:
-  dbReaderUser: dbreader
-
+  teamId: acid
+  clusterSvcPostfix: cluster
+  svcPort: "5432"
+  dbUser: "ngb"
+  dbReaderUser: "dbreader"
+  secretPostfix: credentials.postgresql.acid.zalan.do
+clusterSvcName: acid-cluster
 dbpassword: "r7M2hP9TzK5XvG1cYqL8N0w3B6D4JfZQ"
 
 ingressType: "nginx"
@@ -124,7 +129,11 @@ keycloak:
 keycloak_db:
   stringData:
     POSTGRES_EXTERNAL_PORT: "5432"
-
+    POSTGRES_DATABASE: keycloakdb
+    POSTGRES_EXTERNAL_ADDRESS: acid-cluster
+    POSTGRES_ADDR: acid-cluster
+    POSTGRES_SUPERUSER: "true"
+    POSTGRES_USERNAME: "ngb"
 mainRegistry: docker.io
 mainRepo: ibn40
 mainVersion: v0.6.0-beta.1
