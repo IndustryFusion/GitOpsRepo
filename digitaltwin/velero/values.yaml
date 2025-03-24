@@ -325,7 +325,6 @@ configuration:
     caCert:
     # prefix is the directory under which all Velero data should be stored within the bucket. Optional.
     prefix:
-    default: true
     validationFrequency:
     # accessMode determines if velero can write to this backup storage location. Optional.
     # default to ReadWrite, ReadOnly is used during migrations and restores.
