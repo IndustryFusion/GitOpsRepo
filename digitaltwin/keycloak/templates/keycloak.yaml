@@ -22,7 +22,7 @@ spec:
       name: keycloak-db-secret
       key: POSTGRES_PASSWORD
     database: {{ quote .Values.keycloak_db.stringData.POSTGRES_DATABASE  }}
-    host: {{ quote .Values.clusterExternalSvcName }}
+    host: "acid-cluster.iff.svc.cluster.local"
     port: {{ .Values.keycloak_db.stringData.POSTGRES_EXTERNAL_PORT }}
   ingress:
     enabled: false
