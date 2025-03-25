@@ -89,7 +89,7 @@ db:
 clusterSvcName: acid-cluster
 dbpassword: "r7M2hP9TzK5XvG1cYqL8N0w3B6D4JfZQ"
 
-ingressType: "nginx"
+ingressType: "traefik"
 
 keycloak:
   adminName: admin
