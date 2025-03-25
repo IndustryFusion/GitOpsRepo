@@ -6,7 +6,6 @@ name: postgres-operator
 ##
 teamId: acid
 clusterSvcName: acid-minimal-cluster
-dbPassword: 
 
 ## Number of pod instances in the cluster
 ##
@@ -237,8 +236,8 @@ externalRegistry4: ghcr.io
 ingressType: traefik
 
 # Passwords and secrets (in a real scenario, these would be randomly generated)
-dbpassword: RANDOM_PASSWORD_PLACEHOLDER
-dbReaderPassword: RANDOM_PASSWORD_PLACEHOLDER
+dbpassword: r7M2hP9TzK5XvG1cYqL8N0w3B6D4JfZQ
+dbReaderPassword: r7M2hP9TzK5XvG1cYqL8N0w3B6D4JfZQ
 keycloakpassword: RANDOM_PASSWORD_PLACEHOLDER
 minioAdminSecretKey: RANDOM_PASSWORD_PLACEHOLDER
 minioUserSecretKey: RANDOM_PASSWORD_PLACEHOLDER
