@@ -302,9 +302,9 @@ configuration:
     default: true    
     credential:
       # name of the secret used by this backupStorageLocation.
-      name:
+      name: minio-user
       # name of key that contains the secret data to be used.
-      key:
+      key: CONSOLE_ACCESS_KEY
     # for details of required/optional fields for your provider.
     config:
       region: minio
