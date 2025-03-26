@@ -8,7 +8,10 @@ minio:
   adminAccessKey: console
   mcImage: minio/mc:RELEASE.2023-06-28T21-54-17Z
   minioImage: minio/minio:RELEASE.2023-01-12T02-06-16Z  
-
+externalRegistry: docker.io
+externalRegistry2: quay.io
+externalRegistry3: registry.opensource.zalan.do
+externalRegistry4: ghcr.io
 s3:
   userAccessKey: minio
   userSecretKey: RANDOM_PASSWORD_PLACEHOLDER
