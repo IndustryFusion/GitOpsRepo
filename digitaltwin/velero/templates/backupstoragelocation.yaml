@@ -7,7 +7,7 @@ apiVersion: velero.io/v1
 kind: BackupStorageLocation
 metadata:
   name: {{ .name | default "default" }}
-  namespace: {{ $.Release.Namespace }}
+  namespace: iff
   {{- with .annotations }}
   annotations:
       {{- range $key, $value := . }}
