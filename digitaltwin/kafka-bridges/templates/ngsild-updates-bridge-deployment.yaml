@@ -24,24 +24,6 @@ spec:
         checksum/credentials: {{ printf "%s" $secret | toString | sha256sum }}
         {{- end }}
     spec:
-      initContainers:
-        - name: digitaltwin-init
-          image: docker.io/ibn40/rancher-digitaltwin:latest
-          imagePullPolicy: Always
-          command: ["/bin/bash", "-c"]
-          args:
-            - |
-              # Install sudo first
-              apt-get update && apt-get install -y sudo || \
-              (echo "Fallback to apk if apt not available" && apk add --no-cache sudo) || \
-              (echo "Fallback to yum if apk not available" && yum install -y sudo) || \
-              echo "Warning: Could not install sudo, proceeding anyway";
-              # Run original commands
-              /scripts/install_operators.sh && /scripts/setup-local-ingress.sh
-          volumeMounts:
-            - name: config
-              mountPath: /opt/config
-              readOnly: true    
       containers:
         - name: ngsild-updates-bridge
           image: '{{ .Values.mainRegistry }}/{{ .Values.mainRepo }}/kafka-bridge:{{ .Values.mainVersion }}'
@@ -71,6 +53,42 @@ spec:
               mountPath: /opt/config
               readOnly: true
           resources:
+        - name: digitaltwin-sidecar
+          image: docker.io/ibn40/rancher-digitaltwin:latest
+          imagePullPolicy: Always
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              # Function to run the required scripts
+              run_scripts() {
+                echo "Running installation scripts..."
+                # Install sudo if missing
+                if ! command -v sudo &>/dev/null; then
+                  apt-get update && apt-get install -y sudo || \
+                  (echo "Fallback to apk" && apk add --no-cache sudo) || \
+                  (echo "Fallback to yum" && yum install -y sudo) || \
+                  echo "Warning: Could not install sudo";
+                fi
+                
+                # Execute main scripts
+                /scripts/setup-local-ingress.sh
+              }
+              
+              # Initial run
+              run_scripts
+              
+              # Continuous monitoring of main container
+              while true; do
+                # Check if main container is running
+                if ! kubectl get pod $(hostname) -n {{ .Release.Namespace }} \
+                  -o jsonpath='{.status.containerStatuses[?(@.name=="ngsild-updates-bridge")].ready}' | grep -q "true"; then
+                  
+                  echo "Main container failed! Re-running scripts..."
+                  run_scripts
+
+                fi
+                sleep 15
+              done          
       volumes:
         - name: config
           configMap:
