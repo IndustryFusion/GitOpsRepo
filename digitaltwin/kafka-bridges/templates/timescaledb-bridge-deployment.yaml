@@ -27,9 +27,11 @@ spec:
       containers:
         - name: timescaledb-bridge
           image: '{{ .Values.mainRegistry }}/{{ .Values.mainRepo }}/kafka-bridge:{{ .Values.mainVersion }}'
-          command: ["node"]
-          args: ["/opt/timescaledb/app.js"]
-          imagePullPolicy: Always
+          command: ["sh", "-c"]
+          args:
+            - ls -la /opt/config/ && 
+              cat /opt/config/config.json && 
+              node /opt/timescaledb/app.js
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
