@@ -306,11 +306,11 @@ configuration:
       # name of key that contains the secret data to be used.
       key: cloud
     # for details of required/optional fields for your provider.
-      config:
-        region: de
-        s3Url: http://minio.iff.svc.cluster.local
-        s3ForcePathStyle: true
-      defaultVolumesToRestic: true
+    config:
+      region: de
+      s3Url: http://minio.iff.svc.cluster.local
+      s3ForcePathStyle: true
+    defaultVolumesToRestic: true
     # annotations allows adding arbitrary annotations to this BackupStorageLocation resource. Optional.
     annotations: {}
 
