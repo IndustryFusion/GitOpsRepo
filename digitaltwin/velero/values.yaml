@@ -15,7 +15,7 @@ s3:
   userAccessKey: minio
   userSecretKey: RANDOM_PASSWORD_PLACEHOLDER
   protocol: http
-  s3endpoint: minio.iff.svc.cluster.local
+  endpoint: minio.iff.svc.cluster.local
 velero:
   image:
     repository: velero/velero
