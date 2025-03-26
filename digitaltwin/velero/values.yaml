@@ -1,36 +1,6 @@
-##
-## Configuration settings related to Velero installation namespace
-##
-
-# Labels settings in namespace
 namespace:
   labels: {}
-    # Enforce Pod Security Standards with Namespace Labels
-    # https://kubernetes.io/docs/tasks/configure-pod-container/enforce-standards-namespace-labels/
-    # - key: pod-security.kubernetes.io/enforce
-    #   value: privileged
-    # - key: pod-security.kubernetes.io/enforce-version
-    #   value: latest
-    # - key: pod-security.kubernetes.io/audit
-    #   value: privileged
-    # - key: pod-security.kubernetes.io/audit-version
-    #   value: latest
-    # - key: pod-security.kubernetes.io/warn
-    #   value: privileged
-    # - key: pod-security.kubernetes.io/warn-version
-    #   value: latest
 
-##
-## End of namespace-related settings.
-##
-
-
-##
-## Configuration settings that directly affect the Velero deployment YAML.
-##
-
-# Details of the container image to use in the Velero deployment & daemonset (if
-# enabling node-agent). Required.
 image:
   repository: velero/velero
   tag: v1.15.2
@@ -337,7 +307,7 @@ configuration:
     # for details of required/optional fields for your provider.
       config:
         region: de
-        s3Url: http://minio.velero.svc.cluster.local
+        s3Url: http://minio.iff.svc.cluster.local
         s3ForcePathStyle: true
       defaultVolumesToRestic: true
     # annotations allows adding arbitrary annotations to this BackupStorageLocation resource. Optional.
