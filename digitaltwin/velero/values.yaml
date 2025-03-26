@@ -1,8 +1,11 @@
-namespace:
-  labels: {}
+namespace: velero
 minio:
   enabled: true
   storageSize: 10G
+
+s3:
+  userAccessKey: minio
+  userSecretKey: RANDOM_PASSWORD_PLACEHOLDER
 image:
   repository: velero/velero
   tag: v1.15.2
