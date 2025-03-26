@@ -307,7 +307,7 @@ configuration:
       key:
     # for details of required/optional fields for your provider.
     config:
-      region: de
+      region: minio
       s3Url: http://minio.iff.svc.cluster.local
       s3ForcePathStyle: true
     defaultVolumesToRestic: true
