@@ -21,6 +21,7 @@ db:
   teamId: acid
   clusterSvcPostfix: cluster
   svcPort: "5432"
+  scorpioDb: ngb
   dbUser: "ngb"
   dbReaderUser: "dbreader"
   secretPostfix: credentials.postgresql.acid.zalan.do
