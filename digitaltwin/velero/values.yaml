@@ -1,6 +1,8 @@
 namespace:
   labels: {}
-
+minio:
+  enabled: true
+  storageSize: 10G
 image:
   repository: velero/velero
   tag: v1.15.2
