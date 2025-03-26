@@ -1,17 +1,66 @@
 namespace:
-  create: true
-  name: velero
-  labels:
-    app.kubernetes.io/name: velero
-    app.kubernetes.io/instance: velero
-  
+  labels: {}
 minio:
+  namespace: iff
   enabled: true
   storageSize: 10G
+  healthPath: /minio/health/live
+  adminAccessKey: console
+  mcImage: minio/mc:RELEASE.2023-06-28T21-54-17Z
+  minioImage: minio/minio:RELEASE.2023-01-12T02-06-16Z  
 
 s3:
   userAccessKey: minio
   userSecretKey: RANDOM_PASSWORD_PLACEHOLDER
+  protocol: http
+  s3endpoint: minio.iff.svc.cluster.local
+velero:
+  image:
+    repository: velero/velero
+    tag: v1.10.0
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+  initContainers:
+    - name: velero-plugin-for-aws
+      image: velero/velero-plugin-for-aws:v1.5.0
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /target
+          name: plugins
+  configuration:
+    provider: aws
+    backupStorageLocation:
+      name: minio
+      bucket: velero-backup
+      default: true
+      accessMode: ReadWrite
+  credentials:
+    useSecret: true
+    existingSecret: "velero-s3-credentials"
+  # deployNodeAgent: true
+  snapshotsEnabled: false
+  nodeAgent:
+    #podVolumePath: /var/lib/kubelet/pods
+    #privileged: false
+    # Pod priority class name to use for the node-agent daemonset. Optional.
+    #priorityClassName: ""
+    # Resource requests/limits to specify for the node-agent daemonset deployment. Optional.
+    # https://velero.io/docs/v1.6/customize-installation/#customize-resource-requests-and-limits
+    #resources:
+    #  requests:
+    #    cpu: 500m
+    #    memory: 512Mi
+    #  limits:
+    #    cpu: 1000m
+    #    memory: 1024Mi
+
+
 image:
   repository: velero/velero
   tag: v1.15.2
