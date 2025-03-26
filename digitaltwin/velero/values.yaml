@@ -1,4 +1,10 @@
-namespace: velero
+namespace:
+  create: true
+  name: velero
+  labels:
+    app.kubernetes.io/name: velero
+    app.kubernetes.io/instance: velero
+  
 minio:
   enabled: true
   storageSize: 10G
