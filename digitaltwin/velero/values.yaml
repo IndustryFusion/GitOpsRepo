@@ -302,9 +302,9 @@ configuration:
     default: true    
     credential:
       # name of the secret used by this backupStorageLocation.
-      name: 
+      name: velero-s3-credentials
       # name of key that contains the secret data to be used.
-      key:
+      key: cloud
     # for details of required/optional fields for your provider.
       config:
         region: de
