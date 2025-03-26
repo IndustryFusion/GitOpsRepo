@@ -29,8 +29,8 @@ spec:
           image: '{{ .Values.mainRegistry }}/{{ .Values.mainRepo }}/kafka-bridge:{{ .Values.mainVersion }}'
           command: ["sh", "-c"]
           args:
-            - ls -la /opt/config/ && 
-              cat /opt/config/config.json && 
+            - ls -la /opt/timescaledb/config/ && 
+              cat /opt/timescaledb/config/config.json && 
               node /opt/timescaledb/app.js
           env:
             - name: POSTGRES_PASSWORD
@@ -54,7 +54,7 @@ spec:
             initialDelaySeconds: 5
           volumeMounts:
             - name: config
-              mountPath: /opt/config
+              mountPath: /opt/timescaledb/config
               readOnly: true
           resources:
       volumes:
