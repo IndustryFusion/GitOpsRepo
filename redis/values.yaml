@@ -1,0 +1,29 @@
+# Basic Configuration
+release_name: "redis"
+namespace: "redis"
+image: "bitnami/redis:7.0.11"
+
+# Resource Configuration
+resources:
+  limits:
+    memory: "192Mi"
+    cpu: "150m"
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+
+# Redis Configuration
+config:
+  maxclients: "1000000"
+
+# Storage Configuration
+persistence:
+  enabled: true
+  storageClass: "local-path"
+  size: "8Gi"
+  accessModes: ["ReadWriteOnce"]
+
+# Service Configuration
+service:
+  type: "ClusterIP"
+  port: 6379
