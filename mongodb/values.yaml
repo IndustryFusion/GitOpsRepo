@@ -17,7 +17,7 @@ service:
 
 persistence:
   enabled: true
-  storageClass: "longhorn"
+  storageClass: "local-path"
   size: 5Gi
 
 resources:
