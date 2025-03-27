@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mongodb_release_name }}
+  namespace: {{ .Values.mongodb_namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: docker.io/bitnami/mongodb:6.0
+        env:
+        - name: MONGODB_ROOT_PASSWORD
+          value: {{ .Values.mongodb_root_password }}
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /bitnami/mongodb
+      volumes:
+      - name: mongodb-data
+        persistentVolumeClaim:
+          claimName: {{ .Values.mongodb_release_name }}-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.mongodb_release_name }}-pvc
+  namespace: {{ .Values.mongodb_namespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ .Values.mongodb_storage_class }}
+  resources:
+    requests:
+      storage: {{ .Values.mongodb_storage_size }}

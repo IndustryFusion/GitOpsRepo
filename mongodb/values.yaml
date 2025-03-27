@@ -1,0 +1,18 @@
+mongodb_release_name: "mongodb"
+mongodb_namespace: "iff"
+mongodb_root_password: "mongo123"
+mongodb_storage_class: "longhorn"
+mongodb_storage_size: "8Gi"
+
+# Additional Helm values
+helmValues:
+  auth:
+    rootPassword: {{ .Values.mongodb_root_password }}
+  persistence:
+    enabled: true
+    storageClass: {{ .Values.mongodb_storage_class }}
+    size: {{ .Values.mongodb_storage_size }}
+  service:
+    type: ClusterIP
+    ports:
+      mongodb: 27017
