@@ -1,0 +1,104 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fleet50-application-service-prod
+  name: fleet50-application-service-prod
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+  - port: {{ .Values.fleet50_prod.backendPort }}
+    targetPort: {{ .Values.fleet50_prod.backendPort }}
+    name: fleet50-backend
+    protocol: TCP
+  - port: {{ .Values.fleet50_prod.frontendPort }}
+    targetPort: {{ .Values.fleet50_prod.frontendPort }}
+    name: fleet50-frontend
+    protocol: TCP
+  type: ClusterIP
+  selector:
+    app: fleet50-application-service-prod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fleet50-application-service-prod
+  name: fleet50-application-service-prod
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fleet50-application-service-prod
+  template:
+    metadata:
+      labels:
+        app: fleet50-application-service-prod
+    spec:
+      containers:
+      - name: fleet50-backend
+        image: {{ .Values.mainRepo }}/fleet50-backend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.fleet50_prod.backendPort }}
+        env:
+        - name: GITHUB_BASE_URL
+          value: {{ .Values.fleet50_prod.githubBaseUrl }}
+        - name: GITHUB_TOKEN
+          value: {{ .Values.fleet50_prod.githubToken }}
+        - name: SCORPIO_URL
+          value: {{ .Values.fleet50_prod.scorpioUrl }}
+        - name: S3_URL
+          value: {{ .Values.fleet50_prod.s3Url }}
+        - name: S3_ACCESS_KEY
+          value: {{ .Values.fleet50_prod.s3AccessKey }}
+        - name: S3_SECRET_KEY
+          value: {{ .Values.fleet50_prod.s3SecretKey }}
+        - name: S3_BUCKET
+          value: {{ .Values.fleet50_prod.s3BucketName }}
+        - name: USERNAME
+          value: {{ .Values.fleet50_prod.username }}
+        - name: PASSWORD
+          value: {{ .Values.fleet50_prod.password }}
+        - name: CORS_ORIGIN
+          value: {{ .Values.fleet50_prod.corsOrigin }}
+        - name: ICID_SERVICE_BACKEND_URL
+          value: {{ .Values.fleet50_prod.icidOrigin }}
+        - name: ASSETS_DEFAULT_CODE
+          value: {{ .Values.fleet50_prod.assetDefaultCode }}
+        - name: USERS_DEFAULT_CODE
+          value: {{ .Values.fleet50_prod.userDefaultCode }}
+        - name: CONTEXT
+          value: {{ .Values.fleet50_prod.contextUrl }}
+        - name: IFRIC_REGISTRY_BACKEND_URL
+          value: {{ .Values.fleet50_prod.registryUrl }}
+        - name: IFX_PLATFORM_BACKEND_URL
+          value: {{ .Values.fleet50_prod.ifxPlatformBackendUrl }}
+        - name: JWT_SECRET_KEY
+          value: {{ .Values.fleet50_prod.jwtSecretKey }}
+        - name: JWT_SECRET
+          value: {{ .Values.fleet50_prod.jwtSecret }}
+        - name: MASK_SECRET
+          value: {{ .Values.fleet50_prod.maskSecret }}
+      - name: fleet50-frontend
+        image: {{ .Values.mainRepo }}/fleet50-frontend:{{ .Values.mainVersion}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.fleet50_prod.frontendPort }}
+        env:
+        - name: NEXT_PUBLIC_FLEET_MANAGER_BACKEND_URL
+          value: {{ .Values.fleet50_prod.fleetBackendUrl }}
+        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
+          value: {{ .Values.fleet50_prod.registryUrl }}
+        - name: NEXT_PUBLIC_IFX_SUITE_FRONTEND_URL
+          value: {{ .Values.fleet50_prod.ifxSuiteFrontendUrl }}
+        - name: NEXT_PUBLIC_IFX_BACKEND_URL
+          value: {{ .Values.fleet50_prod.ifxPlatformBackendUrl }}
+        - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
+          value: {{ .Values.fleet50_prod.sandboxBackendUrl }}
+        - name: NEXT_PUBLIC_JWT_SECRET
+          value: {{ .Values.fleet50_prod.jwtSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
