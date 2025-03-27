@@ -1,4 +1,4 @@
-mainVersion: latest
+mainVersion: prod-test
 mainRepo: ifx40
 namespace: ifx-suite
 pullSecretCredentials: regcred
@@ -16,4 +16,4 @@ ifx_suite:
   factoryFrontendUrl: https://dev-factory.industry-fusion.com
   ifxSuiteBackendIngress: suite-backend.industryfusion-x.org
   ifxSuiteFrontendIngress: suite.industryfusion-x.org
-  nextFrontendEnvironment: dev
+  nextFrontendEnvironment: prod
