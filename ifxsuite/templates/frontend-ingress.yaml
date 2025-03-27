@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-self
+    kubernetes.io/ingress.class: traefik
+  name: ifx-suite-frontend-ingress
+  namespace: ifx-suite
+spec:
+  rules:
+  - host: {{ .Values.ifx_suite.ifxSuiteFrontendIngress }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: ifx-suite-application-service
+            port:
+              number: {{ .Values.ifx_suite.frontendPort }}
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - {{ .Values.ifx_suite.ifxSuiteFrontendIngress }}
+    secretName: prod-cert-tls-ifx-suite-frontend
+status:
+  loadBalancer: {}

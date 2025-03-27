@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ifx-suite-application-service
+  name: ifx-suite-application-service
+  namespace: {{ .Values.namespace }}
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: ifx-suite-backend
+    port: {{ .Values.ifx_suite.backendPort }}
+    protocol: TCP
+    targetPort: {{ .Values.ifx_suite.backendPort }}
+  - name: ifx-suite-frontend
+    port: {{ .Values.ifx_suite.frontendPort }}
+    protocol: TCP
+    targetPort: {{ .Values.ifx_suite.frontendPort }}
+  selector:
+    app: ifx-suite-application-service
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
