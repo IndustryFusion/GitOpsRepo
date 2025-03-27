@@ -1,6 +1,6 @@
 mainVersion: prod-test
 mainRepo: ibn40
-namespace: fleet
+namespace: iff
 pullSecretCredentials: regcred
 fleet50_prod:
   backendPort: 4001
