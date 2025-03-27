@@ -1,18 +1,29 @@
-mongodb_release_name: "mongodb"
-mongodb_namespace: "iff"
-mongodb_root_password: "mongo123"
-mongodb_storage_class: "longhorn"
-mongodb_storage_size: "8Gi"
+replicaCount: 1
 
-# Additional Helm values
-helmValues:
-  auth:
-    rootPassword: {{ .Values.mongodb_root_password }}
-  persistence:
-    enabled: true
-    storageClass: {{ .Values.mongodb_storage_class }}
-    size: {{ .Values.mongodb_storage_size }}
-  service:
-    type: ClusterIP
-    ports:
-      mongodb: 27017
+auth:
+  enabled: true
+  rootUser: admin
+  rootPassword: "mongo123"
+  database: factoryDB
+
+image:
+  repository: mongo
+  tag: "4.4.6"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 27017
+
+persistence:
+  enabled: true
+  storageClass: "longhorn"
+  size: 5Gi
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
