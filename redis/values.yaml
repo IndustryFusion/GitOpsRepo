@@ -1,6 +1,6 @@
 # Basic Configuration
 release_name: "redis"
-namespace: "redis"
+namespace: "iff"
 image: "bitnami/redis:7.0.11"
 
 # Resource Configuration
