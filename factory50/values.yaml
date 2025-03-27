@@ -16,7 +16,7 @@ factory50_prod:
   s3AccessKey: 's3-access-key'
   s3SecretKey: 's3-secret-key'
   alertaKey: 'alerta-key'
-  mongoUrl: 'mongo-url'
+  mongoUrl: 'mongodb://admin:mongo123@mongodb.iff.svc.cluster.local/factoryDB?authSource=admin'
   jwtSecretKey: 'your-secret-key'
   jwtSecret: 'jwtSecret'
   maskSecret: 'maskSecret'
@@ -36,7 +36,7 @@ factory50_prod:
   alertaUrl: http://alerta.iff.svc.cluster.local:8080/alerta
   pgrestUrl: http://pgrest.iff.svc.cluster.local:3000/pgrest
   corsOrigin: https://factory-local.industryfusion-x.org
-  redisUrl: 'redis-master.redis.svc.cluster.local'
+  redisUrl: 'redis.iff.svc.cluster.local'
   redisPort: 6379
   contextUrl: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
   keycloakUsername: factory_admin@industry-fusion.com
