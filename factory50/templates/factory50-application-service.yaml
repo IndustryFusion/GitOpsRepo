@@ -149,6 +149,6 @@ spec:
           valueFrom:
             secretKeyRef:
               name: factory50-secrets
-              key: JWT_SECRET
+              key: NEXT_PUBLIC_JWT_SECRET
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
