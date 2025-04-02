@@ -27,7 +27,7 @@ factory50_prod:
   ifxSuiteFrontendUrl: https://suite.industryfusion-x.org
   sandboxBackendUrl: https://sandbox-backend.industry-fusion.com
   registryUrl: https://dev-registry.ifric.org
-  pdtScorpioUrl: http://85.215.171.58:9090/ngsi-ld/v1/entitie
+  pdtScorpioUrl: http://85.215.171.58:9090/ngsi-ld/v1/entities
   keycloakApiUrl: http://keycloak-service.iff.svc.cluster.local:8080/auth/realms/iff/protocol/openid-connect/token
   factoryScorpioUrl: http://scorpio-all-in-one-runner.iff.svc.cluster.local:9090/ngsi-ld/v1/entities
   factoryScorpioClientId: scorpio
