@@ -51,7 +51,10 @@ spec:
         - name: GITHUB_BASE_URL
           value: {{ .Values.factory50_prod.githubUrl }}
         - name: GITHUB_TOKEN
-          value: {{ .Values.factory50_prod.githubToken }}
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: GITHUB_TOKEN
         - name: API_URL
           value: {{ .Values.factory50_prod.keycloakApiUrl }}
         - name: CLIENT_ID
@@ -63,19 +66,46 @@ spec:
         - name: S3_URL
           value: {{ .Values.factory50_prod.s3Url }}
         - name: S3_ACCESS_KEY
-          value: {{ .Values.factory50_prod.s3AccessKey }}
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: S3_ACCESS_KEY
         - name: S3_SECRET_KEY
-          value: {{ .Values.factory50_prod.s3SecretKey }}
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: S3_SECRET_KEY
+        - name: ALERTA_KEY
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: ALERTA_KEY
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: MONGO_URL
+        - name: JWT_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: JWT_SECRET_KEY
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: JWT_SECRET
+        - name: MASK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: MASK_SECRET
         - name: S3_BUCKET
           value: {{ .Values.factory50_prod.s3BucketName }}
         - name: ALERTA_URL
           value: {{ .Values.factory50_prod.alertaUrl }}
-        - name: ALERTA_KEY
-          value: {{ .Values.factory50_prod.alertaKey }}
         - name: TIMESCALE_URL
           value: {{ .Values.factory50_prod.pgrestUrl }}
-        - name: MONGO_URL
-          value: {{ .Values.factory50_prod.mongoUrl }}
         - name: CORS_ORIGIN
           value: {{ .Values.factory50_prod.corsOrigin }}
         - name: REDIS_SERVER
@@ -86,12 +116,6 @@ spec:
           value: {{ .Values.factory50_prod.sandboxBackendUrl }}
         - name: CONTEXT
           value: {{ .Values.factory50_prod.contextUrl }}
-        - name: JWT_SECRET_KEY
-          value: {{ .Values.factory50_prod.jwtSecretKey }}
-        - name: JWT_SECRET
-          value: {{ .Values.factory50_prod.jwtSecret }}
-        - name: MASK_SECRET
-          value: {{ .Values.factory50_prod.maskSecret }}
         - name: IFRIC_REGISTRY_BACKEND_URL
           value: {{ .Values.factory50_prod.registryUrl }}
         - name: IFX_PLATFORM_BACKEND_URL
@@ -101,8 +125,10 @@ spec:
         - name: USERNAME
           value: {{ .Values.factory50_prod.keycloakUsername }}
         - name: PASSWORD
-          value: {{ .Values.factory50_prod.keycloakPassword }}
-        
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: PASSWORD
       - name: factory50-frontend
         image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
@@ -120,6 +146,9 @@ spec:
         - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
           value: {{ .Values.factory50_prod.ifxPlatformBackendUrl }}
         - name: NEXT_PUBLIC_JWT_SECRET
-          value: {{ .Values.factory50_prod.jwtSecret }}
+          valueFrom:
+            secretKeyRef:
+              name: factory50-secrets
+              key: JWT_SECRET
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}

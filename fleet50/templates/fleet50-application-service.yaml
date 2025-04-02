@@ -47,15 +47,49 @@ spec:
         - name: GITHUB_BASE_URL
           value: {{ .Values.fleet50_prod.githubBaseUrl }}
         - name: GITHUB_TOKEN
-          value: {{ .Values.fleet50_prod.githubToken }}
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: GITHUB_TOKEN
         - name: SCORPIO_URL
           value: {{ .Values.fleet50_prod.scorpioUrl }}
         - name: S3_URL
           value: {{ .Values.fleet50_prod.s3Url }}
         - name: S3_ACCESS_KEY
-          value: {{ .Values.fleet50_prod.s3AccessKey }}
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: S3_ACCESS_KEY
         - name: S3_SECRET_KEY
-          value: {{ .Values.fleet50_prod.s3SecretKey }}
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: S3_SECRET_KEY
+        - name: ALERTA_KEY
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: ALERTA_KEY
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: MONGO_URL
+        - name: JWT_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: JWT_SECRET_KEY
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: JWT_SECRET
+        - name: MASK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: MASK_SECRET
         - name: S3_BUCKET
           value: {{ .Values.fleet50_prod.s3BucketName }}
         - name: USERNAME
@@ -76,12 +110,6 @@ spec:
           value: {{ .Values.fleet50_prod.registryUrl }}
         - name: IFX_PLATFORM_BACKEND_URL
           value: {{ .Values.fleet50_prod.ifxPlatformBackendUrl }}
-        - name: JWT_SECRET_KEY
-          value: {{ .Values.fleet50_prod.jwtSecretKey }}
-        - name: JWT_SECRET
-          value: {{ .Values.fleet50_prod.jwtSecret }}
-        - name: MASK_SECRET
-          value: {{ .Values.fleet50_prod.maskSecret }}
       - name: fleet50-frontend
         image: {{ .Values.mainRepo }}/fleet50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
@@ -99,6 +127,9 @@ spec:
         - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
           value: {{ .Values.fleet50_prod.sandboxBackendUrl }}
         - name: NEXT_PUBLIC_JWT_SECRET
-          value: {{ .Values.fleet50_prod.jwtSecret }}
+          valueFrom:
+            secretKeyRef:
+              name: fleet50-secrets
+              key: JWT_SECRET
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
