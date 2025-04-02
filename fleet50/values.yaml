@@ -11,7 +11,7 @@ fleet50_prod:
   s3AccessKey: 's3AccessKey'
   s3SecretKey: 's3SecretKey'
   corsOrigin: https://fleet-local.industryfusion-x.org
-  icidOrigin: https://dev-icid-service.ifric.org
+  icidOrigin: https://icid-service.ifric.org
   registryUrl: https://dev-registry.ifric.org
   ifxPlatformBackendUrl: 'https://dev-platform-backend.industryfusion-x.org'
   fleetBackendUrl: https://fleet-backend-local.industryfusion-x.org
@@ -19,7 +19,7 @@ fleet50_prod:
   ifxSuiteFrontendUrl: https://suite-local.industryfusion-x.org
   jwtSecretKey: 'jwtSecretKey'
   maskSecret: 'maskSecret'
-  sandboxBackendUrl: https://dev-sandbox-backend.industry-fusion.com
+  sandboxBackendUrl: https://sandbox-backend.industry-fusion.com
   scorpioUrl: http://85.215.171.58:9090/ngsi-ld/v1/entities
   s3BucketName: iff-prod
   assetDefaultCode: IFX-EUR-NLD-AST
