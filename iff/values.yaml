@@ -6,7 +6,7 @@ opcua:
     discoveryDetails:
       # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
       discoveryUrls:
-        - "opc.tcp://192.168.56.11:4840"
+        - "opc.tcp://192.168.56.10:4840"
 
       applicationNames:
         action: Exclude
@@ -15,3 +15,8 @@ opcua:
 crds:
   group: akri.sh
   version: v0
+
+controller:
+  image: ibn40/iff-akri-controller:v0.0.2
+  factoryMongoDbUrl: mongodb://my-user:ibmistura123@212.132.105.236:31183/admin?directconnection=true&retryWrites=true&w=majority
+  factoryMongoDbName: admin

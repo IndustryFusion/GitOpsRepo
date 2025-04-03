@@ -76,24 +76,16 @@ spec:
     spec:
       serviceAccountName: devices-account
       restartPolicy: Always
-      hostAliases:
-      - ip: "192.168.49.154"
-        hostnames:
-        - "keycloak.local"
       containers:
         - name: iff-akri-controller
-          image: ibn40/iff-akri-controller:v0.0.1
+          image: {{ .Values.controller.image }}
           imagePullPolicy: Always
           securityContext:
             privileged: true
           env:
-          - name: GITHUB_OWNER
-            value: IndustryFusion
-          - name: GITHUB_REPO
-            value: gateway-configs
-          - name: GITHUB_PATH
-            value: ''
-          - name: GITHUB_TOKEN
-            value: ''
+          - name: FACTORY_MONGO_URL
+            value: {{ .Values.controller.factoryMongoDbUrl }}
+          - name: FACTORY_MONGO_DB_NAME
+            value: {{ .Values.controller.factoryMongoDbName }}
       imagePullSecrets:
         - name: regcred
