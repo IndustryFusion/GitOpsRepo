@@ -13,3 +13,10 @@ mqtt:
 crds:
   group: akri.sh
   version: v0
+
+controller:
+  image: ibn40/iff-akri-controller:v0.0.2
+  factoryMongoDbUrl: ""
+  factoryMongoDbName: "factoryDB"
+
+namespace: devices

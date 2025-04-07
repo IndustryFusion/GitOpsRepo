@@ -84,5 +84,62 @@ spec:
             value: ''
           - name: GITHUB_TOKEN
             value: ""
+          - name: FACTORY_MONGO_URL
+            valueFrom:
+              secretKeyRef:
+                name: mqtt-secrets
+                key: MONGO_URL            
+          - name: FACTORY_MONGO_DB_NAME
+            value: {{ .Values.controller.factoryMongoDbName }}
       imagePullSecrets:
         - name: regcred
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-broker
+  labels:
+    app: mqtt-broker
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mqtt-broker
+  template:
+    metadata:
+      labels:
+        app: mqtt-broker
+    spec:
+      affinity: {}
+      containers:
+      - image: eclipse-mosquitto
+        imagePullPolicy: IfNotPresent
+        name: mqtt
+        ports:
+        - containerPort: 1883
+          hostPort: 1883
+        volumeMounts:
+        - mountPath: /mosquitto/config/mosquitto.conf
+          name: conf
+          subPath: mosquitto.conf
+      volumes:
+      - name: conf
+        configMap:
+          name: mqtt-broker-config
+          items:
+          - key: mosquitto.conf
+            path: mosquitto.conf
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mqtt-broker-config
+data:
+  mosquitto.conf: |
+    listener 1883
+    connection_messages true
+    allow_anonymous true
