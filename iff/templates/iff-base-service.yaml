@@ -71,7 +71,7 @@ spec:
       #   - "keycloak.local"
       containers:
         - name: iff-akri-controller
-          image: ibn40/iff-akri-controller:v0.0.1
+          image: {{ .Values.controller.image }}
           imagePullPolicy: Always
           securityContext:
             privileged: true
