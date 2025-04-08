@@ -11,6 +11,7 @@ redis:
 
 externalRegistry: docker.io
 
+
 alerta:
   externalPath: /
   externalHostname: alerta.local
