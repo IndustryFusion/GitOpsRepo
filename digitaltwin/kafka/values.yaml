@@ -5,6 +5,7 @@
 watchNamespaces: []
 watchAnyNamespace: false
 
+
 defaultImageRegistry: quay.io
 defaultImageRepository: strimzi
 defaultImageTag: 0.26.1
