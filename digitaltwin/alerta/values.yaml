@@ -17,10 +17,10 @@ service:
 resources:
   requests:
     memory: "1Gi"
-    cpu: "20m"
+    cpu: "50m"
   limits:
     memory: "1Gi"
-    cpu: "20m"
+    cpu: "50m"
 
 nodeSelector: {}
 
