@@ -8,7 +8,6 @@ image:
   repository: alerta/alerta-web
   tag: 8.1.0
   pullPolicy: Always
-
 nameOverride: ""
 fullnameOverride: ""
 
