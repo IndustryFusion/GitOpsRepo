@@ -26,6 +26,7 @@ db:
   secretPostfix: credentials.postgresql.acid.zalan.do
 clusterSvcName: acid-cluster
 
+
 #################################### ibn40 Dockerhub secret #########################
 imageCredentials:
   registry: https://index.docker.io/v1/
