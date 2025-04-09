@@ -74,11 +74,12 @@ spec:
               path: /
               port: http
             initialDelaySeconds: 300
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /
               port: http
-            initialDelaySeconds: 5
+            initialDelaySeconds: 60
           volumeMounts:
           {{- range .Values.extraSecretMounts }}
             - name: {{ .name }}
