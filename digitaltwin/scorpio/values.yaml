@@ -3,6 +3,7 @@ keycloak_vars:
 #  KEYCLOAK_SERVER_URL: http://keycloak.local #https://85.215.213.132:8443/auth
   SSL_REQUIRED: none
 
+
 ## environment variables for adapter service
 adapter_vars:
   SCORPIO_ENTITY_DB_TOPIC: pgserver.public.entity
