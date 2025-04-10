@@ -23,11 +23,11 @@ emqx:
   externalHostname: mqtt.local
   resources:
     requests:
-      memory: "1Gi"
-      cpu: "100m"
+      memory: "2Gi"
+      cpu: "1Gi"
     limits:
-      memory: "1Gi"
-      cpu: "100m"
+      memory: "2Gi"
+      cpu: "1Gi"
 
 mqtt:
   bridge:
