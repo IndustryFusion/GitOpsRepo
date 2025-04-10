@@ -260,7 +260,7 @@ db:
   clusterSvcPostfix: cluster
   svcPort: "5432"
   pvSize: 1Gi
-  podInstances: 1
+  podInstances: 2
   alertaDb: monitoring
   dbUser: "ngb"
   dbReaderUser: "dbreader"

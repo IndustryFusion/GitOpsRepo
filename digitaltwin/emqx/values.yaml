@@ -21,13 +21,13 @@ certmanager:
 emqx:
   replicas: 1  
   externalHostname: mqtt.local
-  resources:
-    requests:
-      memory: "2Gi"
-      cpu: "250m"
-    limits:
-      memory: "2Gi"
-      cpu: "250m"
+  resources: {}
+    # requests:
+    #   memory: "2Gi"
+    #   cpu: "250m"
+    # limits:
+    #   memory: "2Gi"
+    #   cpu: "250m"
 
 mqtt:
   bridge:
