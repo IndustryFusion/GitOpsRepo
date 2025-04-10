@@ -10,7 +10,6 @@ redis:
       memory: 100Mi
 externalRegistry: docker.io
 
-
 alerta:
   externalPath: /
   externalHostname: alerta.local
