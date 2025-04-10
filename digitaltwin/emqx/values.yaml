@@ -24,10 +24,10 @@ emqx:
   resources:
     requests:
       memory: "2Gi"
-      cpu: "1Gi"
+      cpu: "250m"
     limits:
       memory: "2Gi"
-      cpu: "1Gi"
+      cpu: "250m"
 
 mqtt:
   bridge:
