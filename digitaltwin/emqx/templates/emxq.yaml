@@ -27,7 +27,7 @@ spec:
             {{- end }}
     dashboardServiceTemplate:
         spec:
-            type: NodePort
+            type: LoadBalancer
     listenersServiceTemplate:
         spec:
             type: LoadBalancer
