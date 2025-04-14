@@ -61,6 +61,7 @@ spec:
           ports:
             - containerPort: 9090
               protocol: TCP
+          priorityClassName: scorpio-critical
           resources:
             {{- toYaml .Values.aaio.resources | nindent 12 }}
 {{- end }}

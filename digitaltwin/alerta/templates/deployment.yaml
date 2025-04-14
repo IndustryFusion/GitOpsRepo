@@ -95,6 +95,7 @@ spec:
               mountPath: /app/config.js
               subPath: config.js
               {{- end }}
+          priorityClassName: alerta-medium
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       volumes:
