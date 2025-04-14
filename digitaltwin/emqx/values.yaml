@@ -19,14 +19,14 @@ certmanager:
   issuer: letsencrypt-self
 
 emqx:
-  replicas: 1  
+  replicas: 1
   externalHostname: mqtt.local
   resources:
     requests:
-      cpu: "300m"
+      cpu: "1"
       memory: "1Gi"
     limits:
-      cpu: "300m"
+      cpu: "1"
       memory: "1Gi"
 mqtt:
   bridge:
