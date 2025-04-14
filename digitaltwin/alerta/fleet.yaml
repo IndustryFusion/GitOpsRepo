@@ -17,7 +17,7 @@ helm:
   version: ""
 
   # Force recreate resource that can not be updated
-  force: false
+  force: true
   takeOwnership: true
   forceUpdate: true
   timeoutSeconds: 300
