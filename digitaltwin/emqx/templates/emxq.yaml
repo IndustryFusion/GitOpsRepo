@@ -36,7 +36,7 @@ spec:
               value: "2097152"
     dashboardServiceTemplate:
         spec:
-            type: LoadBalancer
+            type: NodePort
     listenersServiceTemplate:
         spec:
             type: LoadBalancer
