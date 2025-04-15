@@ -60,7 +60,6 @@ spec:
                     body {
                         username = "${username}"
                         topic = "${topic}"
-                        clientid = "${clientid}"
                     }
                     headers {
                         "X-Request-Source" = "EMQX"
