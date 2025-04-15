@@ -26,15 +26,6 @@ spec:
                     cpu: {{ .limits.cpu }}
                 {{- end }}
             {{- end }}
-            env:
-            - name: EMQX_DASHBOARD_LISTENERSHTTP_ACCEPTORS
-              value: "2"
-            - name: EMQX_DASHBOARD_LISTENERSHTTP_MAX_CONNECTIONS
-              value: "256"
-            - name: EMQX_RPC__CALL_RECEIVE_TIMEOUT
-              value: "60s"
-            - name: EMQX_NODE__PROCESS_LIMIT
-              value: "2097152"
     dashboardServiceTemplate:
         spec:
             type: LoadBalancer
