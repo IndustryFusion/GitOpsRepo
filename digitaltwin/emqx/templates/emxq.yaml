@@ -6,7 +6,6 @@ spec:
     image: {{ .Values.externalRegistry }}/emqx:5.1
     coreTemplate:
         spec:
-            priorityClassName: emqx-high
             replicas: {{ .Values.emqx.replicas }}
             extraVolumes:
               - name: emqx-tls
