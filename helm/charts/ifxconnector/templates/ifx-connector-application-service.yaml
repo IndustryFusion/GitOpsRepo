@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ifx-connector-application-service
+  name: ifx-connector-application-service
+  namespace: {{ .Values.ifx_connector.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifx-connector-application-service
+  template:
+    metadata:
+      labels:
+        app: ifx-connector-application-service
+    spec:
+      containers:
+      - name: ifx-connector-backend
+        image: {{ .Values.ifx_connector.mainRepo }}/ifx-connector-backend:{{ .Values.ifx_connector.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.ifx_connector.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+        # volumeMounts:
+        # - name: nginx-config
+        #   mountPath: /etc/nginx/conf.d/default.conf
+        #   subPath: default.conf
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+      # volumes:
+      # - name: nginx-config
+      #   configMap:
+      #     name: if50-nginx
+      #     items:
+      #     - key: config
+      #       path: default.conf
