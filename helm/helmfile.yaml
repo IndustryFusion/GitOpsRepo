@@ -125,3 +125,11 @@ releases:
   namespace: ifx-suite
   values:
   - values.yaml.gotmpl
+- name: ifx-connector
+  labels:
+    order: second
+    app: ifx-connector
+  chart: ./charts/ifxconnector
+  namespace: ifx-connector
+  values:
+  - values.yaml.gotmpl
