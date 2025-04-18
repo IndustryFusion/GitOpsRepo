@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: ifx-connector-backend
-        image: {{ .Values.ifx_connector.mainRepo }}/ifx-connector-backend:{{ .Values.ifx_connector.mainVersion }}
+        image: {{ .Values.ifx_connector.mainRepo }}/ifx-connector-backend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.ifx_connector.backendPort }}
