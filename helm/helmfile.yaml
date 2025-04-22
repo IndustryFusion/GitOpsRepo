@@ -133,3 +133,11 @@ releases:
   namespace: ifx-connector
   values:
   - values.yaml.gotmpl
+- name: fusion-hbar-service
+  labels:
+    order: second
+    app: fusion-hbar-service
+  chart: ./charts/fusionhbarservice
+  namespace: fusion-hbar-service
+  values:
+  - values.yaml.gotmpl
