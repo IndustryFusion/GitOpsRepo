@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fusion-hbar-application-service
+  name: fusion-hbar-application-service
+  namespace: {{ .Values.fusion_hbar_service.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fusion-hbar-application-service
+  template:
+    metadata:
+      labels:
+        app: fusion-hbar-application-service
+    spec:
+      containers:
+      - name: fusion-hbar-service-backend
+        image: {{ .Values.fusion_hbar_service.mainRepo }}/fusion-hbar-service-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.fusion_hbar_service.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+        # volumeMounts:
+        # - name: nginx-config
+        #   mountPath: /etc/nginx/conf.d/default.conf
+        #   subPath: default.conf
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+      # volumes:
+      # - name: nginx-config
+      #   configMap:
+      #     name: if50-nginx
+      #     items:
+      #     - key: config
+      #       path: default.conf
