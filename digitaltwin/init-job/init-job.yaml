@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: digitaltwin-job
+  namespace: iff
+spec:
+  template:
+    spec:
+      serviceAccountName: setup-sa
+      containers:
+      - name: digitaltwin-container
+        image: docker.io/ibn40/rancher-digitaltwin:latest
+        imagePullPolicy: Always
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          # Install sudo first
+          apt-get update && apt-get install -y sudo || \
+          (echo "Fallback to apk if apt not available" && apk add --no-cache sudo) || \
+          (echo "Fallback to yum if apk not available" && yum install -y sudo) || \
+          echo "Warning: Could not install sudo, proceeding anyway";
+          # Run original commands
+          /scripts/install_operators.sh && /scripts/setup-local-ingress.sh
+      restartPolicy: Never
+  backoffLimit: 3

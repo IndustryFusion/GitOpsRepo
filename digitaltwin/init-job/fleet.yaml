@@ -1,0 +1,4 @@
+defaultNamespace: iff
+
+resources:
+  - init-job.yaml
