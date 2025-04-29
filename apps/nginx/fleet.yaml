@@ -1,4 +1,4 @@
 defaultNamespace: nginx
 namespace: nginx
 helm:
-  chart: ./charts
+  chart: ./charts/nginx
