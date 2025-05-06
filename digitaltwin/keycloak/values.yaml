@@ -136,6 +136,6 @@ keycloak_db:
     POSTGRES_USERNAME: "ngb"
 mainRegistry: docker.io
 mainRepo: ibn40
-mainVersion: v0.6.0-beta.1
+mainVersion: v0.7.0
 externalRegistry: docker.io
 namespace: iff

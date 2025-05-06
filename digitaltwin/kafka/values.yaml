@@ -7,7 +7,7 @@ watchAnyNamespace: false
 defaultImageRegistry: quay.io
 defaultImageRepository: strimzi
 defaultImageTag: 0.26.1
-mainVersion: v0.6.0-beta.1
+mainVersion: v0.7.0
 mainRepo: ibn40
 mainRegistry: docker.io
 namespace: iff
