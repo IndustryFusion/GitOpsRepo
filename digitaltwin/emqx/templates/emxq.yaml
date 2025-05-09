@@ -6,10 +6,6 @@ spec:
     image: {{ .Values.externalRegistry }}/emqx:5.1
     coreTemplate:
         spec:
-            hostAliases:
-              - ip: {{ .Values.hostAliases.ip }}
-                hostnames:
-                  - {{ .Values.hostAliases.hostname }}
             replicas: {{ .Values.emqx.replicas }}
             extraVolumes:
               - name: emqx-tls
@@ -29,6 +25,12 @@ spec:
                     cpu: {{ .limits.cpu }}
                 {{- end }}
             {{- end }}
+    podTemplate:
+        spec:
+            hostAliases:
+                - ip: {{ .Values.hostAliases.ip }}
+                  hostnames:
+                    - {{ .Values.hostAliases.hostname }}
     dashboardServiceTemplate:
         spec:
             type: LoadBalancer
