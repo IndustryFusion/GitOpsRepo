@@ -47,7 +47,6 @@ spec:
           body {
               username = "${username}"
               password = "${password}"
-              clientid = "${clientid}"
           }
           headers {
               "X-Request-Source" = "EMQX"
@@ -64,7 +63,6 @@ spec:
               body {
                   username = "${username}"
                   topic = "${topic}"
-                  clientid = "${clientid}"
               }
               headers {
                   "X-Request-Source" = "EMQX"
