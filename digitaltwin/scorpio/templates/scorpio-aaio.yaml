@@ -22,6 +22,10 @@ spec:
         checksum/credentials: {{ printf "%s" $secret | toString | sha256sum }}
         {{- end }}
     spec:
+      hostAliases:
+        - ip: {{ .Values.hostAliases.ip }}
+          hostnames:
+            - {{ .Values.hostAliases.hostname }}
       containers:
         - name: {{ .Values.aaio.name }}
           image: {{ .Values.mainRegistry }}/{{ .Values.mainRepo }}/{{ .Values.aaio.name }}:{{ .Values.mainVersion }}

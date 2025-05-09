@@ -23,6 +23,10 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
     spec:
+      hostAliases:
+        - ip: {{ .Values.hostAliases.ip }}
+          hostnames:
+            - {{ .Values.hostAliases.hostname }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.externalRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"

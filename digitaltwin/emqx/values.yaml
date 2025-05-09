@@ -9,7 +9,9 @@ redis:
       cpu: 50m
       memory: 100Mi
 externalRegistry: docker.io
-
+hostAliases:
+  ip: "192.168.46.136"
+  hostname: "keycloak.local"
 alerta:
   externalPath: /
   externalHostname: alerta.local

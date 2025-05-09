@@ -4,6 +4,9 @@ keycloak_vars:
   SSL_REQUIRED: none
 
 
+hostAliases:
+  ip: "192.168.46.136"
+  hostname: "keycloak.local"
 ## environment variables for adapter service
 adapter_vars:
   SCORPIO_ENTITY_DB_TOPIC: pgserver.public.entity

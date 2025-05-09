@@ -15,6 +15,10 @@ spec:
       labels:
         app: pgrest
     spec:
+      hostAliases:
+        - ip: {{ .Values.hostAliases.ip }}
+          hostnames:
+            - {{ .Values.hostAliases.hostname }}
       initContainers:
       - name: get-jwk
         image: {{ .Values.externalRegistry }}/busybox:1.28

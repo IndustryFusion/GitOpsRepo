@@ -6,6 +6,10 @@ spec:
     image: {{ .Values.externalRegistry }}/emqx:5.1
     coreTemplate:
         spec:
+            hostAliases:
+              - ip: {{ .Values.hostAliases.ip }}
+                hostnames:
+                  - {{ .Values.hostAliases.hostname }}
             replicas: {{ .Values.emqx.replicas }}
             extraVolumes:
               - name: emqx-tls
@@ -43,6 +47,7 @@ spec:
                 body {
                     username = "${username}"
                     password = "${password}"
+                    clientid = "${clientid}"
                 }
                 headers {
                     "X-Request-Source" = "EMQX"
@@ -59,6 +64,7 @@ spec:
                     body {
                         username = "${username}"
                         topic = "${topic}"
+                        clientid = "${clientid}"
                     }
                     headers {
                         "X-Request-Source" = "EMQX"
