@@ -21,7 +21,7 @@ certmanager:
   issuer: letsencrypt-self
 
 emqx:
-  replicas: 1
+  replicas: 2
   externalHostname: mqtt.local
   resources:
     requests:
