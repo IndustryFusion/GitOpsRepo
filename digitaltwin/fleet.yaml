@@ -1,106 +1,106 @@
-defaultNamespace: iff
-targets:
-  # Layer 1: Infrastructure (no dependencies)
-  - name: cert-manager
-    chart: ./cert-manager
-    dependsOn: []
-    readiness:
-      checks:
-        - type: "CustomResourceDefinition"
-          name: "certificates.cert-manager.io"
-          condition: "Established"
+# defaultNamespace: iff
+# targets:
+#   # Layer 1: Infrastructure (no dependencies)
+#   - name: cert-manager
+#     chart: ./cert-manager
+#     dependsOn: []
+#     readiness:
+#       checks:
+#         - type: "CustomResourceDefinition"
+#           name: "certificates.cert-manager.io"
+#           condition: "Established"
 
-  - name: minio
-    chart: ./minio
-    dependsOn: []
+#   - name: minio
+#     chart: ./minio
+#     dependsOn: []
   
-  - name: redis
-    chart: ./redis
-    dependsOn: []
+#   - name: redis
+#     chart: ./redis
+#     dependsOn: []
   
-  # Layer 2: Core Databases
-  - name: postgres
-    chart: ./postgres
-    dependsOn:
-      - minio
-    checks:
-      - type: "Deployment"
-        name: "postgres"
-        namespace: "iff"
+#   # Layer 2: Core Databases
+#   - name: postgres
+#     chart: ./postgres
+#     dependsOn:
+#       - minio
+#     checks:
+#       - type: "Deployment"
+#         name: "postgres"
+#         namespace: "iff"
 
-  # Layer 3: Messaging and Auth
-  - name: kafka
-    chart: ./kafka
-    dependsOn:
-      - postgres
+#   # Layer 3: Messaging and Auth
+#   - name: kafka
+#     chart: ./kafka
+#     dependsOn:
+#       - postgres
 
-  - name: keycloak
-    chart: ./keycloak
-    dependsOn:
-      - postgres
-    readiness:
-      checks:
-        - type: "Deployment"
-          name: "keycloak"
-          namespace: "iff"
-          minReadySeconds: 60
-        - type: "Service"
-          name: "keycloak"
-          namespace: "iff"
+#   - name: keycloak
+#     chart: ./keycloak
+#     dependsOn:
+#       - postgres
+#     readiness:
+#       checks:
+#         - type: "Deployment"
+#           name: "keycloak"
+#           namespace: "iff"
+#           minReadySeconds: 60
+#         - type: "Service"
+#           name: "keycloak"
+#           namespace: "iff"
         
 
-  # Layer 4: Supporting Services
-  - name: pgrest
-    chart: ./pgrest
-    dependsOn:
-      - postgres
+#   # Layer 4: Supporting Services
+#   - name: pgrest
+#     chart: ./pgrest
+#     dependsOn:
+#       - postgres
 
-  # Layer 5: Core Applications
-  - name: alerta
-    chart: ./alerta
-    dependsOn:
-      - postgres
-      - keycloak
+#   # Layer 5: Core Applications
+#   - name: alerta
+#     chart: ./alerta
+#     dependsOn:
+#       - postgres
+#       - keycloak
 
-  - name: scorpio
-    chart: ./scorpio
-    dependsOn:
-      - postgres
-      - keycloak
-      - kafka
+#   - name: scorpio
+#     chart: ./scorpio
+#     dependsOn:
+#       - postgres
+#       - keycloak
+#       - kafka
 
-  - name: flink
-    chart: ./flink
-    dependsOn:
-      - kafka
-      - minio
+#   - name: flink
+#     chart: ./flink
+#     dependsOn:
+#       - kafka
+#       - minio
 
-  # Layer 6: Integration Components
-  - name: kafka-bridges
-    chart: ./kafka-bridges
-    dependsOn:
-      - kafka
-      - keycloak
-      - alerta
+#   # Layer 6: Integration Components
+#   - name: kafka-bridges
+#     chart: ./kafka-bridges
+#     dependsOn:
+#       - kafka
+#       - keycloak
+#       - alerta
 
-  - name: emqx
-    chart: ./emqx
-    dependsOn:
-      - kafka
-      - kafka-bridges
+#   - name: emqx
+#     chart: ./emqx
+#     dependsOn:
+#       - kafka
+#       - kafka-bridges
 
-  - name: sql-core
-    chart: ./sql-core
-    dependsOn:
-      - kafka
-      - flink
-      - alerta
-      - scorpio
-      - kafka-bridges
+#   - name: sql-core
+#     chart: ./sql-core
+#     dependsOn:
+#       - kafka
+#       - flink
+#       - alerta
+#       - scorpio
+#       - kafka-bridges
 
-  # Velero (special case - different namespace)
-  - name: velero
-    chart: ./velero
-    namespace: velero
-    dependsOn:
-      - minio
+#   # Velero (special case - different namespace)
+#   - name: velero
+#     chart: ./velero
+#     namespace: velero
+#     dependsOn:
+#       - minio
