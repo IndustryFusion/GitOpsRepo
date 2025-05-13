@@ -43,9 +43,11 @@ targets:
         - type: "Deployment"
           name: "keycloak"
           namespace: "iff"
+          minReadySeconds: 60
         - type: "Service"
           name: "keycloak"
           namespace: "iff"
+        
 
   # Layer 4: Supporting Services
   - name: pgrest
