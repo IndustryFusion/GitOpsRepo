@@ -1,5 +1,0 @@
-defaultNamespace: iff
-
-resources:
-  - setup-sa.yaml
-  - init-job.yaml
