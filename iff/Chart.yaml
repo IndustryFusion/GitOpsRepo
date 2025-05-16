@@ -1,5 +1,5 @@
 apiVersion: v2
 name: iff-services
 description: IFF Data and gateway services related to IFF Edge stack
-version: 0.0.0
-appVersion: 0.0.0
+version: 0.0.1
+appVersion: 0.0.1
