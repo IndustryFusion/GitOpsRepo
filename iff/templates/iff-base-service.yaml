@@ -76,14 +76,6 @@ spec:
           securityContext:
             privileged: true
           env:
-          - name: GITHUB_OWNER
-            value: IndustryFusion
-          - name: GITHUB_REPO
-            value: gateway-configs
-          - name: GITHUB_PATH
-            value: ''
-          - name: GITHUB_TOKEN
-            value: ""
           - name: FACTORY_MONGO_URL
             valueFrom:
               secretKeyRef:
