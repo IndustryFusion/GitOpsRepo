@@ -77,10 +77,7 @@ spec:
             privileged: true
           env:
           - name: FACTORY_MONGO_URL
-            valueFrom:
-              secretKeyRef:
-                name: mqtt-secrets
-                key: MONGO_URL            
+            value: {{ .Values.controller.factoryMongoDbUrl }}           
           - name: FACTORY_MONGO_DB_NAME
             value: {{ .Values.controller.factoryMongoDbName }}
       imagePullSecrets:
