@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.mqtt.configuration.name }}
 spec:
   discoveryHandler:
-    name: akri-mqtt-discovery
+    name: mqtt
     discoveryDetails: |+
       {{- with .Values.mqtt.configuration.discoveryDetails}}
         {{- toYaml . | nindent 8 }}

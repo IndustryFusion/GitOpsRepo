@@ -22,6 +22,6 @@ helm:
         image: 
           repository: ibn40/akri-mqtt-discovery-handler
           tag: iff
-        name: akri-mqtt-discovery
+        name: mqtt
       configuration:
         enabled: false
