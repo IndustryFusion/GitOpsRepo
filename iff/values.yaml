@@ -7,7 +7,7 @@ mqtt:
       # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
       mqttBrokerUri: "mqtt://192.168.49.135:1883"
       topics:
-        - "airtracker-39B58/relay1"
+        - "airtracker-39b58/relay1"
       timeoutSeconds: 5
 
 crds:
