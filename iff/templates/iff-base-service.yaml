@@ -71,18 +71,14 @@ spec:
       #   - "keycloak.local"
       containers:
         - name: iff-akri-controller
-          image: ibn40/iff-akri-controller:v0.0.1
+          image: ibn40/iff-akri-controller:v0.0.2
           imagePullPolicy: Always
           securityContext:
             privileged: true
           env:
-          - name: GITHUB_OWNER
-            value: IndustryFusion
-          - name: GITHUB_REPO
-            value: gateway-configs
-          - name: GITHUB_PATH
-            value: ''
-          - name: GITHUB_TOKEN
-            value: ""
+          - name: FACTORY_MONGO_DB_NAME
+            value: admin
+          - name: FACTORY_MONGO_URL
+            value: mongodb://my-user:ibmistura123@212.132.105.236:31183/admin?directconnection=true&retryWrites=true&w=majority
       imagePullSecrets:
         - name: regcred
