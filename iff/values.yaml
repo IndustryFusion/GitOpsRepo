@@ -1,4 +1,4 @@
 controller:
   image: ibn40/iff-onboarding-controller:v0.1.0
   factoryMongoDbUrl: bW9uZ29kYjovL215LXVzZXI6aWJtaXN0dXJhMTIzQDIxMi4xMzIuMTA1LjIzNjozMTE4My9hZG1pbj9kaXJlY3Rjb25uZWN0aW9uPXRydWUmcmV0cnlXcml0ZXM9dHJ1ZSZ3PW1ham9yaXR5
-  factoryMongoDbName: admin
+  factoryMongoDbName: factory
