@@ -1,29 +1,4 @@
-{{- if .Values.opcua.configuration.enabled }}
-apiVersion: {{ printf "%s/%s" .Values.crds.group .Values.crds.version }}
-kind: Configuration
-metadata:
-  name: {{ .Values.opcua.configuration.name }}
-spec:
-  discoveryHandler:
-    name: opcua
-    discoveryDetails: |+
-      opcuaDiscoveryMethod: 
-        standard:
-          discoveryUrls: 
-          {{- toYaml .Values.opcua.configuration.discoveryDetails.discoveryUrls | nindent 10 }}
-      applicationNames:
-        action: {{ .Values.opcua.configuration.discoveryDetails.applicationNames.action }}
-        {{- if .Values.opcua.configuration.discoveryDetails.applicationNames.items}}
-        items:
-        {{- toYaml .Values.opcua.configuration.discoveryDetails.applicationNames.items | nindent 8 }}
-        {{- else }}
-        items: []
-        {{- end }}
 
-  capacity: {{ .Values.opcua.configuration.capacity }}
-{{- end }}
-
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -59,33 +34,76 @@ subjects:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: iff-akri-controller
+  name: iff-onboarding-controller
   labels:
-    app: iff-akri-controller
+    app: iff-onboarding-controller
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: iff-akri-controller
+      app: iff-onboarding-controller
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: iff-akri-controller
+        app: iff-onboarding-controller
     spec:
       serviceAccountName: devices-account
       restartPolicy: Always
       containers:
-        - name: iff-akri-controller
+        - name: iff-onboarding-controller
           image: {{ .Values.controller.image }}
           imagePullPolicy: Always
           securityContext:
             privileged: true
           env:
           - name: FACTORY_MONGO_URL
-            value: {{ .Values.controller.factoryMongoDbUrl }}
+            valueFrom:
+              secretKeyRef:
+                name: factory-mongo-secret
+                key: factoryMongoDbUrl
           - name: FACTORY_MONGO_DB_NAME
             value: {{ .Values.controller.factoryMongoDbName }}
       imagePullSecrets:
         - name: regcred
+
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: factory-mongo-secret
+type: Opaque
+data:
+  factoryMongoDbUrl: {{ .Values.secrets.factoryMongoDbUrl }}
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: mongoinserts.myorg.io
+spec:
+  group: myorg.io
+  names:
+    kind: MongoInsert
+    plural: mongoinserts
+    singular: mongoinsert
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                db:
+                  type: string
+                collection:
+                  type: string
+                document:
+                  type: object

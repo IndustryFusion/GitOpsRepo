@@ -1,8 +1,0 @@
-useLatestContainers: false
-useDevelopmentContainers: true
-kubernetesDistro: k3s
-opcua:
-  discovery:
-    enabled: true
-controller:
-  enabled: false

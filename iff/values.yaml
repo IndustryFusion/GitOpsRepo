@@ -1,22 +1,4 @@
-opcua:
-  configuration:
-    enabled: true
-    name: akri-opcua
-    capacity: 1
-    discoveryDetails:
-      # discoveryUrls is a list of DiscoveryUrls for OPC UA servers
-      discoveryUrls:
-        - ""
-
-      applicationNames:
-        action: Exclude
-        items: []
-
-crds:
-  group: akri.sh
-  version: v0
-
 controller:
-  image: ibn40/iff-akri-controller:v0.0.2
-  factoryMongoDbUrl: mongodb://my-user:ibmistura123@212.132.105.236:31183/admin?directconnection=true&retryWrites=true&w=majority
+  image: ibn40/iff-onboarding-controller:v0.1.0
+  factoryMongoDbUrl: bW9uZ29kYjovL215LXVzZXI6aWJtaXN0dXJhMTIzQDIxMi4xMzIuMTA1LjIzNjozMTE4My9hZG1pbj9kaXJlY3Rjb25uZWN0aW9uPXRydWUmcmV0cnlXcml0ZXM9dHJ1ZSZ3PW1ham9yaXR5
   factoryMongoDbName: admin
