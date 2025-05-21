@@ -76,7 +76,7 @@ metadata:
   name: factory-mongo-secret
 type: Opaque
 data:
-  factoryMongoDbUrl: {{ .Values.secrets.factoryMongoDbUrl }}
+  factoryMongoDbUrl: {{ .Values.controller.factoryMongoDbUrl }}
 
 ---
 apiVersion: apiextensions.k8s.io/v1
