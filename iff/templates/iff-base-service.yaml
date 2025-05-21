@@ -65,6 +65,8 @@ spec:
                 key: factoryMongoDbUrl
           - name: FACTORY_MONGO_DB_NAME
             value: {{ .Values.controller.factoryMongoDbName }}
+          - name: DEVICE_IFRIC_ID
+            value: {{ .Values.controller.deviceIfricId }}
       imagePullSecrets:
         - name: regcred
 
