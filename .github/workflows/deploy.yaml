@@ -14,7 +14,8 @@ on:
         type: string
       ENV:
         description: 'ENV to deploy => EDGE DEV or DEV'
-        required: true
+        required: false
+        default: 'dev'
         type: string
       DOCKER_REGISTRY:
         description: 'Name of the docker registry'
@@ -44,7 +45,8 @@ on:
         type: string
       ENV:
         description: 'ENV to deploy => EDGE DEV or DEV'
-        required: true
+        required: false
+        default: 'dev'
         type: string
       NAMESPACE:
         description: 'Namespace to deploy'
