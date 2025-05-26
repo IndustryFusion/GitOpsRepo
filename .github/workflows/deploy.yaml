@@ -12,6 +12,10 @@ on:
         description: 'Namespace to deploy'
         required: true
         type: string
+      ENV:
+        description: 'ENV to deploy => EDGE DEV or DEV'
+        required: true
+        type: string
       DOCKER_REGISTRY:
         description: 'Name of the docker registry'
         required: false
@@ -37,6 +41,10 @@ on:
         description: 'Space-separated list of apps to deploy/upgrade, leave empty to deploy everything'
         required: false
         default: ''
+        type: string
+      ENV:
+        description: 'ENV to deploy => EDGE DEV or DEV'
+        required: true
         type: string
       NAMESPACE:
         description: 'Namespace to deploy'
@@ -134,7 +142,7 @@ on:
 
 jobs:
   clone-repo:
-    runs-on: private-2
+    runs-on: ${{ inputs.ENV == 'dev-edge' && 'dev-edge' || 'private-2' }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -144,7 +152,7 @@ jobs:
           #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
   deploy-action:
     needs: clone-repo
-    runs-on: private-2
+    runs-on: ${{ inputs.ENV == 'dev-edge' && 'dev-edge' || 'private-2' }}
     container:
       image: ibn40/deployer:${{ inputs.CLUSTER }}
       options: --user root
