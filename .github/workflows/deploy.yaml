@@ -144,7 +144,7 @@ on:
 
 jobs:
   clone-repo:
-    runs-on: ${{ inputs.ENV == 'dev-edge' && 'dev-edge' || 'private-2' }}
+    runs-on: 'private-2'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -154,7 +154,7 @@ jobs:
           #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
   deploy-action:
     needs: clone-repo
-    runs-on: ${{ inputs.ENV == 'dev-edge' && 'dev-edge' || 'private-2' }}
+    runs-on: 'private-2'
     container:
       image: ibn40/deployer:${{ inputs.CLUSTER }}
       options: --user root
