@@ -161,6 +161,17 @@ jobs:
       volumes:
         - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
     steps:
+      - name: Setup Helm Plugins
+        run: |
+          echo "Installing/verifying helm diff plugin..."
+          if ! helm plugin list | grep -q "diff"; then
+            echo "Installing helm diff plugin..."
+            helm plugin install https://github.com/databus23/helm-diff
+          else
+            echo "Helm diff plugin already installed"
+          fi
+          helm plugin list
+
       - name: Deploy
         run: |
           helm plugin list
