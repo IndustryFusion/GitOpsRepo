@@ -1,0 +1,242 @@
+name: Deploy-Edge
+
+on:
+  workflow_dispatch:
+    inputs:
+      APPS:
+        description: 'Space-separated list of apps to deploy/upgrade, leave empty to deploy everything'
+        required: false
+        default: ''
+        type: string
+      NAMESPACE:
+        description: 'Namespace to deploy'
+        required: true
+        type: string
+      ENV:
+        description: 'ENV to deploy => EDGE DEV or DEV'
+        required: false
+        default: 'dev-edge'
+        type: string
+      DOCKER_REGISTRY:
+        description: 'Name of the docker registry'
+        required: false
+        default: ibn40
+        type: string
+      DOCKER_TAG:
+        description: 'Docker tag to use in the deployment'
+        required: false
+        default: 'latest'
+        type: string
+      PULL_SECRET_CREDENTIALS:
+        description: 'Name of the secret in cluster that contains docker registry credentials'
+        required: false
+        default: 'regcred'
+        type: string
+      CLUSTER:
+        description: 'Tag of the deployer image with the Kubernetes cluster config'
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      APPS:
+        description: 'Space-separated list of apps to deploy/upgrade, leave empty to deploy everything'
+        required: false
+        default: ''
+        type: string
+      ENV:
+        description: 'ENV to deploy => EDGE DEV or DEV'
+        required: false
+        default: 'dev-edge'
+        type: string
+      NAMESPACE:
+        description: 'Namespace to deploy'
+        required: true
+        type: string
+      DOCKER_REGISTRY: 
+        description: 'Name of the docker registry'
+        required: false
+        default: ibn40
+        type: string
+      DOCKER_TAG:
+        description: 'Docker tag to use in the deployment'
+        required: false
+        default: 'latest'
+        type: string
+      PULL_SECRET_CREDENTIALS:
+        description: 'Name of the secret in cluster that contains docker registry credentials'
+        required: false
+        default: 'regcred'
+        type: string
+      CLUSTER:
+        description: 'Tag of the deployer image with the Kubernetes cluster config'
+        required: true
+        type: string
+    secrets:
+      PRIVATE_GITHUB_TOKEN:
+        description: 'Token to use to clone the repositories'
+        required: true
+      S3_URL:
+        description: 'S3 url to use in the cluster'
+        required: false
+      S3_ACCESS_KEY:
+        description: 'S3 access key to use in the cluster'
+        required: false
+      S3_SECRET_KEY:
+        description: 'S3 secret key to use in the cluster'
+        required: false
+      HUB_TOKEN:
+        description: ''
+        required: false
+      GATEWAY_TOKEN:
+        description: ''
+        required: false
+      ALERTA_KEY_DEV:
+        description: ''
+        required: false
+      FACTORY_MONGO_URL_DEV:
+        description: ''
+        required: false
+      USERNAME:
+        description: ''
+        required: false
+      PASSWORD:
+        description: ''
+        required: false
+      ICID_MONGO_URL_DEV:
+        description: ''
+        required: false
+      CLIENT_ID:
+        description: ''
+        required: false
+      CLIENT_SECRET:
+        description: ''
+        required: false
+      JWT_SECRET:
+        description: ''
+        required: false
+      EMAIL_URL:
+        description: ''
+        required: false
+      JIRA_URL:
+        description: ''
+        required: false
+      MONGO_URL:
+        description: ''
+        required: false
+      TENANT_ID:
+        description: ''
+        required: false
+      ICID_NAMESPACE:
+        description: ''
+        required: false
+      CREATOR_MONGO_URL_DEV:
+        description: ''
+        required: false
+      IFX_MONGO_URL_DEV:
+        description: ''
+        required: false
+      TEMPLATE_MONGO_URL_DEV:
+        description: ''
+        required: false
+      JIRA_TOKEN:
+        description: ''
+        required: false
+
+jobs:
+  clone-repo:
+    runs-on: 'dev-edge'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: IndustryFusion/GitOpsRepo.git
+          ref: main
+          path: GitOpsRepo
+          #token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+  deploy-action:
+    needs: clone-repo
+    runs-on: 'dev-edge'
+    container:
+      image: ibn40/deployer:${{ inputs.CLUSTER }}
+      options: --user root
+      volumes:
+        - ${{ github.workspace }}/GitOpsRepo:/home/deployer/GitOpsRepo
+    steps:
+      - name: Setup Helm Plugins
+        run: |
+          echo "Installing/verifying helm diff plugin..."
+          if ! helm plugin list | grep -q "diff"; then
+            echo "Installing helm diff plugin..."
+            helm plugin install https://github.com/databus23/helm-diff
+          else
+            echo "Helm diff plugin already installed"
+          fi
+          helm plugin list
+
+      - name: Deploy
+        run: |
+          helm plugin list
+          #export NAMESPACE="${{ inputs.NAMESPACE }}"
+          cd /home/deployer/GitOpsRepo/helm
+          #bash install_operators.sh
+          APPS="${{ inputs.APPS }}"
+          LABEL_ARG=""
+          for app in ${APPS}; do
+            echo "Adding app: ${app} to deployment"
+            LABEL_ARG="${LABEL_ARG} -l app=${app}"
+          done
+          echo "Deploying with selector: ${LABEL_ARG}"
+          helmfile ${LABEL_ARG} apply \
+            --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
+            --set mainVersion=${{ inputs.DOCKER_TAG }} \
+            --set namespace=${{ inputs.NAMESPACE }} \
+            --set pullSecretCredentials=${{ inputs.PULL_SECRET_CREDENTIALS }} \
+            --set factory50.githubToken="${{ secrets.HUB_TOKEN }}" \
+            --set factory50.gatewayToken="${{ secrets.GATEWAY_TOKEN }}" \
+            --set factory50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
+            --set factory50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
+            --set factory50.jwtSecret="${{ secrets.JWT_SECRET }}" \
+            --set factory50.alertaKey="${{ secrets.ALERTA_KEY_DEV }}" \
+            --set factory50.mongoUrl="${{ secrets.FACTORY_MONGO_URL_DEV }}" \
+            --set template_sandbox.githubToken="${{ secrets.HUB_TOKEN }}" \
+            --set template_sandbox.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
+            --set template_sandbox.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
+            --set template_sandbox.mongoUrl="${{ secrets.TEMPLATE_MONGO_URL_DEV }}" \
+            --set ifric_platform.githubToken="${{ secrets.HUB_TOKEN }}" \
+            --set ifric_platform.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
+            --set ifric_platform.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
+            --set ifric_platform.clientId="${{ secrets.CLIENT_ID }}" \
+            --set ifric_platform.clientSecret="${{ secrets.CLIENT_SECRET }}" \
+            --set ifric_platform.tenantId="${{ secrets.TENANT_ID }}" \
+            --set ifric_platform.jiraToken="${{ secrets.JIRA_TOKEN }}" \
+            --set passport_viewer.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
+            --set ifric_platform.mongoUrl="${{ secrets.CREATOR_MONGO_URL_DEV }}" \
+            --set passport_viewer.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
+            --set passport_viewer.githubToken="${{ secrets.HUB_TOKEN }}" \
+            --set ifric_registry.githubToken="${{ secrets.HUB_TOKEN }}" \
+            --set ifric_registry.client_id="${{ secrets.CLIENT_ID }}" \
+            --set ifric_registry.client_secret="${{ secrets.CLIENT_SECRET }}" \
+            --set ifric_registry.tenant_id="${{ secrets.TENANT_ID }}" \
+            --set ifric_registry.mongoUrl="${{ secrets.MONGO_URL }}" \
+            --set ifric_registry.email_url="${{ secrets.EMAIL_URL }}" \
+            --set ifric_platform_temp.githubToken="${{ secrets.HUB_TOKEN }}" \
+            --set ifx_platform.mongoUrl="${{ secrets.IFX_MONGO_URL_DEV }}" \
+            --set ifx_platform.githubToken="${{ secrets.HUB_TOKEN }}" \
+            --set ifx_platform.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
+            --set ifx_platform.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
+            --set ifx_platform.clientId="${{ secrets.CLIENT_ID }}" \
+            --set ifx_platform.clientSecret="${{ secrets.CLIENT_SECRET }}" \
+            --set ifx_platform.tenantId="${{ secrets.TENANT_ID }}" \
+            --set ifx_platform.jiraToken="${{ secrets.JIRA_TOKEN }}" \
+            --set ifx_platform.jiraUrl="${{ secrets.JIRA_URL }}" \
+            --set ifx_platform.emailUrl="${{ secrets.EMAIL_URL }}" \
+            --set ifx_platform.jwtSecret="${{ secrets.JWT_SECRET }}" \
+            --set ifx_suite.jwtSecret="${{ secrets.JWT_SECRET }}" \
+            --set fleet50.githubToken="${{ secrets.HUB_TOKEN }}" \
+            --set fleet50.s3AccessKey="${{ secrets.S3_ACCESS_KEY }}" \
+            --set fleet50.jwtSecret="${{ secrets.JWT_SECRET }}" \
+            --set fleet50.s3SecretKey="${{ secrets.S3_SECRET_KEY }}" \
+            --set fleet50.username="${{ secrets.USERNAME }}" \
+            --set fleet50.password="${{ secrets.PASSWORD }}" \
+            --set fleet50.mongoUrl="${{ secrets.MONGO_URL }}" \
+            --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL_DEV }}" \
+            --set icid.namespace="${{ secrets.ICID_NAMESPACE }}"
