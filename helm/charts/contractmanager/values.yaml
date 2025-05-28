@@ -1,0 +1,8 @@
+mainVersion: latest
+mainRepo: ifx40
+namespace: contract-manager
+pullSecretCredentials: regcred
+contract_manager:
+  Namespace: contract-manager
+  backendPort: 4000
+  frontendPort: 3000

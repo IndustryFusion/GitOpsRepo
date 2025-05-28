@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: contract-manager-application-service
+  name: contract-manager-application-service
+  namespace: {{ .Values.contract_manager.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contract-manager-application-service
+  template:
+    metadata:
+      labels:
+        app: contract-manager-application-service
+    spec:
+      containers:
+      - name: contract-manager-backend
+        image: {{ .Values.mainRepo }}/contract-manager-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.contract_manager.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+      - name: contract-manager-frontend
+        image: {{ .Values.mainRepo }}/contract-manager-frontend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.contract_manager.frontendPort }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}

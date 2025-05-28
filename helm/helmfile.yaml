@@ -141,3 +141,11 @@ releases:
   namespace: fusion-hbar-service
   values:
   - values.yaml.gotmpl
+- name: contract-manager
+  labels:
+    order: second
+    app: contract-manager
+  chart: ./charts/contractmanager
+  namespace: contract-manager
+  values:
+  - values.yaml.gotmpl
