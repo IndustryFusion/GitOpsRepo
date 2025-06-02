@@ -1,0 +1,29 @@
+replicaCount: 1
+
+auth:
+  enabled: true
+  rootUser: admin
+  rootPassword: "mongo123"
+  database: factoryDB
+
+image:
+  repository: mongo
+  tag: "4.4.6"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 27017
+
+persistence:
+  enabled: true
+  storageClass: "local-path"
+  size: 5Gi
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
