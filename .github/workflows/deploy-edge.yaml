@@ -190,7 +190,7 @@ jobs:
           if echo "${APPS}" | grep -wq "factory50"; then
             echo "Deploying MongoDB chart for factory50..."
             helm upgrade --install mongodb charts/mongodb \
-              --namespace "${{ inputs.NAMESPACE }}" \
+              --namespace "${{ inputs.NAMESPACE }}"
           fi
           
           helmfile ${LABEL_ARG} apply \
