@@ -3,152 +3,53 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: factory50-application-service-prod
-  name: factory50-application-service-prod
-  namespace: {{ .Values.namespace }}
+    app: factory50-application-service
+  name: factory50-application-service
+  namespace: {{ .Release.Namespace }}
 spec:
   ports:
-  - port: {{ .Values.factory50_prod.backendPort }}
-    targetPort: {{ .Values.factory50_prod.backendPort }}
+  - port: {{ .Values.factory50.backendPort }}
+    targetPort: {{ .Values.factory50.backendPort }}
     name: factory50-backend
     protocol: TCP
-  - port: {{ .Values.factory50_prod.frontendPort }}
-    targetPort: {{ .Values.factory50_prod.frontendPort }}
+  - port: {{ .Values.factory50.frontendPort }}
+    targetPort: {{ .Values.factory50.frontendPort }}
     name: factory50-frontend
     protocol: TCP
-  type: ClusterIP
+  type: LoadBalancer
   selector:
-    app: factory50-application-service-prod
+    app: factory50-application-service
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: factory50-application-service-prod
-  name: factory50-application-service-prod
-  namespace: {{ .Values.namespace }}
+    app: factory50-application-service
+  name: factory50-application-service
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: factory50-application-service-prod
+      app: factory50-application-service
   template:
     metadata:
       labels:
-        app: factory50-application-service-prod
+        app: factory50-application-service
     spec:
       containers:
       - name: factory50-backend
         image: {{ .Values.mainRepo }}/factory50-backend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.factory50_prod.backendPort }}
-        env:
-        - name: GATEWAY_BASE_URL
-          value: {{ .Values.factory50_prod.gatewayUrl }}
-        - name: GATEWAY_TOKEN
-          value: {{ .Values.factory50_prod.gatewayToken }}
-        - name: GITHUB_BASE_URL
-          value: {{ .Values.factory50_prod.githubUrl }}
-        - name: GITHUB_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: GITHUB_TOKEN
-        - name: API_URL
-          value: {{ .Values.factory50_prod.keycloakApiUrl }}
-        - name: CLIENT_ID
-          value: {{ .Values.factory50_prod.factoryScorpioClientId }}
-        - name: SCORPIO_URL
-          value: {{ .Values.factory50_prod.factoryScorpioUrl }}
-        - name: PDT_SCORPIO_URL
-          value: {{ .Values.factory50_prod.pdtScorpioUrl }}
-        - name: S3_URL
-          value: {{ .Values.factory50_prod.s3Url }}
-        - name: S3_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: S3_ACCESS_KEY
-        - name: S3_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: S3_SECRET_KEY
-        - name: ALERTA_KEY
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: ALERTA_KEY
-        - name: MONGO_URL
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: MONGO_URL
-        - name: JWT_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: JWT_SECRET_KEY
-        - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: JWT_SECRET
-        - name: MASK_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: MASK_SECRET
-        - name: S3_BUCKET
-          value: {{ .Values.factory50_prod.s3BucketName }}
-        - name: ALERTA_URL
-          value: {{ .Values.factory50_prod.alertaUrl }}
-        - name: TIMESCALE_URL
-          value: {{ .Values.factory50_prod.pgrestUrl }}
-        - name: CORS_ORIGIN
-          value: {{ .Values.factory50_prod.corsOrigin }}
-        - name: REDIS_SERVER
-          value: {{ .Values.factory50_prod.redisUrl }}
-        - name: REDIS_PORT
-          value: "{{ .Values.factory50_prod.redisPort }}"
-        - name: TEMPLATE_SANDBOX_BACKEND_URL
-          value: {{ .Values.factory50_prod.sandboxBackendUrl }}
-        - name: CONTEXT
-          value: {{ .Values.factory50_prod.contextUrl }}
-        - name: IFRIC_REGISTRY_BACKEND_URL
-          value: {{ .Values.factory50_prod.registryUrl }}
-        - name: IFX_PLATFORM_BACKEND_URL
-          value: {{ .Values.factory50_prod.ifxPlatformBackendUrl }}
-        - name: ICID_SERVICE_BACKEND_URL
-          value: {{ .Values.factory50_prod.icidOrigin }}
-        - name: USERNAME
-          value: {{ .Values.factory50_prod.keycloakUsername }}
-        - name: PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: PASSWORD
+        - containerPort: {{ .Values.factory50.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
       - name: factory50-frontend
         image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.factory50_prod.frontendPort }}
-        env:
-        - name: NEXT_PUBLIC_BACKEND_API_URL
-          value: {{ .Values.factory50_prod.factoryBackendUrl }}
-        - name: NEXT_PUBLIC_IFRIC_REGISTRY_BACKEND_URL
-          value: {{ .Values.factory50_prod.registryUrl }}
-        - name: NEXT_PUBLIC_IFX_SUITE_FRONTEND_URL
-          value: {{ .Values.factory50_prod.ifxSuiteFrontendUrl }}
-        - name: NEXT_PUBLIC_TEMPLATE_SANDBOX_BACKEND_URL
-          value: {{ .Values.factory50_prod.sandboxBackendUrl }}
-        - name: NEXT_PUBLIC_IFX_PLATFORM_BACKEND_URL
-          value: {{ .Values.factory50_prod.ifxPlatformBackendUrl }}
-        - name: NEXT_PUBLIC_JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: factory50-secrets
-              key: NEXT_PUBLIC_JWT_SECRET
+        - containerPort: {{ .Values.factory50.frontendPort }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
