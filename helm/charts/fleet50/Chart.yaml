@@ -1,6 +1,6 @@
 apiVersion: v2
-name: fleet50-application-service
-description: A Helm chart for IF50 application service
+name: fleet50-application-service-prod
+description: A Helm chart for Fleet Manager
 type: application
-version: 0.1.0
-appVersion: "0.1.0"
+version: 0.0.1
+appVersion: "0.0.1"

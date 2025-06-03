@@ -1,0 +1,33 @@
+mainVersion: prod-test
+mainRepo: ibn40
+namespace: iff
+pullSecretCredentials: regcred
+fleet50_prod:
+  backendPort: 4001
+  frontendPort: 3001
+  githubToken: 'github_token'
+  githubBaseUrl: https://api.github.com/repos/IndustryFusion/templates/contents/contracts
+  jwtSecret: 'jwtSecret'
+  s3AccessKey: 's3AccessKey'
+  s3SecretKey: 's3SecretKey'
+  corsOrigin: https://fleet-local.industryfusion-x.org
+  icidOrigin: https://icid-service.ifric.org
+  registryUrl: https://dev-registry.ifric.org
+  ifxPlatformBackendUrl: 'https://dev-platform-backend.industryfusion-x.org'
+  fleetBackendUrl: https://fleet-backend-local.industryfusion-x.org
+  fleetFrontendUrl: https://fleet-local.industryfusion-x.org
+  ifxSuiteFrontendUrl: https://suite-local.industryfusion-x.org
+  jwtSecretKey: 'jwtSecretKey'
+  maskSecret: 'maskSecret'
+  sandboxBackendUrl: https://sandbox-backend.industry-fusion.com
+  scorpioUrl: http://85.215.171.58:9090/ngsi-ld/v1/entities
+  s3BucketName: iff-prod
+  assetDefaultCode: IFX-EUR-NLD-AST
+  userDefaultCode: IFX-EUR-NLD-USR
+  contextUrl: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
+  s3Url: s3-eu-central-1.ionoscloud.com
+  fleetFrontendIngress: fleet-local.industryfusion-x.org
+  fleetBackendIngress: fleet-backend-local.industryfusion-x.org
+  docker_email: "fusionowner@industry-fusion.com"
+  docker_password: "docker_password"
+  docker_username: "fusionowner"

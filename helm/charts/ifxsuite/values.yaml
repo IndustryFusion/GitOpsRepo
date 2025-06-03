@@ -1,4 +1,4 @@
-mainVersion: latest
+mainVersion: prod-test
 mainRepo: ifx40
 namespace: ifx-suite
 pullSecretCredentials: regcred
@@ -6,11 +6,14 @@ ifx_suite:
   Namespace: ifx-suite
   backendPort: 4009
   frontendPort: 3009
-  corsOrigin: https://dev-suite.industryfusion-x.org
+  corsOrigin: https://suite-local.industryfusion-x.org
   icidOrigin: https://dev-icid-service.ifric.org
   registryUrl: https://dev-registry.ifric.org
   ifxPlatformBackendUrl: https://dev-platform-backend.industryfusion-x.org
   jwtSecretKey: your-secret-key
-  ifxSuiteBackendUrl: https://dev-suite-backend.industryfusion-x.org
-  fleetFrontendUrl: https://dev-fleet.industry-fusion.com
-  factoryFrontendUrl: https://dev-factory.industry-fusion.com
+  ifxSuiteBackendUrl: https://suite-backend-local.industryfusion-x.org
+  fleetFrontendUrl:  https://fleet-local.industryfusion-x.org
+  factoryFrontendUrl: https://factory-local.industryfusion-x.org
+  ifxSuiteBackendIngress: suite-backend-local.industryfusion-x.org
+  ifxSuiteFrontendIngress: suite-local.industryfusion-x.org
+  nextFrontendEnvironment: prod

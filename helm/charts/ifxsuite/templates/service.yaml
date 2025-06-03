@@ -1,21 +1,24 @@
----
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app: ifx-suite-application-service
   name: ifx-suite-application-service
-  namespace: ifx-suite
+  namespace: {{ .Values.namespace }}
 spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
   ports:
   - name: ifx-suite-backend
-    port: 4009
+    port: {{ .Values.ifx_suite.backendPort }}
     protocol: TCP
-    targetPort: 4009
+    targetPort: {{ .Values.ifx_suite.backendPort }}
   - name: ifx-suite-frontend
-    port: 3009
+    port: {{ .Values.ifx_suite.frontendPort }}
     protocol: TCP
-    targetPort: 3009
+    targetPort: {{ .Values.ifx_suite.frontendPort }}
   selector:
     app: ifx-suite-application-service
   sessionAffinity: None

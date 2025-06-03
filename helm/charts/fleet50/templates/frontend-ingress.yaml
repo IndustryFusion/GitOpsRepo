@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-self
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+  name: fleet-manager-frontend-ingress
+  namespace: {{ .Values.namespace }}
+spec:
+  rules:
+  - host: {{ .Values.fleet50_prod.fleetFrontendIngress }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: fleet50-application-service-prod
+            port:
+              number: {{ .Values.fleet50_prod.frontendPort }}
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - {{ .Values.fleet50_prod.fleetFrontendIngress }}
+    secretName: prod-cert-tls-fleet-frontend
+status:
+  loadBalancer: {}

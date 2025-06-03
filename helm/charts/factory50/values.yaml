@@ -1,0 +1,51 @@
+mainVersion: prod-test
+mainRepo: ibn40
+namespace: iff
+pullSecretCredentials: regcred
+factory50_prod:
+  factory50ExternalHostname: platform.industry-fusion.com
+  factory50BackendExternalPath: /factory50/backend/
+  factory50FrontendExternalPath: /factory50
+  backendPort: 4002
+  frontendPort: 3002
+  jwtSecret: 'jwt-secret'
+  gatewayToken: 'gateway-token'
+  githubToken: 'github-token'
+  gatewayUrl: https://api.github.com/repos/IndustryFusion/prod-gw-configs/contents
+  githubUrl: https://api.github.com/repos/IndustryFusion/templates/contents/contracts
+  s3AccessKey: 's3-access-key'
+  s3SecretKey: 's3-secret-key'
+  alertaKey: 'alerta-key'
+  mongoUrl: 'mongo-url'
+  jwtSecretKey: 'your-secret-key'
+  jwtSecret: 'jwtSecret'
+  maskSecret: 'maskSecret'
+  icidOrigin: https://icid-service.ifric.org
+  factoryBackendUrl: https://factory-backend.industryfusion-x.org
+  factoryFrontendUrl: https://factory.industryfusion-x.org
+  ifxPlatformBackendUrl: https://dev-platform-backend.industryfusion-x.org
+  ifxSuiteFrontendUrl: https://suite.industryfusion-x.org
+  sandboxBackendUrl: https://sandbox-backend.industry-fusion.com
+  registryUrl: https://dev-registry.ifric.org
+  pdtScorpioUrl: http://85.215.171.58:9090/ngsi-ld/v1/entities
+  keycloakApiUrl: http://keycloak-service.iff.svc.cluster.local:8080/auth/realms/iff/protocol/openid-connect/token
+  factoryScorpioUrl: http://scorpio-all-in-one-runner.iff.svc.cluster.local:9090/ngsi-ld/v1/entities
+  factoryScorpioClientId: scorpio
+  s3Url: s3-eu-central-1.ionoscloud.com
+  s3BucketName: iff-prod
+  alertaUrl: http://alerta.iff.svc.cluster.local:8080/alerta
+  pgrestUrl: http://pgrest.iff.svc.cluster.local:3000/pgrest
+  corsOrigin: https://factory-local.industryfusion-x.org
+  redisUrl: 'redis.iff.svc.cluster.local'
+  redisPort: 6379
+  contextUrl: https://industryfusion.github.io/contexts/tutorial/v0.1-dev/context.jsonld
+  keycloakUsername: factory_admin@industry-fusion.com
+  backendPort: 4002
+  frontendPort: 3002
+  factoryFrontendIngress: "factory-local.industryfusion-x.org"
+  factoryBackendIngress: "factory-backend-local.industryfusion-x.org"
+  docker_email: "fusionowner@industry-fusion.com"
+  docker_password: "docker_password"
+  docker_username: "fusionowner"
+
+

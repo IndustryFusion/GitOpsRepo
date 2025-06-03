@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-self
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+  name: factory-manager-frontend-ingress
+  namespace: {{ .Values.namespace }}
+spec:
+  rules:
+  - host: {{ .Values.factory50_prod.factoryFrontendIngress }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: factory50-application-service-prod
+            port:
+              number: {{ .Values.factory50_prod.frontendPort }}
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - {{ .Values.factory50_prod.factoryFrontendIngress }}
+    secretName: prod-cert-tls-factory-frontend
+status:
+  loadBalancer: {}
