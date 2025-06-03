@@ -15,7 +15,7 @@ spec:
       paths:
       - backend:
           service:
-            name: fleet50-application-service-prod
+            name: fleet50-application-service
             port:
               number: {{ .Values.fleet50_prod.backendPort }}
         path: /

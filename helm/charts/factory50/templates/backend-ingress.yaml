@@ -15,7 +15,7 @@ spec:
       paths:
       - backend:
           service:
-            name: factory50-application-service-prod
+            name: factory50-application-service
             port:
               number: {{ .Values.factory50_prod.backendPort }}
         path: /
