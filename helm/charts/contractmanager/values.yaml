@@ -4,5 +4,5 @@ namespace: contract-manager
 pullSecretCredentials: regcred
 contract_manager:
   Namespace: contract-manager
-  backendPort: 4000
-  frontendPort: 3000
+  backendPort: 4020
+  frontendPort: 3020
