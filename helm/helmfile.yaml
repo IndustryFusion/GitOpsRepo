@@ -149,3 +149,11 @@ releases:
   namespace: contract-manager
   values:
   - values.yaml.gotmpl
+- name: xana-ai
+  labels:
+    order: second
+    app: xana-ai
+  chart: ./charts/xana-ai
+  namespace: xana-ai
+  values:
+  - values.yaml.gotmpl

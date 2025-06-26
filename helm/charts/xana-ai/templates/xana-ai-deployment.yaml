@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: xana-ai-app
+  name: xana-ai-app
+  namespace: {{ .Values.xana_ai.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xana-ai-app  
+  template:
+    metadata:
+      labels:
+        app: xana-ai-app
+    spec:
+      containers:
+      - name: xana-ai
+        image: {{ .Values.mainRepo }}/xana-ai:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.xana_ai.frontendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+        # volumeMounts:
+        # - name: nginx-config
+        #   mountPath: /etc/nginx/conf.d/default.conf
+        #   subPath: default.conf
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+      # volumes:
+      # - name: nginx-config
+      #   configMap:
+      #     name: if50-nginx
+      #     items:
+      #     - key: config
+      #       path: default.conf
