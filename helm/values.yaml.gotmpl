@@ -18,6 +18,7 @@ icsdb:
 
 
 factory50:
+  namespace: 'factory-manager'
   externalHostname: {{ .StateValues.factory50ExternalHostname }}
   backendExternalPath: {{ .StateValues.factory50BackendExternalPath }}
   frontendExternalPath: {{ .StateValues.factory50FrontendExternalPath }}
@@ -48,6 +49,7 @@ factory50:
   pdtScorpioUrl: http://85.215.171.58:9090/ngsi-ld/v1/entities
 
 fleet50:
+  namespace: 'fleet-manager'
   externalHostname: {{ .StateValues.fleet50ExternalHostname }}
   backendExternalPath: {{ .StateValues.fleet50BackendExternalPath }}
   frontendExternalPath: {{ .StateValues.fleet50FrontendExternalPath }}
@@ -74,7 +76,7 @@ fleet50:
 icid:
   backendPort: 4010
   mongoUrl: 'mongo-url'
-  namespace: 'namespace'
+  namespace: 'icid-service'
   registryUrl: 'https://dev-registry.ifric.org'
   platformBackendUrl: 'https://dev-platform-backend.ifric.org'
   fleetBackendUrl: 'https://dev-fleet-backend.industry-fusion.com'

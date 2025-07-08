@@ -26,7 +26,7 @@ releases:
     order: second
     app: factory50
   chart: ./charts/factory50
-  namespace: {{ .Values.namespace }}
+  namespace: factory-manager
   values:
   - values.yaml.gotmpl
 - name: fleet50
@@ -34,7 +34,7 @@ releases:
     order: second
     app: fleet50
   chart: ./charts/fleet50
-  namespace: {{ .Values.namespace }}
+  namespace: fleet-manager
   values:
   - values.yaml.gotmpl
 - name: icid
@@ -42,7 +42,7 @@ releases:
     order: first
     app: icid
   chart: ./charts/icid
-  namespace: {{ .Values.namespace }}
+  namespace: icid-service
   values:
   - values.yaml.gotmpl
 - name: fleet50prod

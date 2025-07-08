@@ -5,7 +5,7 @@ metadata:
   labels:
     app: icid-application-service
   name: icid-application-service
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.icid.namespace }}
 spec:
   ports:
   - port: {{ .Values.icid.backendPort }}
@@ -22,7 +22,7 @@ metadata:
   labels:
     app: icid-application-service
   name: icid-application-service
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.icid.namespace }}
 spec:
   replicas: 1
   selector:

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: factory50-application-service
   name: factory50-application-service
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.factory50.namespace }}
 spec:
   ports:
   - port: {{ .Values.factory50.backendPort }}
@@ -26,7 +26,7 @@ metadata:
   labels:
     app: factory50-application-service
   name: factory50-application-service
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.factory50.namespace }}
 spec:
   replicas: 1
   selector:
