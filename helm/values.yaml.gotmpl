@@ -264,27 +264,70 @@ xana_ai:
   Namespace: xana-ai
   frontendPort: 3050
 
-milvus_xana:
-  replicaCount: 1
-
-  image:
-    repository: milvusdb/milvus
-    tag: v2.4.3
-    pullPolicy: IfNotPresent
-
-  service:
-    type: LoadBalancer
-    portGrpc: 19530
-    portRest: 9091
-
+standalone:
+  replicas: 1  # Run standalone mode with replication disabled
   resources: {}
-
-  persistence:
-    enabled: false
-    accessMode: ReadWriteOnce
-    size: 10Gi
-    storageClass: ""
-
+  # Set local storage size in resources
+  # resources:
+  #   limits:
+  #     ephemeral-storage: 100Gi
   nodeSelector: {}
-  tolerations: []
   affinity: {}
+  tolerations: []
+  securityContext: {}
+  containerSecurityContext: {}
+  topologySpreadConstraints: []  # Component specific topologySpreadConstraints
+  extraEnv: []
+  heaptrack:
+    enabled: false
+  disk:
+    enabled: true
+    size:
+      enabled: false  # Enable local storage size limit
+  profiling:
+    enabled: false  # Enable live profiling
+
+  ## Default message queue for milvus standalone
+  ## Supported value: rocksmq, natsmq, pulsar, kafka and woodpecker
+  messageQueue: woodpecker
+  persistence:
+    mountPath: "/var/lib/milvus"
+    ## If true, alertmanager will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+    annotations:
+      helm.sh/resource-policy: keep
+    persistentVolumeClaim:
+      existingClaim: ""
+      ## Milvus Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.
+      ##
+      storageClass: ionos-enterprise-hdd
+      accessModes: ReadWriteOnce
+      size: 20Gi
+      subPath: ""
+
+service:
+  type: LoadBalancer
+  port: 19530
+  portName: milvus
+  nodePort: ""
+  annotations: {}
+  labels: {}
+
+  ## List of IP addresses at which the Milvus service is available
+  ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+  ##
+  externalIPs: []
+  #   - externalIp1
+
+  # LoadBalancerSourcesRange is a list of allowed CIDR values, which are combined with ServicePort to
+  # set allowed inbound rules on the security group assigned to the master load balancer
+  loadBalancerSourceRanges:
+  - 0.0.0.0/0
+  # Optionally assign a known public LB IP
+  # loadBalancerIP: 1.2.3.4
