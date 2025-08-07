@@ -89,7 +89,7 @@ spec:
       - name: milvus-data-disk
         {{- if .Values.standalone.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ .Values.standalone.persistence.persistentVolumeClaim.existingClaim | default (printf "%s" (include "milvus-data-disk" . | trunc 58)) }}
+          claimName: {{ .Values.standalone.persistence.persistentVolumeClaim.existingClaim | default "milvus-data-disk" }}
         {{- end }}
       {{- if .Values.standalone.disk.enabled }}
       - name: disk
