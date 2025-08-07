@@ -21,7 +21,6 @@ spec:
       labels:
         app: milvus-xana
         component: "standalone"
-{{ include "milvus.ud.labels" . | indent 8 }}
     spec:
       serviceAccountName: {{ include "milvus.serviceAccount" . }}
       {{- if .Values.image.all.pullSecrets }}
