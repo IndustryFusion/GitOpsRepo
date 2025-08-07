@@ -22,7 +22,7 @@ spec:
         app: milvus-xana
         component: "standalone"
     spec:
-      serviceAccountName: {{ include "milvus.serviceAccount" . }}
+      serviceAccountName: milvus-xana
       {{- if .Values.image.all.pullSecrets }}
       imagePullSecrets:
       {{- range .Values.image.all.pullSecrets }}
@@ -190,24 +190,17 @@ spec:
       volumes:
       - emptyDir: {}
         name: tools
-      - name: milvus-config
-        configMap:
-          {{- if .Values.customConfigMap }}
-          name: {{ .Values.customConfigMap }}
-          {{- else }}
-          name: {{ template "milvus.fullname" . }}
-          {{- end }}
       - name: milvus-data-disk
         {{- if .Values.standalone.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ .Values.standalone.persistence.persistentVolumeClaim.existingClaim | default (printf "%s" (include "milvus.fullname" . | trunc 58)) }}
+          claimName: {{ .Values.standalone.persistence.persistentVolumeClaim.existingClaim | default (printf "%s" (include "milvus-data-disk" . | trunc 58)) }}
         {{- else }}
         emptyDir: {}
         {{- end }}
       {{- if .Values.log.persistence.enabled }}
       - name: milvus-logs-disk
         persistentVolumeClaim:
-          claimName: {{ .Values.log.persistence.persistentVolumeClaim.existingClaim | default (printf "%s-logs" (include "milvus.fullname" . | trunc 58)) }}
+          claimName: {{ .Values.log.persistence.persistentVolumeClaim.existingClaim | default (printf "%s-logs" (include "milvus-logs-disk" . | trunc 58)) }}
       {{- end }}
       {{- if .Values.standalone.disk.enabled }}
       - name: disk

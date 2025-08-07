@@ -4,14 +4,14 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ printf "%s" (include "milvus.fullname" . | trunc 58)}}
+  name: milvus-data-disk
   namespace: {{ .Release.Namespace }}
 {{- with .Values.standalone.persistence.annotations  }}
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}
   labels:
-{{ include "milvus.labels" . | indent 4 }}
+    apps: milvus-xana
 spec:
   accessModes:
   - {{ $pvc.accessModes | quote }}
@@ -36,14 +36,10 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ printf "%s-logs" (include "milvus.fullname" . | trunc 58)}}
+  name: milvus-logs-disk
   namespace: {{ .Release.Namespace }}
-{{- with .Values.log.persistence.annotations  }}
-  annotations:
-{{ toYaml . | indent 4 }}
-{{- end }}
   labels:
-{{ include "milvus.labels" . | indent 4 }}
+    apps: milvus-xana
 spec:
   accessModes:
   - {{ $pvc.accessModes | quote }}

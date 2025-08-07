@@ -2,14 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "milvus.fullname" . }}
+  name: milvus-xana
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "milvus.labels" . | indent 4 }}
-{{- if .Values.service.labels }}
-{{ toYaml .Values.service.labels | indent 4 }}
-{{- end }}
-{{- if not .Values.cluster.enabled }}
+    app: milvus-xana
     component: "standalone"
 {{- else if and .Values.proxy.enabled .Values.cluster.enabled }}
     component: "proxy"
@@ -51,7 +47,7 @@ spec:
       targetPort: metrics
     {{- end }}
   selector:
-{{ include "milvus.matchLabels" . | indent 4 }}
+    app: milvus-xana
 {{- if not .Values.cluster.enabled }}
     component: "standalone"
 {{- else if and .Values.proxy.enabled .Values.cluster.enabled }}
