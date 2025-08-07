@@ -12,7 +12,8 @@ metadata:
   labels:
     apps: milvus-xana
 spec:
-  accessModes: ReadWriteOnce
+  accessModes:
+    - ReadWriteOnce
   storageClassName: {{ .Values.standalone.persistence.persistentVolumeClaim.storageClass | quote }}
   resources:
     requests:
