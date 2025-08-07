@@ -7,9 +7,6 @@ metadata:
   labels:
     app: milvus-xana
     component: "standalone"
-{{- else if and .Values.proxy.enabled .Values.cluster.enabled }}
-    component: "proxy"
-{{- end }}
 {{- with .Values.service.annotations }}
   annotations:
 {{ toYaml . | indent 4 }}
@@ -47,7 +44,7 @@ spec:
       targetPort: metrics
     {{- end }}
   selector:
-    app: milvus-xana
+{{ include "milvus.matchLabels" . | indent 4 }}
 {{- if not .Values.cluster.enabled }}
     component: "standalone"
 {{- else if and .Values.proxy.enabled .Values.cluster.enabled }}
