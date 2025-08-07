@@ -1,5 +1,5 @@
 {{- if not .Values.cluster.enabled }}
-{{- if and .Values.standalone.persistence.enabled (not $pvc.existingClaim) }}
+{{- if .Values.standalone.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
