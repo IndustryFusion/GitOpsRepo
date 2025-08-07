@@ -263,3 +263,28 @@ contract_manager:
 xana_ai:
   Namespace: xana-ai
   frontendPort: 3050
+
+milvus_xana:
+  replicaCount: 1
+
+  image:
+    repository: milvusdb/milvus
+    tag: v2.4.3
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    portGrpc: 19530
+    portRest: 9091
+
+  resources: {}
+
+  persistence:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 10Gi
+    storageClass: ""
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

@@ -34,3 +34,60 @@ spec:
       #     items:
       #     - key: config
       #       path: default.conf
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milvus-xana
+  namespace: {{ .Values.xana_ai.Namespace }}
+spec:
+  replicas: {{ .Values.milvus_xana.replicaCount }}
+  selector:
+    matchLabels:
+      app: milvus-xana
+  template:
+    metadata:
+      labels:
+        app: milvus-xana
+    spec:
+      containers:
+        - name: milvus
+          image: "{{ .Values.milvus_xana.image.repository }}:{{ .Values.milvus_xana.image.tag }}"
+          imagePullPolicy: {{ .Values.milvus_xana.image.pullPolicy }}
+          args: ["milvus", "run", "standalone"]
+          ports:
+            - containerPort: {{ .Values.milvus_xana.service.portGrpc }}
+            - containerPort: {{ .Values.milvus_xana.service.portRest }}
+          volumeMounts:
+            {{- if .Values.milvus_xana.persistence.enabled }}
+            - name: milvus-data
+              mountPath: /var/lib/milvus
+            {{- end }}
+      volumes:
+        {{- if .Values.milvus_xana.persistence.enabled }}
+        - name: milvus-data
+          persistentVolumeClaim:
+            claimName: milvus-xana-pvc
+        {{- end }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: milvus-xana
+  namespace: {{ .Values.xana_ai.Namespace }}
+spec:
+  type: {{ .Values.milvus_xana.service.type }}
+  selector:
+    app: milvus-xana
+  ports:
+    - name: grpc
+      port: {{ .Values.milvus_xana.service.portGrpc }}
+      targetPort: {{ .Values.milvus_xana.service.portGrpc }}
+    - name: rest
+      port: {{ .Values.milvus_xana.service.portRest }}
+      targetPort: {{ .Values.milvus_xana.service.portRest }}
