@@ -29,24 +29,24 @@ spec:
 {{- end }}
 ---
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: milvus-logs-disk
-  namespace: {{ .Release.Namespace }}
-  labels:
-    apps: milvus-xana
-spec:
-  accessModes:
-  - {{ $pvc.accessModes | quote }}
-  {{- if $pvc.storageClass }}
-    {{- if eq "-" $pvc.storageClass }}
-  storageClassName: ""
-    {{- else }}
-  storageClassName: {{ $pvc.storageClass }}
-    {{- end }}
-  {{- end }}
-  resources:
-    requests:
-      storage: {{ $pvc.size }}
-{{- end }}
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: milvus-logs-disk
+#   namespace: {{ .Release.Namespace }}
+#   labels:
+#     apps: milvus-xana
+# spec:
+#   accessModes:
+#   - {{ $pvc.accessModes | quote }}
+#   {{- if $pvc.storageClass }}
+#     {{- if eq "-" $pvc.storageClass }}
+#   storageClassName: ""
+#     {{- else }}
+#   storageClassName: {{ $pvc.storageClass }}
+#     {{- end }}
+#   {{- end }}
+#   resources:
+#     requests:
+#       storage: {{ $pvc.size }}
+# {{- end }}

@@ -38,12 +38,8 @@ spec:
       containers:
       - name: standalone
         image: "{{ .Values.image.all.repository }}:{{ .Values.image.all.tag }}"
-        imagePullPolicy: {{ .Values.image.all.pullPolicy }}
-        {{- if .Values.standalone.heaptrack.enabled }}
-        args: [ "/milvus/tools/heaptrack/bin/heaptrack", "milvus", "run", "standalone" ]
-        {{- else }}
+        imagePullPolicy: IfNotPresent
         args: [ "milvus", "run", "standalone" ]
-        {{- end }}
         ports:
           - name: milvus
             containerPort: 19530
@@ -79,15 +75,9 @@ spec:
           mountPath: /milvus/configs/user.yaml
           subPath: user.yaml
           readOnly: true
-        {{- end }}
         - name: milvus-data-disk
           mountPath: {{ .Values.standalone.persistence.mountPath | quote }}
           subPath: {{ .Values.standalone.persistence.persistentVolumeClaim.subPath | default "" }}
-        {{- if .Values.log.persistence.enabled }}
-        - name: milvus-logs-disk
-          mountPath: {{ .Values.log.persistence.mountPath | quote }}
-          subPath: {{ .Values.log.persistence.persistentVolumeClaim.subPath | default "" }}
-        {{- end }}
         {{- if .Values.standalone.disk.enabled }}
         - mountPath: /var/lib/milvus/data
           name: disk
@@ -100,14 +90,7 @@ spec:
         {{- if .Values.standalone.persistence.enabled }}
         persistentVolumeClaim:
           claimName: {{ .Values.standalone.persistence.persistentVolumeClaim.existingClaim | default (printf "%s" (include "milvus-data-disk" . | trunc 58)) }}
-        {{- else }}
-        emptyDir: {}
         {{- end }}
-      {{- if .Values.log.persistence.enabled }}
-      - name: milvus-logs-disk
-        persistentVolumeClaim:
-          claimName: {{ .Values.log.persistence.persistentVolumeClaim.existingClaim | default (printf "%s-logs" (include "milvus-logs-disk" . | trunc 58)) }}
-      {{- end }}
       {{- if .Values.standalone.disk.enabled }}
       - name: disk
         emptyDir: {}
