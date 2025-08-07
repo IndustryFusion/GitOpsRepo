@@ -44,10 +44,6 @@ spec:
       targetPort: metrics
     {{- end }}
   selector:
-{{ include "milvus.matchLabels" . | indent 4 }}
-{{- if not .Values.cluster.enabled }}
+    app: milvus-xana
     component: "standalone"
-{{- else if and .Values.proxy.enabled .Values.cluster.enabled }}
-    component: "proxy"
-{{- end }}
 {{- end }}
