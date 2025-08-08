@@ -67,14 +67,6 @@ spec:
         volumeMounts:
         - mountPath: /milvus/tools
           name: tools
-        - name: milvus-config
-          mountPath: /milvus/configs/default.yaml
-          subPath: default.yaml
-          readOnly: true
-        - name: milvus-config
-          mountPath: /milvus/configs/user.yaml
-          subPath: user.yaml
-          readOnly: true
         - name: milvus-data-disk
           mountPath: {{ .Values.standalone.persistence.mountPath | quote }}
           subPath: {{ .Values.standalone.persistence.persistentVolumeClaim.subPath | default "" }}
