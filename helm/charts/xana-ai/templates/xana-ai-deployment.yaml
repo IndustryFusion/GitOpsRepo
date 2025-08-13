@@ -17,10 +17,15 @@ spec:
     spec:
       containers:
       - name: xana-ai
-        image: {{ .Values.mainRepo }}/xana-ai:{{ .Values.mainVersion }}
+        image: {{ .Values.mainRepo }}/xana-ai-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.xana_ai.frontendPort }}
+      - name: xana-ai-backend
+        image: {{ .Values.mainRepo }}/xana-ai-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.xana_ai.backendPort }}
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
@@ -30,7 +35,7 @@ spec:
       # volumes:
       # - name: nginx-config
       #   configMap:
-      #     name: if50-nginx
+      #     name: if50-nginx-config
       #     items:
       #     - key: config
       #       path: default.conf
