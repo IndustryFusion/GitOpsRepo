@@ -141,10 +141,10 @@ on:
       JIRA_TOKEN:
         description: ''
         required: false
-      COMPLETIONS_API_KEY:
+      XANA_AI_COMPLETIONS_API_KEY:
         description: ''
         required: false
-      MONGODB_URI:
+      XANA_AI_MONGODB_URI:
         description: ''
         required: false
 
