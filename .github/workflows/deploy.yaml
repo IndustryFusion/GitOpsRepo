@@ -141,6 +141,12 @@ on:
       JIRA_TOKEN:
         description: ''
         required: false
+      COMPLETIONS_API_KEY:
+        description: ''
+        required: false
+      MONGODB_URI:
+        description: ''
+        required: false
 
 jobs:
   clone-repo:
@@ -238,4 +244,6 @@ jobs:
             --set fleet50.username="${{ secrets.USERNAME }}" \
             --set fleet50.password="${{ secrets.PASSWORD }}" \
             --set fleet50.mongoUrl="${{ secrets.MONGO_URL }}" \
-            --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL_DEV }}"
+            --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL_DEV }}" \
+            --set xana_ai.completionsApiKey="${{ secrets.XANA_AI_COMPLETIONS_API_KEY }}" \
+            --set xana_ai.mongodbUri="${{ secrets.XANA_AI_MONGODB_URI }}"
