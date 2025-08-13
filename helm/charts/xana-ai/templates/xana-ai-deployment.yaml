@@ -26,17 +26,17 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.xana_ai.backendPort }}
-      env:
-      - name: COMPLETIONS_API_KEY
-        value: {{ .Values.xana_ai.completionsApiKey }}
-      - name: MONGODB_URI
-        value: {{ .Values.xana_ai.mongodbUri }}
-      - name: MONGODB_DB
-        value: admin
-      - name: MONGO_COL
-        value: vector_store_mappings
-      - name: CORS_ORIGIN
-        value: "https://dev-xana.industryfusion-x.org"
+        env:
+        - name: COMPLETIONS_API_KEY
+          value: {{ .Values.xana_ai.completionsApiKey }}
+        - name: MONGODB_URI
+          value: {{ .Values.xana_ai.mongodbUri }}
+        - name: MONGODB_DB
+          value: admin
+        - name: MONGO_COL
+          value: vector_store_mappings
+        - name: CORS_ORIGIN
+          value: "https://dev-xana.industryfusion-x.org"
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
