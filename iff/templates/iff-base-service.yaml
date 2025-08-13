@@ -169,10 +169,11 @@ metadata:
   name: mqtt-broker-service
   namespace: {{ .Values.namespace }}
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: mqtt-broker
   ports:
     - protocol: TCP
       port: 1883
       targetPort: 1883
+      nodePort: 31883
