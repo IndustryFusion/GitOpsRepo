@@ -50,3 +50,28 @@ spec:
       #     items:
       #     - key: config
       #       path: default.conf
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: xana-ai-ingress-backend
+  namespace: default
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - dev-xana-backend.industryfusion-x.org
+      secretName: dev-cert-tls-xana-backend
+  rules:
+    - host: dev-xana-backend.industryfusion-x.org
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: xana-ai-service
+                port:
+                  number: 4050
