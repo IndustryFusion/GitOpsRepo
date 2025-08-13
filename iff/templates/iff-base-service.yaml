@@ -137,6 +137,7 @@ spec:
         ports:
         - containerPort: 1883
           hostPort: 1883
+          nodePort: 1883
         volumeMounts:
         - mountPath: /mosquitto/config/mosquitto.conf
           name: conf
