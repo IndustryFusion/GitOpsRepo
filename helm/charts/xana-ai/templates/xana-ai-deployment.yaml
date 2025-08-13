@@ -57,7 +57,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: xana-ai-ingress-backend
-  namespace: default
+  namespace: {{ .Values.xana_ai.Namespace }}
 spec:
   ingressClassName: nginx
   tls:
