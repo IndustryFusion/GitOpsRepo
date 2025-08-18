@@ -15,19 +15,6 @@ spec:
       labels:
         app: template-sandbox-application-service
     spec:
-      initContainers:
-        - name: copy-certs
-          image: alpine:latest
-          command: ["/bin/sh", "-c"]
-          args:
-            - cp /certs/cert.pem /certs/key.pem /etc/ssl/certs/;
-          volumeMounts:
-            - name: sandbox-cert-config
-              mountPath: /certs
-              readOnly: true
-            - name: sandbox-cert-volume
-              mountPath: /etc/ssl/certs
-
       containers:
         - name: template-sandbox-backend
           image: {{ .Values.mainRepo }}/template-sandbox-backend:{{ .Values.mainVersion }}
@@ -37,9 +24,6 @@ spec:
           envFrom:
             - secretRef:
                 name: vault-secrets
-          volumeMounts:
-            - name: sandbox-cert-volume
-              mountPath: /etc/ssl/certs
 
         - name: template-sandbox-frontend
           image: {{ .Values.mainRepo }}/template-sandbox-frontend:{{ .Values.mainVersion }}
@@ -48,15 +32,3 @@ spec:
             - containerPort: {{ .Values.template_sandbox.frontendPort }}
       imagePullSecrets:
         - name: {{ .Values.pullSecretCredentials }}
-      
-      volumes:
-        - name: sandbox-cert-config
-          configMap:
-            name: sandbox-cert-config
-            items:
-              - key: key.pem
-                path: key.pem
-              - key: cert.pem
-                path: cert.pem
-        - name: sandbox-cert-volume
-          emptyDir: {}
