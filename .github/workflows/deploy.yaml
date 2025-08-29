@@ -147,6 +147,12 @@ on:
       XANA_AI_MONGODB_URI:
         description: ''
         required: false
+      XANA_AI_SECRET_KEY:
+        description: ''
+        required: false
+      XANA_AI_MASK_SECRET:
+        description: ''
+        required: false
 
 jobs:
   clone-repo:
@@ -246,4 +252,6 @@ jobs:
             --set fleet50.mongoUrl="${{ secrets.MONGO_URL }}" \
             --set icid.mongoUrl="${{ secrets.ICID_MONGO_URL_DEV }}" \
             --set xana_ai.completionsApiKey="${{ secrets.XANA_AI_COMPLETIONS_API_KEY }}" \
-            --set xana_ai.mongodbUri="${{ secrets.XANA_AI_MONGODB_URI }}"
+            --set xana_ai.mongodbUri="${{ secrets.XANA_AI_MONGODB_URI }}" \
+            --set xana_ai.secretKey="${{ secrets.XANA_AI_SECRET_KEY }}" \
+            --set xana_ai.maskSecret="${{ secrets.XANA_AI_MASK_SECRET }}"
