@@ -38,15 +38,15 @@ spec:
         - name: MILVUS_API_URL
           value: "http://195.20.227.160:19530"
         - name: PGHOST
-          value: 85.215.179.232
+          value: "85.215.179.232"
         - name: PGPORT
-          value: 5432
+          value: "5432"
         - name: PGPASSWORD
-          value: Y0LlLjkrztWxlhL8YRsmEF6f7miwJ2xR
+          value: "Y0LlLjkrztWxlhL8YRsmEF6f7miwJ2xR"
         - name: PGSSL
           value: "true"
         - name: COMPLETIONS_API_URL
-          value: https://openai.inference.de-txl.ionos.com
+          value: "https://openai.inference.de-txl.ionos.com"
         - name: COMPLETIONS_API_KEY
           value: {{ .Values.xana_ai.completionsApiKey }}
         - name: RAG_COLLECTION_NAME
@@ -54,9 +54,9 @@ spec:
         - name: RAG_INGEST_DIR
           value: ./src/data/jsonld
         - name: RAG_INGEST_INTERVAL_MS
-          value: 600
+          value: "600"
         - name: REGISTRY_URL
-          value: https://dev-registry.ifric.org
+          value: "https://dev-registry.ifric.org"
         - name: SECRET_KEY
           value: {{ .Values.xana_ai.secretKey }}
         - name: MASK_SECRET
