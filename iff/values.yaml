@@ -2,4 +2,4 @@ controller:
   image: ibn40/iff-onboarding-controller:v0.1.0
   factoryMongoDbUrl: bW9uZ29kYjovL2ZhY3RvcnltYW5hZ2VyLXVzZXI6ZmZnZ2hobm50dEA4NS4yMTUuNDUuMTYyOjMxMTg5L2ZhY3Rvcnk/ZGlyZWN0Y29ubmVjdGlvbj10cnVlJnJldHJ5V3JpdGVzPXRydWUmdz1tYWpvcml0eSZhdXRoU291cmNlPWFkbWlu
   factoryMongoDbName: factory
-  deviceIfricId: urn:ifric:ifx-eur-nld-ast-290f0825-907f-5f9e-8fc5-86536d75c2ea
+  deviceIfricId: urn:ifric:ifx-eur-nld-ast-d9ef304c-d109-5d26-b44a-a6717b101037
