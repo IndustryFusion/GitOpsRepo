@@ -50,7 +50,9 @@ spec:
         - name: COMPLETIONS_API_KEY
           value: {{ .Values.xana_ai.completionsApiKey }}
         - name: RAG_COLLECTION_NAME
-          value: custom_setup_3
+          value: custom_setup_7
+        - name: MILVUS_COLLECTION_NAME
+          value: custom_setup_7
         - name: RAG_INGEST_DIR
           value: ./src/data/jsonld
         - name: RAG_INGEST_INTERVAL_MS
