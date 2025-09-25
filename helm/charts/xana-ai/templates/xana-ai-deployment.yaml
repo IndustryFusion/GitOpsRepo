@@ -69,8 +69,6 @@ spec:
           value: vectordb
         - name: PGVECTOR_SSL
           value: "false"
-        - name: RAG_EMBED_DIM
-          value: "1024"
         - name: RAG_EMBED_METRIC
           value: COSINE
         - name: MONGODB_URI
