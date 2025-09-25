@@ -27,6 +27,52 @@ spec:
         ports:
         - containerPort: {{ .Values.xana_ai.backendPort }}
         env:
+        - name: OLLAMA_BASE_URL
+          value: http://localhost:11434
+        - name: LLM_API_KEY
+          value: ollama
+        - name: LLM_MODEL
+          value: "meta-llama/Llama-3.3-70B-Instruct"
+        - name: LLM_PROVIDER
+          value: ionos
+        - name: LLM_ENDPOINT
+          value: http://localhost:11434
+        - name: OLLAMA_CHAT_TIMEOUT
+          value: "120000"
+        - name: EMBEDDING_PROVIDER
+          value: ionos
+        - name: EMBEDDING_ENDPOINT
+          value: https://openai.inference.de-txl.ionos.com
+        - name: EMBEDDING_MODEL
+          value: "BAAI/bge-m3"
+        - name: EMBEDDING_DIMENSIONS
+          value: "1024"
+        - name: HUGGINGFACE_TOKENIZER
+          value: "TOKENIZER_TO_YOUR_EMBEDDING_MODEL"
+        - name: RAG_EMBED_DIM
+          value: "1024"
+        - name: VECTOR_PROVIDER
+          value: milvus
+        - name: MILVUS_PROVIDER
+          value: remote
+        - name: PGVECTOR_CONNECTION_URL
+          value: "postgresql://postgres:postgres@localhost:5432/vectordb"
+        - name: PGVECTOR_HOST
+          value: localhost
+        - name: PGVECTOR_PORT
+          value: "5432"
+        - name: PGVECTOR_USER
+          value: postgres
+        - name: PGVECTOR_PASSWORD
+          value: postgres
+        - name: PGVECTOR_DB
+          value: vectordb
+        - name: PGVECTOR_SSL
+          value: "false"
+        - name: RAG_EMBED_DIM
+          value: "1024"
+        - name: RAG_EMBED_METRIC
+          value: COSINE
         - name: MONGODB_URI
           value: {{ .Values.xana_ai.mongodbUri }}
         - name: MONGODB_DB
