@@ -89,6 +89,10 @@ spec:
           value: "Y0LlLjkrztWxlhL8YRsmEF6f7miwJ2xR"
         - name: PGSSL
           value: "true"
+        - name: PGUSER
+          value: dbreader
+        - name: PGDATABASE
+          value: tsdb
         - name: COMPLETIONS_API_URL
           value: "https://openai.inference.de-txl.ionos.com"
         - name: COMPLETIONS_API_KEY
