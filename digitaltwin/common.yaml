@@ -1,4 +1,4 @@
-mainVersion: v0.6.0-beta.1
+mainVersion: v0.8.1
 mainRepo: ibn40
 mainRegistry: docker.io
 namespace: iff
