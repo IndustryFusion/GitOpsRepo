@@ -136,6 +136,8 @@ kind: Ingress
 metadata:
   name: xana-ai-ingress-backend
   namespace: {{ .Values.xana_ai.Namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m" 
 spec:
   ingressClassName: nginx
   tls:
@@ -153,3 +155,29 @@ spec:
                 name: xana-ai-service
                 port:
                   number: 4050
+
+
+--- 
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: xana-ai-ingress
+  namespace: {{ .Values.xana_ai.Namespace }}
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - dev-xana.industryfusion-x.org
+      secretName: dev-cert-tls-xana-frontend
+  rules:
+    - host: dev-xana.industryfusion-x.org
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: xana-ai-service
+                port:
+                  number: 3050
