@@ -137,6 +137,7 @@ metadata:
   name: xana-ai-ingress-backend
   namespace: {{ .Values.xana_ai.Namespace }}
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: "100m" 
 spec:
   ingressClassName: nginx
@@ -164,6 +165,8 @@ kind: Ingress
 metadata:
   name: xana-ai-ingress
   namespace: {{ .Values.xana_ai.Namespace }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
   tls:
