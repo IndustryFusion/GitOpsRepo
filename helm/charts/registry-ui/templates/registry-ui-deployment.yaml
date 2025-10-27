@@ -4,7 +4,7 @@ metadata:
   labels:
     app: registry-ui-service
   name: registry-ui-service
-  namespace: {{ .Values.registry-ui.Namespace }}
+  namespace: {{ .Values.registry_ui.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -20,7 +20,7 @@ spec:
         image: {{ .Values.mainRepo }}/registry-ui-backend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.registry-ui.backendPort }}
+        - containerPort: {{ .Values.registry_ui.backendPort }}
         envFrom:
           - secretRef:
               name: vault-secrets
@@ -28,7 +28,7 @@ spec:
         image: {{ .Values.mainRepo }}/registry-ui-frontend:{{ .Values.mainVersion }}
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.registry-ui.frontendPort }}
+        - containerPort: {{ .Values.registry_ui.frontendPort }}
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
 
@@ -46,11 +46,11 @@ spec:
     app: registry-ui-service
   ports:
   - name: backend
-    port: {{ .Values.registry-ui.backendPort }}
-    targetPort: {{ .Values.registry-ui.backendPort }}
+    port: {{ .Values.registry_ui.backendPort }}
+    targetPort: {{ .Values.registry_ui.backendPort }}
   - name: frontend
-    port: {{ .Values.registry-ui.frontendPort }}
-    targetPort: {{ .Values.registry-ui.frontendPort }}
+    port: {{ .Values.registry_ui.frontendPort }}
+    targetPort: {{ .Values.registry_ui.frontendPort }}
   type: ClusterIP
 
 ---
@@ -58,7 +58,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: registry-ui-frontend-ingress
-  namespace: {{ .Values.registry-ui.Namespace }}
+  namespace: {{ .Values.registry_ui.Namespace }}
   labels:
     app: registry-ui-service
   annotations:
@@ -67,10 +67,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ .Values.registry-ui.frontendHost }}
+    - {{ .Values.registry_ui.frontendHost }}
     secretName: registry-ui-frontend-tls
   rules:
-  - host: {{ .Values.registry-ui.frontendHost }}
+  - host: {{ .Values.registry_ui.frontendHost }}
     http:
       paths:
       - path: /
@@ -79,14 +79,14 @@ spec:
           service:
             name: registry-ui-service
             port:
-              number: {{ .Values.registry-ui.frontendPort }}
+              number: {{ .Values.registry_ui.frontendPort }}
 
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: registry-ui-backend-ingress
-  namespace: {{ .Values.registry-ui.Namespace }}
+  namespace: {{ .Values.registry_ui.Namespace }}
   labels:
     app: registry-ui-service
   annotations:
@@ -95,10 +95,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ .Values.registry-ui.backendHost }}
+    - {{ .Values.registry_ui.backendHost }}
     secretName: registry-ui-backend-tls
   rules:
-  - host: {{ .Values.registry-ui.backendHost }}
+  - host: {{ .Values.registry_ui.backendHost }}
     http:
       paths:
       - path: /
@@ -107,4 +107,4 @@ spec:
           service:
             name: registry-ui-service
             port:
-              number: {{ .Values.registry-ui.backendPort }}
+              number: {{ .Values.registry_ui.backendPort }}
