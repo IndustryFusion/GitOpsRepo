@@ -157,3 +157,11 @@ releases:
   namespace: xana-ai
   values:
   - values.yaml.gotmpl
+- name: registry-ui
+  labels:
+    order: second
+    app: registry-ui
+  chart: ./charts/registry-ui
+  namespace: registry-ui
+  values:
+  - values.yaml.gotmpl

@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: registry-ui-service
+  name: registry-ui-service
+  namespace: {{ .Values.registry-ui.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry-ui-service
+  template:
+    metadata:
+      labels:
+        app: registry-ui-service
+    spec:
+      containers:
+      - name: registry-ui-backend
+        image: {{ .Values.mainRepo }}/registry-ui-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.registry-ui.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+      - name: registry-ui-frontend
+        image: {{ .Values.mainRepo }}/registry-ui-frontend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.registry-ui.frontendPort }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry-ui-service
+  namespace: {{ .Values.registry-ui.Namespace }}
+  labels:
+    app: registry-ui-service
+spec:
+  selector:
+    app: registry-ui-service
+  ports:
+  - name: backend
+    port: {{ .Values.registry-ui.backendPort }}
+    targetPort: {{ .Values.registry-ui.backendPort }}
+  - name: frontend
+    port: {{ .Values.registry-ui.frontendPort }}
+    targetPort: {{ .Values.registry-ui.frontendPort }}
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registry-ui-frontend-ingress
+  namespace: {{ .Values.registry-ui.Namespace }}
+  labels:
+    app: registry-ui-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.registry-ui.frontendHost }}
+    secretName: registry-ui-frontend-tls
+  rules:
+  - host: {{ .Values.registry-ui.frontendHost }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: registry-ui-service
+            port:
+              number: {{ .Values.registry-ui.frontendPort }}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registry-ui-backend-ingress
+  namespace: {{ .Values.registry-ui.Namespace }}
+  labels:
+    app: registry-ui-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.registry-ui.backendHost }}
+    secretName: registry-ui-backend-tls
+  rules:
+  - host: {{ .Values.registry-ui.backendHost }}
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: registry-ui-service
+            port:
+              number: {{ .Values.registry-ui.backendPort }}
