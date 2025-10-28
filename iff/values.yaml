@@ -1,5 +1,5 @@
 controller:
   image: ibn40/iff-onboarding-controller:v0.1.0
-  factoryMongoDbUrl: url
+  factoryMongoDbUrl: mongodb://admin:askfdhasdfhiurhiewursanfkhfrwfndysfweifdsafhERHFIUafhLKJYF@mongodb.mongodb.svc.cluster.local:27017/factory?directconnection=true&retryWrites=true&w=majority&authSource=admin
   factoryMongoDbName: factory
   deviceIfricId: id
