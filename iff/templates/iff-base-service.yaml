@@ -66,7 +66,10 @@ spec:
           - name: FACTORY_MONGO_DB_NAME
             value: {{ .Values.controller.factoryMongoDbName }}
           - name: DEVICE_IFRIC_ID
-            value: {{ .Values.controller.deviceIfricId }}
+            valueFrom:
+              secretKeyRef:
+                name: device-ifric-id
+                key: ifricId
       imagePullSecrets:
         - name: regcred
 
@@ -78,6 +81,7 @@ metadata:
 type: Opaque
 data:
   factoryMongoDbUrl: {{ .Values.controller.factoryMongoDbUrl }}
+  ifricId: {{ .Values.controller.deviceIfricId }}
 
 ---
 apiVersion: apiextensions.k8s.io/v1
