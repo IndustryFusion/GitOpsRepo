@@ -79,7 +79,7 @@ kind: Secret
 metadata:
   name: factory-mongo-secret
 type: Opaque
-data:
+stringData:
   factoryMongoDbUrl: {{ .Values.controller.factoryMongoDbUrl }}
   ifricId: {{ .Values.controller.deviceIfricId }}
 
