@@ -18,7 +18,7 @@ spec:
       serviceAccountName: flink-job-runner  # Create this ServiceAccount with appropriate permissions
       initContainers:
       - name: setup-work-directory
-        image: ibn40/flink-job-runner:latest
+        image: {{ .Values.mainRepo }}/flink-job-runner:{{ .Values.mainVersion }}
         command:
         - sh
         - -c
