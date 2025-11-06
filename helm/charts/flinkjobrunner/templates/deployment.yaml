@@ -97,7 +97,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: default
   resources:
     requests:
       storage: 20Gi
