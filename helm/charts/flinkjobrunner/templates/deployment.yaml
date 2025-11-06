@@ -57,7 +57,7 @@ spec:
       volumes:
       - name: work-storage
         persistentVolumeClaim:
-          claimName: flink-job-runner-pvc-new
+          claimName: flink-job-runner-pvc-1
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -92,12 +92,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: flink-job-runner-pvc-new
+  name: flink-job-runner-pvc-1
   namespace: flink-job-runner
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: default
+  storageClassName: ionos-enterprise-hdd
   resources:
     requests:
       storage: 20Gi
