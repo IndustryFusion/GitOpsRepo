@@ -57,7 +57,7 @@ spec:
       volumes:
       - name: work-storage
         persistentVolumeClaim:
-          claimName: flink-job-runner-pvc
+          claimName: flink-job-runner-pvc-new
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -92,7 +92,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: flink-job-runner-pvc
+  name: flink-job-runner-pvc-new
   namespace: flink-job-runner
 spec:
   accessModes:
