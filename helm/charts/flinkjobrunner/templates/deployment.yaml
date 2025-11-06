@@ -17,6 +17,7 @@ spec:
       containers:
       - name: flink-job-runner
         image: ibn40/flink-job-runner:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
