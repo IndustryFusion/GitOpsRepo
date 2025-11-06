@@ -165,3 +165,11 @@ releases:
   namespace: registry-ui
   values:
   - values.yaml.gotmpl
+- name: flink-job-runner
+  labels:
+    order: second
+    app: flink-job-runner
+  chart: ./charts/flinkjobrunner
+  namespace: flink-job-runner
+  values:
+  - values.yaml.gotmpl

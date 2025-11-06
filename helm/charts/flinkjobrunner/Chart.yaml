@@ -1,0 +1,6 @@
+apiVersion: v2
+name: flink-job-runner
+description: A Helm chart for Flink Job Runner
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

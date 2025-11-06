@@ -1,0 +1,158 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-job-runner
+  namespace: flink-job-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink-job-runner
+  template:
+    metadata:
+      labels:
+        app: flink-job-runner
+    spec:
+      serviceAccountName: flink-job-runner  # Create this ServiceAccount with appropriate permissions
+      containers:
+      - name: flink-job-runner
+        image: ibn40/flink-job-runner:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: RUNNER_BIND
+          value: "0.0.0.0"
+        - name: RUNNER_PORT
+          value: "8080"
+        - name: DIGITALTWIN_ROOT
+          value: "/app/work/shacl2flink"
+        - name: WORK_ROOT
+          value: "/app/work"
+        # Use the default Kubernetes service account token location
+        - name: KUBECONFIG_PATH
+          value: "/var/run/secrets/kubernetes.io/serviceaccount"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        volumeMounts:
+        # Optional: mount additional storage for work directory
+        - name: work-storage
+          mountPath: /app/work
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: work-storage
+        persistentVolumeClaim:
+          claimName: flink-job-runner-pvc
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flink-job-runner-ingress
+  namespace: flink-job-runner
+  labels:
+    app: flink-job-runner
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - hosts:
+    - dev-flink-job-runner.industryfusion-x.org
+    secretName: flink-job-runner-frontend-tls
+  rules:
+  - host: dev-flink-job-runner.industryfusion-x.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: flink-job-runner-service
+            port:
+              number: 8080
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: flink-job-runner-pvc
+  namespace: flink-job-runner
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 20Gi
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink-job-runner-service
+  namespace: flink-job-runner
+spec:
+  selector:
+    app: flink-job-runner
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flink-job-runner
+  namespace: flink-job-runner
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: flink-job-runner
+rules:
+# Permissions needed for your make targets
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints", "secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete", "scale"]
+- apiGroups: ["kafka.strimzi.io"]
+  resources: ["kafkatopics"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["extensions", "networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Add other resources as needed by your Makefile
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: flink-job-runner
+subjects:
+- kind: ServiceAccount
+  name: flink-job-runner
+  namespace: flink-job-runner
+roleRef:
+  kind: ClusterRole
+  name: flink-job-runner
+  apiGroup: rbac.authorization.k8s.io
