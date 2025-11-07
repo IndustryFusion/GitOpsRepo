@@ -210,7 +210,7 @@ rules:
   verbs: ["create", "get"]
 - apiGroups: [""]
   resources: ["namespaces"]
-  verbs: ["get", "list", "watch"]
+  verbs: ["get", "list", "watch", "create"]
 # Apps resources
 - apiGroups: ["apps"]
   resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
