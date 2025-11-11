@@ -55,6 +55,8 @@ spec:
           value: milvus
         - name: MILVUS_PROVIDER
           value: remote
+        - name: MILVUS_RAG_PROVIDER
+          value: remote
         - name: PGVECTOR_CONNECTION_URL
           value: "postgresql://postgres:postgres@localhost:5432/vectordb"
         - name: PGVECTOR_HOST
@@ -80,7 +82,11 @@ spec:
         - name: CORS_ORIGIN
           value: "https://dev-xana.industryfusion-x.org"
         - name: MILVUS_API_URL
-          value: "http://195.20.227.160:19530"
+          value: "http://85.215.52.128:19530"
+        - name: MILVUS_HTTP_RETRIES
+          value: "5"
+        - name: MILVUS_HTTP_BACKOFF_MS
+          value: "1000"
         - name: PGHOST
           value: "85.215.179.232"
         - name: PGPORT
@@ -93,6 +99,8 @@ spec:
           value: dbreader
         - name: PGDATABASE
           value: tsdb
+        - name: PG_TABLE
+          value: attributes
         - name: COMPLETIONS_API_URL
           value: "https://openai.inference.de-txl.ionos.com"
         - name: COMPLETIONS_API_KEY
@@ -115,6 +123,74 @@ spec:
           value: dJRkUos9JIPAqiw4U5Hly7AxVINARBPw
         - name: ALERTA_API_URL
           value: https://dev.industry-fusion.com/alerta/api/alerts
+        - name: OPEA_BASE_URL
+          value: "http://localhost:8888"
+        - name: OPEA_LLM_URL
+          value: "http://localhost:9001"
+        - name: OPEA_EMBEDDING_URL
+          value: "http://localhost:6006"
+        - name: OPEA_RERANK_URL
+          value: "http://localhost:9201"
+        - name: MILVUS_HOST
+          value: "85.215.52.128"
+        - name: MILVUS_PORT
+          value: "19530"
+        - name: COLLECTION_NAME
+          value: "opea_documents"
+        - name: TEI_EMBEDDING_ENDPOINT
+          value: "http://localhost:6006"
+        - name: OPEA_LLM_MODEL
+          value: "llama-3-8b-instruct"
+        - name: OPEA_EMBEDDING_MODEL
+          value: "bge-m3"
+        - name: OPEA_RERANK_MODEL
+          value: "bge-reranker-v2-m3"
+        - name: EMBEDDING_MODEL_ID
+          value: "BAAI/bge-m3"
+        - name: HF_TOKEN
+          value: "your_huggingface_token_here"
+        - name: OPEA_CHAT_TIMEOUT
+          value: "1800000"
+        - name: OPEA_EMBEDDING_TIMEOUT
+          value: "300000"
+        - name: OPEA_RERANK_TIMEOUT
+          value: "300000"
+        - name: EMBEDDING_DIMENSIONS
+          value: "1024"
+        - name: LLM_PROVIDER
+          value: "ionos"
+        - name: EMBEDDING_PROVIDER
+          value: "ionos"
+        - name: RERANKER_PROVIDER
+          value: "opea"
+        - name: USE_RERANKER
+          value: "false"
+        - name: http_proxy
+          value: ""
+        - name: https_proxy
+          value: ""
+        - name: no_proxy
+          value: "localhost,127.0.0.1,milvus,tei-embedding"
+        - name: OVMS_GPU_DEVICE
+          value: "0"
+        - name: OVMS_LOG_LEVEL
+          value: "INFO"
+        - name: LOG_LEVEL
+          value: "INFO"
+        - name: OVMS_LLM_NIREQ
+          value: "4"
+        - name: OVMS_EMBEDDING_NIREQ
+          value: "8"
+        - name: OVMS_RERANK_NIREQ
+          value: "6"
+        - name: OVMS_TARGET_DEVICE
+          value: "GPU"
+        - name: OVMS_LLM_PERFORMANCE_HINT
+          value: "LATENCY"
+        - name: OVMS_EMBEDDING_PERFORMANCE_HINT
+          value: "THROUGHPUT"
+        - name: OVMS_RERANK_PERFORMANCE_HINT
+          value: "THROUGHPUT"
         # volumeMounts:
         # - name: nginx-config
         #   mountPath: /etc/nginx/conf.d/default.conf
