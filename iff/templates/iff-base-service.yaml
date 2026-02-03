@@ -54,7 +54,7 @@ spec:
       containers:
         - name: iff-onboarding-controller
           image: {{ .Values.controller.image }}
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
           env:
