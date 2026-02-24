@@ -173,3 +173,11 @@ releases:
   namespace: flink-job-runner
   values:
   - values.yaml.gotmpl
+- name: external-api
+  labels:
+    order: second
+    app: external-api
+  chart: ./charts/externalapi
+  namespace: external-api
+  values:
+  - values.yaml.gotmpl
