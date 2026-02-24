@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: external-api-service
+  name: external-api-service
+  namespace: {{ .Values.external_api.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: external-api-service
+  template:
+    metadata:
+      labels:
+        app: external-api-service
+    spec:
+      containers:
+      - name: external-api-backend
+        image: {{ .Values.mainRepo }}/external-api-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.external_api.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
