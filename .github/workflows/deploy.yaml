@@ -74,7 +74,7 @@ on:
     secrets:
       PRIVATE_GITHUB_TOKEN:
         description: 'Token to use to clone the repositories'
-        required: true
+        required: false
       S3_URL:
         description: 'S3 url to use in the cluster'
         required: false
