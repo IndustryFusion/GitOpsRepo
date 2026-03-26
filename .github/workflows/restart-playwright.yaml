@@ -7,6 +7,12 @@ on:
         description: 'Tag of the deployer image with the Kubernetes cluster config'
         required: true
         type: string
+  workflow_call:
+    inputs:
+      CLUSTER:
+        description: 'Tag of the deployer image with the Kubernetes cluster config'
+        required: true
+        type: string
 
 jobs:
   restart-playwright:
