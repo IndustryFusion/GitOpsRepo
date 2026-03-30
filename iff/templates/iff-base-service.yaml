@@ -181,3 +181,217 @@ spec:
       port: 1883
       targetPort: 1883
       nodePort: 31883
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fusioncamera-config
+  namespace: devices
+data:
+  # ── Push ──────────────────────────────────────────────────────────────
+  # PUSH_TARGETS is set per-deployment or in a Secret; leave blank here
+  # so operators are forced to supply it explicitly.
+  PUSH_PATH:             "/socket.io"
+  PUSH_NAMESPACE:        "/camera"
+  PUSH_FPS:              "15"
+  PUSH_RECONNECT_DELAY:  "5.0"
+  # ── Camera ────────────────────────────────────────────────────────────
+  # CAMERA_INDICES: ""   # leave empty to auto-scan
+  STREAM_WIDTH:          "1280"
+  STREAM_HEIGHT:         "720"
+  STREAM_FPS:            "30"
+  STREAM_JPEG_QUALITY:   "85"
+  MAX_CAMERAS:           "10"
+  CAMERA_RECONNECT_DELAY: "2.0"
+  # ── Health ────────────────────────────────────────────────────────────
+  HEALTH_PORT:           "9090"
+  # ── Misc ──────────────────────────────────────────────────────────────
+  LOG_LEVEL:             "INFO"
+
+---
+# ── DaemonSet: one pod per gateway node ───────────────────────────────────
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fusioncamera
+  namespace: devices
+  labels:
+    app.kubernetes.io/name: fusioncamera
+    app.kubernetes.io/component: camera-stream
+spec:
+  selector:
+    matchLabels:
+      app: fusioncamera
+
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+
+  template:
+    metadata:
+      labels:
+        app: fusioncamera
+        app.kubernetes.io/name: fusioncamera
+      annotations:
+        # Force pod restart when ConfigMap changes
+        checksum/config: "placeholder-updated-by-helm-or-kustomize"
+
+    spec:
+      # ── Pull policy ─────────────────────────────────────────────────────
+      serviceAccountName: default
+
+      # ── Tolerations: run on ALL nodes including control-plane ──────────
+      tolerations:
+        - operator: Exists
+
+      # ── Host network: bind directly to the node's NIC ─────────────────
+      # Change to false and use a Service/NodePort if you want isolation.
+
+      # ── Init container: ensure /dev/video* is accessible ──────────────
+      initContainers:
+        - name: check-video-devices
+          image: busybox:1.36
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - |
+              echo "Checking for USB video devices..."
+              found=0
+              for i in $(seq 0 9); do
+                if [ -e /dev/video$i ]; then
+                  echo "  Found /dev/video$i"
+                  found=$((found+1))
+                fi
+              done
+              if [ $found -eq 0 ]; then
+                echo "WARNING: No /dev/video* devices found on this node."
+                echo "         The service will start and serve NO SIGNAL frames."
+              else
+                echo "Found $found camera device(s)."
+              fi
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: dev
+              mountPath: /dev
+
+      # ── Main container ─────────────────────────────────────────────────
+      containers:
+        - name: fusioncamera
+          # Replace with your actual registry/image
+          image: ibn40/fusioncameradataservice:latest
+          imagePullPolicy: IfNotPresent
+
+          # ── Environment ─────────────────────────────────────────────────
+          envFrom:
+            - configMapRef:
+                name: fusioncamera-config
+
+          # Non-sensitive tuning values (FPS, resolution, etc.)
+          envFrom:
+            - configMapRef:
+                name: fusioncamera-config
+          # Identity + push credentials — must be created before deploying:
+          #   kubectl -n fusioncamera create secret generic fusioncamera-identity \
+          #     --from-literal=DEVICE_ID=twin-factory-01 \
+          #     --from-literal=PUSH_TARGETS=http://nest1:3000,http://nest2:3000 \
+          #     --from-literal=PUSH_SECRET=your-shared-secret
+            - secretRef:
+                name: fusioncamera-identity
+          env: []
+
+          # ── Ports ────────────────────────────────────────────────────────
+          ports:
+            - name: health
+              containerPort: 9090
+              hostPort: 9090
+              protocol: TCP
+
+          # ── Volume mounts ────────────────────────────────────────────────
+          volumeMounts:
+            # Host /dev directory so all video devices are available
+            - name: dev
+              mountPath: /dev
+
+          # ── Security context ─────────────────────────────────────────────
+          securityContext:
+            # privileged is required for USB device access on most kernels.
+            # Replace with a specific device-list approach for hardened nodes.
+            privileged: true
+            allowPrivilegeEscalation: true
+            runAsUser: 0        # Must be root OR a user in the 'video' group
+
+          # ── Resource limits (tune per your hardware) ─────────────────────
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+
+          # ── Liveness probe ────────────────────────────────────────────────
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 6
+            failureThreshold: 3
+
+          # ── Readiness probe ───────────────────────────────────────────────
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+      # ── Volumes ──────────────────────────────────────────────────────────
+      volumes:
+        - name: dev
+          hostPath:
+            path: /dev
+            type: Directory
+
+      # ── Termination ──────────────────────────────────────────────────────
+      terminationGracePeriodSeconds: 15
+
+---
+# ── Service: exposes the health port for node-level monitoring ───────────────
+# Video consumers connect to NestJS directly; no inbound video traffic here.
+apiVersion: v1
+kind: Service
+metadata:
+  name: fusioncamera
+  namespace: devices
+  labels:
+    app.kubernetes.io/name: fusioncamera
+spec:
+  type: ClusterIP
+  selector:
+    app: fusioncamera
+  ports:
+    - name: health
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+
+---
+# ── RBAC: minimal ServiceAccount (no cluster permissions needed) ─────────────
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fusioncamera
+  namespace: devices
+  labels:
+    app.kubernetes.io/name: fusioncamera
