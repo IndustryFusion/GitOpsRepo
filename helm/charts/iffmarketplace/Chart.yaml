@@ -1,0 +1,6 @@
+apiVersion: v2
+name: iff-marketplace-application-service
+description: A Helm chart for IFF Marketplace application service
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

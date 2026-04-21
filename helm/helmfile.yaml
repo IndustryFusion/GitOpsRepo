@@ -181,3 +181,11 @@ releases:
   namespace: external-api
   values:
   - values.yaml.gotmpl
+- name: iff-marketplace
+  labels:
+    order: second
+    app: iff-marketplace
+  chart: ./charts/iffmarketplace
+  namespace: iff-marketplace
+  values:
+  - values.yaml.gotmpl

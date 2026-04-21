@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: iff-marketplace-application-service
+  name: iff-marketplace-application-service
+  namespace: {{ .Values.iff_marketplace.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iff-marketplace-application-service
+  template:
+    metadata:
+      labels:
+        app: iff-marketplace-application-service
+    spec:
+      containers:
+      - name: iff-marketplace-backend
+        image: {{ .Values.mainRepo }}/iff-marketplace-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.iff_marketplace.backendPort }}
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+      - name: iff-marketplace-frontend
+        image: {{ .Values.mainRepo }}/iff-marketplace-frontend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.iff_marketplace.frontendPort }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
