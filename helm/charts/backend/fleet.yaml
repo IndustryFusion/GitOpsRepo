@@ -1,0 +1,23 @@
+# Rancher Fleet bundle definition for the backend chart.
+defaultNamespace: xana
+
+helm:
+  chart: "."
+  force: false
+  timeoutSeconds: 300
+
+# Per-cluster/target overrides. Supply secret values here via Rancher's
+# per-target "Helm Values" field in the Continuous Delivery UI — do not
+# commit real secrets to this repo.
+#
+# targetCustomizations:
+#   - name: production
+#     clusterSelector:
+#       matchLabels:
+#         env: production
+#     helm:
+#       values:
+#         secrets:
+#           adminPassword: "..."
+#           authSecret: "..."
+#           appEncryptionKey: "..."

@@ -1,0 +1,14 @@
+apiVersion: v2
+name: dynamics-connector
+description: XANA Dynamics CRM connector
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - ai
+  - xana
+  - connector
+  - crm
+home: ""
+maintainers:
+  - name: xana-team

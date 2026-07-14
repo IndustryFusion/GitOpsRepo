@@ -1,0 +1,28 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# MongoDB values.
+#
+# Service is named "mongo" (fixed, not release-prefixed) so other XANA charts
+# (backend, workflow-agent) can reach it at a predictable DNS name:
+#   mongodb://mongo:27017/xana-business
+#
+# All XANA charts must be deployed into the same namespace (see fleet.yaml's
+# defaultNamespace) for this to resolve.
+# ─────────────────────────────────────────────────────────────────────────────
+
+image: "mongo:7"
+imagePullPolicy: IfNotPresent
+
+replicas: 1
+
+service:
+  type: ClusterIP
+  port: 27017
+
+storage:
+  size: "8Gi"
+  # storageClass: "" → use cluster default. Set e.g. "standard" or "gp2".
+  storageClass: ""
+
+resources:
+  requests: { cpu: "100m", memory: "256Mi" }
+  limits:   { cpu: "500m", memory: "1Gi" }

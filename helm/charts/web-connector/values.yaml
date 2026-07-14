@@ -1,0 +1,115 @@
+imageRegistry: "ibn40/"
+image: "xana-web-connector:20260713125203"
+imagePullPolicy: Always
+
+replicas: 1
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  requests: { cpu: "50m",  memory: "128Mi" }
+  limits:   { cpu: "250m", memory: "256Mi" }
+
+config:
+  # Set to "true" only for internal/dev targets.
+  allowHttp:           "false"
+  allowPrivateNetwork:  "false"
+  allowInlineSecrets:   "false"
+  bodyLimit:            "1mb"
+  rateLimitWindowMs:    "60000"
+  rateLimitMax:         "120"
+
+# Web connector wiki credentials, interpolated into the connector config
+# below via {{WIKI_USERNAME}} / {{WIKI_PASSWORD}} placeholders.
+# Commented out for now: the Secret resource itself is disabled in
+# templates/secret.yaml (real values are managed directly on the cluster).
+# Uncomment both together to re-enable Helm-managed secrets.
+# secrets:
+#   wikiUsername: ""
+#   wikiPassword: ""
+
+# Starter connector config. Replace baseUrl/allowedHosts/loginUrl with your
+# real wiki, or add more keys — each becomes a file under /data/connectors.
+connectorConfig:
+  example.json: |
+    {
+      "name": "Microstep Europa Wiki",
+      "baseUrl": "https://wiki.microstep-europa.de",
+      "allowedHosts": ["wiki.microstep-europa.de"],
+      "auth": {
+        "type": "form",
+        "loginUrl": "https://wiki.microstep-europa.de/Account/Login?returnurl=%2F",
+        "method": "POST",
+        "contentType": "application/x-www-form-urlencoded",
+        "credentialPlacement": "body",
+        "fields": {
+          "Login.UserName": "{{WIKI_USERNAME}}",
+          "Login.Password": "{{WIKI_PASSWORD}}"
+        },
+        "successDetection": {
+          "type": "notContainsHtml",
+          "selectorOrText": "login"
+        },
+        "session": {
+          "type": "cookie",
+          "expiresInSeconds": 3600,
+          "expiredDetection": {
+            "statusCodes": [401, 403],
+            "containsHtml": "login"
+          }
+        }
+      },
+      "roots": [
+        {
+          "name": "Root",
+          "url": "https://wiki.microstep-europa.de/"
+        }
+      ],
+      "parsing": {
+        "itemSelector": "a[href]",
+        "nameSelector": null,
+        "hrefAttribute": "href",
+        "folderRules": [
+          { "type": "cssClassContains", "value": "menuItem" }
+        ],
+        "fileRules": [
+          { "type": "extension", "values": [".pdf", ".doc", ".docx", ".txt", ".xlsx", ".pptx", ".zip"] },
+          { "type": "urlContains", "value": "/gall/" }
+        ],
+        "ignoreRules": [
+          { "type": "urlContains", "value": "logout" },
+          { "type": "urlStartsWith", "value": "mailto:" },
+          { "type": "urlStartsWith", "value": "javascript:" }
+        ],
+        "metadataSelectors": {
+          "title": "title",
+          "lastModified": ".modified-date",
+          "size": ".file-size"
+        },
+        "pagination": {
+          "enabled": false,
+          "nextSelector": "a.next",
+          "hrefAttribute": "href"
+        }
+      },
+      "fileTypeDetection": {
+        "extensionContentTypes": {
+          "pdf": "application/pdf",
+          "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+          "zip": "application/zip"
+        },
+        "defaultType": "unknown"
+      },
+      "limits": {
+        "maxDepth": 3,
+        "maxPages": 100,
+        "maxFileSizeMb": 100,
+        "requestTimeoutMs": 30000,
+        "maxConcurrentRequests": 4
+      }
+    }
+

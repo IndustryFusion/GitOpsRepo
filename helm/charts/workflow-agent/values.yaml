@@ -1,0 +1,90 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# XANA workflow-agent values.
+#
+# Deploy into the SAME namespace as mongo/qdrant/backend — depends on
+# their fixed Service DNS names unless overridden below.
+# ─────────────────────────────────────────────────────────────────────────────
+
+imageRegistry: "ibn40/"
+image: "xana-workflow-agent:20260714134545"
+imagePullPolicy: Always
+
+replicas: 1
+
+service:
+  type: ClusterIP
+  port: 8000
+
+storage:
+  size: "5Gi"
+  storageClass: ""
+
+resources:
+  requests: { cpu: "500m", memory: "2Gi" }
+  limits:   { cpu: "2000m", memory: "8Gi" }
+
+config:
+  # In-cluster service DNS names — override if these live outside this
+  # cluster/namespace.
+  mongodbUri: "mongodb://mongo:27017/xana-business"
+  qdrantUrl:  "http://qdrant:6333"
+  xanaApiBaseUrl: "http://backend:4000"
+
+  # ---- LLM / AI ----
+  openaiCompatibleModel: "mistralai/Mistral-Small-24B-Instruct"
+  embeddingModel:      "BAAI/bge-m3"
+  embeddingVectorSize: "1024"
+  embeddingBatchSize:  "32"
+  ocrModel:             "lightonai/LightOnOCR-2-1B"
+  ocrEnabled:           "true"
+  ocrFallbackTesseract: "true"
+
+  # ---- Retrieval / reranking ----
+  retrievalCandidatePool: "50"
+  retrievalTopKAnalysis:  "10"
+  retrievalTopKContinue:  "12"
+  retrievalPassageChars:  "900"
+  retrievalRerankPool:    "40"
+  retrievalMinScore:      "0.35"
+  rerankEnabled:          "true"
+  crossEncoderEnabled:    "true"
+  mmrLambda:              "0.7"
+  knowledgeMaxScopeItems: "1000"
+  knowledgeMaxLeaves:     "2000"
+  knowledgeGlobalAlwaysSearch: "true"
+  knowledgeScopeBoost:         "1.5"
+
+  # ---- Web search (Tavily) ----
+  webSearchEnabled:               "true"
+  webSearchMaxResults:            "10"
+  webSearchMaxPages:              "4"
+  webSearchTriggerMinManualScore: "0.35"
+  webSearchDepth:                 "basic"
+  webSearchPassageChars:          "900"
+  webSearchTimeoutSec:            "25.0"
+
+  logLevel: "info"
+
+  # ---- Ollama (self-hosted vision captioning) — see the ollama chart ----
+  # In-cluster DNS name once the ollama chart is deployed in this namespace.
+  ollamaBaseUrl: "http://ollama:11434"
+  ollamaVlModel: "qwen3-vl:2b"
+  # Leave "false" until the ollama chart is deployed and reachable — this
+  # only gates ingestion-time diagram captioning, never the live chat path.
+  visionCaptionEnabled: "true"
+
+# ── Sensitive values — override via --set, a separate values file, or
+# Rancher's per-target Helm Values UI. NEVER commit real credentials. ────────
+# Commented out for now: the Secret resource itself is disabled in
+# templates/secret.yaml (real values are managed directly on the cluster).
+# Uncomment both together to re-enable Helm-managed secrets.
+# secrets:
+#   openaiCompatibleBaseUrl: ""   # e.g. https://api.openai.com/v1 — required
+#   openaiCompatibleApiKey:  ""   # required
+#   # Only needed if qdrant's chart was deployed with secrets.apiKey set.
+#   qdrantApiKey: ""
+#   # Only needed if config.webSearchEnabled = true.
+#   tavilyApiKey: ""
+#   # Only needed if your Ollama server requires an API key (self-hosted
+#   # ollama chart doesn't, by default).
+#   ollamaApiKey: ""

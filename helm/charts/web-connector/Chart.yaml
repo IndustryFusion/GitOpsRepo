@@ -1,0 +1,13 @@
+apiVersion: v2
+name: web-connector
+description: XANA web/wiki knowledge connector
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - ai
+  - xana
+  - connector
+home: ""
+maintainers:
+  - name: xana-team

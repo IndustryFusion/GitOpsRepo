@@ -1,0 +1,13 @@
+# Place your connector config JSON files here. Mount your real connector
+# configs by editing values.yaml's connectorConfig map.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-connector-files
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+data:
+  {{- range $name, $content := .Values.connectorConfig }}
+  {{ $name }}: |
+    {{- $content | nindent 4 }}
+  {{- end }}

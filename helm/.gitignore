@@ -1,0 +1,4 @@
+# Real secret values — never commit. See values-secrets.example.yaml for the
+# safe, placeholder-only version that's meant to be tracked.
+values-secrets.local.yaml
+values-secrets.*.local.yaml

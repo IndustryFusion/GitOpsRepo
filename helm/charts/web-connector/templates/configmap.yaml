@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-connector-config
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+data:
+  WEB_CONNECTOR_CONFIG_DIR: "/data/connectors"
+  WEB_CONNECTOR_ALLOW_HTTP: {{ .Values.config.allowHttp | quote }}
+  WEB_CONNECTOR_ALLOW_PRIVATE_NETWORK: {{ .Values.config.allowPrivateNetwork | quote }}
+  WEB_CONNECTOR_ALLOW_INLINE_SECRETS:  {{ .Values.config.allowInlineSecrets | quote }}
+  WEB_CONNECTOR_BODY_LIMIT:            {{ .Values.config.bodyLimit | quote }}
+  WEB_CONNECTOR_RATE_LIMIT_WINDOW_MS:  {{ .Values.config.rateLimitWindowMs | quote }}
+  WEB_CONNECTOR_RATE_LIMIT_MAX:        {{ .Values.config.rateLimitMax | quote }}
+  NODE_ENV: "production"

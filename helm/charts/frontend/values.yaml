@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# XANA frontend values.
+#
+# IMPORTANT: NEXT_PUBLIC_API_URL is baked into the image at BUILD time
+# (Next.js limitation). You must set it before building:
+#   NEXT_PUBLIC_API_URL=https://api.your-domain.com docker build \
+#     --build-arg NEXT_PUBLIC_API_URL=https://api.your-domain.com \
+#     -t <registry>/xana-frontend:latest xana-business/frontend
+#
+# config.nextPublicApiUrl below is injected as a runtime env var too (only
+# affects server-side Next.js code, not already-built browser bundles).
+# ─────────────────────────────────────────────────────────────────────────────
+
+imageRegistry: "ibn40/"
+image: "xana-frontend:20260714134545"
+imagePullPolicy: Always
+
+replicas: 1
+
+service:
+  type: LoadBalancer
+  port: 3000
+
+resources:
+  requests: { cpu: "50m",  memory: "128Mi" }
+  limits:   { cpu: "250m", memory: "256Mi" }
+
+config:
+  nextPublicApiUrl: "http://localhost:4000"

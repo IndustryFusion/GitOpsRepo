@@ -1,0 +1,37 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Ollama values.
+#
+# Service is named "ollama" (fixed) so workflow-agent can reach it at a
+# predictable DNS name: http://ollama:11434 — set workflow-agent's
+# config.ollamaBaseUrl to that once this chart is deployed.
+#
+# Model weights are pulled at runtime (`ollama pull <model>`) into the
+# persistent volume below, not baked into the image — first pull of a
+# vision model can take a while and use significant disk (multi-GB).
+# ─────────────────────────────────────────────────────────────────────────────
+
+image: "ollama/ollama:latest"
+imagePullPolicy: IfNotPresent
+
+replicas: 1
+
+service:
+  type: ClusterIP
+  port: 11434
+
+storage:
+  size: "30Gi"
+  storageClass: ""
+
+resources:
+  requests: { cpu: "1000m", memory: "2Gi" }
+  limits:   { cpu: "4000m", memory: "8Gi" }
+
+# GPU passthrough — leave false for CPU-only inference (matches XANA's
+# current default, mirrors the commented block in
+# workflow-agent/docker-compose.yml). Requires the NVIDIA device plugin
+# installed on the cluster; sets `nvidia.com/gpu` resource requests/limits
+# on the container when enabled.
+gpu:
+  enabled: false
+  count: 1

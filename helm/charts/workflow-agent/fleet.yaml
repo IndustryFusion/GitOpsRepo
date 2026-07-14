@@ -1,0 +1,24 @@
+# Rancher Fleet bundle definition for the workflow-agent chart.
+defaultNamespace: xana
+
+helm:
+  chart: "."
+  force: false
+  # Analyze calls can run long; give Helm's own wait a generous ceiling too.
+  timeoutSeconds: 600
+
+# Per-cluster/target overrides. Supply secret values here via Rancher's
+# per-target "Helm Values" field in the Continuous Delivery UI — do not
+# commit real secrets to this repo.
+#
+# targetCustomizations:
+#   - name: production
+#     clusterSelector:
+#       matchLabels:
+#         env: production
+#     helm:
+#       values:
+#         secrets:
+#           openaiCompatibleBaseUrl: "..."
+#           openaiCompatibleApiKey: "..."
+#           tavilyApiKey: "..."

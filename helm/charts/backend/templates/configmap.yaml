@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+data:
+  PORT:          {{ .Values.config.port | quote }}
+  NODE_ENV:      "production"
+  CORS_ORIGINS:  {{ .Values.config.corsOrigins | quote }}
+  APP_PUBLIC_URL: {{ .Values.config.appPublicUrl | quote }}
+
+  MONGODB_URI:            {{ .Values.config.mongodbUri | quote }}
+  WORKFLOW_AGENT_URL:     {{ .Values.config.workflowAgentUrl | quote }}
+  DYNAMICS_CONNECTOR_URL: {{ .Values.config.dynamicsConnectorUrl | quote }}
+  WEB_CONNECTOR_URL:      {{ .Values.config.webConnectorUrl | quote }}
+
+  WORKFLOW_AGENT_ENABLED:  {{ .Values.config.workflowAgentEnabled | quote }}
+  WORKFLOW_AGENT_LANGUAGE: {{ .Values.config.workflowAgentLanguage | quote }}
+  WORKFLOW_AGENT_TIMEOUT_MS: {{ .Values.config.workflowAgentTimeoutMs | quote }}
+  UPLOAD_STORAGE_DIR: {{ .Values.config.uploadStorageDir | quote }}
+  CONNECTOR_CACHE_TTL_SECONDS:         {{ .Values.config.connectorCacheTtlSeconds | quote }}
+  SUPPORT_CASES_CACHE_TTL_SECONDS:     {{ .Values.config.supportCasesCacheTtlSeconds | quote }}
+  SUPPORT_ACCOUNT_CASE_CONCURRENCY:    {{ .Values.config.supportAccountCaseConcurrency | quote }}
+  SUPPORT_ACCOUNT_MAX_PAGES:           {{ .Values.config.supportAccountMaxPages | quote }}
+  SUPPORT_ACCOUNT_HYDRATE_CONCURRENCY: {{ .Values.config.supportAccountHydrateConcurrency | quote }}
+  KNOWLEDGE_CHILDREN_CACHE_TTL_MS:     {{ .Values.config.knowledgeChildrenCacheTtlMs | quote }}
+  KNOWLEDGE_SOURCES_CACHE_TTL_MS:      {{ .Values.config.knowledgeSourcesCacheTtlMs | quote }}
+  KNOWLEDGE_RESOLVE_MAX_LEAVES:        {{ .Values.config.knowledgeResolveMaxLeaves | quote }}
+
+  {{- if .Values.seedConnectors.enabled }}
+  SEED_CONNECTORS:   "true"
+  SEED_WORKSPACE_ID: {{ .Values.seedConnectors.workspaceId | quote }}
+  DYNAMICS_CONNECTOR_NAME: {{ .Values.seedConnectors.dynamicsConnectorName | quote }}
+  WEB_CONNECTOR_NAME:      {{ .Values.seedConnectors.webConnectorName | quote }}
+  {{- end }}

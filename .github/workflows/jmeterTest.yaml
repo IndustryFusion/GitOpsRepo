@@ -1,0 +1,36 @@
+name: JMeter Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  jmeter-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install JMeter
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jmeter
+
+      - name: Run JMeter Tests
+        run: |
+          # Replace the path to your actual JMeter test plan
+          jmeter -n -t ./tests/test-plan.jmx -l ./tests/test-results.jtl -e -o ./tests/jmeter-report
+
+      - name: Upload JMeter Report (Artifacts)
+        uses: actions/upload-artifact@v3
+        with:
+          name: jmeter-report
+          path: ./tests/jmeter-report
+
+      - name: Check for test failures
+        run: |
+          # Check the JMeter results for any failures
+          grep -i "<failure>" ./tests/test-results.jtl && exit 1 || exit 0

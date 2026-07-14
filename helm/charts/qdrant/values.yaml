@@ -1,0 +1,30 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Qdrant values.
+#
+# Service is named "qdrant" (fixed) so other XANA charts (workflow-agent) can
+# reach it at a predictable DNS name: http://qdrant:6333
+# ─────────────────────────────────────────────────────────────────────────────
+
+image: "qdrant/qdrant:v1.12.5"
+imagePullPolicy: IfNotPresent
+
+replicas: 1
+
+service:
+  type: ClusterIP
+  port: 6333
+
+storage:
+  size: "10Gi"
+  storageClass: ""
+
+resources:
+  requests: { cpu: "100m", memory: "512Mi" }
+  limits:   { cpu: "1000m", memory: "2Gi" }
+
+# Leave empty to run without API-key auth (matches XANA's current default).
+# Commented out for now: the Secret resource itself is disabled in
+# templates/secret.yaml (real values are managed directly on the cluster).
+# Uncomment both together to re-enable Helm-managed secrets.
+# secrets:
+#   apiKey: ""

@@ -1,0 +1,13 @@
+apiVersion: v2
+name: qdrant
+description: In-cluster Qdrant vector store for the XANA AI Platform
+type: application
+version: 0.1.0
+appVersion: "v1.12.5"
+keywords:
+  - ai
+  - xana
+  - vector-db
+home: ""
+maintainers:
+  - name: xana-team

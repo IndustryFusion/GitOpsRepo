@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workflow-agent-config
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+data:
+  MONGODB_URI: {{ .Values.config.mongodbUri | quote }}
+  QDRANT_URL:  {{ .Values.config.qdrantUrl | quote }}
+  XANA_API_BASE_URL: {{ .Values.config.xanaApiBaseUrl | quote }}
+
+  OPENAI_COMPATIBLE_MODEL: {{ .Values.config.openaiCompatibleModel | quote }}
+  EMBEDDING_MODEL:         {{ .Values.config.embeddingModel | quote }}
+  EMBEDDING_VECTOR_SIZE:   {{ .Values.config.embeddingVectorSize | quote }}
+  EMBEDDING_BATCH_SIZE:    {{ .Values.config.embeddingBatchSize | quote }}
+  OCR_MODEL:               {{ .Values.config.ocrModel | quote }}
+  OCR_ENABLED:             {{ .Values.config.ocrEnabled | quote }}
+  OCR_FALLBACK_TESSERACT:  {{ .Values.config.ocrFallbackTesseract | quote }}
+
+  RETRIEVAL_CANDIDATE_POOL: {{ .Values.config.retrievalCandidatePool | quote }}
+  RETRIEVAL_TOP_K_ANALYSIS: {{ .Values.config.retrievalTopKAnalysis | quote }}
+  RETRIEVAL_TOP_K_CONTINUE: {{ .Values.config.retrievalTopKContinue | quote }}
+  RETRIEVAL_PASSAGE_CHARS:  {{ .Values.config.retrievalPassageChars | quote }}
+  RETRIEVAL_RERANK_POOL:    {{ .Values.config.retrievalRerankPool | quote }}
+  RETRIEVAL_MIN_SCORE:      {{ .Values.config.retrievalMinScore | quote }}
+  RERANK_ENABLED:           {{ .Values.config.rerankEnabled | quote }}
+  CROSS_ENCODER_ENABLED:    {{ .Values.config.crossEncoderEnabled | quote }}
+  MMR_LAMBDA:                {{ .Values.config.mmrLambda | quote }}
+  KNOWLEDGE_MAX_SCOPE_ITEMS: {{ .Values.config.knowledgeMaxScopeItems | quote }}
+  KNOWLEDGE_MAX_LEAVES:      {{ .Values.config.knowledgeMaxLeaves | quote }}
+  KNOWLEDGE_GLOBAL_ALWAYS_SEARCH: {{ .Values.config.knowledgeGlobalAlwaysSearch | quote }}
+  KNOWLEDGE_SCOPE_BOOST:          {{ .Values.config.knowledgeScopeBoost | quote }}
+
+  WEB_SEARCH_ENABLED:                  {{ .Values.config.webSearchEnabled | quote }}
+  WEB_SEARCH_MAX_RESULTS:              {{ .Values.config.webSearchMaxResults | quote }}
+  WEB_SEARCH_MAX_PAGES:                {{ .Values.config.webSearchMaxPages | quote }}
+  WEB_SEARCH_TRIGGER_MIN_MANUAL_SCORE: {{ .Values.config.webSearchTriggerMinManualScore | quote }}
+  WEB_SEARCH_DEPTH:                    {{ .Values.config.webSearchDepth | quote }}
+  WEB_SEARCH_PASSAGE_CHARS:            {{ .Values.config.webSearchPassageChars | quote }}
+  WEB_SEARCH_TIMEOUT_SEC:              {{ .Values.config.webSearchTimeoutSec | quote }}
+
+  QDRANT_ENABLED: "true"
+  AGENT_HOST:     "0.0.0.0"
+  AGENT_PORT:     "8000"
+  LANGGRAPH_CHECKPOINT_PATH: "/app/data/checkpoints.db"
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+
+  # ---- Ollama (self-hosted vision captioning) ----
+  OLLAMA_BASE_URL:       {{ .Values.config.ollamaBaseUrl | quote }}
+  OLLAMA_VL_MODEL:       {{ .Values.config.ollamaVlModel | quote }}
+  VISION_CAPTION_ENABLED: {{ .Values.config.visionCaptionEnabled | quote }}

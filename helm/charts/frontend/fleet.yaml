@@ -1,0 +1,7 @@
+# Rancher Fleet bundle definition for the frontend chart.
+defaultNamespace: xana
+
+helm:
+  chart: "."
+  force: false
+  timeoutSeconds: 300

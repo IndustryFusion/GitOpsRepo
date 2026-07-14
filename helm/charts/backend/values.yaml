@@ -1,0 +1,87 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# XANA backend values.
+#
+# Deploy this chart into the SAME namespace as mongo/workflow-agent/etc (see
+# fleet.yaml's defaultNamespace) — it depends on their fixed Service DNS names
+# (mongo:27017, workflow-agent:8000, web-connector:8080, dynamics-connector:8080)
+# unless you override config.mongodbUri / config.workflowAgentUrl below.
+#
+# Build + push the image first:
+#   docker build -t <registry>/xana-backend:latest xana-business/backend
+#   docker push <registry>/xana-backend:latest
+# ─────────────────────────────────────────────────────────────────────────────
+
+imageRegistry: "ibn40/"
+image: "xana-backend:20260714140236"
+imagePullPolicy: Always
+
+replicas: 1
+
+service:
+  type: LoadBalancer
+  port: 4000
+
+storage:
+  size: "5Gi"
+  storageClass: ""
+
+resources:
+  requests: { cpu: "100m", memory: "256Mi" }
+  limits:   { cpu: "500m", memory: "512Mi" }
+
+# ── Non-sensitive configuration ───────────────────────────────────────────────
+config:
+  port: "4000"
+  # External URL of the frontend (used for CORS). Must match the URL users
+  # open in their browser.
+  corsOrigins: "http://192.168.49.122:3000"
+  # Public URL the backend reports itself as.
+  appPublicUrl: "http://192.168.49.122:4000"
+
+  # In-cluster service DNS names — override if any of these live outside
+  # this cluster/namespace or you renamed a Service.
+  mongodbUri:        "mongodb://mongo:27017/xana-business"
+  workflowAgentUrl:   "http://workflow-agent:8000"
+  dynamicsConnectorUrl: "http://dynamics-connector:8080"
+  webConnectorUrl:      "http://web-connector:8080"
+
+  workflowAgentEnabled:  "true"
+  workflowAgentLanguage: "en"
+  # Analyze calls can legitimately take 90-140s+; 120000 is too tight and
+  # causes spurious fallbacks. 1200000 (20 min) is the proven-working value.
+  workflowAgentTimeoutMs: "1200000"
+  uploadStorageDir: "/app/data/uploads"
+  connectorCacheTtlSeconds:         "604800"
+  supportCasesCacheTtlSeconds:      "60"
+  supportAccountCaseConcurrency:    "12"
+  supportAccountMaxPages:           "200"
+  supportAccountHydrateConcurrency: "20"
+  knowledgeChildrenCacheTtlMs:      "600000"
+  knowledgeSourcesCacheTtlMs:       "300000"
+  # Ceiling for a single resolve-leaves call (one folder/scope-item walk).
+  # Match or exceed workflow-agent's knowledgeMaxLeaves so this never becomes
+  # the binding constraint again.
+  knowledgeResolveMaxLeaves:        "2000"
+
+# ── Sensitive values — override via --set, a separate values file, or
+# Rancher's per-target Helm Values UI. NEVER commit real credentials. ────────
+# Commented out for now: the Secret resource itself is disabled in
+# templates/secret.yaml (real values are managed directly on the cluster).
+# Uncomment both together to re-enable Helm-managed secrets.
+# secrets:
+#   adminUsername: "admin"
+#   adminPassword: "admin123"              # required
+#   authSecret:    "CHANGE_ME_IN_PRODUCTION" # required — long random string
+#
+#   # Required — 32-byte hex value (64 hex chars) for CryptoService.
+#   # Generate with: openssl rand -hex 32
+#   appEncryptionKey: "<generate-with-openssl-rand-hex-32>"
+
+# ── One-shot connector seeding job (registers connectors in MongoDB) ─────────
+# Only useful once the web-connector and/or dynamics-connector charts are
+# also deployed. Safe to leave disabled and run manually later.
+seedConnectors:
+  enabled: false
+  workspaceId: "support-ai"
+  dynamicsConnectorName: "Dynamics CRM"
+  webConnectorName: "Web Knowledge"
