@@ -6,7 +6,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-workflow-agent:20260714134545"
+image: "xana-workflow-agent:20260715172102"
 imagePullPolicy: Always
 
 replicas: 1
@@ -48,7 +48,10 @@ config:
   retrievalMinScore:      "0.35"
   rerankEnabled:          "true"
   crossEncoderEnabled:    "true"
+  crossEncoderModel:      "cross-encoder/ms-marco-MiniLM-L-6-v2"
   mmrLambda:              "0.7"
+  queryExpansionEnabled:      "true"
+  queryExpansionMaxVariants:  "3"
   knowledgeMaxScopeItems: "1000"
   knowledgeMaxLeaves:     "2000"
   knowledgeGlobalAlwaysSearch: "true"
@@ -62,6 +65,7 @@ config:
   webSearchDepth:                 "basic"
   webSearchPassageChars:          "900"
   webSearchTimeoutSec:            "25.0"
+  webSearchDomainAllowlist:       ""
 
   logLevel: "info"
 
@@ -72,6 +76,14 @@ config:
   # Leave "false" until the ollama chart is deployed and reachable — this
   # only gates ingestion-time diagram captioning, never the live chat path.
   visionCaptionEnabled: "true"
+  visionCaptionTimeoutSeconds:  "240"
+  visionCaptionMaxConcurrency:  "4"
+  visionCaptionMaxImageSize:    "2000"
+  visionCaptionPromptVersion:   "v1"
+  visionCaptionMaxOutputTokens: "768"
+
+  # ---- Langfuse tracing ----
+  langfuseHost: "http://localhost:3001"
 
 # ── Sensitive values — override via --set, a separate values file, or
 # Rancher's per-target Helm Values UI. NEVER commit real credentials. ────────
@@ -88,3 +100,5 @@ config:
 #   # Only needed if your Ollama server requires an API key (self-hosted
 #   # ollama chart doesn't, by default).
 #   ollamaApiKey: ""
+#   langfusePublicKey: ""  # ⚠️ sensitive — set manually
+#   langfuseSecretKey: ""  # ⚠️ sensitive — set manually

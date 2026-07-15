@@ -28,6 +28,9 @@ data:
   KNOWLEDGE_SOURCES_CACHE_TTL_MS:      {{ .Values.config.knowledgeSourcesCacheTtlMs | quote }}
   KNOWLEDGE_RESOLVE_MAX_LEAVES:        {{ .Values.config.knowledgeResolveMaxLeaves | quote }}
 
+  OPENAI_COMPATIBLE_BASE_URL: {{ .Values.config.openaiCompatibleBaseUrl | quote }}
+  OPENAI_COMPATIBLE_MODEL:    {{ .Values.config.openaiCompatibleModel | quote }}
+
   {{- if .Values.seedConnectors.enabled }}
   SEED_CONNECTORS:   "true"
   SEED_WORKSPACE_ID: {{ .Values.seedConnectors.workspaceId | quote }}

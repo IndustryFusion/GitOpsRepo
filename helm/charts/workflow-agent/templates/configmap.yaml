@@ -25,11 +25,14 @@ data:
   RETRIEVAL_MIN_SCORE:      {{ .Values.config.retrievalMinScore | quote }}
   RERANK_ENABLED:           {{ .Values.config.rerankEnabled | quote }}
   CROSS_ENCODER_ENABLED:    {{ .Values.config.crossEncoderEnabled | quote }}
+  CROSS_ENCODER_MODEL:      {{ .Values.config.crossEncoderModel | quote }}
   MMR_LAMBDA:                {{ .Values.config.mmrLambda | quote }}
   KNOWLEDGE_MAX_SCOPE_ITEMS: {{ .Values.config.knowledgeMaxScopeItems | quote }}
   KNOWLEDGE_MAX_LEAVES:      {{ .Values.config.knowledgeMaxLeaves | quote }}
   KNOWLEDGE_GLOBAL_ALWAYS_SEARCH: {{ .Values.config.knowledgeGlobalAlwaysSearch | quote }}
   KNOWLEDGE_SCOPE_BOOST:          {{ .Values.config.knowledgeScopeBoost | quote }}
+  QUERY_EXPANSION_ENABLED:      {{ .Values.config.queryExpansionEnabled | quote }}
+  QUERY_EXPANSION_MAX_VARIANTS: {{ .Values.config.queryExpansionMaxVariants | quote }}
 
   WEB_SEARCH_ENABLED:                  {{ .Values.config.webSearchEnabled | quote }}
   WEB_SEARCH_MAX_RESULTS:              {{ .Values.config.webSearchMaxResults | quote }}
@@ -38,6 +41,7 @@ data:
   WEB_SEARCH_DEPTH:                    {{ .Values.config.webSearchDepth | quote }}
   WEB_SEARCH_PASSAGE_CHARS:            {{ .Values.config.webSearchPassageChars | quote }}
   WEB_SEARCH_TIMEOUT_SEC:              {{ .Values.config.webSearchTimeoutSec | quote }}
+  WEB_SEARCH_DOMAIN_ALLOWLIST:         {{ .Values.config.webSearchDomainAllowlist | quote }}
 
   QDRANT_ENABLED: "true"
   AGENT_HOST:     "0.0.0.0"
@@ -49,3 +53,11 @@ data:
   OLLAMA_BASE_URL:       {{ .Values.config.ollamaBaseUrl | quote }}
   OLLAMA_VL_MODEL:       {{ .Values.config.ollamaVlModel | quote }}
   VISION_CAPTION_ENABLED: {{ .Values.config.visionCaptionEnabled | quote }}
+  VISION_CAPTION_TIMEOUT_SECONDS:  {{ .Values.config.visionCaptionTimeoutSeconds | quote }}
+  VISION_CAPTION_MAX_CONCURRENCY:  {{ .Values.config.visionCaptionMaxConcurrency | quote }}
+  VISION_CAPTION_MAX_IMAGE_SIZE:   {{ .Values.config.visionCaptionMaxImageSize | quote }}
+  VISION_CAPTION_PROMPT_VERSION:   {{ .Values.config.visionCaptionPromptVersion | quote }}
+  VISION_CAPTION_MAX_OUTPUT_TOKENS: {{ .Values.config.visionCaptionMaxOutputTokens | quote }}
+
+  # ---- Langfuse tracing ----
+  LANGFUSE_HOST: {{ .Values.config.langfuseHost | quote }}

@@ -12,7 +12,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-backend:20260714140236"
+image: "xana-backend:20260715172102"
 imagePullPolicy: Always
 
 replicas: 1
@@ -63,6 +63,10 @@ config:
   # the binding constraint again.
   knowledgeResolveMaxLeaves:        "2000"
 
+  # ---- LLM / AI ----
+  openaiCompatibleBaseUrl: "https://openai.inference.de-txl.ionos.com"
+  openaiCompatibleModel:   "mistralai/Mistral-Small-24B-Instruct"
+
 # ── Sensitive values — override via --set, a separate values file, or
 # Rancher's per-target Helm Values UI. NEVER commit real credentials. ────────
 # Commented out for now: the Secret resource itself is disabled in
@@ -76,6 +80,7 @@ config:
 #   # Required — 32-byte hex value (64 hex chars) for CryptoService.
 #   # Generate with: openssl rand -hex 32
 #   appEncryptionKey: "<generate-with-openssl-rand-hex-32>"
+#   openaiCompatibleApiKey: ""  # ⚠️ sensitive — set manually
 
 # ── One-shot connector seeding job (registers connectors in MongoDB) ─────────
 # Only useful once the web-connector and/or dynamics-connector charts are
