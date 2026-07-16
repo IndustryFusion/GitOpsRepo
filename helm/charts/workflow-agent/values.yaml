@@ -6,7 +6,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-workflow-agent:20260715191245"
+image: "xana-workflow-agent:20260716191816"
 imagePullPolicy: Always
 
 replicas: 1
@@ -72,7 +72,7 @@ config:
   # ---- Ollama (self-hosted vision captioning) — see the ollama chart ----
   # In-cluster DNS name once the ollama chart is deployed in this namespace.
   ollamaBaseUrl: "http://ollama:11434"
-  ollamaVlModel: "qwen3-vl:2b"
+  ollamaVlModel: "qwen3-vl:2b-instruct"
   # Leave "false" until the ollama chart is deployed and reachable — this
   # only gates ingestion-time diagram captioning, never the live chat path.
   visionCaptionEnabled: "true"
