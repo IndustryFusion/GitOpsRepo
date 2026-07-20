@@ -1,5 +1,5 @@
 imageRegistry: "ibn40/"
-image: "xana-web-connector:20260720175347"
+image: "xana-web-connector:20260720183622"
 imagePullPolicy: Always
 
 replicas: 1
@@ -13,6 +13,7 @@ resources:
   limits:   { cpu: "250m", memory: "256Mi" }
 
 config:
+  port:                "8080"
   # Set to "true" only for internal/dev targets.
   allowHttp:           "true"
   allowPrivateNetwork:  "true"

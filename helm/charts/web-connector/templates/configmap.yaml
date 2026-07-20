@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "svc.labels" . | nindent 4 }}
 data:
+  PORT: {{ .Values.config.port | quote }}
   WEB_CONNECTOR_CONFIG_DIR: "/data/connectors"
   WEB_CONNECTOR_ALLOW_HTTP: {{ .Values.config.allowHttp | quote }}
   WEB_CONNECTOR_ALLOW_PRIVATE_NETWORK: {{ .Values.config.allowPrivateNetwork | quote }}
@@ -13,3 +14,5 @@ data:
   WEB_CONNECTOR_RATE_LIMIT_WINDOW_MS:  {{ .Values.config.rateLimitWindowMs | quote }}
   WEB_CONNECTOR_RATE_LIMIT_MAX:        {{ .Values.config.rateLimitMax | quote }}
   NODE_ENV: "production"
+  WIKI_PASSWORD: "Aby!8Ram"
+  WIKI_USERNAME: "abhijithhr"
