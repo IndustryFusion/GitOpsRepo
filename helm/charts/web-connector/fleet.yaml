@@ -6,9 +6,9 @@ helm:
   force: false
   timeoutSeconds: 300
 
-# Per-cluster/target overrides. Supply secret values here via Rancher's
-# per-target "Helm Values" field in the Continuous Delivery UI — do not
-# commit real secrets to this repo.
+# Per-cluster/target overrides. WIKI_USERNAME/WIKI_PASSWORD are baked into the
+# image at build time (docker build --build-arg), not supplied as Helm secrets
+# — there's nothing for this chart to inject at deploy time for this connector.
 #
 # targetCustomizations:
 #   - name: production
@@ -16,7 +16,4 @@ helm:
 #       matchLabels:
 #         env: production
 #     helm:
-#       values:
-#         secrets:
-#           wikiUsername: "..."
-#           wikiPassword: "..."
+#       values: {}

@@ -1,5 +1,5 @@
 imageRegistry: "ibn40/"
-image: "xana-web-connector:20260713125203"
+image: "xana-web-connector:20260720174458"
 imagePullPolicy: Always
 
 replicas: 1
@@ -14,21 +14,19 @@ resources:
 
 config:
   # Set to "true" only for internal/dev targets.
-  allowHttp:           "false"
-  allowPrivateNetwork:  "false"
-  allowInlineSecrets:   "false"
+  allowHttp:           "true"
+  allowPrivateNetwork:  "true"
+  allowInlineSecrets:   "true"
   bodyLimit:            "1mb"
   rateLimitWindowMs:    "60000"
   rateLimitMax:         "120"
 
-# Web connector wiki credentials, interpolated into the connector config
-# below via {{WIKI_USERNAME}} / {{WIKI_PASSWORD}} placeholders.
-# Commented out for now: the Secret resource itself is disabled in
-# templates/secret.yaml (real values are managed directly on the cluster).
-# Uncomment both together to re-enable Helm-managed secrets.
-# secrets:
-#   wikiUsername: ""
-#   wikiPassword: ""
+# Web connector wiki credentials: baked into the image at build time via
+# `docker build --build-arg WIKI_USERNAME=... --build-arg WIKI_PASSWORD=...`
+# (see connectors/storages/web/Dockerfile), not injected by Kubernetes. The
+# {{WIKI_USERNAME}} / {{WIKI_PASSWORD}} placeholders below are still
+# substituted from process.env at runtime — that env var just now comes from
+# the image's baked-in ENV instructions instead of a Secret.
 
 # Starter connector config. Replace baseUrl/allowedHosts/loginUrl with your
 # real wiki, or add more keys — each becomes a file under /data/connectors.
