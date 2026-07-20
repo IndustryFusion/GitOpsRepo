@@ -27,6 +27,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: web-connector-config
+            - secretRef:
+                name: web-connector-secret
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
