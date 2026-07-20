@@ -67,6 +67,20 @@ config:
   openaiCompatibleBaseUrl: "https://openai.inference.de-txl.ionos.com"
   openaiCompatibleModel:   "mistralai/Mistral-Small-24B-Instruct"
 
+  # ---- Sales weekly report (backend/src/sales/) ----
+  # These are loaded by sales.module.ts via a separate .env.sales dotenv call,
+  # but dotenv never overwrites a key already present in process.env — so
+  # setting these here via the ConfigMap is sufficient, the container doesn't
+  # need an actual .env.sales file to exist.
+  salesMailFrom:                 "noreply@industry-fusion.com"
+  salesMailFromName:              "Sales Reporting"
+  salesGoogleImpersonateSubject: "admin@industry-fusion.com"
+  # File path where the Google service-account JSON key is mounted — see the
+  # sales-google-key volume/volumeMount in templates/deployment.yaml. The
+  # actual key content is a real credential and is never rendered by Helm;
+  # create the Secret directly on the cluster yourself.
+  salesGoogleServiceAccountKeyFile: "/app/secrets/sales-google-key/key.json"
+
 # ── Sensitive values — override via --set, a separate values file, or
 # Rancher's per-target Helm Values UI. NEVER commit real credentials. ────────
 # Commented out for now: the Secret resource itself is disabled in

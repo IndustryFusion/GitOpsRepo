@@ -49,10 +49,16 @@ spec:
           volumeMounts:
             - name: uploads
               mountPath: /app/data/uploads
+            - name: sales-google-key
+              mountPath: /app/secrets/sales-google-key
+              readOnly: true
       volumes:
         - name: uploads
           persistentVolumeClaim:
             claimName: backend-uploads
+        - name: sales-google-key
+          secret:
+            secretName: sales-google-key
 ---
 apiVersion: v1
 kind: Service
