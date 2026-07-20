@@ -1,0 +1,44 @@
+{{- if .Values.modelPull.enabled }}
+# Runs once after install/upgrade to pull .Values.modelPull.model into the
+# ollama-data PVC — otherwise this has to be pulled manually (kubectl exec +
+# `ollama pull`) every time the PVC/cluster is recreated.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ollama-model-pull
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "10"
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  backoffLimit: 5
+  activeDeadlineSeconds: 1800
+  template:
+    metadata:
+      labels:
+        {{- include "svc.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: ollama-model-pull
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: pull
+          image: {{ .Values.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          env:
+            - name: OLLAMA_HOST
+              value: "ollama:11434"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              until ollama list >/dev/null 2>&1; do
+                echo "Waiting for ollama service..."
+                sleep 5
+              done
+              ollama pull {{ .Values.modelPull.model }}
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits:   { cpu: "1000m", memory: "1Gi" }
+{{- end }}

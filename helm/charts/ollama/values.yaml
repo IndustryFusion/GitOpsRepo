@@ -35,3 +35,13 @@ resources:
 gpu:
   enabled: false
   count: 1
+
+# One-shot job (Helm post-install/post-upgrade hook) that pulls this model
+# into the ollama-data PVC automatically on every install/upgrade — without
+# this, `ollama pull <model>` has to be run manually (kubectl exec) every
+# time the PVC/cluster is recreated. Safe to rerun: ollama pull is a no-op
+# once the model is already present. Keep this in sync with workflow-agent's
+# config.ollamaVlModel.
+modelPull:
+  enabled: true
+  model: "qwen3-vl:2b-instruct"
