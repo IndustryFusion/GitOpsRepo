@@ -14,5 +14,3 @@ data:
   WEB_CONNECTOR_RATE_LIMIT_WINDOW_MS:  {{ .Values.config.rateLimitWindowMs | quote }}
   WEB_CONNECTOR_RATE_LIMIT_MAX:        {{ .Values.config.rateLimitMax | quote }}
   NODE_ENV: "production"
-  WIKI_PASSWORD: "Aby!8Ram"
-  WIKI_USERNAME: "abhijithhr"
