@@ -38,6 +38,7 @@ data:
   WEB_SEARCH_MAX_RESULTS:              {{ .Values.config.webSearchMaxResults | quote }}
   WEB_SEARCH_MAX_PAGES:                {{ .Values.config.webSearchMaxPages | quote }}
   WEB_SEARCH_TRIGGER_MIN_MANUAL_SCORE: {{ .Values.config.webSearchTriggerMinManualScore | quote }}
+  WEB_SEARCH_MIN_RESULT_SCORE:         {{ .Values.config.webSearchMinResultScore | quote }}
   WEB_SEARCH_DEPTH:                    {{ .Values.config.webSearchDepth | quote }}
   WEB_SEARCH_PASSAGE_CHARS:            {{ .Values.config.webSearchPassageChars | quote }}
   WEB_SEARCH_TIMEOUT_SEC:              {{ .Values.config.webSearchTimeoutSec | quote }}

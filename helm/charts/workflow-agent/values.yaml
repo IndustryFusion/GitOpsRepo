@@ -6,7 +6,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-workflow-agent:20260718110038"
+image: "xana-workflow-agent:20260722103628"
 imagePullPolicy: Always
 
 replicas: 1
@@ -61,7 +61,8 @@ config:
   webSearchEnabled:               "true"
   webSearchMaxResults:            "10"
   webSearchMaxPages:              "4"
-  webSearchTriggerMinManualScore: "0.35"
+  webSearchTriggerMinManualScore: "0.5"
+  webSearchMinResultScore:        "0.2"
   webSearchDepth:                 "basic"
   webSearchPassageChars:          "900"
   webSearchTimeoutSec:            "25.0"
