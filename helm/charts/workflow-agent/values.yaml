@@ -70,20 +70,19 @@ config:
 
   logLevel: "info"
 
-  # ---- Ollama (self-hosted vision captioning) — see the ollama chart ----
-  # In-cluster DNS name once the ollama chart is deployed in this namespace.
-  ollamaBaseUrl: "http://ollama:11434"
-  ollamaVlModel: "qwen3-vl:2b-instruct"
-  # OpenAI-compatible chat/completions path appended to ollamaBaseUrl.
-  # Ollama serves this at /v1/chat/completions (default, as shipped here).
-  # To switch the vision-captioning backend to OVMS later (no code change
-  # needed) once the ovms chart is deployed in this namespace, set all
-  # three of:
-  #   ollamaBaseUrl:                    "http://ovms:8000"
-  #   ollamaVlModel:                    "OpenVINO/Qwen3.5-9B-int4-ov"
-  #   visionCaptionChatCompletionsPath: "/v3/chat/completions"
-  visionCaptionChatCompletionsPath: "/v1/chat/completions"
-  # Leave "false" until the ollama chart is deployed and reachable — this
+  # ---- Vision-captioning backend — see the ovms chart ----
+  # Pointed at OVMS (OpenAI-compatible, /v3/chat/completions) rather than
+  # Ollama — same code path either way (vision_caption.py), only these
+  # three values differ. Requires the ovms chart's pod to be Ready
+  # (GET /v2/health/ready) — its startupProbe allows up to ~60min for the
+  # first-boot model download before it answers. To revert to Ollama, set:
+  #   ollamaBaseUrl:                    "http://ollama:11434"
+  #   ollamaVlModel:                    "qwen3-vl:2b-instruct"
+  #   visionCaptionChatCompletionsPath: "/v1/chat/completions"
+  ollamaBaseUrl: "http://ovms:8000"
+  ollamaVlModel: "OpenVINO/Qwen3.5-9B-int4-ov"
+  visionCaptionChatCompletionsPath: "/v3/chat/completions"
+  # Leave "false" until the ovms chart is deployed and reachable — this
   # only gates ingestion-time diagram captioning, never the live chat path.
   visionCaptionEnabled: "true"
   visionCaptionTimeoutSeconds:  "240"
