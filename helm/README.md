@@ -11,7 +11,9 @@ helm/charts/
 ├── frontend/               # Next.js UI
 ├── workflow-agent/       # LangGraph / FastAPI agent
 ├── web-connector/         # web/wiki knowledge connector
-└── dynamics-connector/     # Dynamics CRM connector
+├── dynamics-connector/     # Dynamics CRM connector
+├── ollama/                 # in-cluster Ollama server (vision captioning)
+└── ovms/                   # in-cluster OpenVINO Model Server (alt. vision-captioning backend)
 ```
 
 Every chart follows the same layout: `Chart.yaml`, `values.yaml`,
@@ -36,6 +38,8 @@ helm/charts/frontend
 helm/charts/workflow-agent
 helm/charts/web-connector
 helm/charts/dynamics-connector
+helm/charts/ollama
+helm/charts/ovms
 ```
 
 Each path becomes its own Bundle, named `<gitrepo-name>-<last-path-segment>`
@@ -48,6 +52,9 @@ Secret objects to exist, not the pods they describe to be Ready), but for a
 fully working stack you generally want datastores up first:
 `mongo`, `qdrant` → `backend`, `workflow-agent` → `frontend` →
 `web-connector` / `dynamics-connector` (only if you need those connectors).
+`ollama` and/or `ovms` can deploy independently at any point — workflow-agent
+only actually calls out to whichever one `config.ollamaBaseUrl` points at,
+and only if `config.visionCaptionEnabled` is `"true"`.
 
 ## Secrets
 
@@ -66,8 +73,9 @@ either via:
 `backend`, `frontend`, `workflow-agent`, `web-connector`, and
 `dynamics-connector` are custom-built images (`imageRegistry` +
 `image` in each chart's `values.yaml`, default registry `ibn40/`).
-`mongo` and `qdrant` use public upstream images and ignore
-`imageRegistry`.
+`mongo`, `qdrant`, `ollama`, and `ovms` use public upstream images and
+ignore `imageRegistry` — they are not part of the xana-build-deploy
+image-tag-patching automation.
 
 Build and push from the `xana-dev` monorepo:
 
@@ -86,4 +94,8 @@ helm install workflow-agent ./helm/charts/workflow-agent -n xana --set secrets.o
 # optional:
 helm install web-connector ./helm/charts/web-connector -n xana --set secrets.wikiUsername=... --set secrets.wikiPassword=...
 helm install dynamics-connector ./helm/charts/dynamics-connector -n xana --set secrets.crmUrl=... --set secrets.crmUsername=... --set secrets.crmPassword=...
+# vision-captioning backend (pick one — workflow-agent's config.ollamaBaseUrl
+# decides which is actually used; both can coexist):
+helm install ollama ./helm/charts/ollama -n xana
+helm install ovms ./helm/charts/ovms -n xana
 ```

@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ovms
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "svc.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "svc.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+      containers:
+        - name: ovms
+          image: {{ .Values.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          args:
+            - "--rest_port"
+            - {{ .Values.ovms.restPort | quote }}
+            - "--source_model"
+            - {{ .Values.ovms.sourceModel | quote }}
+            - "--model_repository_path"
+            - {{ .Values.ovms.modelRepositoryPath | quote }}
+            - "--task"
+            - {{ .Values.ovms.task | quote }}
+            - "--pipeline_type"
+            - {{ .Values.ovms.pipelineType | quote }}
+            - "--target_device"
+            - {{ .Values.ovms.targetDevice | quote }}
+            {{- if .Values.ovms.allowedMediaDomains }}
+            - "--allowed_media_domains"
+            - {{ .Values.ovms.allowedMediaDomains | quote }}
+            {{- end }}
+          ports:
+            - containerPort: {{ .Values.ovms.restPort }}
+          resources:
+            {{- $res := .Values.resources }}
+            {{- if .Values.gpu.enabled }}
+            requests:
+              cpu: {{ $res.requests.cpu }}
+              memory: {{ $res.requests.memory }}
+            limits:
+              cpu: {{ $res.limits.cpu }}
+              memory: {{ $res.limits.memory }}
+              nvidia.com/gpu: {{ .Values.gpu.count }}
+            {{- else }}
+            {{- toYaml $res | nindent 12 }}
+            {{- end }}
+          # Absorbs the slow first-boot model download; liveness/readiness
+          # are only evaluated once this succeeds (native kubelet behavior).
+          startupProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: {{ .Values.ovms.restPort }}
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 120 # 30s * 120 = up to 60min for first boot
+          livenessProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: {{ .Values.ovms.restPort }}
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: {{ .Values.ovms.restPort }}
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          volumeMounts:
+            - name: ovms-data
+              mountPath: /models
+      volumes:
+        - name: ovms-data
+          persistentVolumeClaim:
+            claimName: ovms-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ovms
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "svc.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.ovms.restPort }}

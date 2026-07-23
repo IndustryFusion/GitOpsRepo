@@ -1,0 +1,15 @@
+apiVersion: v2
+name: ovms
+description: In-cluster OpenVINO Model Server (OVMS) for local model inference (vision captioning, etc.) for the XANA AI Platform — OpenAI-compatible alternative backend to the ollama chart
+type: application
+version: 0.1.0
+appVersion: "2026.2.1"
+keywords:
+  - ai
+  - xana
+  - llm
+  - ovms
+  - openvino
+home: ""
+maintainers:
+  - name: xana-team

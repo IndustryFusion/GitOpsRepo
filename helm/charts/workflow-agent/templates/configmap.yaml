@@ -53,6 +53,7 @@ data:
   # ---- Ollama (self-hosted vision captioning) ----
   OLLAMA_BASE_URL:       {{ .Values.config.ollamaBaseUrl | quote }}
   OLLAMA_VL_MODEL:       {{ .Values.config.ollamaVlModel | quote }}
+  VISION_CAPTION_CHAT_COMPLETIONS_PATH: {{ .Values.config.visionCaptionChatCompletionsPath | quote }}
   VISION_CAPTION_ENABLED: {{ .Values.config.visionCaptionEnabled | quote }}
   VISION_CAPTION_TIMEOUT_SECONDS:  {{ .Values.config.visionCaptionTimeoutSeconds | quote }}
   VISION_CAPTION_MAX_CONCURRENCY:  {{ .Values.config.visionCaptionMaxConcurrency | quote }}

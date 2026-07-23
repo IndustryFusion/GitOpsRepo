@@ -1,0 +1,69 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# OVMS (OpenVINO Model Server) values.
+#
+# Service is named "ovms" (fixed) so workflow-agent can reach it at a
+# predictable DNS name: http://ovms:8000 — this is the OpenAI-compatible
+# alternative to the ollama chart. Both charts can run side by side;
+# workflow-agent's config.ollamaBaseUrl / config.visionCaptionChatCompletionsPath
+# decide which one is actually used (see workflow-agent chart).
+#
+# Unlike ollama, there is no separate model-pull step/Job here: passing
+# --source_model + --model_repository_path directly to the server start
+# command makes OVMS download the model from Hugging Face Hub and load it
+# as part of the same container startup. First boot is therefore slow
+# (multi-GB download) — see the startupProbe in templates/deployment.yaml.
+# ─────────────────────────────────────────────────────────────────────────────
+
+image: "openvino/model_server:2026.2.1"
+imagePullPolicy: IfNotPresent
+
+replicas: 1
+
+service:
+  type: ClusterIP
+  port: 8000
+
+storage:
+  # OpenVINO/Qwen3.5-9B-int4-ov is a pre-converted OpenVINO IR checkpoint
+  # (~5-6Gi for a 9B int4 model), not a raw checkpoint needing on-the-fly
+  # conversion — no double raw+converted storage needed. 20Gi leaves
+  # headroom for a larger model swap later.
+  size: "20Gi"
+  storageClass: ""
+
+resources:
+  requests: { cpu: "2000m", memory: "6Gi" }
+  limits:   { cpu: "8000m", memory: "16Gi" }
+
+# GPU passthrough — leave false for CPU-only inference (matches ollama
+# chart's convention and XANA's current default). Independent of
+# ovms.targetDevice below (e.g. targetDevice could target NPU without this
+# implying an nvidia.com/gpu resource request) — pair the two when actually
+# running on GPU. Requires the NVIDIA device plugin installed on the cluster.
+gpu:
+  enabled: false
+  count: 1
+
+# Drives the container's `args:` list — see templates/deployment.yaml.
+ovms:
+  restPort: 8000
+  sourceModel: "OpenVINO/Qwen3.5-9B-int4-ov"
+  modelRepositoryPath: "/models"
+  task: "text_generation"
+  pipelineType: "VLM_CB"
+  # "CPU" (default) or "GPU" — pair with gpu.enabled: true above to
+  # actually get an nvidia.com/gpu resource allocated to the pod.
+  targetDevice: "CPU"
+  # For OVMS fetching images by external URL reference
+  # (--allowed_media_domains). XANA's actual usage (workflow-agent's
+  # image_utils.py) sends images as inline base64 data: URIs, not external
+  # URLs, so this is normally not needed — left empty by default and the
+  # flag is omitted entirely from args when empty.
+  allowedMediaDomains: ""
+
+# Pod-level fsGroup so the container can write to the ovms-data PVC
+# regardless of the image's default UID — the k8s equivalent of the local
+# `docker run -u $(id -u):$(id -g)` flag, without hardcoding a UID that
+# would only happen to match one workstation.
+securityContext:
+  fsGroup: 1000

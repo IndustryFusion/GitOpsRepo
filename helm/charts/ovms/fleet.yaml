@@ -1,0 +1,11 @@
+# Rancher Fleet bundle definition for the ovms chart.
+# Sits next to Chart.yaml — Fleet treats this directory as the chart itself.
+defaultNamespace: xana
+
+helm:
+  chart: "."
+  force: false
+  # First-boot model download is slow and there's no pull Job absorbing the
+  # wait (unlike ollama) — the Deployment itself won't go Ready until it
+  # finishes. Give Helm's own wait a ceiling well above the startupProbe's.
+  timeoutSeconds: 3600
