@@ -52,8 +52,8 @@ config:
   mmrLambda:              "0.7"
   queryExpansionEnabled:      "true"
   queryExpansionMaxVariants:  "3"
-  knowledgeMaxScopeItems: "1000"
-  knowledgeMaxLeaves:     "2000"
+  knowledgeMaxScopeItems: "3000"
+  knowledgeMaxLeaves:     "3000"
   knowledgeGlobalAlwaysSearch: "true"
   knowledgeScopeBoost:         "1.5"
 

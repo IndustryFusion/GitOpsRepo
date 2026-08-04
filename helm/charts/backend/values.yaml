@@ -54,14 +54,14 @@ config:
   connectorCacheTtlSeconds:         "604800"
   supportCasesCacheTtlSeconds:      "60"
   supportAccountCaseConcurrency:    "12"
-  supportAccountMaxPages:           "200"
+  supportAccountMaxPages:           "400"
   supportAccountHydrateConcurrency: "20"
   knowledgeChildrenCacheTtlMs:      "600000"
   knowledgeSourcesCacheTtlMs:       "300000"
   # Ceiling for a single resolve-leaves call (one folder/scope-item walk).
   # Match or exceed workflow-agent's knowledgeMaxLeaves so this never becomes
   # the binding constraint again.
-  knowledgeResolveMaxLeaves:        "2000"
+  knowledgeResolveMaxLeaves:        "3000"
 
   # ---- LLM / AI ----
   openaiCompatibleBaseUrl: "https://openai.inference.de-txl.ionos.com"
