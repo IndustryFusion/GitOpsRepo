@@ -153,6 +153,9 @@ on:
       XANA_AI_MASK_SECRET:
         description: ''
         required: false
+      DOCS_HTPASSWD:
+        description: 'htpasswd line(s) for basic auth on the ifx-docs site'
+        required: false
 
 jobs:
   clone-repo:
@@ -197,6 +200,11 @@ jobs:
             LABEL_ARG="${LABEL_ARG} -l app=${app}"
           done
           echo "Deploying with selector: ${LABEL_ARG}"
+          # NOTE: ifx_docs.htpasswd is single-quoted on purpose. A bcrypt
+          # htpasswd hash contains '$' sequences ($2y$05$...) which bash would
+          # expand away inside double quotes, silently corrupting the
+          # credential. Do not change it to "..." for consistency with the
+          # lines around it.
           helmfile ${LABEL_ARG} apply \
             --set mainRepo=${{ inputs.DOCKER_REGISTRY }} \
             --set mainVersion=${{ inputs.DOCKER_TAG }} \
@@ -254,4 +262,5 @@ jobs:
             --set xana_ai.completionsApiKey="${{ secrets.XANA_AI_COMPLETIONS_API_KEY }}" \
             --set xana_ai.mongodbUri="${{ secrets.XANA_AI_MONGODB_URI }}" \
             --set xana_ai.secretKey="${{ secrets.XANA_AI_SECRET_KEY }}" \
-            --set xana_ai.maskSecret="${{ secrets.XANA_AI_MASK_SECRET }}"
+            --set xana_ai.maskSecret="${{ secrets.XANA_AI_MASK_SECRET }}" \
+            --set ifx_docs.htpasswd='${{ secrets.DOCS_HTPASSWD }}'

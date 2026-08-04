@@ -284,3 +284,13 @@ iff_marketplace:
   Namespace: iff-marketplace
   backendPort: 4078
   frontendPort: 3078
+
+ifx_docs:
+  Namespace: ifx-docs
+  port: 3079
+  host: dev-docs.industryfusion-x.org
+  authRealm: "IFX Ecosystem Documentation"
+  # Injected at deploy time: --set ifx_docs.htpasswd='<htpasswd line>'
+  # The chart uses `required`, so an unset value fails the deploy rather than
+  # publishing the site unauthenticated.
+  htpasswd: ""

@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: ifx-docs-application-service
+  name: ifx-docs-nginx-config
+  namespace: {{ .Values.ifx_docs.Namespace }}
+data:
+  default.conf: |
+    # Mounted over the image's baked-in default so caching and headers can be
+    # tuned without rebuilding. Keep in sync with ifx-docs/default.conf.
+    #
+    # NOTE: nginx only inherits `add_header` from an outer block when the inner
+    # block declares none of its own. Cache policy below therefore uses
+    # `expires`, so the server-level security headers survive into every
+    # location. Do not convert these to add_header.
+    server {
+        listen       {{ .Values.ifx_docs.port }};
+        server_name  _;
+
+        root  /usr/share/nginx/html;
+        index index.html;
+
+        add_header X-Content-Type-Options nosniff    always;
+        add_header X-Frame-Options        SAMEORIGIN always;
+        add_header Referrer-Policy        no-referrer always;
+
+        server_tokens off;
+
+        location = /healthz {
+            access_log off;
+            default_type text/plain;
+            return 200 'ok';
+        }
+
+        # MkDocs uses directory URLs; `=404` rather than /404.html so a missing
+        # page returns a real 404 status instead of a 200.
+        location / {
+            try_files $uri $uri/ $uri/index.html =404;
+            expires -1;
+        }
+
+        location /assets/ {
+            expires 30d;
+        }
+
+        error_page 404 /404.html;
+        location = /404.html {
+            internal;
+        }
+
+        gzip              on;
+        gzip_vary         on;
+        gzip_min_length   1024;
+        gzip_types        text/plain text/css application/javascript application/json
+                          image/svg+xml application/xml;
+    }
