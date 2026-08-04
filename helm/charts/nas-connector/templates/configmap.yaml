@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nas-connector-config
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+data:
+  PORT: {{ .Values.config.port | quote }}
+  NAS_CONNECTOR_CONFIG_DIR: "/data/connectors"
+  NAS_CONNECTOR_ALLOW_HTTP:              {{ .Values.config.allowHttp | quote }}
+  NAS_CONNECTOR_ALLOW_PRIVATE_NETWORK:   {{ .Values.config.allowPrivateNetwork | quote }}
+  NAS_CONNECTOR_ALLOW_INSECURE_TLS:      {{ .Values.config.allowInsecureTls | quote }}
+  NAS_CONNECTOR_ALLOW_INLINE_SECRETS:    {{ .Values.config.allowInlineSecrets | quote }}
+  NAS_CONNECTOR_BODY_LIMIT:              {{ .Values.config.bodyLimit | quote }}
+  NAS_CONNECTOR_RATE_LIMIT_WINDOW_MS:    {{ .Values.config.rateLimitWindowMs | quote }}
+  NAS_CONNECTOR_RATE_LIMIT_MAX:          {{ .Values.config.rateLimitMax | quote }}
+  NAS_CONNECTOR_API_INFO_TTL_MS:         {{ .Values.config.apiInfoTtlMs | quote }}
+  NAS_CONNECTOR_SHARE_CACHE_TTL_MS:      {{ .Values.config.shareCacheTtlMs | quote }}
+  NAS_CONNECTOR_SEARCH_CACHE_TTL_MS:     {{ .Values.config.searchCacheTtlMs | quote }}
+  NAS_CONNECTOR_MAX_PATH_LEN:            {{ .Values.config.maxPathLen | quote }}
+  NODE_ENV: "production"

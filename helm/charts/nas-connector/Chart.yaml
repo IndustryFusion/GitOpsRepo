@@ -1,0 +1,14 @@
+apiVersion: v2
+name: nas-connector
+description: XANA Synology NAS (File Station) knowledge connector
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - ai
+  - xana
+  - connector
+  - nas
+home: ""
+maintainers:
+  - name: xana-team

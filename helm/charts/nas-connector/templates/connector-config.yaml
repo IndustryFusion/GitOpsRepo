@@ -1,0 +1,14 @@
+# Each key becomes a file under /data/connectors, and the filename (minus
+# .json) becomes the connector id. Edit values.yaml's connectorConfig map to
+# mount your real NAS configs.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nas-connector-files
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+data:
+  {{- range $name, $content := .Values.connectorConfig }}
+  {{ $name }}: |
+    {{- $content | nindent 4 }}
+  {{- end }}

@@ -74,7 +74,7 @@ connectorConfig:
           { "type": "cssClassContains", "value": "menuItem" }
         ],
         "fileRules": [
-          { "type": "extension", "values": [".pdf", ".doc", ".docx", ".txt", ".xlsx", ".pptx", ".zip"] },
+          { "type": "extension", "values": [".pdf", ".doc", ".docx", ".txt", ".xlsx", ".pptx", ".zip", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp"] },
           { "type": "urlContains", "value": "/gall/" }
         ],
         "ignoreRules": [

@@ -1,0 +1,20 @@
+# Rancher Fleet bundle definition for the nas-connector chart.
+defaultNamespace: xana
+
+helm:
+  chart: "."
+  force: false
+  timeoutSeconds: 300
+
+# Unlike web-connector, this chart injects its credentials at RUNTIME through
+# the nas-connector-secret Secret. They are deliberately not baked into the
+# image with --build-arg, because build args stay recoverable from a published
+# image via `docker history`.
+#
+# targetCustomizations:
+#   - name: production
+#     clusterSelector:
+#       matchLabels:
+#         env: production
+#     helm:
+#       values: {}

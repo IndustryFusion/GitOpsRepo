@@ -80,7 +80,7 @@ config:
   #   ollamaVlModel:                    "qwen3-vl:2b-instruct"
   #   visionCaptionChatCompletionsPath: "/v1/chat/completions"
   ollamaBaseUrl: "http://ovms:8000"
-  ollamaVlModel: "OpenVINO/Qwen3.5-9B-int4-ov"
+  ollamaVlModel: "OpenVINO/Qwen3.5-4B-int4-ov"
   visionCaptionChatCompletionsPath: "/v3/chat/completions"
   # Leave "false" until the ovms chart is deployed and reachable — this
   # only gates ingestion-time diagram captioning, never the live chat path.

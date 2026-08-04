@@ -24,8 +24,8 @@ service:
   port: 8000
 
 storage:
-  # OpenVINO/Qwen3.5-9B-int4-ov is a pre-converted OpenVINO IR checkpoint
-  # (~5-6Gi for a 9B int4 model), not a raw checkpoint needing on-the-fly
+  # OpenVINO/Qwen3.5-4B-int4-ov is a pre-converted OpenVINO IR checkpoint
+  # (~3.5Gi for a 4B int4 model), not a raw checkpoint needing on-the-fly
   # conversion — no double raw+converted storage needed. 20Gi leaves
   # headroom for a larger model swap later.
   size: "20Gi"
@@ -47,7 +47,7 @@ gpu:
 # Drives the container's `args:` list — see templates/deployment.yaml.
 ovms:
   restPort: 8000
-  sourceModel: "OpenVINO/Qwen3.5-9B-int4-ov"
+  sourceModel: "OpenVINO/Qwen3.5-4B-int4-ov"
   modelRepositoryPath: "/models"
   task: "text_generation"
   pipelineType: "VLM_CB"

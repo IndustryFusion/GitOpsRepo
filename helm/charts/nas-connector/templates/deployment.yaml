@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nas-connector
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "svc.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "svc.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: nas-connector
+          image: {{ include "svc.image" . }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - containerPort: 8082
+          envFrom:
+            - configMapRef:
+                name: nas-connector-config
+            # optional:true so the pod still starts when the Secret is managed
+            # out-of-band and has not been created yet — the connector then
+            # fails with a clear "required secret environment variable is not
+            # set" rather than an opaque CreateContainerConfigError.
+            - secretRef:
+                name: nas-connector-secret
+                optional: true
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8082
+            initialDelaySeconds: 20
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8082
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: connector-config
+              mountPath: /data/connectors
+              readOnly: true
+      volumes:
+        - name: connector-config
+          configMap:
+            name: nas-connector-files
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nas-connector
+  labels:
+    {{- include "svc.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "svc.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: 8082

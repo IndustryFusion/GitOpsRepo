@@ -1,0 +1,94 @@
+imageRegistry: "ibn40/"
+image: "xana-nas-connector:latest"
+imagePullPolicy: Always
+
+# Keep at 1. Each replica signs in to DSM separately, and Synology caps the
+# number of concurrent File Station sessions per account.
+replicas: 1
+
+service:
+  type: ClusterIP
+  port: 8082
+
+# Higher memory ceiling than web-connector: downloads are streamed but the
+# backend that consumes them buffers whole files, and maxFileSizeMb is sized
+# with that in mind.
+resources:
+  requests: { cpu: "50m",  memory: "128Mi" }
+  limits:   { cpu: "250m", memory: "384Mi" }
+
+config:
+  port:                 "8082"
+  allowHttp:            "false"
+  # Security-relevant. Required to reach a NAS on an RFC1918 address, and only
+  # effective together with allowPrivateNetwork on the connector config itself.
+  # Reach stays bounded by that config's allowedHosts allowlist.
+  allowPrivateNetwork:  "true"
+  # Security-relevant. "true" disables TLS certificate verification entirely,
+  # which means anything on the network path between this pod and the NAS can
+  # impersonate the NAS and feed arbitrary documents into the knowledge index.
+  # PREFER leaving this "false" and setting secrets.synoCaPem to the NAS
+  # certificate instead — the connector pins it and keeps verification on.
+  allowInsecureTls:     "false"
+  allowInlineSecrets:   "false"
+  bodyLimit:            "1mb"
+  rateLimitWindowMs:    "60000"
+  rateLimitMax:         "240"
+  apiInfoTtlMs:         "3600000"
+  shareCacheTtlMs:      "300000"
+  searchCacheTtlMs:     "60000"
+  maxPathLen:           "1024"
+
+# Sensitive — set on the cluster, do not commit real values here.
+# Use a dedicated read-only DSM account with File Station application
+# permission and read access to only the shares named in connectorConfig.roots.
+secrets:
+  synoUsername: ""
+  synoPassword: ""
+  synoCaPem:    ""
+
+# The connector exposes no authentication of its own, so it must not be
+# reachable from outside the cluster. Set enabled: true to restrict ingress to
+# the backend pod only.
+networkPolicy:
+  enabled: false
+  backendPodSelectorLabel: "backend"
+
+# Each key becomes a file under /data/connectors, and the filename (without
+# .json) becomes the connector id. Credentials stay as {{ENV}} placeholders —
+# they are resolved from the Secret above at runtime.
+connectorConfig:
+  example.json: |
+    {
+      "name": "Example NAS",
+      "baseUrl": "https://nas.example.internal:5001",
+      "allowedHosts": ["nas.example.internal"],
+      "allowPrivateNetwork": true,
+      "auth": {
+        "type": "synologyAccount",
+        "username": "{{SYNO_USERNAME}}",
+        "password": "{{SYNO_PASSWORD}}",
+        "sessionName": "FileStation",
+        "loginMethod": "POST",
+        "requestSynoToken": true,
+        "session": { "expiresInSeconds": 3600 }
+      },
+      "tls": {
+        "rejectUnauthorized": true,
+        "caPem": "{{SYNO_CA_PEM}}"
+      },
+      "roots": [
+        { "name": "Manuals", "path": "/docs/manuals" }
+      ],
+      "limits": {
+        "maxDepth": 3,
+        "maxPages": 100,
+        "maxFileSizeMb": 100,
+        "requestTimeoutMs": 30000,
+        "maxConcurrentRequests": 4,
+        "listPageSize": 200,
+        "searchTimeoutMs": 15000,
+        "searchPollIntervalMs": 400,
+        "skipDownloadPreflight": false
+      }
+    }
