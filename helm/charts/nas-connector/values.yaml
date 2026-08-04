@@ -1,5 +1,5 @@
 imageRegistry: "ibn40/"
-image: "xana-nas-connector:20260804155045"
+image: "xana-nas-connector:20260804172051"
 imagePullPolicy: Always
 
 # Keep at 1. Each replica signs in to DSM separately, and Synology caps the
@@ -29,7 +29,7 @@ config:
   # impersonate the NAS and feed arbitrary documents into the knowledge index.
   # PREFER leaving this "false" and setting secrets.synoCaPem to the NAS
   # certificate instead — the connector pins it and keeps verification on.
-  allowInsecureTls:     "false"
+  allowInsecureTls:     "true"
   allowInlineSecrets:   "false"
   bodyLimit:            "1mb"
   rateLimitWindowMs:    "60000"
@@ -70,11 +70,13 @@ networkPolicy:
 # "caPem": "{{SYNO_CA_PEM}}" back here and set secrets.synoCaPem. That keeps
 # verification on and is strongly preferred over disabling it.
 connectorConfig:
-  example.json: |
+  nas-main.json: |
     {
-      "name": "Example NAS",
-      "baseUrl": "https://nas.example.internal:5001",
-      "allowedHosts": ["nas.example.internal"],
+      "name": "Microstep NAS",
+      "baseUrl": "https://192.168.40.15:5001",
+      "allowedHosts": [
+        "192.168.40.15"
+      ],
       "allowPrivateNetwork": true,
       "auth": {
         "type": "synologyAccount",
@@ -83,13 +85,18 @@ connectorConfig:
         "sessionName": "FileStation",
         "loginMethod": "POST",
         "requestSynoToken": true,
-        "session": { "expiresInSeconds": 3600 }
+        "session": {
+          "expiresInSeconds": 3600
+        }
       },
       "tls": {
-        "rejectUnauthorized": true
+        "rejectUnauthorized": false
       },
       "roots": [
-        { "name": "Manuals", "path": "/docs/manuals" }
+        {
+          "name": "Service & Support",
+          "path": "/Public/Service & Support"
+        }
       ],
       "limits": {
         "maxDepth": 3,
