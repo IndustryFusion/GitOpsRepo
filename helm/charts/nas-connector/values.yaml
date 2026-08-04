@@ -1,5 +1,5 @@
 imageRegistry: "ibn40/"
-image: "xana-nas-connector:20260804132804"
+image: "xana-nas-connector:20260804155045"
 imagePullPolicy: Always
 
 # Keep at 1. Each replica signs in to DSM separately, and Synology caps the
@@ -57,6 +57,18 @@ networkPolicy:
 # Each key becomes a file under /data/connectors, and the filename (without
 # .json) becomes the connector id. Credentials stay as {{ENV}} placeholders —
 # they are resolved from the Secret above at runtime.
+#
+# Note the tls block does NOT reference {{SYNO_CA_PEM}}. A placeholder is
+# resolved strictly: if the config names an env var that is unset, every request
+# fails rather than quietly downgrading to unverified TLS. Referencing it here
+# by default would therefore break any deployment that has not supplied a CA —
+# which is most of them, since a NAS presenting its factory certificate has no
+# usable CA to pin (that certificate ships identically on every Synology).
+#
+# Once a real certificate is installed on the NAS — DSM's Let'"'"'s Encrypt
+# integration, or one from an internal CA with the NAS IP in a SAN — add
+# "caPem": "{{SYNO_CA_PEM}}" back here and set secrets.synoCaPem. That keeps
+# verification on and is strongly preferred over disabling it.
 connectorConfig:
   example.json: |
     {
@@ -74,8 +86,7 @@ connectorConfig:
         "session": { "expiresInSeconds": 3600 }
       },
       "tls": {
-        "rejectUnauthorized": true,
-        "caPem": "{{SYNO_CA_PEM}}"
+        "rejectUnauthorized": true
       },
       "roots": [
         { "name": "Manuals", "path": "/docs/manuals" }
