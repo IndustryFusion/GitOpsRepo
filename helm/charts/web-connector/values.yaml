@@ -1,5 +1,5 @@
 imageRegistry: "ibn40/"
-image: "xana-web-connector:20260804132804"
+image: "xana-web-connector:20260805130458"
 imagePullPolicy: Always
 
 replicas: 1
@@ -20,7 +20,7 @@ config:
   allowInlineSecrets:   "true"
   bodyLimit:            "1mb"
   rateLimitWindowMs:    "60000"
-  rateLimitMax:         "120"
+  rateLimitMax:         "6000"
 
 # Web connector wiki credentials: baked into the image at build time via
 # `docker build --build-arg WIKI_USERNAME=... --build-arg WIKI_PASSWORD=...`
