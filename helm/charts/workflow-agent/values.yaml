@@ -19,6 +19,12 @@ storage:
   size: "5Gi"
   storageClass: ""
 
+# Deliberately Burstable, not Guaranteed. Indexing is spiky and memory-hungry —
+# PDF page rendering and OCR, embedding batches, and the BM25 index that
+# sparse_index.get_or_build_bm25_index holds in process for the whole scoped
+# corpus — so the gap between request and limit is headroom this workload
+# actually uses. Equalising them to buy a better QoS class would trade an 8Gi
+# ceiling for a hard OOMKill at the request size.
 resources:
   requests: { cpu: "500m", memory: "2Gi" }
   limits:   { cpu: "2000m", memory: "8Gi" }

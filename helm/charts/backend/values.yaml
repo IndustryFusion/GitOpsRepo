@@ -25,9 +25,15 @@ storage:
   size: "5Gi"
   storageClass: ""
 
+# Guaranteed QoS: requests and limits are identical on BOTH cpu and memory, for
+# every container in the pod. Any divergence — even one field — silently demotes
+# the pod to Burstable, so keep these as two matching pairs. Guaranteed is the
+# last class the kubelet evicts under node memory pressure, but it is also a
+# hard ceiling: there is no headroom to burst into, so exceeding the limit is an
+# immediate OOMKill rather than a slowdown.
 resources:
-  requests: { cpu: "100m", memory: "256Mi" }
-  limits:   { cpu: "500m", memory: "512Mi" }
+  requests: { cpu: "1", memory: "512Mi" }
+  limits:   { cpu: "1", memory: "512Mi" }
 
 # ── Non-sensitive configuration ───────────────────────────────────────────────
 config:
