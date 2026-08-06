@@ -33,14 +33,20 @@ spec:
                 name: workflow-agent-secret
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          # Liveness asks "is this process wedged?", so it must not depend on
+          # anything external. /health probes the embedding API and Qdrant;
+          # pointing liveness at it made indexing kill its own pod — ingest
+          # saturates that same embedding provider, the check times out, and the
+          # kubelet restarts the pod mid-run to "fix" a slow upstream that a
+          # restart cannot fix. /livez does no I/O.
           livenessProbe:
             httpGet:
-              path: /health
+              path: /livez
               port: 8000
             initialDelaySeconds: 60
             periodSeconds: 20
-            timeoutSeconds: 10
-            failureThreshold: 5
+            timeoutSeconds: 5
+            failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /health
