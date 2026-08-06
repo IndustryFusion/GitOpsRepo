@@ -1,8 +1,0 @@
-# Rancher Fleet bundle definition for the ollama chart.
-# Sits next to Chart.yaml — Fleet treats this directory as the chart itself.
-defaultNamespace: xana
-
-helm:
-  chart: "."
-  force: false
-  timeoutSeconds: 300
