@@ -1,0 +1,181 @@
+{{- if .Values.xshare.redis.enabled }}
+{{- /*
+Redis for the app's shared ISR cache.
+
+── Why it is here at all ───────────────────────────────────────────────────
+Next.js keeps its Incremental Static Regeneration cache PER POD. With more than
+one replica and no shared cache, the same URL serves permanently different HTML
+depending on which pod answers, and revalidateTag() reaches exactly one of them.
+That is invisible in a smoke test and obvious to a visitor who refreshes.
+
+The app degrades to an in-process LRU if Redis is unreachable, so losing this
+costs CPU and cache coherence, never availability.
+
+── Why not the Bitnami subchart ────────────────────────────────────────────
+It now defaults to `bitnami/redis:latest`: Bitnami moved their versioned public
+images to `bitnamilegacy` and put the hardened ones behind a subscription. A
+cache that can change major version on a pod restart is not worth the
+convenience. This is the official image, pinned.
+
+── It is a CACHE ───────────────────────────────────────────────────────────
+One replica, bounded memory with LRU eviction, no persistence. `maxmemory` is
+deliberately BELOW the container limit: Redis does not read cgroup limits, so if
+it is allowed to grow past the limit the kernel OOM-kills the pod instead of
+Redis evicting a key.
+*/}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: xshare-redis
+  namespace: {{ .Values.xshare.Namespace }}
+  labels:
+    app: xshare-redis
+type: Opaque
+data:
+  {{- /*
+    Generated once, then read back on every subsequent render so an upgrade does
+    not mint a new password while the Redis pod — which did not necessarily
+    restart — keeps enforcing the old one.
+
+    `lookup` returns nothing during `helm template` / `--dry-run`, so a rendered
+    manifest shows a throwaway value. Only what is applied to the cluster counts.
+  */}}
+  {{- $existing := lookup "v1" "Secret" .Values.xshare.Namespace "xshare-redis" }}
+  {{- if and $existing $existing.data (index $existing.data "redis-password") }}
+  redis-password: {{ index $existing.data "redis-password" }}
+  {{- else }}
+  redis-password: {{ randAlphaNum 32 | b64enc | quote }}
+  {{- end }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xshare-redis
+  namespace: {{ .Values.xshare.Namespace }}
+  labels:
+    app: xshare-redis
+data:
+  redis.conf: |
+    bind 0.0.0.0
+    protected-mode no
+    port {{ .Values.xshare.redis.port }}
+    maxmemory {{ .Values.xshare.redis.maxmemory }}
+    # A cache evicts; it never refuses writes. Redis defaults to `noeviction`,
+    # which would start returning OOM errors to the app once full.
+    maxmemory-policy allkeys-lru
+    save ""
+    appendonly no
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xshare-redis
+  namespace: {{ .Values.xshare.Namespace }}
+  labels:
+    app: xshare-redis
+spec:
+  type: ClusterIP
+  selector:
+    app: xshare-redis
+  ports:
+    - name: redis
+      port: {{ .Values.xshare.redis.port }}
+      targetPort: redis
+      protocol: TCP
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: xshare-redis
+  namespace: {{ .Values.xshare.Namespace }}
+  labels:
+    app: xshare-redis
+spec:
+  # One replica, always. Scaling this does not give HA, it gives N independent
+  # caches and the divergence Redis was added to remove.
+  replicas: 1
+  serviceName: xshare-redis
+  selector:
+    matchLabels:
+      app: xshare-redis
+  template:
+    metadata:
+      labels:
+        app: xshare-redis
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+        - name: redis
+          image: {{ .Values.xshare.redis.image }}
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          command:
+            - redis-server
+            - /etc/redis/redis.conf
+            - --requirepass
+            - $(REDIS_PASSWORD)
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: xshare-redis
+                  key: redis-password
+          ports:
+            - name: redis
+              containerPort: {{ .Values.xshare.redis.port }}
+          {{- /*
+            `redis-cli ping` answers NOAUTH rather than PONG on a
+            password-protected server, which reads as a failure. Authenticating
+            here is what makes this a real check instead of a port test.
+          */}}
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - redis-cli -a "$REDIS_PASSWORD" --no-auth-warning -p {{ .Values.xshare.redis.port }} ping | grep -q PONG
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            tcpSocket:
+              port: redis
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 320Mi
+            limits:
+              cpu: 500m
+              # Above maxmemory, deliberately — see the header note.
+              memory: 384Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/redis
+              readOnly: true
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: config
+          configMap:
+            name: xshare-redis
+        {{- /* readOnlyRootFilesystem is on and redis opens its dir at startup,
+               so /data needs to be writable even with persistence off. */}}
+        - name: data
+          emptyDir:
+            sizeLimit: 512Mi
+{{- end }}

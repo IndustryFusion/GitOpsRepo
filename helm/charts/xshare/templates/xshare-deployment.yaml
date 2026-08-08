@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: xshare-app
+  name: xshare-app
+  namespace: {{ .Values.xshare.Namespace }}
+spec:
+  replicas: {{ .Values.xshare.replicas }}
+  selector:
+    matchLabels:
+      app: xshare-app
+  template:
+    metadata:
+      labels:
+        app: xshare-app
+    spec:
+      containers:
+        - name: xshare
+          image: {{ .Values.mainRepo }}/xshare:{{ .Values.mainVersion }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.xshare.port }}
+          env:
+            # Next's standalone server binds 127.0.0.1 unless told otherwise,
+            # and then every probe fails with connection refused while the pod
+            # itself looks healthy.
+            - name: HOSTNAME
+              value: "0.0.0.0"
+            - name: PORT
+              value: "{{ .Values.xshare.port }}"
+            - name: NODE_ENV
+              value: production
+            {{- if .Values.xshare.redis.enabled }}
+            {{- /*
+              REDIS_PASSWORD must be declared BEFORE REDIS_URL: Kubernetes only
+              expands $(VAR) against variables earlier in the same list.
+              Reversed, the app receives the literal "$(REDIS_PASSWORD)" as its
+              password and fails with a connection error, not a config error.
+            */}}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: xshare-redis
+                  key: redis-password
+            - name: REDIS_URL
+              value: "redis://:$(REDIS_PASSWORD)@xshare-redis.{{ .Values.xshare.Namespace }}.svc.cluster.local:{{ .Values.xshare.redis.port }}"
+            - name: REDIS_KEY_PREFIX
+              value: "xshare:"
+            {{- end }}
+          {{- /*
+            A startupProbe is what makes the other two safe. A cold Next.js
+            start can exceed the liveness threshold, so without it the kubelet
+            restarts the pod before it ever becomes ready — a crashloop that
+            reads as an application bug. While startup is pending, liveness and
+            readiness are suppressed, which is why neither needs a delay.
+          */}}
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.xshare.port }}
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.xshare.port }}
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.xshare.port }}
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          {{- /*
+            The floor here is image optimization, not rendering. next/image runs
+            sharp in this pod and decodes source images off-heap; an undersized
+            pod OOMKills on the first large image rather than under traffic.
+          */}}
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      imagePullSecrets:
+        - name: {{ .Values.pullSecretCredentials }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xshare-service
+  namespace: {{ .Values.xshare.Namespace }}
+  labels:
+    app: xshare-app
+spec:
+  type: ClusterIP
+  selector:
+    app: xshare-app
+  ports:
+    - name: http
+      port: {{ .Values.xshare.port }}
+      targetPort: {{ .Values.xshare.port }}
+      protocol: TCP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: xshare-ingress
+  namespace: {{ .Values.xshare.Namespace }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    {{- /*
+      ⚠️ MUST forward the Accept header (nginx does by default; do not strip
+      it). next/image negotiates AVIF/WebP off that header alone — without it
+      every visitor silently receives the original PNG/JPEG and the whole image
+      pipeline in this app does nothing.
+    */}}
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    # Streaming/Suspense stalls at the proxy if responses are buffered.
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{ .Values.xshare.externalHostname }}
+      secretName: {{ .Values.xshare.tlsSecret }}
+  rules:
+    - host: {{ .Values.xshare.externalHostname }}
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: xshare-service
+                port:
+                  number: {{ .Values.xshare.port }}

@@ -47,3 +47,10 @@ certmanager:
 #   s3SecretKey: ''
 #   alertaKey: ''
 #   mongoUrl: ''
+
+# X-SHARE campaign site. Hostname and TLS secret are per-environment; the
+# certificate itself is issued by the cluster's existing letsencrypt-prod
+# ClusterIssuer via the annotation on the Ingress.
+xshareReplicas: 1
+xshareExternalHostname: dev-xshare.industryfusion-x.org
+xshareTlsSecret: dev-cert-tls-xshare

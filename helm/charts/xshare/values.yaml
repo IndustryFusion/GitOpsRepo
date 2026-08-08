@@ -1,0 +1,23 @@
+# Defaults only. In this repo every value is supplied by helmfile from
+# helm/values.yaml.gotmpl, which is itself fed by --set flags in the deploy
+# workflow. These exist so `helm template ./charts/xshare` works standalone for
+# a quick syntax check without going through helmfile.
+mainRepo: ibn40
+mainVersion: latest
+namespace: xshare
+pullSecretCredentials: regcred
+
+xshare:
+  Namespace: xshare
+  # Container port. Must match ENV PORT in the app Dockerfile.
+  port: 6001
+  replicas: 1
+  externalHostname: xshare.local
+  tlsSecret: dev-cert-tls-xshare
+  # Shared ISR cache. See the note in redis.yaml before turning this off with
+  # replicas > 1.
+  redis:
+    enabled: true
+    image: redis:8.2-alpine
+    port: 6379
+    maxmemory: 256mb

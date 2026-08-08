@@ -157,6 +157,14 @@ releases:
   namespace: xana-ai
   values:
   - values.yaml.gotmpl
+- name: xshare
+  labels:
+    order: second
+    app: xshare
+  chart: ./charts/xshare
+  namespace: xshare
+  values:
+  - values.yaml.gotmpl
 - name: registry-ui
   labels:
     order: second

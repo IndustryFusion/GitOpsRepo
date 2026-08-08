@@ -269,6 +269,22 @@ xana_ai:
   secretKey: secretKey
   maskSecret: maskSecret
 
+# X-SHARE campaign site (websites monorepo -> xshare/). Single container, plus a
+# Redis StatefulSet for the shared ISR cache — Next keeps that cache per pod, so
+# without it two replicas serve permanently different HTML for the same URL.
+xshare:
+  Namespace: xshare
+  # Must match ENV PORT in the app image.
+  port: 6001
+  replicas: {{ .StateValues.xshareReplicas | default 1 }}
+  externalHostname: {{ .StateValues.xshareExternalHostname }}
+  tlsSecret: {{ .StateValues.xshareTlsSecret }}
+  redis:
+    enabled: true
+    image: redis:8.2-alpine
+    port: 6379
+    maxmemory: 256mb
+
 registry_ui:
   Namespace: registry-ui
   frontendPort: 3060

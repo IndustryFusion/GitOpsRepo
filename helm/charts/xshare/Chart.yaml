@@ -1,0 +1,6 @@
+apiVersion: v2
+name: xshare
+description: A Helm chart for xshare — the X-SHARE campaign site (Next.js, standalone)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
