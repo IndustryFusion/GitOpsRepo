@@ -12,7 +12,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-backend:20260807180924"
+image: "xana-backend:20260810092827"
 imagePullPolicy: Always
 
 replicas: 1
@@ -31,9 +31,20 @@ storage:
 # last class the kubelet evicts under node memory pressure, but it is also a
 # hard ceiling: there is no headroom to burst into, so exceeding the limit is an
 # immediate OOMKill rather than a slowdown.
+#
+# Memory is sized off the connectors' maxFileSizeMb, not guesswork.
+# knowledge.service.ts getFileContent buffers a whole document AND holds a
+# base64 copy of it at the same time — roughly 2.3x the file size resident, plus
+# another copy as the JSON response serialises. At the connectors' 250 MB
+# ceiling that is ~600 MB for a single download, so 512Mi (the value here while
+# the ceiling was 100 MB) would OOMKill on the first large PowerPoint.
+#
+# 2Gi leaves room for that peak plus concurrent requests. Raise the connectors'
+# maxFileSizeMb and this together, or not at all — they are one setting split
+# across two repos.
 resources:
-  requests: { cpu: "1", memory: "512Mi" }
-  limits:   { cpu: "1", memory: "512Mi" }
+  requests: { cpu: "1", memory: "2Gi" }
+  limits:   { cpu: "1", memory: "2Gi" }
 
 # ── Non-sensitive configuration ───────────────────────────────────────────────
 config:
