@@ -15,8 +15,20 @@ service:
   type: ClusterIP
   port: 8000
 
+# Holds the parse cache, rendered page images, BM25 indexes and the LangGraph
+# checkpoint db (/app/data). Page images are the growth driver — one PNG per
+# diagram page — and the long-path fix means documents that previously failed to
+# write their images now succeed, so a full re-ingest stores more than before.
+# Qdrant vectors are NOT here; they live in the qdrant chart's own volume.
+#
+# Growing this on an EXISTING claim only works if the storage class sets
+# allowVolumeExpansion: true. k3s's default local-path provisioner does not, and
+# also does not enforce the size at all — there the number is nominal and the pod
+# can already use the node's disk. Check before expecting this to do anything:
+#   kubectl get sc
+#   kubectl get pvc workflow-agent-data -o jsonpath='{.spec.resources.requests.storage}'
 storage:
-  size: "5Gi"
+  size: "20Gi"
   storageClass: ""
 
 # Deliberately Burstable, not Guaranteed. Indexing is spiky and memory-hungry —
