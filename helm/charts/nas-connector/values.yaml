@@ -1,5 +1,5 @@
 imageRegistry: "ibn40/"
-image: "xana-nas-connector:20260810092827"
+image: "xana-nas-connector:20260811094337"
 imagePullPolicy: Always
 
 # Keep at 1. Each replica signs in to DSM separately, and Synology caps the
