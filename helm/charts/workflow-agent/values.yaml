@@ -103,7 +103,7 @@ config:
   # Leave "false" until the ovms chart is deployed and reachable — this
   # only gates ingestion-time diagram captioning, never the live chat path.
   visionCaptionEnabled: "true"
-  visionCaptionTimeoutSeconds:  "240"
+  visionCaptionTimeoutSeconds:  "640"
   visionCaptionMaxConcurrency:  "4"
   visionCaptionMaxImageSize:    "2000"
   visionCaptionPromptVersion:   "v1"
