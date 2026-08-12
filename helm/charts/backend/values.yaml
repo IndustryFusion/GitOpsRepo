@@ -12,7 +12,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-backend:20260810092827"
+image: "xana-backend:20260812100046"
 imagePullPolicy: Always
 
 replicas: 1
