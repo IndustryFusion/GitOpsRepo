@@ -87,7 +87,13 @@ config:
   # ---- IFRIC dataspace / FusionPass incidents (backend/src/dataspace/) ----
   # The whole integration is inert unless dataspaceEnabled is "true": the inbox
   # poller never starts and every /fusionpass endpoint returns empty.
-  dataspaceEnabled: "true"
+  #
+  # Off until DATASPACE_CLIENT_SECRET is present in the live `backend-secret`
+  # object. This chart's Secret is disabled (templates/secret.yaml is wrapped in
+  # `if false`), so Helm does not deliver that value — and with this flag "true"
+  # the backend fails fast at startup rather than running half-configured.
+  # Add the secret on the cluster first, then flip this to "true".
+  dataspaceEnabled: "false"
   # In-memory stand-in for the gateway. Opt-in only — never default this on: a
   # mock that fakes a successful reply tells an operator their answer reached
   # the customer when it did not.
