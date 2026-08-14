@@ -31,6 +31,17 @@ data:
   OPENAI_COMPATIBLE_BASE_URL: {{ .Values.config.openaiCompatibleBaseUrl | quote }}
   OPENAI_COMPATIBLE_MODEL:    {{ .Values.config.openaiCompatibleModel | quote }}
 
+  DATASPACE_ENABLED:                   {{ .Values.config.dataspaceEnabled | quote }}
+  DATASPACE_MOCK:                      {{ .Values.config.dataspaceMock | quote }}
+  DATASPACE_KEYCLOAK_URL:              {{ .Values.config.dataspaceKeycloakUrl | quote }}
+  DATASPACE_GATEWAY_URL:               {{ .Values.config.dataspaceGatewayUrl | quote }}
+  DATASPACE_CLIENT_ID:                 {{ .Values.config.dataspaceClientId | quote }}
+  DATASPACE_FACTORY_OWNER_PARTICIPANT: {{ .Values.config.dataspaceFactoryOwnerParticipant | quote }}
+  DATASPACE_POLL_INTERVAL_MS:          {{ .Values.config.dataspacePollIntervalMs | quote }}
+  DATASPACE_OUTBOX_TIMEOUT_MS:         {{ .Values.config.dataspaceOutboxTimeoutMs | quote }}
+  DATASPACE_HTTP_TIMEOUT_MS:           {{ .Values.config.dataspaceHttpTimeoutMs | quote }}
+  DATASPACE_POLLER_ENABLED:            {{ .Values.config.dataspacePollerEnabled | quote }}
+
   SALES_MAIL_FROM:                     {{ .Values.config.salesMailFrom | quote }}
   SALES_MAIL_FROM_NAME:                {{ .Values.config.salesMailFromName | quote }}
   SALES_GOOGLE_IMPERSONATE_SUBJECT:    {{ .Values.config.salesGoogleImpersonateSubject | quote }}

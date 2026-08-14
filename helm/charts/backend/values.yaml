@@ -12,7 +12,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-backend:20260812100046"
+image: "xana-backend:20260814092300"
 imagePullPolicy: Always
 
 replicas: 1
@@ -84,6 +84,27 @@ config:
   openaiCompatibleBaseUrl: "https://openai.inference.de-txl.ionos.com"
   openaiCompatibleModel:   "mistralai/Mistral-Small-24B-Instruct"
 
+  # ---- IFRIC dataspace / FusionPass incidents (backend/src/dataspace/) ----
+  # The whole integration is inert unless dataspaceEnabled is "true": the inbox
+  # poller never starts and every /fusionpass endpoint returns empty.
+  dataspaceEnabled: "true"
+  # In-memory stand-in for the gateway. Opt-in only — never default this on: a
+  # mock that fakes a successful reply tells an operator their answer reached
+  # the customer when it did not.
+  dataspaceMock: "false"
+  dataspaceKeycloakUrl: "https://dev.industry-fusion.com/auth/realms/dataspace/protocol/openid-connect/token"
+  dataspaceGatewayUrl:  "https://dev-dataspace-gateway.industryfusion.org"
+  # Our own participant URN — the Keycloak client_id IS the participant id.
+  dataspaceClientId: "urn:ifric:ifx-nar-com-nap-5ec39e42-b55e-5789-8ee3-382a3b35db3f"
+  # Fallback reply target; normally the incident's own sender_participant is
+  # used instead, which generalises to many factory owners with no config change.
+  dataspaceFactoryOwnerParticipant: "urn:ifric:ifx-nar-com-nap-b28f9689-f60c-5499-a186-931aeff4b0a5"
+  dataspacePollIntervalMs:  "8000"
+  dataspaceOutboxTimeoutMs: "90000"
+  dataspaceHttpTimeoutMs:   "20000"
+  # Set "false" on all but one replica if you would rather a single instance polls.
+  dataspacePollerEnabled: "true"
+
   # ---- Sales weekly report (backend/src/sales/) ----
   # These are loaded by sales.module.ts via a separate .env.sales dotenv call,
   # but dotenv never overwrites a key already present in process.env — so
@@ -112,6 +133,7 @@ config:
 #   # Generate with: openssl rand -hex 32
 #   appEncryptionKey: "<generate-with-openssl-rand-hex-32>"
 #   openaiCompatibleApiKey: ""  # ⚠️ sensitive — set manually
+#   dataspaceClientSecret:  ""  # ⚠️ sensitive — set manually
 
 # ── One-shot connector seeding job (registers connectors in MongoDB) ─────────
 # Only useful once the web-connector and/or dynamics-connector charts are

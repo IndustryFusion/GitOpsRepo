@@ -1,5 +1,5 @@
 imageRegistry: "ibn40/"
-image: "xana-web-connector:20260810092827"
+image: "xana-web-connector:20260814092300"
 imagePullPolicy: Always
 
 replicas: 1
