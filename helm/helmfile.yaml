@@ -205,3 +205,11 @@ releases:
   namespace: ifx-docs
   values:
   - values.yaml.gotmpl
+- name: xana-docs
+  labels:
+    order: second
+    app: xana-docs
+  chart: ./charts/xanadocs
+  namespace: xana-docs
+  values:
+  - values.yaml.gotmpl

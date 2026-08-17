@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: xana-docs-application-service
+  name: xana-docs-nginx-config
+  namespace: {{ .Values.xana_docs.Namespace }}
+data:
+  default.conf: |
+    # Mounted over the image's baked-in default so caching and headers can be
+    # tuned without rebuilding. Keep in sync with xana-docs/default.conf.
+    #
+    # NOTE: nginx only inherits `add_header` from an outer block when the inner
+    # block declares none of its own. Cache policy below therefore uses
+    # `expires`, so the server-level security headers survive into every
+    # location. Do not convert these to add_header.
+    server {
+        listen       {{ .Values.xana_docs.port }};
+        server_name  _;
+
+        root  /usr/share/nginx/html;
+        index index.html;
+
+        charset       utf-8;
+        charset_types text/markdown text/plain text/css application/javascript application/json;
+
+        add_header X-Content-Type-Options nosniff             always;
+        add_header X-Frame-Options        SAMEORIGIN          always;
+        add_header Referrer-Policy        no-referrer         always;
+        # Partner documentation: not for search engines or crawlers.
+        add_header X-Robots-Tag           "noindex, nofollow" always;
+
+        server_tokens off;
+
+        location = /healthz {
+            access_log off;
+            default_type text/plain;
+            return 200 'ok';
+        }
+
+        # Docsify is client-side: it fetches every page as raw markdown over
+        # XHR. `=404` rather than falling back to index.html — otherwise a
+        # missing page would return index.html with a 200 and docsify would try
+        # to render HTML as markdown. The charset matters here: these documents
+        # are full of em dashes and arrows.
+        location ~ \.md$ {
+            default_type text/markdown;
+            try_files $uri =404;
+            expires -1;
+        }
+
+        # Docsify routes in the hash fragment, so every real navigation is a
+        # request for index.html.
+        location / {
+            try_files $uri $uri/ /index.html;
+            expires -1;
+        }
+
+        gzip              on;
+        gzip_vary         on;
+        gzip_min_length   1024;
+        gzip_types        text/plain text/markdown text/css application/javascript
+                          application/json image/svg+xml application/xml;
+    }

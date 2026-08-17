@@ -310,3 +310,20 @@ ifx_docs:
   # The chart uses `required`, so an unset value fails the deploy rather than
   # publishing the site unauthenticated.
   htpasswd: ""
+
+# XANA Business documentation (xana-docs repo -> docsify static site).
+# Partner-facing, so basic auth is not optional here — see the chart's Secret.
+xana_docs:
+  Namespace: xana-docs
+  port: 3080
+  # ifx40, not the shared ibn40: ibn40 is public, and this image contains the
+  # full documentation. A public image would be pullable without credentials
+  # and would defeat the Ingress basic auth. Pulled with the regcred secret.
+  mainRepo: ifx40
+  mainVersion: v0.1.0
+  host: dev-xana-docs.industryfusion-x.org
+  authRealm: "XANA Business Documentation"
+  # Injected at deploy time: --set xana_docs.htpasswd='<htpasswd line>'
+  # The chart uses `required`, so an unset value fails the deploy rather than
+  # publishing the site unauthenticated.
+  htpasswd: ""
