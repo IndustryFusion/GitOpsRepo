@@ -48,7 +48,7 @@ spec:
         # public repo would make every page pullable without credentials and
         # defeat the Ingress basic auth below. Same override pattern as
         # ifx_connector.
-        image: {{ .Values.xana_docs.mainRepo }}/xana-docs:{{ .Values.xana_docs.mainVersion }}
+        image: {{ .Values.xana_docs.mainRepo }}/xana-docs:{{ .Values.mainVersion }}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.xana_docs.port }}

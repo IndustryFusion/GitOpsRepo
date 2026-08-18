@@ -319,8 +319,13 @@ xana_docs:
   # ifx40, not the shared ibn40: ibn40 is public, and this image contains the
   # full documentation. A public image would be pullable without credentials
   # and would defeat the Ingress basic auth. Pulled with the regcred secret.
+  #
+  # Only the registry is overridden — the tag comes from the global
+  # mainVersion (DOCKER_TAG), so xana-docs' nightly workflow deploys the image
+  # it just built, the same way passport-viewer does. Always deploy this chart
+  # with `APPS: xana-docs`; a whole-repo deploy carrying another pipeline's
+  # nightly tag would look for a xana-docs image that was never built.
   mainRepo: ifx40
-  mainVersion: v0.1.0
   host: dev-xana-docs.industryfusion-x.org
   authRealm: "XANA Business Documentation"
   # Injected at deploy time: --set xana_docs.htpasswd='<htpasswd line>'
