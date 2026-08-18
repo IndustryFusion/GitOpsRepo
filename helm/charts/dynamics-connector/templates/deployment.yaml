@@ -14,6 +14,12 @@ spec:
       labels:
         {{- include "svc.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.hostAliases }}
+      # Injects /etc/hosts entries — see the comment in values.yaml for why the
+      # WS-Federation token host needs pinning.
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000

@@ -1,5 +1,5 @@
 imageRegistry: "ibn40/"
-image: "xana-dynamics-connector:20260814092300"
+image: "xana-dynamics-connector:20260818145901"
 imagePullPolicy: Always
 
 replicas: 1
@@ -11,6 +11,38 @@ service:
 resources:
   requests: { cpu: "50m",  memory: "128Mi" }
   limits:   { cpu: "250m", memory: "256Mi" }
+
+# ── Internal DNS overrides ───────────────────────────────────────────────────
+# The CRM sign-in is a WS-Federation chain across THREE hosts, each resolved
+# separately, and ALL of them must be reachable for a single sign-in to finish:
+#   1. mse.mslan.eu   the CRM itself
+#   2. sts.mslan.eu   ADFS login / credential POST
+#   3. auth.mslan.eu  WS-Federation token POST target
+#
+# Internal DNS for these names is currently UNSTABLE: the same name resolves to
+# an internal 192.168.40.x address at one moment and to a public 88.217.195.x
+# address minutes later, and the public addresses accept TCP on 443 but never
+# complete a TLS handshake. Observed on 2026-08-18 within a few minutes:
+#   sts.mslan.eu  -> 192.168.40.1  then  88.217.195.118
+#   auth.mslan.eu -> 88.217.195.117 then 192.168.40.8
+# That is why sign-in failed at a DIFFERENT hop on each attempt — whichever
+# name happened to resolve publicly at that moment timed out for 100s.
+#
+# Pinning all three removes DNS from the path entirely. Every address below was
+# verified from inside the cluster: TCP connects and TLS completes with the
+# wildcard *.mslan.eu certificate.
+#
+# ⚠️ This is a workaround for a resolver problem, not an address book. If the
+# CRM/ADFS hosts are ever re-addressed this must be updated or removed — the
+# right long-term fix is for internal DNS to answer these names consistently.
+hostAliases:
+  - ip: "192.168.40.8"
+    hostnames:
+      - "mse.mslan.eu"    # CRM
+      - "auth.mslan.eu"   # WS-Federation token POST target
+  - ip: "192.168.40.1"
+    hostnames:
+      - "sts.mslan.eu"    # ADFS login
 
 # ── Sensitive values — override via --set, a separate values file, or
 # Rancher's per-target Helm Values UI. NEVER commit real credentials. ────────
