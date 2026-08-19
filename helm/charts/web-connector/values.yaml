@@ -8,9 +8,21 @@ service:
   type: ClusterIP
   port: 8080
 
+# Sized off measured behaviour, not a guess. At the previous 250m/256Mi this pod
+# ran 98.5% of its CPU periods throttled (8,706 of 8,839) while pinned at 249m —
+# every knowledge listing queued behind it, which is what made a knowledge-scope
+# resolve take 30+ minutes and what OOM-killed the pod five times at 256Mi.
+#
+# Unlike the other connectors this one PARSES HTML per request (cheerio) rather
+# than relaying JSON, so it is genuinely CPU-bound; the NAS connector on the same
+# old limit throttled only 1.1% of periods.
+#
+# The request is raised alongside the limit deliberately: the request is what
+# earns a real CPU share under node contention, whereas the limit alone only
+# grants permission to burst if the node happens to be idle.
 resources:
-  requests: { cpu: "50m",  memory: "128Mi" }
-  limits:   { cpu: "250m", memory: "256Mi" }
+  requests: { cpu: "250m", memory: "256Mi" }
+  limits:   { cpu: "1",    memory: "512Mi" }
 
 config:
   port:                "8080"
