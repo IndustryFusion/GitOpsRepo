@@ -6,7 +6,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-workflow-agent:20260814092300"
+image: "xana-workflow-agent:20260819090628"
 imagePullPolicy: Always
 
 replicas: 1
