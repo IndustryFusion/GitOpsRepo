@@ -1,0 +1,94 @@
+{{- if .Values.ifric_registry.keycloakBootstrap.enabled }}
+# Keycloak realm bootstrap for the IFRIC registry service.
+# Adapted from IfricRegistryService docs/rebase/deploy/keycloak-realm-bootstrap-job.yaml.
+#
+# Creates or updates the IFRIC realm, its clients and protocol mappers by
+# running `npm run keycloak:bootstrap` from the registry service image. A Helm
+# hook so it runs BEFORE the application is updated: the service cannot
+# authenticate anyone until the realm matches what the code expects.
+#
+# Idempotent: creates what is missing, leaves what exists alone.
+#
+# Environment:
+#   - KEYCLOAK_URL, KEYCLOAK_REALM, KEYCLOAK_CLIENT_SECRET and
+#     KEYCLOAK_ADMIN_CLIENT_SECRET come from the same place as the application
+#     (`vault-secrets` + fetch_env_from_vault.sh), so the realm's clients are
+#     configured with exactly the secrets the running service uses.
+#   - The bootstrap client's secret is NOT in Vault: it carries master-realm
+#     admin rights. It comes from a Kubernetes secret created by hand, once per
+#     cluster (see ifric_registry.keycloakBootstrap in values.yaml.gotmpl).
+#     Values set under env: here win over .env, because dotenv never overrides
+#     a variable that is already set.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ifric-registry-keycloak-bootstrap
+  labels:
+    app: ifric-registry-keycloak-bootstrap
+  annotations:
+    # pre-install AND pre-upgrade: clients and mappers change between releases,
+    # and a realm configured once at install drifts from what the code expects.
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    # Kept on failure so the logs survive for diagnosis. A silent bootstrap
+    # failure shows up later as "login works but nothing is permitted".
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: ifric-registry-keycloak-bootstrap
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: keycloak-bootstrap
+        image: {{ .Values.mainRepo }}/ifric-registry-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        command:
+        - sh
+        - -c
+        - 'if [ "$ENV" = "prod" ]; then npm run keycloak:bootstrap; else sh fetch_env_from_vault.sh && npm run keycloak:bootstrap; fi'
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+        env:
+          # The realm the bootstrap client itself lives in. Must be master if
+          # this job may need to CREATE the target realm.
+          - name: KEYCLOAK_BOOTSTRAP_REALM
+            value: {{ .Values.ifric_registry.keycloakBootstrap.bootstrapRealm | default "master" | quote }}
+          - name: KEYCLOAK_BOOTSTRAP_CLIENT_ID
+            value: {{ .Values.ifric_registry.keycloakBootstrap.bootstrapClientId | default "ifric-bootstrap" | quote }}
+          - name: KEYCLOAK_BOOTSTRAP_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.ifric_registry.keycloakBootstrap.secretName }}
+                key: bootstrap-client-secret
+          {{- if .Values.ifric_registry.keycloakBootstrap.dppViewerClientSecretKey }}
+          # Optional: a real, revocable identity for DPP Viewer. If the key is
+          # absent from the secret the variable stays unset and the script
+          # skips the dpp-viewer client.
+          - name: KEYCLOAK_DPP_VIEWER_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.ifric_registry.keycloakBootstrap.secretName }}
+                key: {{ .Values.ifric_registry.keycloakBootstrap.dppViewerClientSecretKey }}
+                optional: true
+          {{- end }}
+          {{- if .Values.ifric_registry.keycloakBootstrap.ifricPlatformClientSecretKey }}
+          # Optional: IfricPlatform's service account for the registry's
+          # notification routes, granted the notification-service realm role.
+          # If the key is absent the script skips the ifric-platform client.
+          - name: KEYCLOAK_IFRIC_PLATFORM_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.ifric_registry.keycloakBootstrap.secretName }}
+                key: {{ .Values.ifric_registry.keycloakBootstrap.ifricPlatformClientSecretKey }}
+                optional: true
+          {{- end }}
+        resources:
+          {{- toYaml .Values.ifric_registry.jobResources | nindent 10 }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+{{- end }}

@@ -188,6 +188,39 @@ ifric_registry:
   zoho_client_id: 1000.TS1PIE2BHOLDXZ7Y6FFUP8ZGAVO54L
   zoho_client_secret: a30c4f7d944f40514d4b018d4232684363358ea783
 
+  # Pre-install/pre-upgrade hook Jobs, see charts/ifricregistry/templates/*-job.yaml.
+  # Both load env like the app (vault-secrets + Vault fetch); nothing secret here.
+  dbMigration:
+    enabled: true
+  keycloakBootstrap:
+    enabled: true
+    # Realm the bootstrap client lives in. Leave as master if the job may ever
+    # need to create the target realm.
+    bootstrapRealm: dataspace
+    bootstrapClientId: ifric-bootstrap
+    # Kubernetes secret created BY HAND, once, in the ifric-registry-service
+    # namespace, before the first deploy (a missing secret makes the hook hang
+    # until the helm timeout and the release fails):
+    #   kubectl -n ifric-registry-service create secret generic ifric-registry-keycloak \
+    #     --from-literal=bootstrap-client-secret=<ifric-bootstrap client secret> \
+    #     --from-literal=dpp-viewer-client-secret=<optional> \
+    #     --from-literal=ifric-platform-client-secret=<IfricPlatform's; needed for its notifications>
+    secretName: ifric-registry-keycloak
+    # Optional key in that secret; if the key is absent the dpp-viewer client is skipped.
+    dppViewerClientSecretKey: dpp-viewer-client-secret
+    # Optional key; if absent the ifric-platform client is skipped. The same
+    # secret goes into IfricPlatform's Vault as IFRIC_PLATFORM_CLIENT_SECRET.
+    ifricPlatformClientSecretKey: ifric-platform-client-secret
+  # Shared by both Jobs. Measured peak RSS: migration:run 441Mi, keycloak:bootstrap
+  # 336Mi (ts-node compiles on start), so the limit must stay well above 256Mi.
+  jobResources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 768Mi
+
 ifx_connector:
   namespace: ifx-connector
   mainVersion: v0.1

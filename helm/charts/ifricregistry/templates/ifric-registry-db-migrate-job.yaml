@@ -1,0 +1,56 @@
+{{- if .Values.ifric_registry.dbMigration.enabled }}
+# Database schema migration for the IFRIC registry service.
+# Adapted from IfricRegistryService docs/rebase/deploy/database-migration-job.yaml.
+#
+# The service runs with `synchronize: false`, so TypeORM never alters the
+# schema on its own. Tables are created and changed only by migrations.
+#
+# Runs before the Deployment is updated on every release. If a migration fails
+# the release fails and the running pods are left on the previous version,
+# instead of a new image booting against a half-migrated schema.
+#
+# Environment is loaded exactly like the application container: `vault-secrets`
+# via envFrom, plus fetch_env_from_vault.sh writing /app/.env outside prod
+# (data-source.ts reads DB_* from it via dotenv). No DB values live here.
+#
+# Idempotent: TypeORM applies only pending migrations. The container's own
+# startup still runs `migration:run` too; that second run finds nothing to do.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ifric-registry-db-migrate
+  labels:
+    app: ifric-registry-db-migrate
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    # More negative than the Keycloak job: the schema should exist before
+    # anything else runs, and a failure here should stop the release early.
+    "helm.sh/hook-weight": "-10"
+    # Kept after it finishes so the logs survive; replaced on the next release.
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 2
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: ifric-registry-db-migrate
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: db-migrate
+        image: {{ .Values.mainRepo }}/ifric-registry-backend:{{ .Values.mainVersion }}
+        imagePullPolicy: Always
+        # Same branch as the image's CMD, minus starting the server.
+        command:
+        - sh
+        - -c
+        - 'if [ "$ENV" = "prod" ]; then npm run migration:run; else sh fetch_env_from_vault.sh && npm run migration:run; fi'
+        envFrom:
+          - secretRef:
+              name: vault-secrets
+        resources:
+          {{- toYaml .Values.ifric_registry.jobResources | nindent 10 }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+{{- end }}
