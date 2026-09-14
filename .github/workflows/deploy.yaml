@@ -160,6 +160,10 @@ on:
         description: 'htpasswd line(s) for basic auth on the xana-docs site'
         required: false
 
+concurrency:
+  group: deploy-${{ inputs.NAMESPACE }}
+  cancel-in-progress: false
+  
 jobs:
   clone-repo:
     runs-on: 'private-2'
