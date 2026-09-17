@@ -42,6 +42,10 @@ data:
   DATASPACE_HTTP_TIMEOUT_MS:           {{ .Values.config.dataspaceHttpTimeoutMs | quote }}
   DATASPACE_POLLER_ENABLED:            {{ .Values.config.dataspacePollerEnabled | quote }}
 
+  IFRIC_REGISTRY_URL:                  {{ .Values.config.ifricRegistryUrl | quote }}
+  IFRIC_PRODUCT_NAME:                  {{ .Values.config.ifricProductName | quote }}
+  IFRIC_HTTP_TIMEOUT_MS:               {{ .Values.config.ifricHttpTimeoutMs | quote }}
+
   SALES_MAIL_FROM:                     {{ .Values.config.salesMailFrom | quote }}
   SALES_MAIL_FROM_NAME:                {{ .Values.config.salesMailFromName | quote }}
   SALES_GOOGLE_IMPERSONATE_SUBJECT:    {{ .Values.config.salesGoogleImpersonateSubject | quote }}

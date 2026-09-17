@@ -6,7 +6,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-workflow-agent:20260819101242"
+image: "xana-workflow-agent:20260917092046"
 imagePullPolicy: Always
 
 replicas: 1
@@ -37,9 +37,12 @@ storage:
 # corpus — so the gap between request and limit is headroom this workload
 # actually uses. Equalising them to buy a better QoS class would trade an 8Gi
 # ceiling for a hard OOMKill at the request size.
+#
+# CPU raised from a 2-core limit (on a 32-core node) — PDF parsing, OCR and indexing are
+# CPU-bound and were the bottleneck behind day-long ingests (copilot-quality audit, 2026-09).
 resources:
-  requests: { cpu: "500m", memory: "2Gi" }
-  limits:   { cpu: "2000m", memory: "8Gi" }
+  requests: { cpu: "2", memory: "4Gi" }
+  limits:   { cpu: "14", memory: "16Gi" }
 
 config:
   # In-cluster service DNS names — override if these live outside this
@@ -49,7 +52,14 @@ config:
   xanaApiBaseUrl: "http://backend:4000"
 
   # ---- LLM / AI ----
-  openaiCompatibleModel: "mistralai/Mistral-Small-24B-Instruct"
+  # Env fallback only — the backend's AI-provider record (Settings → AI providers) wins when set.
+  # Qwen3.5-397B answered the eval questions correctly where Mistral-Small deflected or erred.
+  openaiCompatibleModel: "Qwen/Qwen3.5-397B-A17B"
+  # Optional non-thinking model for short utility calls (query variants). Empty = those calls
+  # are skipped while the main model is a reasoning model.
+  utilityLlmModel: ""
+  # Answers once with this model when the primary keeps returning 5xx (evals/SPIKES.md S10).
+  fallbackLlmModel: "Qwen/Qwen3.8-27B"
   embeddingModel:      "BAAI/bge-m3"
   embeddingVectorSize: "1024"
   embeddingBatchSize:  "32"
@@ -65,6 +75,15 @@ config:
   retrievalRerankPool:    "40"
   retrievalMinScore:      "0.35"
   rerankEnabled:          "true"
+  # Multilingual provider rerank (Ionos /v1/rerank); the cross-encoder below is only the fallback.
+  rerankProvider:         "ionos"
+  rerankModel:            "Qwen/Qwen3-VL-Reranker-8B"
+  retrievalMinRelativeScore: "0.2"
+  retrievalMinRelevance:  "0.05"
+  # Full page text handed to the model per matched page (retrievalPassageChars now only caps
+  # fallback chunk passages).
+  retrievalPageChars:     "3000"
+  contextualRetrievalEnabled: "false"
   crossEncoderEnabled:    "true"
   crossEncoderModel:      "cross-encoder/ms-marco-MiniLM-L-6-v2"
   mmrLambda:              "0.7"
@@ -80,6 +99,7 @@ config:
   webSearchMaxResults:            "10"
   webSearchMaxPages:              "4"
   webSearchTriggerMinManualScore: "0.5"
+  webSearchTriggerMinRelevance:   "0.15"
   webSearchMinResultScore:        "0.2"
   webSearchDepth:                 "basic"
   webSearchPassageChars:          "900"
@@ -102,7 +122,9 @@ config:
   visionCaptionChatCompletionsPath: "/v3/chat/completions"
   # Leave "false" until the ovms chart is deployed and reachable — this
   # only gates ingestion-time diagram captioning, never the live chat path.
-  visionCaptionEnabled: "true"
+  # Off for bulk ingest: the classifier fix removed most false triggers, but CPU captioning
+  # (100-640 s per page) should only come back as a targeted, measured enrichment step.
+  visionCaptionEnabled: "false"
   visionCaptionTimeoutSeconds:  "640"
   visionCaptionMaxConcurrency:  "4"
   visionCaptionMaxImageSize:    "2000"

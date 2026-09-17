@@ -10,6 +10,8 @@ data:
   XANA_API_BASE_URL: {{ .Values.config.xanaApiBaseUrl | quote }}
 
   OPENAI_COMPATIBLE_MODEL: {{ .Values.config.openaiCompatibleModel | quote }}
+  UTILITY_LLM_MODEL:       {{ .Values.config.utilityLlmModel | default "" | quote }}
+  FALLBACK_LLM_MODEL:      {{ .Values.config.fallbackLlmModel | default "Qwen/Qwen3.8-27B" | quote }}
   EMBEDDING_MODEL:         {{ .Values.config.embeddingModel | quote }}
   EMBEDDING_VECTOR_SIZE:   {{ .Values.config.embeddingVectorSize | quote }}
   EMBEDDING_BATCH_SIZE:    {{ .Values.config.embeddingBatchSize | quote }}
@@ -24,6 +26,12 @@ data:
   RETRIEVAL_RERANK_POOL:    {{ .Values.config.retrievalRerankPool | quote }}
   RETRIEVAL_MIN_SCORE:      {{ .Values.config.retrievalMinScore | quote }}
   RERANK_ENABLED:           {{ .Values.config.rerankEnabled | quote }}
+  RERANK_PROVIDER:          {{ .Values.config.rerankProvider | default "ionos" | quote }}
+  RERANK_MODEL:             {{ .Values.config.rerankModel | default "Qwen/Qwen3-VL-Reranker-8B" | quote }}
+  RETRIEVAL_MIN_RELATIVE_SCORE: {{ .Values.config.retrievalMinRelativeScore | default "0.2" | quote }}
+  RETRIEVAL_MIN_RELEVANCE:  {{ .Values.config.retrievalMinRelevance | default "0.05" | quote }}
+  RETRIEVAL_PAGE_CHARS:     {{ .Values.config.retrievalPageChars | default "3000" | quote }}
+  CONTEXTUAL_RETRIEVAL_ENABLED: {{ .Values.config.contextualRetrievalEnabled | default "false" | quote }}
   CROSS_ENCODER_ENABLED:    {{ .Values.config.crossEncoderEnabled | quote }}
   CROSS_ENCODER_MODEL:      {{ .Values.config.crossEncoderModel | quote }}
   MMR_LAMBDA:                {{ .Values.config.mmrLambda | quote }}
@@ -38,6 +46,7 @@ data:
   WEB_SEARCH_MAX_RESULTS:              {{ .Values.config.webSearchMaxResults | quote }}
   WEB_SEARCH_MAX_PAGES:                {{ .Values.config.webSearchMaxPages | quote }}
   WEB_SEARCH_TRIGGER_MIN_MANUAL_SCORE: {{ .Values.config.webSearchTriggerMinManualScore | quote }}
+  WEB_SEARCH_TRIGGER_MIN_RELEVANCE:    {{ .Values.config.webSearchTriggerMinRelevance | default "0.15" | quote }}
   WEB_SEARCH_MIN_RESULT_SCORE:         {{ .Values.config.webSearchMinResultScore | quote }}
   WEB_SEARCH_DEPTH:                    {{ .Values.config.webSearchDepth | quote }}
   WEB_SEARCH_PASSAGE_CHARS:            {{ .Values.config.webSearchPassageChars | quote }}

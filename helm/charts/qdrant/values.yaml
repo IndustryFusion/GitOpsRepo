@@ -18,9 +18,11 @@ storage:
   size: "20Gi"
   storageClass: ""
 
+# ~213k 1024-dim vectors plus payload indexes (codes, hygiene flags) need more than 1 CPU /
+# 2Gi; searches and bulk payload updates were starved at the old limits.
 resources:
-  requests: { cpu: "100m", memory: "512Mi" }
-  limits:   { cpu: "1000m", memory: "2Gi" }
+  requests: { cpu: "500m", memory: "3Gi" }
+  limits:   { cpu: "4", memory: "8Gi" }
 
 # Leave empty to run without API-key auth (matches XANA's current default).
 # Commented out for now: the Secret resource itself is disabled in

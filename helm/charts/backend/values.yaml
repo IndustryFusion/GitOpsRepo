@@ -12,7 +12,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-backend:20260814092300"
+image: "xana-backend:20260917092046"
 imagePullPolicy: Always
 
 replicas: 1
@@ -82,7 +82,9 @@ config:
 
   # ---- LLM / AI ----
   openaiCompatibleBaseUrl: "https://openai.inference.de-txl.ionos.com"
-  openaiCompatibleModel:   "mistralai/Mistral-Small-24B-Instruct"
+  # Only seeds the "Default (from env)" AI provider on an EMPTY database — an existing
+  # provider record must be changed in Settings → AI providers.
+  openaiCompatibleModel:   "Qwen/Qwen3.5-397B-A17B"
 
   # ---- IFRIC dataspace / FusionPass incidents (backend/src/dataspace/) ----
   # The whole integration is inert unless dataspaceEnabled is "true": the inbox
@@ -110,6 +112,13 @@ config:
   dataspaceHttpTimeoutMs:   "20000"
   # Set "false" on all but one replica if you would rather a single instance polls.
   dataspacePollerEnabled: "true"
+
+  # ---- IFRIC Registry (company connection, backend/src/company/) ----
+  # An administrator connects the installation to its company from Profile → Company;
+  # sign-in itself never depends on this.
+  ifricRegistryUrl:   "https://dev-registry.ifric.org"
+  ifricProductName:   "XANA Business"
+  ifricHttpTimeoutMs: "20000"
 
   # ---- Sales weekly report (backend/src/sales/) ----
   # These are loaded by sales.module.ts via a separate .env.sales dotenv call,
