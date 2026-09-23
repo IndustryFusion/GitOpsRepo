@@ -12,7 +12,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ibn40/"
-image: "xana-backend:20260918111810"
+image: "xana-backend:20260923102755"
 imagePullPolicy: Always
 
 replicas: 1
@@ -149,6 +149,11 @@ config:
 #   appEncryptionKey: "<generate-with-openssl-rand-hex-32>"
 #   openaiCompatibleApiKey: ""  # ⚠️ sensitive — set manually
 #   dataspaceClientSecret:  ""  # ⚠️ sensitive — set manually
+#   # IFX Suite handover (backend/src/company/suite-route-token.service.ts) —
+#   # signs/masks the one-time route token that carries an IFRIC sign-in into XANA.
+#   ifxSuiteJwtSecret:   ""  # ⚠️ sensitive — set manually
+#   ifxSuiteMaskSecret:  ""  # ⚠️ sensitive — set manually
+#   ifxSuiteRouteSecret: ""  # ⚠️ sensitive — set manually
 
 # ── One-shot connector seeding job (registers connectors in MongoDB) ─────────
 # Only useful once the web-connector and/or dynamics-connector charts are
