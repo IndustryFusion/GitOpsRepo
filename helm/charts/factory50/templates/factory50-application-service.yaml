@@ -46,10 +46,24 @@ spec:
         envFrom:
           - secretRef:
               name: vault-secrets
+        resources:
+          requests:
+            cpu: "1"
+            memory: 1Gi
+          limits:
+            cpu: "1"
+            memory: 1Gi
       - name: factory50-frontend
         image: {{ .Values.mainRepo }}/factory50-frontend:{{ .Values.mainVersion}}
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.factory50.frontendPort }}
+        resources:
+          requests:
+            cpu: "1"
+            memory: 1Gi
+          limits:
+            cpu: "1"
+            memory: 1Gi
       imagePullSecrets:
       - name: {{ .Values.pullSecretCredentials }}
