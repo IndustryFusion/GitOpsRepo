@@ -48,8 +48,8 @@ spec:
               name: vault-secrets
         resources:
           requests:
-            cpu: "1"
-            memory: 1Gi
+            cpu: "0.5"
+            memory: 500Mi
           limits:
             cpu: "1"
             memory: 1Gi
@@ -60,8 +60,8 @@ spec:
         - containerPort: {{ .Values.factory50.frontendPort }}
         resources:
           requests:
-            cpu: "1"
-            memory: 1Gi
+            cpu: "0.5"
+            memory: 500Mi
           limits:
             cpu: "1"
             memory: 1Gi
