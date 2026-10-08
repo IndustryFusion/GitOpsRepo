@@ -12,7 +12,7 @@ xshare:
   # Container port. Must match ENV PORT in the app Dockerfile.
   port: 6001
   replicas: 1
-  externalHostname: xshare.local
+  externalHostname: x-share.eu
   tlsSecret: dev-cert-tls-xshare
   # Shared ISR cache. See the note in redis.yaml before turning this off with
   # replicas > 1.
