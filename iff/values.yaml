@@ -1,5 +1,5 @@
 controller:
-  image: ibn40/iff-onboarding-controller:v0.2.0
+  image: ibn40/iff-onboarding-controller:v0.3.0
   factoryMongoDbUrl: url
   factoryMongoDbName: factory
   deviceIfricId: id
