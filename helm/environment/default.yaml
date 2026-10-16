@@ -52,5 +52,5 @@ certmanager:
 # certificate itself is issued by the cluster's existing letsencrypt-prod
 # ClusterIssuer via the annotation on the Ingress.
 xshareReplicas: 1
-xshareExternalHostname: dev-xshare.industryfusion-x.org
+xshareExternalHostname: x-share.eu
 xshareTlsSecret: dev-cert-tls-xshare
