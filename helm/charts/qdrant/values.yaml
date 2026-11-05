@@ -30,3 +30,9 @@ resources:
 # Uncomment both together to re-enable Helm-managed secrets.
 # secrets:
 #   apiKey: ""
+
+# Off until confirmed per target. See templates/networkpolicy.yaml.
+networkPolicy:
+  enabled: false
+  allowedFrom: [workflow-agent]
+  ports: [6333, 6334]

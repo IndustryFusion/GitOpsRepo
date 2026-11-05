@@ -1,6 +1,11 @@
-imageRegistry: "ibn40/"
-image: "xana-dynamics-connector:20260818145901"
+imageRegistry: "ifx40/"
+image: "xana-dynamics-connector:20261105171821"
 imagePullPolicy: Always
+
+# Pull secrets for a private registry. Empty changes nothing. Set together with
+# imageRegistry when moving to a private namespace, after the Secret exists in
+# the target namespace, e.g.: imagePullSecrets: [{ name: xana-registry }]
+imagePullSecrets: [{ name: xana-registry }]
 
 replicas: 1
 
@@ -54,3 +59,9 @@ hostAliases:
 #   crmUsername: ""   # e.g. DOMAIN\\username — required
 #   crmPassword: ""   # required
 #   crmOrg:      ""   # optional
+
+# Off until confirmed per target. See templates/networkpolicy.yaml.
+networkPolicy:
+  enabled: false
+  allowedFrom: [backend]
+  ports: [8080]

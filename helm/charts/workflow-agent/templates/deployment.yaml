@@ -16,6 +16,10 @@ spec:
       labels:
         {{- include "svc.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001

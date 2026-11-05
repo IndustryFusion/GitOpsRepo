@@ -1,6 +1,11 @@
-imageRegistry: "ibn40/"
-image: "xana-nas-connector:20260811094337"
+imageRegistry: "ifx40/"
+image: "xana-nas-connector:20261105171821"
 imagePullPolicy: Always
+
+# Pull secrets for a private registry. Empty changes nothing. Set together with
+# imageRegistry when moving to a private namespace, after the Secret exists in
+# the target namespace, e.g.: imagePullSecrets: [{ name: xana-registry }]
+imagePullSecrets: [{ name: xana-registry }]
 
 # Keep at 1. Each replica signs in to DSM separately, and Synology caps the
 # number of concurrent File Station sessions per account.

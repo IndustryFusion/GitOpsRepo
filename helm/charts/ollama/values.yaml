@@ -45,3 +45,9 @@ gpu:
 modelPull:
   enabled: true
   model: "qwen3-vl:2b-instruct"
+
+# Off until confirmed per target. See templates/networkpolicy.yaml.
+networkPolicy:
+  enabled: false
+  allowedFrom: [workflow-agent]
+  ports: [11434]

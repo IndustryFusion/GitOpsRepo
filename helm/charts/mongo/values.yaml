@@ -26,3 +26,9 @@ storage:
 resources:
   requests: { cpu: "100m", memory: "256Mi" }
   limits:   { cpu: "500m", memory: "1Gi" }
+
+# Off until confirmed per target. See templates/networkpolicy.yaml.
+networkPolicy:
+  enabled: false
+  allowedFrom: [backend, workflow-agent]
+  ports: [27017]

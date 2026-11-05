@@ -8,6 +8,7 @@ data:
   MONGODB_URI: {{ .Values.config.mongodbUri | quote }}
   QDRANT_URL:  {{ .Values.config.qdrantUrl | quote }}
   XANA_API_BASE_URL: {{ .Values.config.xanaApiBaseUrl | quote }}
+  AUTH_ENFORCEMENT: {{ .Values.config.authEnforcement | default "observe" | quote }}
 
   OPENAI_COMPATIBLE_MODEL: {{ .Values.config.openaiCompatibleModel | quote }}
   UTILITY_LLM_MODEL:       {{ .Values.config.utilityLlmModel | default "" | quote }}

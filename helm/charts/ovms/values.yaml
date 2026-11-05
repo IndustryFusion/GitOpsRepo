@@ -67,3 +67,9 @@ ovms:
 # would only happen to match one workstation.
 securityContext:
   fsGroup: 1000
+
+# Off until confirmed per target. See templates/networkpolicy.yaml.
+networkPolicy:
+  enabled: false
+  allowedFrom: [workflow-agent]
+  ports: [8000]

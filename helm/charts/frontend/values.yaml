@@ -11,14 +11,21 @@
 # affects server-side Next.js code, not already-built browser bundles).
 # ─────────────────────────────────────────────────────────────────────────────
 
-imageRegistry: "ibn40/"
-image: "xana-frontend:20261009183609"
+imageRegistry: "ifx40/"
+image: "xana-frontend:20261105171821"
 imagePullPolicy: Always
+
+# Pull secrets for a private registry. Empty changes nothing. Set together with
+# imageRegistry when moving to a private namespace, after the Secret exists in
+# the target namespace, e.g.: imagePullSecrets: [{ name: xana-registry }]
+imagePullSecrets: [{ name: xana-registry }]
 
 replicas: 1
 
 service:
   type: LoadBalancer
+  # Restrict to the LAN/VPN CIDRs per target, e.g. ["10.0.0.0/8"]. Empty allows any source.
+  loadBalancerSourceRanges: []
   port: 3000
 
 resources:

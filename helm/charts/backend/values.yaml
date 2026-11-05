@@ -11,14 +11,21 @@
 #   docker push <registry>/xana-backend:latest
 # ─────────────────────────────────────────────────────────────────────────────
 
-imageRegistry: "ibn40/"
-image: "xana-backend:20261009183609"
+imageRegistry: "ifx40/"
+image: "xana-backend:20261105171821"
 imagePullPolicy: Always
+
+# Pull secrets for a private registry. Empty changes nothing. Set together with
+# imageRegistry when moving to a private namespace, after the Secret exists in
+# the target namespace, e.g.: imagePullSecrets: [{ name: xana-registry }]
+imagePullSecrets: [{ name: xana-registry }]
 
 replicas: 1
 
 service:
   type: LoadBalancer
+  # Restrict to the LAN/VPN CIDRs per target, e.g. ["10.0.0.0/8"]. Empty allows any source.
+  loadBalancerSourceRanges: []
   port: 4000
 
 storage:
@@ -48,6 +55,10 @@ resources:
 
 # ── Non-sensitive configuration ───────────────────────────────────────────────
 config:
+  # observe logs what would be refused and allows it. Switch to enforce together on
+  # backend and workflow-agent, once the auth-would-deny logs are clean and
+  # XANA_INTERNAL_TOKEN is in both Secrets with the same value.
+  authEnforcement: "observe"
   port: "4000"
   # External URL of the frontend (used for CORS). Must match the URL users
   # open in their browser.
