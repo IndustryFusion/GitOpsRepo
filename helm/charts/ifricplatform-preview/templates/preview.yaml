@@ -1,0 +1,132 @@
+{{- $pr := required "prNumber must be set" .Values.prNumber | toString -}}
+{{- $domain := required "domain must be set" .Values.domain -}}
+{{- $tag := required "mainVersion (image tag) must be set" .Values.mainVersion -}}
+{{- $frontendHost := printf "pr-%s.%s" $pr $domain -}}
+{{- $backendHost := printf "pr-%s-api.%s" $pr $domain -}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: preview-basic-auth
+  labels:
+    app: ifric-platform-preview
+type: Opaque
+stringData:
+  # Consumed by ingress-nginx (auth-secret annotation below); key must be `auth`, value htpasswd-formatted.
+  # `required` on purpose: never publish an unauthenticated preview.
+  auth: {{ required "htpasswd must be set - refusing to publish an unauthenticated preview" .Values.htpasswd | quote }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ifric-platform-preview
+  labels:
+    app: ifric-platform-preview
+    pr: {{ $pr | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ifric-platform-preview
+  template:
+    metadata:
+      labels:
+        app: ifric-platform-preview
+        pr: {{ $pr | quote }}
+    spec:
+      containers:
+      - name: ifric-platform-backend
+        image: {{ .Values.mainRepo }}/ifric-platform-backend:{{ $tag }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.backendPort }}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.vaultSecret }}
+        env:
+        # The backend loads the dev settings from Vault with dotenv, which never overrides a variable that is
+        # already set. So this value wins: only the preview frontend may call this backend from a browser.
+        - name: CORS_ORIGIN
+          value: {{ printf "https://%s" $frontendHost | quote }}
+      - name: ifric-platform-frontend
+        image: {{ .Values.mainRepo }}/ifric-platform-frontend:{{ $tag }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.frontendPort }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecretCredentials }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ifric-platform-preview
+  labels:
+    app: ifric-platform-preview
+spec:
+  selector:
+    app: ifric-platform-preview
+  ports:
+  - name: frontend
+    port: {{ .Values.frontendPort }}
+    targetPort: {{ .Values.frontendPort }}
+  - name: backend
+    port: {{ .Values.backendPort }}
+    targetPort: {{ .Values.backendPort }}
+---
+# Frontend: behind basic auth.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ifric-platform-preview-frontend
+  labels:
+    app: ifric-platform-preview
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.clusterIssuer }}
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: preview-basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: {{ .Values.authRealm | quote }}
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ $frontendHost }}
+    secretName: ifric-platform-preview-frontend-tls
+  rules:
+  - host: {{ $frontendHost }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ifric-platform-preview
+            port:
+              number: {{ .Values.frontendPort }}
+---
+# Backend API: no basic auth (the browser calls it cross-origin, where basic auth is not sent); the app's own login
+# protects it, exactly like the dev backend.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ifric-platform-preview-backend
+  labels:
+    app: ifric-platform-preview
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.clusterIssuer }}
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ $backendHost }}
+    secretName: ifric-platform-preview-backend-tls
+  rules:
+  - host: {{ $backendHost }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ifric-platform-preview
+            port:
+              number: {{ .Values.backendPort }}

@@ -1,0 +1,111 @@
+# Deploy preview — one IfricPlatform preview per pull request, in namespace ifric-pr-<n>.
+# Called by IfricPlatform/.github/workflows/preview.yml after it built the images pr-<n>-<sha7>.
+# Chart: helm/charts/ifricplatform-preview. Removal: destroy-preview.yaml.
+#
+# What it does:
+#   1. creates namespace ifric-pr-<n> (label iff-preview=ifric-platform)
+#   2. copies the image pull secret and the backend's Vault login secret from the dev namespace
+#   3. helm upgrade --install ifric-pr-<n> and waits until the pods are ready
+# Nothing secret is stored in this public repository: basic auth comes in as the PREVIEW_HTPASSWD secret.
+
+name: Deploy preview
+
+on:
+  workflow_call:
+    inputs:
+      PR_NUMBER:
+        description: 'Pull request number'
+        required: true
+        type: string
+      DOCKER_TAG:
+        description: 'Image tag, e.g. pr-1790-ab12cd3'
+        required: true
+        type: string
+      DOMAIN:
+        description: 'Preview domain, e.g. preview.example.org'
+        required: true
+        type: string
+      CLUSTER:
+        description: 'Tag of the deployer image with the Kubernetes cluster config'
+        required: false
+        default: IFF-DEV-DPP-IFRIC
+        type: string
+      DOCKER_REGISTRY:
+        description: 'Docker registry / prefix'
+        required: false
+        default: ibn40
+        type: string
+      SOURCE_NAMESPACE:
+        description: 'Dev namespace to copy regcred and vault-secrets from'
+        required: false
+        default: digital-product-passport
+        type: string
+    secrets:
+      PREVIEW_HTPASSWD:
+        description: 'htpasswd line(s) for basic auth on the preview frontend'
+        required: true
+
+concurrency:
+  group: preview-ifric-pr-${{ inputs.PR_NUMBER }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: 'private-2'
+    container:
+      image: ibn40/deployer:${{ inputs.CLUSTER }}
+      options: --user root
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: IndustryFusion/GitOpsRepo
+          ref: main
+          path: GitOpsRepo
+          persist-credentials: false
+
+      - name: Deploy ifric-pr-${{ inputs.PR_NUMBER }}
+        env:
+          PR: ${{ inputs.PR_NUMBER }}
+          TAG: ${{ inputs.DOCKER_TAG }}
+          DOMAIN: ${{ inputs.DOMAIN }}
+          REGISTRY: ${{ inputs.DOCKER_REGISTRY }}
+          SRC: ${{ inputs.SOURCE_NAMESPACE }}
+          HTPASSWD: ${{ secrets.PREVIEW_HTPASSWD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$PR" =~ ^[0-9]+$ ]] || { echo "::error::bad PR number"; exit 1; }
+          [[ "$TAG" =~ ^[A-Za-z0-9._-]+$ ]] || { echo "::error::bad image tag"; exit 1; }
+          [[ "$DOMAIN" =~ ^[a-z0-9.-]+$ ]] || { echo "::error::bad domain"; exit 1; }
+          [ -n "$HTPASSWD" ] || { echo "::error::PREVIEW_HTPASSWD is empty"; exit 1; }
+          ns="ifric-pr-$PR"
+
+          kubectl create namespace "$ns" --dry-run=client -o yaml | kubectl apply -f -
+          kubectl label namespace "$ns" iff-preview=ifric-platform --overwrite
+
+          # Copy secrets by name/type/data only (no uid, owner or namespace from the source).
+          # shellcheck disable=SC2016  # the go-template below is meant literally
+          for s in regcred vault-secrets; do
+            kubectl get secret "$s" -n "$SRC" -o go-template='apiVersion: v1
+          kind: Secret
+          metadata:
+            name: {{.metadata.name}}
+          type: {{.type}}
+          data:
+          {{- range $k, $v := .data}}
+            {{printf "%q" $k}}: {{$v}}
+          {{- end}}
+          ' | kubectl apply -n "$ns" -f -
+          done
+
+          printf '%s\n' "$HTPASSWD" > "$RUNNER_TEMP/htpasswd"
+          helm upgrade --install "ifric-pr-$PR" GitOpsRepo/helm/charts/ifricplatform-preview \
+            --namespace "$ns" \
+            --set-string prNumber="$PR" \
+            --set-string domain="$DOMAIN" \
+            --set-string mainRepo="$REGISTRY" \
+            --set-string mainVersion="$TAG" \
+            --set-file htpasswd="$RUNNER_TEMP/htpasswd" \
+            --wait --timeout 15m
+          rm -f "$RUNNER_TEMP/htpasswd"
+          echo "Preview ready: https://pr-$PR.$DOMAIN (API https://pr-$PR-api.$DOMAIN)"

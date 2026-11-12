@@ -1,0 +1,13 @@
+# Set by deploy-preview.yaml for each pull request. Nothing secret lives in this file (this repository is public).
+prNumber: ""            # required, e.g. 1790
+domain: ""              # required, e.g. preview.example.org  ->  pr-1790.preview.example.org (frontend)
+                        #                                         pr-1790-api.preview.example.org (backend)
+mainRepo: ibn40         # image registry / prefix
+mainVersion: ""         # required, image tag, e.g. pr-1790-ab12cd3
+pullSecretCredentials: regcred   # copied into the preview namespace by deploy-preview.yaml
+vaultSecret: vault-secrets       # Vault login for the backend, copied from the dev namespace by deploy-preview.yaml
+htpasswd: ""            # required, set with --set-file; basic auth for the frontend
+authRealm: "IfricPlatform preview"
+clusterIssuer: letsencrypt-prod
+backendPort: 4003
+frontendPort: 3003

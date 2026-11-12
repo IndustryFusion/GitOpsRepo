@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ifric-platform-preview
+description: One IfricPlatform preview per pull request (frontend + backend), behind basic auth. Deployed and removed by .github/workflows/deploy-preview.yaml and destroy-preview.yaml.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
