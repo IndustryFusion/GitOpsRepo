@@ -1,0 +1,57 @@
+# Destroy preview — removes one IfricPlatform preview (helm release + namespace ifric-pr-<n>).
+# Called by IfricPlatform/.github/workflows/preview.yml when the pull request is closed, merged or turned into a draft.
+# Only deletes a namespace that carries the label iff-preview=ifric-platform (set by deploy-preview.yaml).
+
+name: Destroy preview
+
+on:
+  workflow_call:
+    inputs:
+      PR_NUMBER:
+        description: 'Pull request number'
+        required: true
+        type: string
+      CLUSTER:
+        description: 'Tag of the deployer image with the Kubernetes cluster config'
+        required: false
+        default: IFF-DEV-DPP-IFRIC
+        type: string
+  workflow_dispatch:
+    inputs:
+      PR_NUMBER:
+        description: 'Pull request number'
+        required: true
+        type: string
+      CLUSTER:
+        description: 'Tag of the deployer image with the Kubernetes cluster config'
+        required: false
+        default: IFF-DEV-DPP-IFRIC
+        type: string
+
+concurrency:
+  group: preview-ifric-pr-${{ inputs.PR_NUMBER }}
+  cancel-in-progress: false
+
+jobs:
+  destroy:
+    runs-on: 'private-2'
+    container:
+      image: ibn40/deployer:${{ inputs.CLUSTER }}
+      options: --user root
+    steps:
+      - name: Remove ifric-pr-${{ inputs.PR_NUMBER }}
+        env:
+          PR: ${{ inputs.PR_NUMBER }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$PR" =~ ^[0-9]+$ ]] || { echo "::error::bad PR number"; exit 1; }
+          ns="ifric-pr-$PR"
+          label=$(kubectl get namespace "$ns" -o go-template='{{index .metadata.labels "iff-preview"}}' 2>/dev/null || true)
+          if [ -z "$label" ] || [ "$label" = "<no value>" ]; then
+            echo "No preview namespace $ns (or not labelled iff-preview) - nothing to remove."
+            exit 0
+          fi
+          helm uninstall "ifric-pr-$PR" --namespace "$ns" --ignore-not-found || true
+          kubectl delete namespace "$ns" --wait=false
+          echo "Removed preview $ns"
