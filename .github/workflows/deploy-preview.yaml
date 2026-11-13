@@ -1,11 +1,14 @@
-# Deploy preview — one IfricPlatform preview per pull request, in namespace ifric-pr-<n>.
+# Deploy preview — one IfricPlatform preview per slot (1-3), in namespace ifric-preview-<slot>.
 # Called by IfricPlatform/.github/workflows/preview.yml after it built the images pr-<n>-<sha7>.
 # Chart: helm/charts/ifricplatform-preview. Removal: destroy-preview.yaml.
 #
+# Addresses: https://preview-<slot>.<domain> (frontend, basic auth), https://preview-<slot>-api.<domain> (backend).
+# Each host has its own DNS record (no wildcard), so only slots 1-3 exist.
+#
 # What it does:
-#   1. creates namespace ifric-pr-<n> (label iff-preview=ifric-platform)
+#   1. creates namespace ifric-preview-<slot> if missing (label iff-preview=ifric-platform); it stays when the slot is freed
 #   2. copies the image pull secret and the backend's Vault login secret from the dev namespace
-#   3. helm upgrade --install ifric-pr-<n> and waits until the pods are ready
+#   3. helm upgrade --install ifric-preview-<slot> (replaces whatever PR used the slot before) and waits until ready
 # Nothing secret is stored in this public repository: basic auth comes in as the PREVIEW_HTPASSWD secret.
 
 name: Deploy preview
@@ -13,8 +16,12 @@ name: Deploy preview
 on:
   workflow_call:
     inputs:
+      SLOT:
+        description: 'Preview slot, 1-3'
+        required: true
+        type: string
       PR_NUMBER:
-        description: 'Pull request number'
+        description: 'Pull request number that gets the slot'
         required: true
         type: string
       DOCKER_TAG:
@@ -22,7 +29,7 @@ on:
         required: true
         type: string
       DOMAIN:
-        description: 'Preview domain, e.g. preview.example.org'
+        description: 'Preview domain, e.g. ifric.org'
         required: true
         type: string
       CLUSTER:
@@ -46,7 +53,7 @@ on:
         required: true
 
 concurrency:
-  group: preview-ifric-pr-${{ inputs.PR_NUMBER }}
+  group: ifric-preview-slot-${{ inputs.SLOT }}
   cancel-in-progress: false
 
 jobs:
@@ -63,8 +70,9 @@ jobs:
           path: GitOpsRepo
           persist-credentials: false
 
-      - name: Deploy ifric-pr-${{ inputs.PR_NUMBER }}
+      - name: Deploy PR ${{ inputs.PR_NUMBER }} to slot ${{ inputs.SLOT }}
         env:
+          SLOT: ${{ inputs.SLOT }}
           PR: ${{ inputs.PR_NUMBER }}
           TAG: ${{ inputs.DOCKER_TAG }}
           DOMAIN: ${{ inputs.DOMAIN }}
@@ -74,11 +82,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          [[ "$SLOT" =~ ^[1-3]$ ]] || { echo "::error::bad slot (1-3)"; exit 1; }
           [[ "$PR" =~ ^[0-9]+$ ]] || { echo "::error::bad PR number"; exit 1; }
           [[ "$TAG" =~ ^[A-Za-z0-9._-]+$ ]] || { echo "::error::bad image tag"; exit 1; }
           [[ "$DOMAIN" =~ ^[a-z0-9.-]+$ ]] || { echo "::error::bad domain"; exit 1; }
           [ -n "$HTPASSWD" ] || { echo "::error::PREVIEW_HTPASSWD is empty"; exit 1; }
-          ns="ifric-pr-$PR"
+          ns="ifric-preview-$SLOT"
 
           kubectl create namespace "$ns" --dry-run=client -o yaml | kubectl apply -f -
           kubectl label namespace "$ns" iff-preview=ifric-platform --overwrite
@@ -99,8 +108,9 @@ jobs:
           done
 
           printf '%s\n' "$HTPASSWD" > "$RUNNER_TEMP/htpasswd"
-          helm upgrade --install "ifric-pr-$PR" GitOpsRepo/helm/charts/ifricplatform-preview \
+          helm upgrade --install "ifric-preview-$SLOT" GitOpsRepo/helm/charts/ifricplatform-preview \
             --namespace "$ns" \
+            --set-string slot="$SLOT" \
             --set-string prNumber="$PR" \
             --set-string domain="$DOMAIN" \
             --set-string mainRepo="$REGISTRY" \
@@ -108,4 +118,4 @@ jobs:
             --set-file htpasswd="$RUNNER_TEMP/htpasswd" \
             --wait --timeout 15m
           rm -f "$RUNNER_TEMP/htpasswd"
-          echo "Preview ready: https://pr-$PR.$DOMAIN (API https://pr-$PR-api.$DOMAIN)"
+          echo "Preview of PR #$PR ready: https://preview-$SLOT.$DOMAIN (API https://preview-$SLOT-api.$DOMAIN)"

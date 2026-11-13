@@ -1,8 +1,9 @@
+{{- $slot := required "slot must be set" .Values.slot | toString -}}
 {{- $pr := required "prNumber must be set" .Values.prNumber | toString -}}
 {{- $domain := required "domain must be set" .Values.domain -}}
 {{- $tag := required "mainVersion (image tag) must be set" .Values.mainVersion -}}
-{{- $frontendHost := printf "pr-%s.%s" $pr $domain -}}
-{{- $backendHost := printf "pr-%s-api.%s" $pr $domain -}}
+{{- $frontendHost := printf "preview-%s.%s" $slot $domain -}}
+{{- $backendHost := printf "preview-%s-api.%s" $slot $domain -}}
 apiVersion: v1
 kind: Secret
 metadata:

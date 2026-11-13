@@ -1,7 +1,9 @@
 # Set by deploy-preview.yaml for each pull request. Nothing secret lives in this file (this repository is public).
-prNumber: ""            # required, e.g. 1790
-domain: ""              # required, e.g. preview.example.org  ->  pr-1790.preview.example.org (frontend)
-                        #                                         pr-1790-api.preview.example.org (backend)
+slot: ""                # required, 1-3: the preview slot  ->  preview-<slot>.<domain> (frontend)
+                        #                                      preview-<slot>-api.<domain> (backend)
+                        # One fixed DNS record per host (no wildcard), so only these slots exist.
+prNumber: ""            # required, the pull request now using the slot (label on the pods; destroy checks it)
+domain: ""              # required, e.g. ifric.org
 mainRepo: ibn40         # image registry / prefix
 mainVersion: ""         # required, image tag, e.g. pr-1790-ab12cd3
 pullSecretCredentials: regcred   # copied into the preview namespace by deploy-preview.yaml
