@@ -69,5 +69,10 @@ jobs:
             echo "Slot $SLOT is used by PR #$owner now, not #$PR - nothing to remove."
             exit 0
           fi
-          helm uninstall "ifric-preview-$SLOT" --namespace "$ns" --ignore-not-found --wait
+          # the deployer image's helm has no --ignore-not-found: check that the release exists first
+          if helm status "ifric-preview-$SLOT" --namespace "$ns" >/dev/null 2>&1; then
+            helm uninstall "ifric-preview-$SLOT" --namespace "$ns"
+          else
+            echo "No release ifric-preview-$SLOT in $ns."
+          fi
           echo "Freed slot $SLOT (was PR #${owner:-?})"
