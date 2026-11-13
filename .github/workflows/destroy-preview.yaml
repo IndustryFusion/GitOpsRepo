@@ -1,14 +1,20 @@
-# Destroy preview — removes one IfricPlatform preview (helm release + namespace ifric-pr-<n>).
+# Destroy preview — frees one IfricPlatform preview slot (helm release ifric-preview-<slot>).
 # Called by IfricPlatform/.github/workflows/preview.yml when the pull request is closed, merged or turned into a draft.
-# Only deletes a namespace that carries the label iff-preview=ifric-platform (set by deploy-preview.yaml).
+# Removes the release only when it still belongs to that PR (pod label "pr"): if another PR already took the slot,
+# nothing is removed. The namespace ifric-preview-<slot> stays, so the next PR can use the slot right away.
+# Manual run: leave PR_NUMBER empty to free the slot whatever PR uses it.
 
 name: Destroy preview
 
 on:
   workflow_call:
     inputs:
+      SLOT:
+        description: 'Preview slot, 1-3'
+        required: true
+        type: string
       PR_NUMBER:
-        description: 'Pull request number'
+        description: 'Pull request that is giving the slot back'
         required: true
         type: string
       CLUSTER:
@@ -18,9 +24,13 @@ on:
         type: string
   workflow_dispatch:
     inputs:
-      PR_NUMBER:
-        description: 'Pull request number'
+      SLOT:
+        description: 'Preview slot, 1-3'
         required: true
+        type: string
+      PR_NUMBER:
+        description: 'Only remove it if this PR uses the slot (empty = remove whatever is there)'
+        required: false
         type: string
       CLUSTER:
         description: 'Tag of the deployer image with the Kubernetes cluster config'
@@ -29,7 +39,7 @@ on:
         type: string
 
 concurrency:
-  group: preview-ifric-pr-${{ inputs.PR_NUMBER }}
+  group: ifric-preview-slot-${{ inputs.SLOT }}
   cancel-in-progress: false
 
 jobs:
@@ -39,19 +49,25 @@ jobs:
       image: ibn40/deployer:${{ inputs.CLUSTER }}
       options: --user root
     steps:
-      - name: Remove ifric-pr-${{ inputs.PR_NUMBER }}
+      - name: Free slot ${{ inputs.SLOT }}
         env:
+          SLOT: ${{ inputs.SLOT }}
           PR: ${{ inputs.PR_NUMBER }}
         shell: bash
         run: |
           set -euo pipefail
-          [[ "$PR" =~ ^[0-9]+$ ]] || { echo "::error::bad PR number"; exit 1; }
-          ns="ifric-pr-$PR"
+          [[ "$SLOT" =~ ^[1-3]$ ]] || { echo "::error::bad slot (1-3)"; exit 1; }
+          [[ -z "$PR" || "$PR" =~ ^[0-9]+$ ]] || { echo "::error::bad PR number"; exit 1; }
+          ns="ifric-preview-$SLOT"
           label=$(kubectl get namespace "$ns" -o go-template='{{index .metadata.labels "iff-preview"}}' 2>/dev/null || true)
           if [ -z "$label" ] || [ "$label" = "<no value>" ]; then
             echo "No preview namespace $ns (or not labelled iff-preview) - nothing to remove."
             exit 0
           fi
-          helm uninstall "ifric-pr-$PR" --namespace "$ns" --ignore-not-found || true
-          kubectl delete namespace "$ns" --wait=false
-          echo "Removed preview $ns"
+          owner=$(kubectl get deployment ifric-platform-preview -n "$ns" -o go-template='{{index .metadata.labels "pr"}}' 2>/dev/null || true)
+          if [ -n "$PR" ] && [ -n "$owner" ] && [ "$owner" != "<no value>" ] && [ "$owner" != "$PR" ]; then
+            echo "Slot $SLOT is used by PR #$owner now, not #$PR - nothing to remove."
+            exit 0
+          fi
+          helm uninstall "ifric-preview-$SLOT" --namespace "$ns" --ignore-not-found --wait
+          echo "Freed slot $SLOT (was PR #${owner:-?})"
