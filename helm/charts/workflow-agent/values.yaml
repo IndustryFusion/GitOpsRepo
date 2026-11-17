@@ -6,7 +6,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ifx40/"
-image: "xana-workflow-agent:20261117103414"
+image: "xana-workflow-agent:20261117180613"
 imagePullPolicy: Always
 
 # Pull secrets for a private registry. Empty changes nothing. Set together with
