@@ -1,9 +1,10 @@
-# Runner cleanup — removes root-owned leftovers that block checkouts on private-2.
-# Container jobs run as root and see the runner's work folder at /__w. A root-owned folder left in a repository's
-# workspace makes the next normal checkout there fail with "EACCES: permission denied" (IfricPlatform Nightly, 13 Nov 2026).
+# Runner cleanup — removes leftovers that block checkouts on private-2.
+# Container jobs run as root and see the runner's work folder at /__w. A folder in a repository's workspace that the
+# runner user cannot delete (other owner, or no write permission) makes the next normal checkout there fail with
+# "EACCES: permission denied" (IfricPlatform Nightly, from 13 Nov 2026).
 # Start it by hand (Actions → Runner cleanup → Run workflow); no login to the runner is needed.
-# It only removes the folders named below, inside the chosen repository's workspace, and only when they hold files
-# owned by root (uid 0). The runner user's own checkouts are left alone.
+# MODE=check only reports owners and permissions; MODE=clean also removes the folders named below when the runner
+# user could not delete them. The runner user is the owner of the repository's workspace folder.
 
 name: Runner cleanup
 
@@ -15,6 +16,12 @@ on:
         required: true
         default: IfricPlatform
         type: string
+      MODE:
+        description: 'check = report only, clean = report and remove'
+        required: true
+        default: clean
+        type: choice
+        options: [check, clean]
       CLUSTER:
         description: 'Tag of the deployer image (any tag present on the runner)'
         required: false
@@ -31,9 +38,10 @@ jobs:
       image: ibn40/deployer:${{ inputs.CLUSTER }}
       options: --user root
     steps:
-      - name: Remove root-owned leftovers in ${{ inputs.REPOSITORY }}'s workspace
+      - name: ${{ inputs.MODE }} ${{ inputs.REPOSITORY }}'s workspace
         env:
           REPO: ${{ inputs.REPOSITORY }}
+          MODE: ${{ inputs.MODE }}
         shell: bash
         run: |
           set -euo pipefail
@@ -41,14 +49,28 @@ jobs:
           work=$(dirname "$(dirname "$GITHUB_WORKSPACE")")   # the runner's _work folder, /__w
           ws="$work/$REPO/$REPO"
           [ -d "$ws" ] || { echo "No workspace $ws on this runner: nothing to do."; exit 0; }
+          me=$(stat -c %u "$ws")   # the runner user (owner of the workspace)
+          echo "Container user: $(id)"
+          echo "Workspace $ws: owner uid $me, $(stat -c 'gid %g, mode %a' "$ws")"
           found=0
           for name in GitOpsRepo preview-gitops; do
             d="$ws/$name"
-            [ -d "$d" ] || continue
-            if [ -n "$(find "$d" -uid 0 -print -quit)" ]; then
-              rm -rf "$d"; echo "Removed $REPO/$name (it held root-owned files)"; found=1
-            else
-              echo "Kept $REPO/$name (no root-owned files)"
+            [ -e "$d" ] || continue
+            echo "--- $REPO/$name"
+            stat -c '%U(%u):%G(%g) %a %n' "$d" "$d/.git" 2>/dev/null || true
+            foreign=$(find "$d" ! -uid "$me" 2>/dev/null | wc -l)
+            locked=$(find "$d" -type d ! -perm -u+w 2>/dev/null | wc -l)
+            echo "entries not owned by uid $me: $foreign; folders without owner write permission: $locked"
+            find "$d" ! -uid "$me" -printf '  %u(%U) %m %p\n' 2>/dev/null | head -5
+            if [ "$foreign" -eq 0 ] && [ "$locked" -eq 0 ]; then
+              echo "The runner user can delete it: kept."
+              continue
+            fi
+            found=1
+            if [ "$MODE" = clean ]; then
+              rm -rf "$d"
+              if [ -e "$d" ]; then echo "::error::could not remove $d"; exit 1; fi
+              echo "Removed $REPO/$name"
             fi
           done
-          [ "$found" = 1 ] || echo "No root-owned leftovers in $REPO's workspace."
+          [ "$found" = 1 ] || echo "Nothing in $REPO's workspace blocks a checkout."

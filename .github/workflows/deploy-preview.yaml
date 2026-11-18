@@ -131,9 +131,10 @@ jobs:
         run: |
           rm -rf "$GITHUB_WORKSPACE/preview-gitops" "$RUNNER_TEMP/htpasswd"
           # leftover of the older version of this workflow (it checked out as root into GitOpsRepo, Nightly's folder).
-          # Removed only when something inside is owned by root: Nightly's own checkout (runner user) is left alone.
+          # Removed only when the runner user (owner of the workspace) could not delete it itself.
           old="$GITHUB_WORKSPACE/GitOpsRepo"
-          if [ -d "$old" ] && [ -n "$(find "$old" -uid 0 -print -quit)" ]; then
+          me=$(stat -c %u "$GITHUB_WORKSPACE")
+          if [ -d "$old" ] && [ -n "$(find "$old" \( ! -uid "$me" -o -type d ! -perm -u+w \) -print -quit)" ]; then
             rm -rf "$old"
-            echo "Removed $old (it held root-owned files)"
+            echo "Removed $old (the runner user could not delete it)"
           fi
