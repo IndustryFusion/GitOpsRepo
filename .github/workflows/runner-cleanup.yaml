@@ -1,0 +1,54 @@
+# Runner cleanup — removes root-owned leftovers that block checkouts on private-2.
+# Container jobs run as root and see the runner's work folder at /__w. A root-owned folder left in a repository's
+# workspace makes the next normal checkout there fail with "EACCES: permission denied" (IfricPlatform Nightly, 13 Nov 2026).
+# Start it by hand (Actions → Runner cleanup → Run workflow); no login to the runner is needed.
+# It only removes the folders named below, inside the chosen repository's workspace, and only when they hold files
+# owned by root (uid 0). The runner user's own checkouts are left alone.
+
+name: Runner cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      REPOSITORY:
+        description: 'Repository whose workspace on private-2 to clean, e.g. IfricPlatform'
+        required: true
+        default: IfricPlatform
+        type: string
+      CLUSTER:
+        description: 'Tag of the deployer image (any tag present on the runner)'
+        required: false
+        default: IFF-DEV-DPP-IFRIC
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  clean:
+    runs-on: 'private-2'
+    container:
+      image: ibn40/deployer:${{ inputs.CLUSTER }}
+      options: --user root
+    steps:
+      - name: Remove root-owned leftovers in ${{ inputs.REPOSITORY }}'s workspace
+        env:
+          REPO: ${{ inputs.REPOSITORY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$REPO" =~ ^[A-Za-z0-9._-]+$ ]] || { echo "::error::bad repository name"; exit 1; }
+          work=$(dirname "$(dirname "$GITHUB_WORKSPACE")")   # the runner's _work folder, /__w
+          ws="$work/$REPO/$REPO"
+          [ -d "$ws" ] || { echo "No workspace $ws on this runner: nothing to do."; exit 0; }
+          found=0
+          for name in GitOpsRepo preview-gitops; do
+            d="$ws/$name"
+            [ -d "$d" ] || continue
+            if [ -n "$(find "$d" -uid 0 -print -quit)" ]; then
+              rm -rf "$d"; echo "Removed $REPO/$name (it held root-owned files)"; found=1
+            else
+              echo "Kept $REPO/$name (no root-owned files)"
+            fi
+          done
+          [ "$found" = 1 ] || echo "No root-owned leftovers in $REPO's workspace."
