@@ -57,11 +57,14 @@ jobs:
             d="$ws/$name"
             [ -e "$d" ] || continue
             echo "--- $REPO/$name"
-            stat -c '%U(%u):%G(%g) %a %n' "$d" "$d/.git" 2>/dev/null || true
-            foreign=$(find "$d" ! -uid "$me" 2>/dev/null | wc -l)
-            locked=$(find "$d" -type d ! -perm -u+w 2>/dev/null | wc -l)
-            echo "entries not owned by uid $me: $foreign; folders without owner write permission: $locked"
-            find "$d" ! -uid "$me" -printf '  %u(%U) %m %p\n' 2>/dev/null | head -5
+            # BusyBox find (deployer image) has no -uid/-printf: list owner, mode and type with stat instead
+            find "$d" | while IFS= read -r f; do stat -c '%u %a %F' "$f"; done >"$RUNNER_TEMP/owners.txt"
+            stat -c '%U(%u):%G(%g) %a %n' "$d"
+            foreign=$(awk -v me="$me" '$1 != me' "$RUNNER_TEMP/owners.txt" | wc -l)
+            # a folder whose owner has no write permission (owner digit of the mode without bit 2)
+            locked=$(awk '$3 == "directory" { o = substr($2, length($2) - 2, 1); if (int(o / 2) % 2 == 0) n++ } END { print n + 0 }' "$RUNNER_TEMP/owners.txt")
+            echo "entries: $(wc -l <"$RUNNER_TEMP/owners.txt"); not owned by uid $me: $foreign; folders without owner write permission: $locked"
+            echo "owners (uid: count): $(awk '{ c[$1]++ } END { for (u in c) printf "%s: %d  ", u, c[u] }' "$RUNNER_TEMP/owners.txt")"
             if [ "$foreign" -eq 0 ] && [ "$locked" -eq 0 ]; then
               echo "The runner user can delete it: kept."
               continue

@@ -134,7 +134,9 @@ jobs:
           # Removed only when the runner user (owner of the workspace) could not delete it itself.
           old="$GITHUB_WORKSPACE/GitOpsRepo"
           me=$(stat -c %u "$GITHUB_WORKSPACE")
-          if [ -d "$old" ] && [ -n "$(find "$old" \( ! -uid "$me" -o -type d ! -perm -u+w \) -print -quit)" ]; then
+          # BusyBox find (deployer image) has no -uid: check owners and modes with stat
+          if [ -d "$old" ] && find "$old" | while IFS= read -r f; do stat -c '%u %a %F' "$f"; done |
+               awk -v me="$me" '$1 != me || ($3 == "directory" && int(substr($2, length($2) - 2, 1) / 2) % 2 == 0) { b = 1 } END { exit !b }'; then
             rm -rf "$old"
             echo "Removed $old (the runner user could not delete it)"
           fi
