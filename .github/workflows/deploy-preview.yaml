@@ -10,6 +10,11 @@
 #   2. copies the image pull secret and the backend's Vault login secret from the dev namespace
 #   3. helm upgrade --install ifric-preview-<slot> (replaces whatever PR used the slot before) and waits until ready
 # Nothing secret is stored in this public repository: basic auth comes in as the PREVIEW_HTPASSWD secret.
+#
+# The job runs as root in a container on private-2, in the caller's workspace (the same folder IfricPlatform's
+# Nightly uses). Root-owned files left there make the next non-container checkout fail with EACCES. So it checks out
+# into its own folder (preview-gitops, never Nightly's GitOpsRepo) and always removes what it wrote, plus any
+# root-owned GitOpsRepo folder an older version of this workflow left behind.
 
 name: Deploy preview
 
@@ -67,7 +72,7 @@ jobs:
         with:
           repository: IndustryFusion/GitOpsRepo
           ref: main
-          path: GitOpsRepo
+          path: preview-gitops
           persist-credentials: false
 
       - name: Deploy PR ${{ inputs.PR_NUMBER }} to slot ${{ inputs.SLOT }}
@@ -108,7 +113,7 @@ jobs:
           done
 
           printf '%s\n' "$HTPASSWD" > "$RUNNER_TEMP/htpasswd"
-          helm upgrade --install "ifric-preview-$SLOT" GitOpsRepo/helm/charts/ifricplatform-preview \
+          helm upgrade --install "ifric-preview-$SLOT" preview-gitops/helm/charts/ifricplatform-preview \
             --namespace "$ns" \
             --set-string slot="$SLOT" \
             --set-string prNumber="$PR" \
@@ -119,3 +124,16 @@ jobs:
             --wait --timeout 15m
           rm -f "$RUNNER_TEMP/htpasswd"
           echo "Preview of PR #$PR ready: https://preview-$SLOT.$DOMAIN (API https://preview-$SLOT-api.$DOMAIN)"
+
+      - name: Remove root-owned files from the shared workspace
+        if: always()
+        shell: bash
+        run: |
+          rm -rf "$GITHUB_WORKSPACE/preview-gitops" "$RUNNER_TEMP/htpasswd"
+          # leftover of the older version of this workflow (it checked out as root into GitOpsRepo, Nightly's folder).
+          # Removed only when something inside is owned by root: Nightly's own checkout (runner user) is left alone.
+          old="$GITHUB_WORKSPACE/GitOpsRepo"
+          if [ -d "$old" ] && [ -n "$(find "$old" -uid 0 -print -quit)" ]; then
+            rm -rf "$old"
+            echo "Removed $old (it held root-owned files)"
+          fi
