@@ -12,7 +12,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 imageRegistry: "ifx40/"
-image: "xana-backend:20261117180613"
+image: "xana-backend:20261119112658"
 imagePullPolicy: Always
 
 # Pull secrets for a private registry. Empty changes nothing. Set together with
